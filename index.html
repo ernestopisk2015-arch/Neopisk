@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
+</head>
+<body style="background:#1a1a1a; color:white; text-align:center; font-family:sans-serif; padding-top:50px;">
+
+    <div style="border:2px solid #f0b90b; margin:20px; padding:20px; border-radius:15px;">
+        <h2 style="color:#f0b90b;">NEO PISK CONNECT</h2>
+        <p>Presiona para despertar la extensión</p>
+        
+        <button id="btnMises" style="width:100%; padding:20px; background:#f0b90b; color:black; font-weight:bold; border:none; border-radius:10px; font-size:1.1em; cursor:pointer;">
+            CONECTAR METAMASK
+        </button>
+        
+        <p id="status" style="margin-top:20px;">Estado: Esperando...</p>
+    </div>
+
+<script>
+    document.getElementById('btnMises').onclick = async () => {
+        const status = document.getElementById('status');
+        
+        if (typeof window.ethereum !== 'undefined') {
+            try {
+                status.innerText = "Llamando a la extensión...";
+                
+                // MÉTODO PANCAKESWAP: Fuerza la aparición de la ventana de permisos
+                await window.ethereum.request({
+                    method: 'wallet_requestPermissions',
+                    params: [{ eth_accounts: {} }]
+                });
+
+                const provider = new ethers.providers.Web3Provider(window.ethereum);
+                const accounts = await provider.send("eth_requestAccounts", []);
+                const signer = provider.getSigner();
+                
+                status.innerText = "¡CONECTADO!";
+                document.getElementById('btnMises').style.background = "#00ff00";
+                document.getElementById('btnMises').innerText = "ENVIAR 0.1 POL";
+
+                // Una vez conectado, el segundo toque hace el pago
+                document.getElementById('btnMises').onclick = async () => {
+                    const tx = await signer.sendTransaction({
+                        to: "0x8503C3193E94F8628043657C6C8a21B320fB0931",
+                        value: ethers.utils.parseEther("0.1")
+                    });
+                    status.innerText = "Procesando pago...";
+                    await tx.wait();
+                    alert("¡ÉXITO EN EL PAGO!");
+                };
+
+            } catch (error) {
+                console.error(error);
+                status.innerText = "Error: " + error.message;
+            }
+        } else {
+            alert("No se detectó billetera. Revisa tu extensión de Mises.");
+        }
+    };
+</script>
+</body>
+</html>
