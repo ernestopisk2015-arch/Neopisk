@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEO PISK - Venta Oficial</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
+    <style>
+        body { font-family: sans-serif; text-align: center; background-color: #1a1a1a; color: white; padding: 20px; }
+        .container { max-width: 400px; margin: auto; background: #2a2a2a; padding: 20px; border-radius: 15px; box-shadow: 0 0 20px rgba(0,0,0,0.5); }
+        img { width: 100%; border-radius: 10px; }
+        input { width: 80%; padding: 10px; margin: 10px 0; border-radius: 5px; border: none; font-size: 1.1em; }
+        button { width: 90%; padding: 15px; background-color: #ff8c00; color: white; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 1.2em; }
+        button:hover { background-color: #e67e00; }
+        #status { margin-top: 15px; font-size: 0.9em; color: #aaa; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>NEO PISK</h1>
+    <img src="https://raw.githubusercontent.com/ernestopiskulich/Neopisk/main/llama.png" alt="NEO PISK">
+    <p>Precio: 1 USDT = 100 $PISK</p>
+    
+    <input type="number" id="amount" placeholder="Cantidad de USDT" min="1">
+    <button onclick="comprar()">COMPRAR AHORA</button>
+    
+    <div id="status">Conecta tu MetaMask en la red Polygon</div>
+</div>
+
+<script>
+    const contractAddress = "0x8503C3193E94F8628043657C6C8a21B320fB0931"; // Tu contrato
+    const usdtAddress = "0xc2132D05D31c914a87C6611C10748AEb04B58e8F"; // USDT en Polygon
+
+    async function comprar() {
+        if (typeof window.ethereum !== 'undefined') {
+            try {
+                const provider = new ethers.providers.Web3Provider(window.ethereum);
+                await provider.send("eth_requestAccounts", []);
+                const signer = provider.getSigner();
+                const amount = document.getElementById('amount').value;
+                
+                if (!amount || amount <= 0) {
+                    alert("Ingresa una cantidad válida");
+                    return;
+                }
+
+                const usdtContract = new ethers.Contract(usdtAddress, ["function transfer(address to, uint256 amount) public returns (bool)"], signer);
+                const decimals = 6; 
+                const amountWei = ethers.utils.parseUnits(amount, decimals);
+
+                document.getElementById('status').innerText = "Abriendo MetaMask...";
+                
+                const tx = await usdtContract.transfer(contractAddress, amountWei);
+                document.getElementById('status').innerText = "Transacción enviada. Esperando confirmación...";
+                
+                await tx.wait();
+                document.getElementById('status').innerText = "¡Compra exitosa! Recibirás tus $PISK pronto.";
+                alert("¡Compra realizada con éxito!");
+
+            } catch (error) {
+                console.error(error);
+                document.getElementById('status').innerText = "Error en la compra.";
+                alert("La compra no se pudo completar. Revisa tu
+  
