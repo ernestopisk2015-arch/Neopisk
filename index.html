@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
+    <style>
+        body { background: #000; color: #fff; text-align: center; font-family: sans-serif; padding: 50px 20px; }
+        .box { border: 2px solid #f0b90b; border-radius: 15px; padding: 25px; background: #111; max-width: 350px; margin: auto; }
+        button { width: 100%; padding: 15px; margin: 10px 0; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; }
+        #btnConectar { background: #007bff; color: white; }
+        #btnComprar { background: #28a745; color: white; display: none; }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <h1 style="color:#f0b90b">NEO PISK</h1>
+        <p id="info">Primero conecta tu billetera</p>
+        <button id="btnConectar">CONECTAR BILLETERA</button>
+        <div id="compraDiv" style="display:none">
+            <input type="number" id="cantidad" value="1" style="width:80%; padding:10px; margin-bottom:10px; text-align:center;">
+            <button id="btnComprar">COMPRAR TOKENS</button>
+        </div>
+    </div>
+
+<script>
+    const contratoVenta = "0x82e8c25Ac7Bb8Dee626098DB1964C4a00C3Cc5fC";
+    let signer;
+
+    document.getElementById('btnConectar').onclick = async () => {
+        if (window.ethereum) {
+            try {
+                // Esto fuerza a Mises a mostrar la selección de billetera
+                const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+                const provider = new ethers.providers.Web3Provider(window.ethereum);
+                signer = provider.getSigner();
+                document.getElementById('info').innerText = "Conectado: " + accounts[0].substring(0,6);
+                document.getElementById('btnConectar').style.display = 'none';
+                document.getElementById('compraDiv').style.display = 'block';
+                document.getElementById('btnComprar').style.display = 'block';
+            } catch (e) { alert("Abre tu extensión manualmente arriba a la derecha."); }
+        } else { alert("Instala MetaMask en Mises."); }
+    };
+
+    document.getElementById('btnComprar').onclick = async () => {
+        try {
+            const cant = document.getElementById('cantidad').value;
+            const contract = new ethers.Contract(contratoVenta, ["function comprar(uint256 cantidad) external"], signer);
+            const tx = await contract.comprar(cant);
+            await tx.wait();
+            alert("¡Compra exitosa!");
+        } catch (e) { alert("Revisa la notificación en el zorrito."); }
+    };
+</script>
+</body>
+</html>
