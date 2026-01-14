@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.ethers.io/lib/ethers-5.2.umd.min.js"></script>
+</head>
+<body style="background:#111; color:white; text-align:center; font-family:sans-serif; padding-top:100px;">
+    
+    <div style="border:2px solid #f0b90b; padding:30px; border-radius:20px; display:inline-block;">
+        <h1>NEO PISK 🔥</h1>
+        
+        <button id="conectarBtn" style="width:100%; padding:20px; background:blue; color:white; border:none; border-radius:10px; font-weight:bold; cursor:pointer;">
+            1. CONECTAR BILLETERA
+        </button>
+
+        <button id="comprarBtn" style="width:100%; padding:20px; background:orange; color:white; border:none; border-radius:10px; font-weight:bold; cursor:pointer; display:none; margin-top:20px;">
+            2. CONFIRMAR COMPRA (0.1 POL)
+        </button>
+
+        <p id="status" style="margin-top:20px; color:#aaa;">Estado: Desconectado</p>
+    </div>
+
+<script>
+    const conectarBtn = document.getElementById('conectarBtn');
+    const comprarBtn = document.getElementById('comprarBtn');
+    const status = document.getElementById('status');
+    let signer;
+
+    // ESTO ES LO QUE HACE PANCAKESWAP:
+    conectarBtn.onclick = async () => {
+        if (window.ethereum) {
+            try {
+                status.innerText = "Llamando a la extensión...";
+                // Forzamos a la extensión a abrirse
+                const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+                
+                const provider = new ethers.providers.Web3Provider(window.ethereum);
+                signer = provider.getSigner();
+                
+                status.innerText = "Conectado: " + accounts[0].substring(0,6) + "...";
+                conectarBtn.style.display = "none";
+                comprarBtn.style.display = "block";
+            } catch (e) {
+                status.innerText = "Error: Toca el zorrito arriba a la derecha.";
+            }
+        } else {
+            alert("Mises no detecta MetaMask. Revisa tus extensiones.");
+        }
+    };
+
+    comprarBtn.onclick = async () => {
+        try {
+            status.innerText = "Abriendo confirmación de pago...";
+            // Enviamos 0.1 POL para probar que el botón llama a la extensión
+            const tx = await signer.sendTransaction({
+                to: "0x82e8c25Ac7Bb8Dee626098DB1964C4a00C3Cc5fC",
+                value: ethers.utils.parseEther("0.1")
+            });
+            status.innerText = "Transacción enviada!";
+            await tx.wait();
+            status.innerText = "¡COMPRA EXITOSA!";
+        } catch (e) {
+            status.innerText = "Error. Abre el zorrito arriba manualmente.";
+        }
+    };
+</script>
+</body>
+</html>
