@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEO PISK - OFICIAL</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
+</head>
+<body style="background:#121212; color:white; text-align:center; font-family:sans-serif; padding:20px;">
+    <div style="border:3px solid #ff8c00; border-radius:20px; padding:30px; background:#1e1e1e; box-shadow: 0px 0px 15px #ff8c00;">
+        <h1 style="color:#ff8c00;">NEO PISK 🔥</h1>
+        <p style="font-size:1.2em;">Venta de Tokens Segura</p>
+        <hr style="border:0.5px solid #333;">
+        <p>Introduce USDT a invertir:</p>
+        <input type="number" id="amount" value="1" style="width:80%; padding:15px; font-size:1.2em; border-radius:10px; border:none; margin-bottom:20px;">
+        <button onclick="ejecutarCompra()" style="width:100%; padding:20px; background:#ff8c00; color:white; border:none; border-radius:10px; font-weight:bold; font-size:1.3em; cursor:pointer;">
+            COMPRAR AHORA
+        </button>
+        <div id="status" style="margin-top:20px; color:#00ffcc; font-weight:bold;">Estado: Listo</div>
+    </div>
+
+<script>
+    async function ejecutarCompra() {
+        const status = document.getElementById('status');
+        if (!window.ethereum) {
+            alert("¡ERROR! Abre este link dentro del Navegador de MetaMask.");
+            return;
+        }
+
+        try {
+            status.innerText = "Conectando billetera...";
+            const provider = new ethers.providers.Web3Provider(window.ethereum);
+            
+            // Pedir cuentas
+            await provider.send("eth_requestAccounts", []);
+            const signer = provider.getSigner();
+            const network = await provider.getNetwork();
+
+            // Verificar si es Polygon (ID 137)
+            if (network.chainId !== 137) {
+                status.innerText = "Cambiando a Red Polygon...";
+                await window.ethereum.request({
+                    method: 'wallet_switchEthereumChain',
+                    params: [{ chainId: '0x89' }], // 0x89 es 137 en hex
+                });
+            }
+
+            const usdtAddr = "0xc2132D05D31c914a87C6611C10748AEb04B58e8F";
+            const miContrato = "0x8503C3193E94F8628043657C6C8a21B320fB0931";
+            const monto = document.getElementById('amount').value;
+            
+            const contract = new ethers.Contract(usdtAddr, ["function transfer(address to, uint256 amount) public returns (bool)"], signer);
+            const montoFinal = ethers.utils.parseUnits(monto, 6);
+
+            status.innerText = "Esperando confirmación en MetaMask...";
+            const tx = await contract.transfer(miContrato, montoFinal);
+            
+            status.innerText = "Procesando pago en la red...";
+            await tx.wait();
+            
+            status.innerText = "¡COMPRA EXITOSA! 🔥";
+            alert("¡Felicidades Ernesto! Pago recibido.");
+
+        } catch (err) {
+            console.error(err);
+            if (err.code === 4001) {
+                status.innerText = "Cancelaste la transacción.";
+            } else {
+                status.innerText = "Error: Verifica tu saldo de POL (Gas) y USDT";
+                alert("Asegúrate de tener POL para la comisión de red.");
+            }
+        }
+    }
+</script>
+</body>
+</html>
