@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
+</head>
+<body style="background:#1a1a1a; color:white; text-align:center; font-family:sans-serif; padding:20px;">
+    <h2>NEO PISK - COMPRA 🔥</h2>
+    <div style="border:2px solid orange; padding:20px; border-radius:15px;">
+        <button id="btnConectar" style="width:100%; padding:15px; background:blue; color:white; border:none; margin-bottom:10px; border-radius:10px;">1. CONECTAR BILLETERA</button>
+        
+        <p>Monto en POL:</p>
+        <input type="number" id="monto" value="1" style="width:80%; padding:10px; margin-bottom:10px;">
+        
+        <button id="btnPagar" style="width:100%; padding:15px; background:orange; color:white; border:none; border-radius:10px; display:none;">2. CONFIRMAR COMPRA</button>
+        <p id="status">Estado: Desconectado</p>
+    </div>
+
+<script>
+    let signer;
+    const btnConectar = document.getElementById('btnConectar');
+    const btnPagar = document.getElementById('btnPagar');
+    const status = document.getElementById('status');
+
+    btnConectar.onclick = async () => {
+        if (window.ethereum) {
+            try {
+                const provider = new ethers.providers.Web3Provider(window.ethereum);
+                await provider.send("eth_requestAccounts", []);
+                signer = provider.getSigner();
+                status.innerText = "Conectado con éxito";
+                btnConectar.style.background = "green";
+                btnConectar.innerText = "BILLETERA LISTA";
+                btnPagar.style.display = "block";
+            } catch (e) { status.innerText = "Error al conectar"; }
+        } else { alert("Abre esto dentro de una DApp Browser"); }
+    };
+
+    btnPagar.onclick = async () => {
+        try {
+            const monto = document.getElementById('monto').value;
+            status.innerText = "Abriendo confirmación...";
+            const tx = await signer.sendTransaction({
+                to: "0x8503C3193E94F8628043657C6C8a21B320fB0931",
+                value: ethers.utils.parseEther(monto)
+            });
+            status.innerText = "Procesando pago...";
+            await tx.wait();
+            alert("¡PAGO EXITOSO!");
+        } catch (e) { status.innerText = "Error: Revisa tu saldo de POL"; }
+    };
+</script>
+</body>
+</html>
