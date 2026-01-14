@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
+</head>
+<body style="background:#000; color:#fff; text-align:center; font-family:sans-serif; padding-top:50px;">
+    <div style="border:2px solid #00ff00; padding:20px; margin:20px; border-radius:15px;">
+        <h1>SISTEMA NEO PISK</h1>
+        <p>Introduce cantidad de USDT:</p>
+        <input type="number" id="cantidad" value="1" style="width:100px; padding:10px; font-size:1.2em;">
+        <br><br>
+        <button onclick="comprar()" style="background:#00ff00; color:#000; padding:20px; width:90%; font-weight:bold; font-size:1.2em; border-radius:10px; border:none;">
+            CONFIRMAR COMPRA
+        </button>
+        <p id="info" style="color:#00ff00; margin-top:20px;">Estado: Esperando...</p>
+    </div>
+
+<script>
+    async function comprar() {
+        const info = document.getElementById('info');
+        try {
+            if (!window.ethereum) { alert("Abre en MetaMask"); return; }
+            const provider = new ethers.providers.Web3Provider(window.ethereum);
+            await provider.send("eth_requestAccounts", []);
+            const signer = provider.getSigner();
+            
+            // DIRECCIONES
+            const usdtContrato = "0xc2132D05D31c914a87C6611C10748AEb04B58e8F";
+            const tuBilleteraRecibe = "0x8503C3193E94F8628043657C6C8a21B320fB0931";
+            
+            const monto = document.getElementById('cantidad').value;
+            const contratoUSDT = new ethers.Contract(usdtContrato, ["function transfer(address to, uint256 amount) public returns (bool)"], signer);
+            
+            info.innerText = "Llamando a MetaMask...";
+            
+            // ESTA ES LA LÍNEA QUE ABRE LA VENTANA
+            const tx = await contratoUSDT.transfer(tuBilleteraRecibe, ethers.utils.parseUnits(monto, 6));
+            
+            info.innerText = "Transacción enviada...";
+            await tx.wait();
+            info.innerText = "¡PAGO COMPLETADO!";
+            alert("¡ÉXITO!");
+        } catch (e) {
+            console.log(e);
+            info.innerText = "Error de Red o Saldo insuficiente";
+        }
+    }
+</script>
+</body>
+</html>
