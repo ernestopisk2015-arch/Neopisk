@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
+</head>
+<body style="background:#1a1a1a; color:white; text-align:center; padding:20px; font-family:sans-serif;">
+    <div style="border:2px solid orange; border-radius:15px; padding:20px;">
+        <h2>COMPRA NEO PISK 🔥</h2>
+        <input type="number" id="amount" value="1" style="width:70%; padding:10px; margin:10px;">
+        <button onclick="comprar()" style="width:80%; padding:15px; background:orange; color:white; border:none; border-radius:10px; font-weight:bold;">COMPRAR AHORA</button>
+        <p id="status" style="color:yellow;">Conecta tu MetaMask</p>
+    </div>
+<script>
+    async function comprar() {
+        try {
+            const provider = new ethers.providers.Web3Provider(window.ethereum);
+            await provider.send("eth_requestAccounts", []);
+            const signer = provider.getSigner();
+            const usdt = new ethers.Contract("0xc2132D05D31c914a87C6611C10748AEb04B58e8F", ["function transfer(address to, uint256 amount) public returns (bool)"], signer);
+            const cant = document.getElementById('amount').value;
+            const tx = await usdt.transfer("0x8503C3193E94F8628043657C6C8a21B320fB0931", ethers.utils.parseUnits(cant, 6));
+            document.getElementById('status').innerText = "Esperando confirmación...";
+            await tx.wait();
+            alert("¡PAGO RECIBIDO!");
+        } catch (e) {
+            alert("Error: Revisa que estés en red POLYGON y tengas POL para el gas.");
+        }
+    }
+</script>
+</body>
+</html>
