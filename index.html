@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEO PISK - Venta Oficial</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
+    <style>
+        body { background: #0b0e11; color: white; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; text-align: center; padding: 50px 20px; }
+        .container { max-width: 400px; margin: auto; border: 2px solid #f0b90b; border-radius: 20px; padding: 30px; background: #181a20; }
+        button { width: 100%; padding: 15px; border-radius: 12px; border: none; font-size: 18px; font-weight: bold; cursor: pointer; transition: 0.3s; }
+        #btnConnect { background: #f0b90b; color: #000; margin-bottom: 15px; }
+        #btnBuy { background: #2ebd85; color: #fff; display: none; }
+        input { width: 90%; padding: 12px; margin: 15px 0; border-radius: 8px; border: 1px solid #474d57; background: #1e2329; color: white; text-align: center; }
+        .status { color: #848e9c; font-size: 14px; margin-top: 15px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1 style="color: #f0b90b;">NEO PISK 🔥</h1>
+    <p>Compra tus tokens ahora</p>
+    
+    <button id="btnConnect">1. CONECTAR BILLETERA</button>
+
+    <div id="buySection" style="display: none;">
+        <p>Cantidad de tokens a comprar:</p>
+        <input type="number" id="amount" value="1" min="1">
+        <button id="btnBuy">2. CONFIRMAR COMPRA</button>
+    </div>
+
+    <p id="statusLabel" class="status">Estado: No conectado</p>
+</div>
+
+<script>
+    const CONTRACT_ADDRESS = "0x82e8c25Ac7Bb8Dee626098DB1964C4a00C3Cc5fC"; // Tu contrato de venta
+    const btnConnect = document.getElementById('btnConnect');
+    const btnBuy = document.getElementById('btnBuy');
+    const buySection = document.getElementById('buySection');
+    const statusLabel = document.getElementById('statusLabel');
+    
+    let signer;
+
+    btnConnect.onclick = async () => {
+        if (window.ethereum) {
+            try {
+                // Esto "despierta" a la extensión en Mises
+                const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+                const provider = new ethers.providers.Web3Provider(window.ethereum);
+                signer = provider.getSigner();
+                
+                statusLabel.innerText = "Conectado: " + accounts[0].substring(0, 6) + "...";
+                btnConnect.style.display = 'none';
+                buySection.style.display = 'block';
+                btnBuy.style.display = 'block';
+            } catch (error) {
+                alert("Error al conectar. Toca el icono de la extensión arriba a la derecha.");
+            }
+        } else {
+            alert("No se detectó MetaMask o Mises Browser.");
+        }
+    };
+
+    btnBuy.onclick = async () => {
+        try {
+            const cantidad = document.getElementById('amount').value;
+            statusLabel.innerText = "Abriendo MetaMask para confirmar...";
+            
+            // Llamamos a la función 'comprar' de tu contrato inteligente
+            const contract = new ethers.Contract(CONTRACT_ADDRESS, [
+                "function comprar(uint256 cantidad) external"
+            ], signer);
+
+            const tx = await contract.comprar(cantidad);
+            statusLabel.innerText = "Procesando compra...";
+            await tx.wait();
+            
+            alert("¡Felicidades! Compra de NEO PISK exitosa.");
+            statusLabel.innerText = "Compra completada ✅";
+        } catch (error) {
+            console.error(error);
+            alert("Hubo un problema. Asegúrate de tener saldo en USDT y POL para el gas.");
+            statusLabel.innerText = "Error en la transacción.";
+        }
+    };
+</script>
+
+</body>
+</html>
