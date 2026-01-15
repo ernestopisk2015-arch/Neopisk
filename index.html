@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neo Pisk - CEO Ernesto Piskulich</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@800;900&display=swap');
+        body { margin: 0; font-family: sans-serif; background: #f4f7f6; overflow-x: hidden; }
+        .font-brand { font-family: 'Montserrat', sans-serif; }
+        
+        .hero-header {
+            position: relative; height: 500px;
+            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://i.postimg.cc/wMvXhZN1/Llama-en-Machu-Picchu-pc-jpg.webp');
+            background-size: cover; background-position: center;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            border-bottom: 10px solid #ef4444; overflow: hidden;
+        }
+
+        @keyframes driveAndFloat { 
+            0% { transform: translateX(-350px) rotate(0deg); }
+            25% { transform: translateX(25vw) translateY(-15px) rotate(-2deg); }
+            50% { transform: translateX(55vw) translateY(0px) rotate(0deg); }
+            75% { transform: translateX(85vw) translateY(-15px) rotate(2deg); }
+            100% { transform: translateX(125vw) rotate(0deg); } 
+        }
+
+        .vehicle { position: absolute; bottom: 40px; animation: driveAndFloat 16s linear infinite; z-index: 10; }
+        .framed { border: 4px solid white; border-radius: 20px; background: white; box-shadow: 0 10px 25px rgba(0,0,0,0.4); height: 100px; object-fit: contain; }
+        .v1 { animation-delay: 0s; }   
+        .v2 { animation-delay: 5s; }   
+        .v3 { animation-delay: 10s; }  
+
+        .slide-track { display: flex; animation: scroll 25s linear infinite; width: calc(300px * 15); }
+        @keyframes scroll { 0% { transform: translateX(0); } 100% { transform: translateX(calc(-300px * 5)); } }
+
+        .whatsapp-float {
+            position: fixed; width: 60px; height: 60px; bottom: 40px; right: 40px;
+            background-color: #25d366; color: #FFF; border-radius: 50px; text-align: center;
+            font-size: 30px; box-shadow: 2px 2px 3px #999; z-index: 100;
+            display: flex; align-items: center; justify-content: center;
+            transition: transform 0.3s;
+        }
+        .whatsapp-float:hover { transform: scale(1.1); background-color: #128c7e; }
+    </style>
+</head>
+<body>
+
+    <a href="https://chat.whatsapp.com/FPsbpJ4wA740akDk9kHutu" target="_blank" class="whatsapp-float">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <nav class="bg-[#0a192f] text-white p-3 flex justify-between items-center px-6 border-b border-yellow-400">
+        <div class="text-[10px] font-bold italic opacity-80" id="bible-verse">
+            "Todo lo puedo en Cristo que me fortalece" — Filipenses 4:13
+        </div>
+        <div class="flex gap-4">
+            <button onclick="changeLang('es')" class="cursor-pointer hover:scale-110 transition">🇪🇸 ES</button>
+            <button onclick="changeLang('en')" class="cursor-pointer hover:scale-110 transition">🇺🇸 EN</button>
+        </div>
+    </nav>
+
+    <header class="hero-header text-white text-center">
+        <div class="vehicle v1"><img src="https://i.postimg.cc/mtcrG4DY/torito.jpg" class="framed" alt="Torito"></div>
+        <div class="vehicle v2"><img src="https://i.postimg.cc/Js4BXv4X/byd.jpg" class="framed" alt="BYD"></div>
+        <div class="vehicle v3"><img src="https://i.postimg.cc/Pq3j58dn/the-noetix-robotics-n2-humanoid-robot-displayed-at-the-companys-offices-in-beijing-china-on.jpg" class="framed" alt="Robot"></div>
+        
+        <div class="relative z-20 px-4">
+            <h1 class="font-brand text-6xl md:text-9xl italic uppercase tracking-tighter" style="text-shadow: 6px 6px 0px #ef4444;">NEO PISK</h1>
+            <h2 class="font-brand text-2xl text-yellow-400 uppercase italic tracking-widest" id="hero-subtitle">Motors & Robotics</h2>
+        </div>
+    </header>
+
+    <div class="w-full bg-[#0a192f] py-8 border-b-4 border-yellow-400">
+        <h2 class="text-center font-brand text-3xl text-white uppercase italic" id="ecosystem-title">
+            🚀 Ecosistema <span class="text-yellow-400">Empresarial</span>
+        </h2>
+    </div>
+
+    <div class="bg-white overflow-hidden py-4 border-b-4 border-red-600">
+        <div class="slide-track">
+            <div class="w-[300px] text-center font-black text-4xl text-blue-900">BAJAJ</div>
+            <div class="w-[300px] text-center font-black text-4xl text-orange-500 italic">DIDI</div>
+            <div class="w-[300px] text-center font-black text-4xl text-red-600">YANGO</div>
+            <div class="w-[300px] text-center font-black text-4xl text-gray-800">NEOTIX</div>
+            <div class="w-[300px] text-center font-black text-4xl text-lime-500 italic">inDrive</div>
+            <div class="w-[300px] text-center font-black text-4xl text-blue-900">BAJAJ</div>
+            <div class="w-[300px] text-center font-black text-4xl text-orange-500 italic">DIDI</div>
+            <div class="w-[300px] text-center font-black text-4xl text-red-600">YANGO</div>
+            <div class="w-[300px] text-center font-black text-4xl text-gray-800">NEOTIX</div>
+            <div class="w-[300px] text-center font-black text-4xl text-lime-500 italic">inDrive</div>
+        </div>
+    </div>
+
+    <main class="max-w-5xl mx-auto p-4 space-y-16 mt-10">
+
+        <section class="bg-white p-10 rounded-[3rem] shadow-2xl border-t-[10px] border-blue-900 text-center">
+            <h3 class="font-brand text-3xl text-blue-900 mb-6 uppercase italic font-black" id="calc-title">Socio Fundador $PISK</h3>
+            <p class="mb-4 text-red-600 font-bold italic" id="rwa-tag">⚠️ Respaldado por Activos Reales - No Humo</p>
+            <div class="bg-gray-900 rounded-3xl p-8 shadow-inner border-4 border-yellow-400 max-w-2xl mx-auto">
+                <h4 class="font-brand text-2xl text-yellow-400 uppercase italic mb-6" id="calc-subtitle">Calculadora de Inversión</h4>
+                <div class="space-y-6 text-left">
+                    <div>
+                        <label class="block text-[12px] font-bold text-gray-400 uppercase mb-2 ml-2" id="label-amount">Inversión en USD</label>
+                        <input type="number" id="usdInput" placeholder="Ej: 100" class="w-full bg-white border-4 border-yellow-400 rounded-2xl py-4 px-6 text-3xl font-black text-gray-900 focus:outline-none transition" oninput="calcularTokens()">
+                    </div>
+                    <div class="bg-yellow-400 p-6 rounded-2xl text-gray-900 shadow-xl flex items-center justify-between">
+                        <div>
+                            <p class="text-[12px] font-bold uppercase" id="label-receive">Recibirás aproximadamente:</p>
+                            <p class="text-4xl font-black italic"><span id="tokenOutput">0</span> $PISK</p>
+                        </div>
+                        <i class="fas fa-coins text-5xl"></i>
+                    </div>
+                </div>
+            </div>
+            <a href="https://chat.whatsapp.com/FPsbpJ4wA740akDk9kHutu" target="_blank" class="inline-block w-full mt-10 bg-green-600 text-white font-black py-6 rounded-3xl shadow-2xl uppercase italic text-2xl hover:bg-green-700 transition" id="btn-join">
+                Unirse al Proyecto
+            </a>
+        </section>
+
+        <section class="bg-white p-8 rounded-[3rem] border-r-[12px] border-green-500 shadow-2xl">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+                <div class="space-y-6">
+                    <h3 class="font-brand text-4xl text-green-600 uppercase italic" id="byd-title">MOVILIDAD ELÉCTRICA BYD ⚡</h3>
+                    <p class="text-lg text-gray-800 font-medium italic" id="byd-text">Lideramos con el BYD Seagull. Capital destinado íntegramente a la compra de carros 100% electrónicos.</p>
+                </div>
+                <img src="https://i.postimg.cc/Js4BXv4X/byd.jpg" class="rounded-[2rem] w-full bg-gray-50 p-4">
+            </div>
+        </section>
+
+        <section class="bg-[#0a192f] p-10 rounded-[3rem] text-white border-r-[12px] border-blue-600 shadow-2xl">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+                <img src="https://i.postimg.cc/mtcrG4DY/torito.jpg" class="rounded-[2.5rem] h-56 w-full object-cover">
+                <div class="space-y-4">
+                    <h3 class="font-brand text-3xl text-blue-400 uppercase italic" id="bajaj-title">BAJAJ RETROFIT 🛠️</h3>
+                    <p class="text-lg opacity-80 italic" id="bajaj-text">Conversión de mototaxis convencionales a eléctricas. Ahorro masivo del 80% en combustible.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="bg-black p-10 rounded-[3rem] text-white shadow-2xl border-r-[12px] border-yellow-600">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+                <div class="space-y-4">
+                    <h3 class="font-brand text-4xl text-yellow-400 uppercase italic" id="robot-title">NEOTIX ROBOTICS 🤖</h3>
+                    <p class="text-lg opacity-80 italic font-bold text-yellow-400" id="robot-price">¡PRECIO REVOLUCIONARIO: MENOS DE $5,000!</p>
+                    <p class="text-lg opacity-80 italic" id="robot-text">Importación de androides Noetix N2. Mientras otros robots superan los $20,000, nosotros democratizamos la tecnología.</p>
+                </div>
+                <img src="https://i.postimg.cc/Pq3j58dn/the-noetix-robotics-n2-humanoid-robot-displayed-at-the-companys-offices-in-beijing-china-on.jpg" class="rounded-[2.5rem] w-full">
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-[#0a192f] text-white p-16 text-center border-t-8 border-yellow-400 mt-20">
+        <p class="text-yellow-400 font-brand italic text-4xl uppercase mb-6">NEO PISK MOTORS & ROBOTICS</p>
+        <p class="text-sm italic mb-10 opacity-70" id="footer-ceo">Ernesto Alejandro Piskulich Ceel - CEO Fundador</p>
+        
+        <div class="flex justify-center gap-12 mt-8">
+            <a href="https://www.facebook.com/ernest.pisk" target="_blank" class="text-6xl hover:text-blue-400 transition transform hover:scale-110"><i class="fab fa-facebook"></i></a>
+            <a href="https://chat.whatsapp.com/FPsbpJ4wA740akDk9kHutu" target="_blank" class="text-6xl hover:text-green-400 transition transform hover:scale-110"><i class="fab fa-whatsapp"></i></a>
+            <a href="https://t.me/+hg27bwudfzMxMGYx" target="_blank" class="text-6xl hover:text-sky-400 transition transform hover:scale-110"><i class="fab fa-telegram"></i></a>
+        </div>
+    </footer>
+
+    <script>
+        const translations = {
+            es: {
+                bible: '"Todo lo puedo en Cristo que me fortalece" — Filipenses 4:13',
+                subtitle: 'Motors & Robotics',
+                eco: '🚀 Ecosistema <span class="text-yellow-400">Empresarial</span>',
+                rwa: '⚠️ Respaldado por Activos Reales - No Humo',
+                calcTitle: 'Socio Fundador $PISK',
+                calcSub: 'Calculadora de Inversión',
+                amount: 'Inversión en USD',
+                receive: 'Recibirás aproximadamente:',
+                join: 'Unirse al Proyecto',
+                bydTitle: 'MOVILIDAD ELÉCTRICA BYD ⚡',
+                bydText: 'Lideramos con el BYD Seagull. Capital destinado íntegramente a la compra de carros 100% electrónicos.',
+                bajajTitle: 'BAJAJ RETROFIT 🛠️',
+                bajajText: 'Conversión de mototaxis convencionales a eléctricas. Ahorro masivo del 80% en combustible.',
+                robotPrice: '¡PRECIO REVOLUCIONARIO: MENOS DE $5,000!',
+                robotTitle: 'NEOTIX ROBOTICS 🤖',
+                robotText: 'Importación de androides Noetix N2. Mientras otros robots superan los $20,000, nosotros democratizamos la tecnología.',
+                footer: 'Ernesto Alejandro Piskulich Ceel - CEO Fundador'
+            },
+            en: {
+                bible: '"I can do all things through Christ who strengthens me" — Philippians 4:13',
+                subtitle: 'Motors & Robotics',
+                eco: '🚀 Business <span class="text-yellow-400">Ecosystem</span>',
+                rwa: '⚠️ Backed by Real Assets - No Hype',
+                calcTitle: '$PISK Founding Partner',
+                calcSub: 'Investment Calculator',
+                amount: 'Investment in USD',
+                receive: 'You will receive approximately:',
+                join: 'Join the Project',
+                bydTitle: 'BYD ELECTRIC MOBILITY ⚡',
+                bydText: 'Leading with the BYD Seagull. Capital dedicated entirely to purchasing 100% electric cars.',
+                bajajTitle: 'BAJAJ RETROFIT 🛠️',
+                bajajText: 'Conversion of conventional motor-taxis to electric. Massive 80% savings in fuel.',
+                robotPrice: 'REVOLUTIONARY PRICE: UNDER $5,000!',
+                robotTitle: 'NEOTIX ROBOTICS 🤖',
+                robotText: 'Importing Noetix N2 androids. While other robots exceed $20,000, we democratize technology.',
+                footer: 'Ernesto Alejandro Piskulich Ceel - Founder CEO'
+            }
+        };
+
+        function changeLang(lang) {
+            document.getElementById('bible-verse').innerText = translations[lang].bible;
+            document.getElementById('hero-subtitle').innerText = translations[lang].subtitle;
+            document.getElementById('ecosystem-title').innerHTML = translations[lang].eco;
+            document.getElementById('rwa-tag').innerText = translations[lang].rwa;
+            document.getElementById('calc-title').innerText = translations[lang].calcTitle;
+            document.getElementById('calc-subtitle').innerText = translations[lang].calcSub;
+            document.getElementById('label-amount').innerText = translations[lang].amount;
+            document.getElementById('label-receive').innerText = translations[lang].receive;
+            document.getElementById('btn-join').innerText = translations[lang].join;
+            document.getElementById('byd-title').innerText = translations[lang].bydTitle;
+            document.getElementById('byd-text').innerText = translations[lang].bydText;
+            document.getElementById('bajaj-title').innerText = translations[lang].bajajTitle;
+            document.getElementById('bajaj-text').innerText = translations[lang].bajajText;
+            document.getElementById('robot-price').innerText = translations[lang].robotPrice;
+            document.getElementById('robot-title').innerText = translations[lang].robotTitle;
+            document.getElementById('robot-text').innerText = translations[lang].robotText;
+            document.getElementById('footer-ceo').innerText = translations[lang].footer;
+        }
+
+        function calcularTokens() {
+            const usd = document.getElementById('usdInput').value;
+            const precio = 0.01;
+            const resultado = usd / precio;
+            document.getElementById('tokenOutput').innerText = usd > 0 ? resultado.toLocaleString() : "0";
+        }
+    </script>
+</body>
+              </html>
+              
