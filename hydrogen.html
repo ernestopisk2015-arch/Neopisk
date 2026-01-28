@@ -3,72 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hydrogen Tech | Neo Pisk Motors</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <title>Hydrogen Future | Neo Pisk Motors</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400&display=swap" rel="stylesheet">
     <style>
-        body {
-            background-color: #050a10;
-            color: #ffffff;
-            font-family: 'Orbitron', sans-serif;
-            margin: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            text-align: center;
+        body { background-color: #050a10; color: #fff; font-family: 'Roboto', sans-serif; margin: 0; }
+        .hero { 
+            height: 60vh; 
+            background: linear-gradient(rgba(0,0,0,0.6), #050a10), url('1000129103.png'); /* LA IMAGEN DE LA PLANTA */
+            background-size: cover; background-position: center;
+            display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;
         }
-        .container {
-            border: 2px solid #00d4ff;
-            padding: 40px;
-            background: rgba(0, 212, 255, 0.05);
-            box-shadow: 0 0 30px rgba(0, 212, 255, 0.2);
-            border-radius: 20px;
-            max-width: 800px;
-        }
-        h1 { color: #00d4ff; text-transform: uppercase; letter-spacing: 5px; }
-        p { line-height: 1.6; font-size: 1.1rem; color: #a0b0c0; }
-        .token-box {
-            background: linear-gradient(90deg, #00d4ff, #005f73);
-            color: #000;
-            padding: 20px;
-            margin: 30px 0;
-            font-weight: bold;
-            border-radius: 10px;
-        }
-        .buy-btn {
-            background-color: #ffcc00;
-            color: #000;
-            padding: 20px 40px;
-            text-decoration: none;
-            font-size: 1.3rem;
-            font-weight: bold;
-            border-radius: 50px;
-            transition: 0.3s;
-            display: inline-block;
-            box-shadow: 0 0 15px #ffcc00;
-        }
-        .buy-btn:hover {
-            transform: scale(1.1);
-            background-color: #fff;
-        }
+        .content { max-width: 900px; margin: -100px auto 50px auto; padding: 40px; background: rgba(10, 14, 20, 0.95); border: 1px solid #00d4ff; border-radius: 20px; box-shadow: 0 0 30px rgba(0, 212, 255, 0.3); }
+        h1, h2 { font-family: 'Orbitron', sans-serif; color: #00d4ff; text-transform: uppercase; letter-spacing: 3px; }
+        p { line-height: 1.8; font-size: 1.1rem; color: #cbd5e0; }
+        .highlight { color: #ffcc00; font-weight: bold; }
+        .cta-box { background: #00d4ff; color: #000; padding: 25px; border-radius: 10px; text-align: center; margin-top: 30px; text-decoration: none; display: block; font-family: 'Orbitron', sans-serif; font-weight: bold; font-size: 1.3rem; }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <h1>Hydrogen Propulsion Systems</h1>
-        <p>Developing high-efficiency H2 fuel cell technology for heavy-duty robotics and high-altitude logistics.</p>
-        
-        <div class="token-box">
-            EXCLUSIVE PRE-SALE: PISK TOKEN (PISK)<br>
-            Direct Participation in the Next Green Energy Revolution.
-        </div>
+    <section class="hero">
+        <h1>THE PERENÉ REVOLUTION</h1>
+        <p>Green Hydrogen Power in the Heart of the Amazon</p>
+    </section>
 
-        <p>Our proprietary electrolysis system optimizes hydrogen production for the <strong>Glory Series</strong> vehicles and automated drones.</p>
-        
-        <a href="AQUÍ_PONDREMOS_EL_LINK_DE_REMIX" class="buy-btn">INVEST IN PISK TOKEN</a>
-    </div>
+    <section class="content">
+        <h2>Sustainable Engineering</h2>
+        <p>
+            At Neo Pisk Motors, we are unlocking the energetic potential of the <span class="highlight">Selva Central</span>. 
+            By leveraging the water resources of the <strong>Perené River</strong>, our future facility will utilize advanced electrolysis to produce <span class="highlight">$H_2$ (Green Hydrogen)</span>.
+        </p>
+
+        <h2>Strategic Goals</h2>
+        <ul>
+            <li><strong>Zero Emission Logistics:</strong> Powering the <span class="highlight">Glory Series</span> heavy-duty vehicles with clean hydrogen fuel cells.</li>
+            <li><strong>Ecosystem Preservation:</strong> Integrating high-tech industry with the natural environment of Chanchamayo.</li>
+            <li><strong>Global Scalability:</strong> Building a modular H2 production model that can be replicated across South America.</li>
+        </ul>
+
+        <p>
+            This isn't just a factory; it's a global hub for renewable energy, providing the backbone for the next generation of autonomous robotics and sustainable transportation.
+        </p>
+
+        <a href="TU_LINK_DE_REMIX" class="cta-box">INVEST IN PISK TOKEN NOW ➔</a>
+    </section>
 
 </body>
 </html>
