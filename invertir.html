@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Comprar PISK</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
+    <style>
+        body { background: #0a1f0a; color: white; font-family: sans-serif; text-align: center; padding-top: 50px; }
+        .boton-compra { background: #4CAF50; color: white; padding: 20px; border: none; border-radius: 10px; cursor: pointer; font-size: 20px; }
+    </style>
+</head>
+<body>
+    <h1>Inversión EcoPisk</h1>
+    <p>Precio: 0.10 USDT = 1 PISK</p>
+    <button class="boton-compra" onclick="comprarPisk()">🛒 COMPRAR PISK AHORA</button>
+
+    <script>
+        const ventaAddress = "0x86A0Bb8440189051fB38298Ef3a93E958597E51f";
+        const abiVenta = ["function comprar(uint256 _cantidadUSDT) public"];
+
+        async function comprarPisk() {
+            if (!window.ethereum) return alert("Instala MetaMask");
+            const provider = new ethers.providers.Web3Provider(window.ethereum);
+            await provider.send("eth_requestAccounts", []);
+            const signer = provider.getSigner();
+            const contratoVenta = new ethers.Contract(ventaAddress, abiVenta, signer);
+            
+            try {
+                // Compramos con 0.5 USDT (500000 unidades) como hicimos hoy
+                const tx = await contratoVenta.comprar(500000);
+                alert("¡Transacción enviada! Espera la confirmación.");
+                await tx.wait();
+                alert("¡Compra exitosa!");
+            } catch (err) {
+                alert("Error: " + err.message);
+            }
+        }
+    </script>
+</body>
+</html>
