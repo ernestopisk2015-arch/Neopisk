@@ -3,16 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <title>Inversión EcoPisk</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
     <style>
         body { background-color: #0a1f0a; color: white; font-family: sans-serif; text-align: center; padding: 40px; }
         .contenedor { background: #1a3a1a; padding: 40px; border-radius: 25px; border: 3px solid #4CAF50; display: inline-block; }
         .boton-glow {
             background-color: #ffffff; color: #000; padding: 22px 55px; border: none;
             border-radius: 50px; font-size: 22px; font-weight: bold; cursor: pointer;
-            box-shadow: 0 0 20px #00d4ff, 0 0 40px #00d4ff; animation: pulso 2s infinite;
+            box-shadow: 0 0 20px #00d4ff, 0 0 40px #00d4ff;
         }
-        @keyframes pulso { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
         #estado { margin-top: 25px; color: #00ff88; font-weight: bold; }
     </style>
 </head>
@@ -20,42 +19,42 @@
     <div class="contenedor">
         <h1>🌳 ECOPISK PRE-SALE</h1>
         <p>1 PISK = 0.10 USDT</p>
-        <button class="boton-glow" onclick="comprarPisk()">🛒 COMPRAR PISK AHORA</button>
+        <button class="boton-glow" onclick="comprarAhora()">🛒 COMPRAR PISK AHORA</button>
         <div id="estado">Listo para invertir</div>
     </div>
 
     <script>
-        async function comprarPisk() {
+        async function comprarAhora() {
             const estado = document.getElementById("estado");
             if (!window.ethereum) return alert("Instala MetaMask");
 
             try {
+                // Forzamos el formato correcto de las direcciones para matar el error de checksum
+                const contratoVenta = ethers.utils.getAddress("0x86A0Bb8440189051fB38298Ef3a93E958597E51f");
+                const tokenUSDT = ethers.utils.getAddress("0xc2132D05D31c914a87C6611C10748AEb04B58e8F");
+
                 const provider = new ethers.providers.Web3Provider(window.ethereum);
                 await provider.send("eth_requestAccounts", []);
                 const signer = provider.getSigner();
 
-                // AUTO-CORRECCIÓN DE DIRECCIONES (Esto mata el error de Checksum)
-                const contratoAddr = ethers.utils.getAddress("0x86A0Bb8440189051fB38298Ef3a93E958597E51f");
-                const usdtAddr = ethers.utils.getAddress("0xc2132D05D31c914a87C6611C10748AEb04B58e8F");
-
-                // PASO 1: APROBAR
+                // PASO 1: APROBAR (0.5 USDT = 500000)
                 estado.innerText = "Autorizando USDT...";
-                const cUSDT = new ethers.Contract(usdtAddr, ["function approve(address s, uint256 a) public returns (bool)"], signer);
-                const tx1 = await cUSDT.approve(contratoAddr, "500000"); // 0.5 USDT
+                const cUSDT = new ethers.Contract(tokenUSDT, ["function approve(address spender, uint256 amount) public returns (bool)"], signer);
+                const tx1 = await cUSDT.approve(contratoVenta, "500000");
                 await tx1.wait();
 
                 // PASO 2: COMPRAR
                 estado.innerText = "Confirmando compra...";
-                const cVenta = new ethers.Contract(contratoAddr, ["function comprar(uint256 a) public"], signer);
+                const cVenta = new ethers.Contract(contratoVenta, ["function comprar(uint256 _cantidadUSDT) public"], signer);
                 const tx2 = await cVenta.comprar("500000");
                 await tx2.wait();
 
                 estado.innerText = "✅ ¡COMPRA EXITOSA!";
-                alert("¡Eres oficialmente un inversor de EcoPisk!");
+                alert("¡Felicidades! Ya eres inversor de EcoPisk.");
             } catch (e) {
                 console.error(e);
-                estado.innerText = "❌ Error en el proceso";
-                alert("Detalle: " + (e.reason || e.message));
+                estado.innerText = "❌ Error: " + (e.reason || "Revisa tu saldo de USDT");
+                alert("Error técnico: " + (e.reason || e.message));
             }
         }
     </script>
