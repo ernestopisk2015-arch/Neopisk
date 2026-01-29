@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Inversión EcoPisk</title>
+    <title>EcoPisk - Inversión</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
     <style>
         body { background-color: #0a1f0a; color: white; font-family: sans-serif; text-align: center; padding: 40px; }
@@ -10,9 +10,8 @@
         .boton-glow {
             background-color: #ffffff; color: #000; padding: 22px 55px; border: none;
             border-radius: 50px; font-size: 22px; font-weight: bold; cursor: pointer;
-            box-shadow: 0 0 20px #00d4ff, 0 0 40px #00d4ff; animation: pulso 2s infinite;
+            box-shadow: 0 0 20px #00d4ff, 0 0 40px #00d4ff; transition: 0.3s;
         }
-        @keyframes pulso { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
         #estado { margin-top: 25px; color: #00ff88; font-weight: bold; }
     </style>
 </head>
@@ -20,16 +19,16 @@
     <div class="contenedor">
         <h1>🌳 ECOPISK PRE-SALE</h1>
         <p>1 PISK = 0.10 USDT</p>
-        <button class="boton-glow" onclick="comprarPisk()">🛒 COMPRAR PISK AHORA</button>
-        <div id="estado">Esperando conexión...</div>
+        <button class="boton-glow" onclick="comprarYa()">🛒 COMPRAR PISK AHORA</button>
+        <div id="estado">Listo para conectar</div>
     </div>
 
     <script>
-        // DIRECCIONES CON CHECKSUM CORREGIDO (Tal cual pide Polygonscan)
-        const contratoVenta = "0x86A0Bb8440189051fB38298Ef3a93E958597E51f";
-        const tokenUSDT = "0xc2132D05D31c914a87C6611C10748AEb04B58e8F";
+        // DIRECCIONES CON CHECKSUM CORREGIDO (COPIAR TAL CUAL)
+        const ADDR_VENTA = "0x86A0Bb8440189051fB38298Ef3a93E958597E51f";
+        const ADDR_USDT = "0xc2132D05D31c914a87C6611C10748AEb04B58e8F";
 
-        async function comprarPisk() {
+        async function comprarYa() {
             const estado = document.getElementById("estado");
             if (!window.ethereum) return alert("Instala MetaMask");
 
@@ -39,23 +38,25 @@
                 await provider.send("eth_requestAccounts", []);
                 const signer = provider.getSigner();
 
-                // PASO 1: APROBAR (0.5 USDT = 500000)
+                // PASO 1: APROBAR (0.5 USDT = 500000 unidades)
                 estado.innerText = "Autorizando USDT (Paso 1/2)...";
-                const cUSDT = new ethers.Contract(tokenUSDT, ["function approve(address s, uint256 a) public returns (bool)"], signer);
-                const tx1 = await cUSDT.approve(contratoVenta, "500000");
+                const contratoUSDT = new ethers.Contract(ADDR_USDT, ["function approve(address s, uint256 a) public returns (bool)"], signer);
+                const tx1 = await contratoUSDT.approve(ADDR_VENTA, "500000");
                 await tx1.wait();
 
                 // PASO 2: COMPRAR
-                estado.innerText = "Confirmando compra (Paso 2/2)...";
-                const cVenta = new ethers.Contract(contratoVenta, ["function comprar(uint256 a) public"], signer);
-                const tx2 = await cVenta.comprar("500000");
+                estado.innerText = "Confirmando Compra (Paso 2/2)...";
+                const contratoVenta = new ethers.Contract(ADDR_VENTA, ["function comprar(uint256 a) public"], signer);
+                const tx2 = await contratoVenta.comprar("500000");
                 await tx2.wait();
 
                 estado.innerText = "✅ ¡COMPRA EXITOSA!";
-                alert("¡Eres oficialmente un inversor de EcoPisk!");
-            } catch (e) {
-                estado.innerText = "❌ Error en la transacción";
-                alert("Error: " + (e.reason || e.message));
+                alert("¡Felicidades! Ya eres inversor de EcoPisk.");
+
+            } catch (error) {
+                console.error(error);
+                estado.innerText = "❌ Error en el proceso";
+                alert("Algo salió mal: " + (error.reason || error.message));
             }
         }
     </script>
