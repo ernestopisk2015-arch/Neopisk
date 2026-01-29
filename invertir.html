@@ -1,65 +1,72 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EcoPisk | Private Sale Portal</title>
-    <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
+    <title>EcoPisk - Inversión</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
     <style>
-        :root { --primary: #4CAF50; --secondary: #00d4ff; --bg: #051405; }
-        body { 
-            background-color: var(--bg); 
-            color: white; 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            min-height: 100vh; 
-            margin: 0; 
+        body { background: #0a1f0a; color: white; font-family: sans-serif; text-align: center; padding: 50px; }
+        .card { background: #1a3a1a; padding: 30px; border-radius: 20px; border: 2px solid #4CAF50; display: inline-block; }
+        .boton-glow {
+            background-color: #ffffff; color: #000; padding: 20px 50px; border: none;
+            border-radius: 50px; font-size: 22px; font-weight: bold; cursor: pointer;
+            box-shadow: 0 0 20px #00d4ff, 0 0 40px #00d4ff; transition: 0.3s;
+            animation: pulso 2s infinite; margin-top: 20px;
         }
-        .invest-card { 
-            background: rgba(255, 255, 255, 0.05); 
-            backdrop-filter: blur(10px); 
-            padding: 40px; 
-            border-radius: 20px; 
-            border: 1px solid rgba(76, 175, 80, 0.3); 
-            text-align: center; 
-            width: 100%; 
-            max-width: 400px; 
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5); 
+        @keyframes pulso {
+            0% { transform: scale(1); box-shadow: 0 0 20px #00d4ff; }
+            50% { transform: scale(1.02); box-shadow: 0 0 35px #00ff88; }
+            100% { transform: scale(1); box-shadow: 0 0 20px #00d4ff; }
         }
-        h1 { 
-            font-size: 28px; 
-            margin-bottom: 10px; 
-            background: linear-gradient(to right, #4CAF50, #00d4ff); 
-            -webkit-background-clip: text; 
-            -webkit-text-fill-color: transparent; 
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <h1>🌳 PRE-SALE ECOPISK</h1>
+        <p>Precio: 0.10 USDT = 1 PISK</p>
+        <button class="boton-glow" onclick="procesoCompra()">🛒 COMPRAR PISK AHORA</button>
+        <p id="status" style="margin-top: 20px; color: #00ff88;"></p>
+    </div>
+
+    <script>
+        // CORREGIDO: Ahora las direcciones son TEXTO (con comillas)
+        const contratoVenta = "0x86A0Bb8440189051fB38298Ef3a93E958597E51f";
+        const tokenUSDT = "0xc2132D05D31c914a87C6611C10748AEb04B58e8F";
+
+        const abiUSDT = ["function approve(address spender, uint256 amount) public returns (bool)"];
+        const abiVenta = ["function comprar(uint256 _cantidadUSDT) public"];
+
+        async function procesoCompra() {
+            const status = document.getElementById("status");
+            if (!window.ethereum) return alert("Instala MetaMask");
+
+            try {
+                const provider = new ethers.providers.Web3Provider(window.ethereum);
+                await provider.send("eth_requestAccounts", []);
+                const signer = provider.getSigner();
+
+                // 1. PASO: APROBAR
+                status.innerText = "Paso 1: Autorizando USDT...";
+                const contratoToken = new ethers.Contract(tokenUSDT, abiUSDT, signer);
+                const txApprove = await contratoToken.approve(contratoVenta, 500000);
+                await txApprove.wait();
+
+                // 2. PASO: COMPRAR
+                status.innerText = "Paso 2: Ejecutando compra...";
+                const contratoVentaObj = new ethers.Contract(contratoVenta, abiVenta, signer);
+                const txCompra = await contratoVentaObj.comprar(500000);
+                await txCompra.wait();
+
+                status.innerText = "✅ ¡COMPRA EXITOSA!";
+                alert("¡Felicidades, ya eres inversor de EcoPisk!");
+
+            } catch (err) {
+                console.error(err);
+                status.innerText = "❌ Error en la transacción.";
+                alert("Hubo un problema: " + err.message);
+            }
         }
-        .stats { 
-            background: rgba(0,0,0,0.3); 
-            padding: 15px; 
-            border-radius: 10px; 
-            margin: 20px 0; 
-            border-left: 4px solid var(--primary); 
-            text-align: left;
-        }
-        /* EL BOTÓN RESPLANDECIENTE */
-        .btn-invest { 
-            background: linear-gradient(45deg, var(--primary), var(--secondary)); 
-            color: white; 
-            border: none; 
-            padding: 18px 30px; 
-            border-radius: 50px; 
-            font-size: 18px; 
-            font-weight: bold; 
-            width: 100%; 
-            cursor: pointer; 
-            transition: 0.3s; 
-            box-shadow: 0 0 20px rgba(0, 212, 255, 0.5); 
-            text-transform: uppercase;
-        }
-        .btn-invest:hover { 
-            transform: scale(1.05); 
-            box-shadow: 0 0 40px rgba(0, 212, 255, 0.8); 
-        }
-        .btn-invest:disabled
+    </script>
+</body>
+</html>
