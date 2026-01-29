@@ -4,9 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EcoPisk | Private Sale Portal</title>
-    <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
     <style>
-        :root { --primary: #4CAF50; --secondary: #00d4ff; --bg: #051405; }
+        :root { --primary: #4CAF50; --secondary: #8247e5; --bg: #051405; }
         body { 
             background-color: var(--bg); 
             color: white; 
@@ -22,7 +21,7 @@
             backdrop-filter: blur(10px); 
             padding: 40px; 
             border-radius: 20px; 
-            border: 1px solid rgba(76, 175, 80, 0.3); 
+            border: 1px solid rgba(130, 71, 229, 0.4); 
             text-align: center; 
             width: 100%; 
             max-width: 400px; 
@@ -31,21 +30,20 @@
         h1 { 
             font-size: 28px; 
             margin-bottom: 10px; 
-            background: linear-gradient(to right, #4CAF50, #00d4ff); 
+            background: linear-gradient(to right, #4CAF50, #8247e5); 
             -webkit-background-clip: text; 
             -webkit-text-fill-color: transparent; 
         }
         .stats { 
-            background: rgba(0,0,0,0.3); 
+            background: rgba(0,0,0,0.4); 
             padding: 15px; 
             border-radius: 10px; 
             margin: 20px 0; 
-            border-left: 4px solid var(--primary); 
+            border-left: 4px solid var(--secondary); 
             text-align: left;
         }
-        /* EL BOTÓN RESPLANDECIENTE */
         .btn-invest { 
-            background: linear-gradient(45deg, var(--primary), var(--secondary)); 
+            background: linear-gradient(45deg, var(--secondary), #bc47e5); 
             color: white; 
             border: none; 
             padding: 18px 30px; 
@@ -53,97 +51,51 @@
             font-size: 18px; 
             font-weight: bold; 
             width: 100%; 
+            display: block;
+            text-decoration: none;
             cursor: pointer; 
             transition: 0.3s; 
-            box-shadow: 0 0 20px rgba(0, 212, 255, 0.5); 
+            box-shadow: 0 0 20px rgba(130, 71, 229, 0.5); 
             text-transform: uppercase;
         }
         .btn-invest:hover { 
             transform: scale(1.05); 
-            box-shadow: 0 0 40px rgba(0, 212, 255, 0.8); 
+            box-shadow: 0 0 40px rgba(130, 71, 229, 0.8); 
         }
-        .btn-invest:disabled { background: #555; cursor: not-allowed; box-shadow: none; }
-        
-        #status { margin-top: 20px; font-size: 14px; color: #ffeb3b; min-height: 20px; }
-        .security-badge { font-size: 12px; margin-top: 30px; opacity: 0.6; }
+        .security-badge { font-size: 12px; margin-top: 30px; opacity: 0.7; color: #8247e5; }
+        .info-text { font-size: 13px; margin-bottom: 15px; color: #ccc; line-height: 1.4; }
     </style>
 </head>
 <body>
 
 <div class="invest-card">
+    <img src="https://cryptologos.cc/logos/polygon-matic-logo.png" width="40" style="margin-bottom: 10px;">
     <h1>EcoPisk Investment</h1>
     <p>Official Private Sale Portal</p>
     
     <div class="stats">
-        <div>Asset: <strong>PISK Token</strong></div>
-        <div>Price: <strong>0.10 USDT</strong></div>
-        <div>Network: <strong>Polygon</strong></div>
+        <div style="margin-bottom: 5px;">Asset: <strong>PISK Token</strong></div>
+        <div style="margin-bottom: 5px;">Price: <strong>0.10 USDT</strong></div>
+        <div>Network: <strong>Polygon (POS)</strong></div>
     </div>
 
-    <button id="buyBtn" class="btn-invest" onclick="startInvestment()">Buy 5 PISK (0.5 USDT)</button>
-    
-    <div id="status">Waiting for MetaMask connection...</div>
+    <p class="info-text">
+        Al hacer clic, entrarás al contrato oficial verificado. <br>
+        <strong>Paso 1:</strong> Conecta tu MetaMask.<br>
+        <strong>Paso 2:</strong> Ejecuta la función "comprar".
+    </p>
 
+    <a href="https://polygonscan.com/address/0x86A0Bb8440189051fB38298Ef3a93E958597E51f#writeContract" 
+       target="_blank" 
+       class="btn-invest">
+        PAGAR EN POLYGONSCAN
+    </a>
+    
     <div class="security-badge">
-        🛡️ Secure Smart Contract | Verified on Polygonscan
+        🛡️ Secure Smart Contract | Verified on Polygon Network
     </div>
 </div>
 
-<script>
-    // DIRECCIONES OFICIALES
-    const VENTA_ADDR_RAW = "0x86A0Bb8440189051fB38298Ef3a93E958597E51f";
-    const USDT_ADDR_RAW = "0xc2132D05D31c914a87C6611C10748AEb04B58e8F";
-
-    async function startInvestment() {
-        const status = document.getElementById("status");
-        const btn = document.getElementById("buyBtn");
-
-        if (!window.ethereum) {
-            status.innerText = "❌ Please install MetaMask";
-            return;
-        }
-
-        try {
-            btn.disabled = true;
-            status.innerText = "Connecting to your wallet...";
-            
-            const provider = new ethers.providers.Web3Provider(window.ethereum);
-            await provider.send("eth_requestAccounts", []);
-            const signer = provider.getSigner();
-            
-            // AUTO-CORRECCIÓN DE CHECKSUM: Esto evita el error de mayúsculas/minúsculas
-            const vAddr = ethers.utils.getAddress(VENTA_ADDR_RAW);
-            const uAddr = ethers.utils.getAddress(USDT_ADDR_RAW);
-
-            // PASO 1: APROBAR EL GASTO DE USDT
-            status.innerText = "Step 1/2: Authorizing USDT...";
-            const usdtContract = new ethers.Contract(uAddr, ["function approve(address s, uint256 a) public returns (bool)"], signer);
-            const tx1 = await usdtContract.approve(vAddr, "500000"); // 0.5 USDT
-            status.innerText = "Waiting for Blockchain approval...";
-            await tx1.wait();
-
-            // PASO 2: REALIZAR LA COMPRA
-            status.innerText = "Step 2/2: Confirming Purchase...";
-            const saleContract = new ethers.Contract(vAddr, ["function comprar(uint256 a) public"], signer);
-            const tx2 = await saleContract.comprar("500000");
-            status.innerText = "Finalizing transaction...";
-            await tx2.wait();
-
-            status.innerText = "✅ SUCCESS! You are now a PISK holder.";
-            btn.innerText = "TRANSACTION COMPLETE";
-        } catch (e) {
-            console.error(e);
-            btn.disabled = false;
-            if (e.message.includes("user rejected")) {
-                status.innerText = "❌ Transaction cancelled by user.";
-            } else if (e.message.includes("insufficient funds")) {
-                status.innerText = "❌ Error: Insufficient MATIC or USDT.";
-            } else {
-                status.innerText = "❌ Error: Check MATIC/USDT balance.";
-            }
-        }
-    }
-</script>
-
 </body>
 </html>
+       
