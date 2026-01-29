@@ -2,71 +2,81 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>EcoPisk - Inversión</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inversión EcoPisk</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
     <style>
-        body { background: #0a1f0a; color: white; font-family: sans-serif; text-align: center; padding: 50px; }
-        .card { background: #1a3a1a; padding: 30px; border-radius: 20px; border: 2px solid #4CAF50; display: inline-block; }
+        body { background-color: #0a1f0a; color: white; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; text-align: center; padding: 40px; }
+        .contenedor { background: #1a3a1a; padding: 40px; border-radius: 25px; border: 3px solid #4CAF50; display: inline-block; box-shadow: 0 0 30px rgba(76, 175, 80, 0.3); }
+        h1 { color: #4CAF50; margin-bottom: 10px; }
+        .precio { font-size: 24px; margin-bottom: 30px; color: #00ff88; }
         
-        /* TU BOTÓN RESPLANDECIENTE */
+        /* TU BOTÓN RESPLANDECIENTE CORREGIDO */
         .boton-glow {
-            background-color: #ffffff; color: #000; padding: 20px 50px; border: none;
+            background-color: #ffffff; color: #000; padding: 22px 55px; border: none;
             border-radius: 50px; font-size: 22px; font-weight: bold; cursor: pointer;
             box-shadow: 0 0 20px #00d4ff, 0 0 40px #00d4ff; transition: 0.3s;
-            animation: pulso 2s infinite; margin-top: 20px;
+            animation: pulso 2s infinite; margin-top: 20px; text-transform: uppercase;
         }
         @keyframes pulso {
             0% { transform: scale(1); box-shadow: 0 0 20px #00d4ff; }
-            50% { transform: scale(1.02); box-shadow: 0 0 35px #00ff88; }
+            50% { transform: scale(1.05); box-shadow: 0 0 35px #00ff88; }
             100% { transform: scale(1); box-shadow: 0 0 20px #00d4ff; }
         }
+        #mensaje { margin-top: 25px; font-weight: bold; color: #00ff88; }
     </style>
 </head>
 <body>
 
-    <div class="card">
-        <h1>🌳 PRE-SALE ECOPISK</h1>
-        <p>Precio: 0.10 USDT = 1 PISK</p>
-        <button class="boton-glow" onclick="procesoCompra()">🛒 COMPRAR PISK AHORA</button>
-        <p id="status" style="margin-top: 20px; color: #00ff88;"></p>
+    <div class="contenedor">
+        <h1>🌳 ECOPISK PRE-SALE</h1>
+        <p class="precio">1 PISK = 0.10 USDT</p>
+        
+        <button class="boton-glow" onclick="comprarYa()">
+            🛒 COMPRAR PISK AHORA
+        </button>
+
+        <div id="mensaje"></div>
     </div>
 
     <script>
-        // DIRECCIONES CORREGIDAS (Checksum OK)
-        const contratoVenta = 0x86A0Bb8440189051fB38298Ef3a93E958597E51f;
-        const tokenUSDT = 0xc2132D05D31c914a87C6611C10748AEb04B58e8F;
+        // DIRECCIONES CON FORMATO EXACTO (CHECKSUM CORREGIDO)
+        const contratoVentaAddr = "0x86A0Bb8440189051fB38298Ef3a93E958597E51f";
+        const usdtAddr = "0xc2132D05D31c914a87C6611C10748AEb04B58e8F";
 
-        const abiUSDT = ["function approve(address spender, uint256 amount) public returns (bool)"];
-        const abiVenta = ["function comprar(uint256 _cantidadUSDT) public"];
-
-        async function procesoCompra() {
-            const status = document.getElementById("status");
-            if (!window.ethereum) return alert("Instala MetaMask");
+        async function comprarYa() {
+            const divMensaje = document.getElementById("mensaje");
+            
+            if (!window.ethereum) {
+                alert("Por favor, instala MetaMask");
+                return;
+            }
 
             try {
+                divMensaje.innerText = "Conectando MetaMask...";
                 const provider = new ethers.providers.Web3Provider(window.ethereum);
                 await provider.send("eth_requestAccounts", []);
                 const signer = provider.getSigner();
 
-                // 1. PASO: APROBAR (0.5 USDT = 500000 unidades)
-                status.innerText = "Paso 1: Autorizando USDT...";
-                const contratoToken = new ethers.Contract(tokenUSDT, abiUSDT, signer);
-                const txApprove = await contratoToken.approve(contratoVenta, 500000);
-                await txApprove.wait();
+                // 1. APROBAR USDT (0.5 USDT = 500000 unidades)
+                divMensaje.innerText = "Paso 1/2: Autorizando USDT...";
+                const contratoUSDT = new ethers.Contract(usdtAddr, ["function approve(address spender, uint256 amount) public returns (bool)"], signer);
+                const tx1 = await contratoUSDT.approve(contratoVentaAddr, "500000");
+                await tx1.wait();
 
-                // 2. PASO: COMPRAR
-                status.innerText = "Paso 2: Ejecutando compra...";
-                const contratoVentaObj = new ethers.Contract(contratoVenta, abiVenta, signer);
-                const txCompra = await contratoVentaObj.comprar(500000);
-                await txCompra.wait();
+                // 2. COMPRAR PISK
+                divMensaje.innerText = "Paso 2/2: Confirmando Compra...";
+                const contratoVenta = new ethers.Contract(contratoVentaAddr, ["function comprar(uint256 _cantidadUSDT) public"], signer);
+                const tx2 = await contratoVenta.comprar("500000");
+                await tx2.wait();
 
-                status.innerText = "✅ ¡COMPRA EXITOSA! Revisa tu MetaMask.";
-                alert("¡Felicidades, ya eres inversor de EcoPisk!");
+                divMensaje.innerText = "✅ ¡COMPRA EXITOSA, ELON! 🚀";
+                alert("¡Felicidades! Ya eres socio de EcoPisk.");
 
-            } catch (err) {
-                console.error(err);
-                status.innerText = "❌ Error en la transacción.";
-                alert("Hubo un problema: " + err.message);
+            } catch (error) {
+                console.error(error);
+                divMensaje.innerText = "❌ Error en el proceso";
+                alert("Algo salió mal: " + (error.reason || error.message));
             }
         }
     </script>
