@@ -1,56 +1,89 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>EcoPisk - Venta Directa</title>
-    <script src="https://cdn.ethers.io/lib/ethers-5.2.umd.min.js"></script>
+    <meta charset="UTF-8">
+    <title>EcoPisk | Private Sale</title>
+    <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
     <style>
-        body { background: #0a1f0a; color: white; font-family: sans-serif; text-align: center; padding: 50px; }
-        .boton-final { background: #00d4ff; color: black; padding: 25px; border-radius: 50px; font-size: 24px; font-weight: bold; cursor: pointer; box-shadow: 0 0 20px #00d4ff; border: none; }
+        body { background: #051405; color: white; font-family: 'Segoe UI', sans-serif; text-align: center; padding: 40px; }
+        .box { background: #1a3a1a; padding: 30px; border-radius: 20px; border: 2px solid #4CAF50; display: inline-block; max-width: 450px; }
+        .btn { background: #00d4ff; color: #000; padding: 20px 40px; border: none; border-radius: 50px; font-size: 20px; font-weight: bold; cursor: pointer; box-shadow: 0 0 20px #00d4ff; }
+        .btn:disabled { background: #555; box-shadow: none; cursor: not-allowed; }
+        #log { margin-top: 20px; font-size: 14px; color: #ffeb3b; }
     </style>
 </head>
 <body>
-    <h1>🌳 ECOPISK: RONDA SEMILLA</h1>
-    <p>Precio: 0.10 USDT = 1 PISK</p>
-    <br>
-    <button class="boton-final" onclick="ejecutarCompra()">🛒 COMPRAR PISK AHORA</button>
-    <p id="log" style="margin-top:20px; color:#00ff88;"></p>
 
-    <script>
-        // DIRECCIONES COPIADAS DIRECTAMENTE DEL EXPLORADOR
-        const VENTA = "0x86A0Bb8440189051fB38298Ef3a93E958597E51f";
-        const USDT = "0xc2132D05D31c914a87C6611C10748AEb04B58e8F";
+<div class="box">
+    <h1>🌳 INVEST IN ECOPISK</h1>
+    <p>Price: 1 PISK = 0.10 USDT</p>
+    <p>Investment: <strong>0.50 USDT</strong></p>
+    
+    <button id="btnBuy" class="btn" onclick="invest()">BUY TOKENS NOW</button>
+    
+    <div id="log">Please connect your MetaMask</div>
+</div>
 
-        async function ejecutarCompra() {
-            const log = document.getElementById("log");
-            if (!window.ethereum) return alert("Instala MetaMask");
+<script>
+    // DIRECCIONES OFICIALES
+    const VENTA = "0x86A0Bb8440189051fB38298Ef3a93E958597E51f";
+    const USDT = "0xc2132D05D31c914a87C6611C10748AEb04B58e8F";
 
-            try {
-                log.innerText = "Conectando...";
-                const provider = new ethers.providers.Web3Provider(window.ethereum);
-                await provider.send("eth_requestAccounts", []);
-                const signer = provider.getSigner();
+    async function invest() {
+        const log = document.getElementById("log");
+        const btn = document.getElementById("btnBuy");
+        
+        if (!window.ethereum) return alert("Install MetaMask");
 
-                // USAMOS ESTA FUNCIÓN PARA FORZAR EL CHECKSUM CORRECTO
-                const ventaLimpia = ethers.utils.getAddress(VENTA);
-                const usdtLimpio = ethers.utils.getAddress(USDT);
+        try {
+            btn.disabled = true;
+            log.innerText = "Connecting...";
+            const provider = new ethers.providers.Web3Provider(window.ethereum);
+            await provider.send("eth_requestAccounts", []);
+            const signer = provider.getSigner();
+            const userAddr = await signer.getAddress();
 
-                log.innerText = "Autorizando USDT...";
-                const cUSDT = new ethers.Contract(usdtLimpio, ["function approve(address s, uint256 a) public returns (bool)"], signer);
-                const tx1 = await cUSDT.approve(ventaLimpia, "500000"); // 0.5 USDT
-                await tx1.wait();
+            // 1. CHEQUEO DE MATIC
+            const balanceMATIC = await provider.getBalance(userAddr);
+            if (balanceMATIC.eq(0)) {
+                throw new Error("You need MATIC for gas fees.");
+            }
 
-                log.innerText = "Confirmando Compra...";
-                const cVenta = new ethers.Contract(ventaLimpia, ["function comprar(uint256 a) public"], signer);
-                const tx2 = await cVenta.comprar("500000");
-                await tx2.wait();
+            // FORMATEO DE DIRECCIONES
+            const vAddr = ethers.utils.getAddress(VENTA);
+            const uAddr = ethers.utils.getAddress(USDT);
 
-                log.innerText = "✅ ¡ERES INVERSOR DE ECOPISK!";
-                alert("¡Compra exitosa, Ernesto!");
-            } catch (e) {
-                log.innerText = "❌ Error: Revisa tu saldo o conexión";
-                console.log(e);
+            // 2. PASO: APPROVE
+            log.innerText = "Step 1/2: Approving USDT...";
+            const cUSDT = new ethers.Contract(uAddr, ["function approve(address s, uint256 a) public returns (bool)"], signer);
+            const tx1 = await cUSDT.approve(vAddr, "500000"); // 0.5 USDT
+            log.innerText = "Waiting for approval confirmation...";
+            await tx1.wait();
+
+            // 3. PASO: BUY
+            log.innerText = "Step 2/2: Buying PISK...";
+            const cVenta = new ethers.Contract(vAddr, ["function comprar(uint256 a) public"], signer);
+            const tx2 = await cVenta.comprar("500000");
+            log.innerText = "Confirming on Blockchain...";
+            await tx2.wait();
+
+            log.innerText = "✅ SUCCESS! Welcome to EcoPisk.";
+            btn.innerText = "PURCHASED";
+
+        } catch (e) {
+            btn.disabled = false;
+            console.error(e);
+            // Mostrar error específico
+            if (e.message.includes("user rejected")) {
+                log.innerText = "❌ Transaction cancelled by user.";
+            } else if (e.message.includes("MATIC")) {
+                log.innerText = "❌ Error: You don't have enough MATIC for gas.";
+            } else {
+                log.innerText = "❌ Error: Check your USDT balance or Gas.";
             }
         }
-    </script>
+    }
+</script>
+
 </body>
 </html>
