@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Neo Pisk | Private Sale Portal</title>
+    <script src="https://unpkg.com/@depay/widgets"></script>
     <style>
         :root { --primary: #4CAF50; --secondary: #00d4ff; --bg: #051405; }
         body { 
@@ -42,7 +43,7 @@
             border-left: 4px solid var(--primary); 
             text-align: left;
         }
-        /* EL BOTÓN RESPLANDECIENTE DE DEPAY */
+        /* BOTÓN MEJORADO */
         .btn-invest { 
             display: inline-block;
             text-decoration: none;
@@ -80,9 +81,9 @@
         <div>Network: <strong>Polygon</strong></div>
     </div>
 
-    <a href="https://link.depay.com/7n3sk8SGCztqjCGtwvbp4Y" class="btn-invest">
+    <button onclick="comprarPisk()" class="btn-invest">
         COMPRAR $PISK AHORA
-    </a>
+    </button>
     
     <div id="status">Secure Web3 Payment Gateway</div>
 
@@ -90,6 +91,22 @@
         🛡️ Protegido por DePay | Polygon Network Verified
     </div>
 </div>
+
+<script>
+  function comprarPisk() {
+    DePay.Payment({
+      accept: [{
+        blockchain: 'polygon',
+        amount: 0.10,
+        token: '0xc2132D05D31c914a87C666... ', // Tu billetera receptora verificada
+        receiver: '0xc2132D05D31c914a87C666... ' // La misma dirección de recaudo
+      }],
+      main: {
+        token: '0x86a0bb8440189051f838298ef3a93e958597e51f' // Tu contrato inteligente oficial
+      }
+    });
+  }
+</script>
 
 </body>
 </html>
