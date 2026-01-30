@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Neo Pisk | Private Sale Portal</title>
+    
     <script src="https://unpkg.com/@depay/widgets"></script>
+
     <style>
         :root { --primary: #4CAF50; --secondary: #00d4ff; --bg: #051405; }
         body { 
@@ -43,10 +45,8 @@
             border-left: 4px solid var(--primary); 
             text-align: left;
         }
-        /* BOTÓN MEJORADO */
         .btn-invest { 
             display: inline-block;
-            text-decoration: none;
             background: linear-gradient(45deg, var(--primary), var(--secondary)); 
             color: white; 
             border: none; 
@@ -54,17 +54,17 @@
             border-radius: 50px; 
             font-size: 18px; 
             font-weight: bold; 
-            width: 85%; 
+            width: 100%; 
             cursor: pointer; 
             transition: 0.3s; 
             box-shadow: 0 0 20px rgba(0, 212, 255, 0.5); 
             text-transform: uppercase;
+            margin-top: 10px;
         }
         .btn-invest:hover { 
             transform: scale(1.05); 
             box-shadow: 0 0 40px rgba(0, 212, 255, 0.8); 
         }
-        
         #status { margin-top: 20px; font-size: 14px; color: #ffeb3b; }
         .security-badge { font-size: 12px; margin-top: 30px; opacity: 0.6; }
     </style>
@@ -82,7 +82,7 @@
     </div>
 
     <button onclick="comprarPisk()" class="btn-invest">
-        COMPRAR $PISK AHORA
+        INVERTIR AHORA
     </button>
     
     <div id="status">Secure Web3 Payment Gateway</div>
@@ -98,11 +98,11 @@
       accept: [{
         blockchain: 'polygon',
         amount: 0.10,
-        token: '0xc2132D05D31c914a87C666... ', // Tu billetera receptora verificada
-        receiver: '0xc2132D05D31c914a87C666... ' // La misma dirección de recaudo
+        token: '0xc2132D05D31c914a87C6661d3d93d59d47abc6710', // Dirección USDT que recibe el pago
+        receiver: '0xc2132D05D31c914a87C6661d3d93d59d47abc6710' // Tu billetera final
       }],
       main: {
-        token: '0x86a0bb8440189051f838298ef3a93e958597e51f' // Tu contrato inteligente oficial
+        token: '0x86a0bb8440189051f838298ef3a93e958597e51f' // Tu contrato inteligente de PISK
       }
     });
   }
