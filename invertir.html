@@ -1,111 +1,55 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Neo Pisk | Private Sale Portal</title>
+    <title>Neo Pisk | Portal de Inversión</title>
     
     <script src="https://unpkg.com/@depay/widgets"></script>
 
     <style>
         :root { --primary: #4CAF50; --secondary: #00d4ff; --bg: #051405; }
-        body { 
-            background-color: var(--bg); 
-            color: white; 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            min-height: 100vh; 
-            margin: 0; 
-        }
-        .invest-card { 
-            background: rgba(255, 255, 255, 0.05); 
-            backdrop-filter: blur(10px); 
-            padding: 40px; 
-            border-radius: 20px; 
-            border: 1px solid rgba(76, 175, 80, 0.3); 
-            text-align: center; 
-            width: 100%; 
-            max-width: 400px; 
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5); 
-        }
-        h1 { 
-            font-size: 28px; 
-            margin-bottom: 10px; 
-            background: linear-gradient(to right, #4CAF50, #00d4ff); 
-            -webkit-background-clip: text; 
-            -webkit-text-fill-color: transparent; 
-        }
-        .stats { 
-            background: rgba(0,0,0,0.3); 
-            padding: 15px; 
-            border-radius: 10px; 
-            margin: 20px 0; 
-            border-left: 4px solid var(--primary); 
-            text-align: left;
-        }
-        .btn-invest { 
-            display: inline-block;
-            background: linear-gradient(45deg, var(--primary), var(--secondary)); 
-            color: white; 
-            border: none; 
-            padding: 18px 30px; 
-            border-radius: 50px; 
-            font-size: 18px; 
-            font-weight: bold; 
-            width: 100%; 
-            cursor: pointer; 
-            transition: 0.3s; 
-            box-shadow: 0 0 20px rgba(0, 212, 255, 0.5); 
-            text-transform: uppercase;
-            margin-top: 10px;
-        }
-        .btn-invest:hover { 
-            transform: scale(1.05); 
-            box-shadow: 0 0 40px rgba(0, 212, 255, 0.8); 
-        }
-        #status { margin-top: 20px; font-size: 14px; color: #ffeb3b; }
-        .security-badge { font-size: 12px; margin-top: 30px; opacity: 0.6; }
+        body { background-color: var(--bg); color: white; font-family: sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
+        .invest-card { background: rgba(255, 255, 255, 0.05); padding: 40px; border-radius: 20px; border: 1px solid rgba(76, 175, 80, 0.3); text-align: center; width: 100%; max-width: 400px; }
+        .btn-invest { background: linear-gradient(45deg, var(--primary), var(--secondary)); color: white; border: none; padding: 18px 30px; border-radius: 50px; font-size: 18px; font-weight: bold; width: 100%; cursor: pointer; text-transform: uppercase; }
+        .stats { background: rgba(0,0,0,0.3); padding: 15px; border-radius: 10px; margin: 20px 0; text-align: left; border-left: 4px solid var(--primary); }
     </style>
 </head>
 <body>
 
 <div class="invest-card">
     <h1>Neo Pisk Investment</h1>
-    <p>Official Private Sale Portal</p>
-    
     <div class="stats">
         <div>Asset: <strong>PISK Token</strong></div>
         <div>Price: <strong>0.10 USDT</strong></div>
         <div>Network: <strong>Polygon</strong></div>
     </div>
 
-    <button onclick="comprarPisk()" class="btn-invest">
-        INVERTIR AHORA
-    </button>
+    <button id="pay-button" class="btn-invest">INVERTIR AHORA</button>
     
-    <div id="status">Secure Web3 Payment Gateway</div>
-
-    <div class="security-badge">
-        🛡️ Protegido por DePay | Polygon Network Verified
-    </div>
+    <div style="margin-top:20px; font-size:12px; opacity:0.6;">🛡️ Verified Smart Contract</div>
 </div>
 
 <script>
-  function comprarPisk() {
-    DePay.Payment({
-      accept: [{
-        blockchain: 'polygon',
-        amount: 0.10,
-        token: '0xc2132D05D31c914a87C6661d3d93d59d47abc6710', // Dirección USDT que recibe el pago
-        receiver: '0xc2132D05D31c914a87C6661d3d93d59d47abc6710' // Tu billetera final
-      }],
-      main: {
-        token: '0x86a0bb8440189051f838298ef3a93e958597e51f' // Tu contrato inteligente de PISK
-      }
-    });
-  }
+  // Configuramos el evento del botón
+  document.getElementById('pay-button').addEventListener('click', function() {
+    if (typeof DePay !== 'undefined') {
+      DePay.Payment({
+        accept: [{
+          blockchain: 'polygon',
+          amount: 0.10,
+          token: '0xc2132D05D31c914a87C6661d3d93d59d47abc6710', // Tu USDT Receptora
+          receiver: '0xc2132D05D31c914a87C6661d3d93d59d47abc6710' // Tu Billetera Final
+        }],
+        main: {
+          token: '0x86a0bb8440189051f838298ef3a93e958597e51f' // Tu Contrato Inteligente
+        }
+      });
+    } else {
+      alert("Error: La pasarela de pago no cargó. Revisa tu conexión a internet.");
+    }
+  });
 </script>
 
 </body>
