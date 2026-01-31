@@ -3,77 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Neo Pisk Presale - Official</title>
+    <title>Neo Pisk - Buy Now</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; margin: 0; padding: 10px; background-color: #f0f2f5; }
-        .container { max-width: 900px; margin: 20px auto; background: white; padding: 25px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
-        .header { text-align: center; margin-bottom: 30px; border-bottom: 3px solid #8247e5; padding-bottom: 10px; }
-        .columns { display: flex; gap: 20px; flex-wrap: wrap; }
-        .column { flex: 1; min-width: 320px; padding: 20px; border-radius: 15px; background: #fff; border: 1px solid #eee; }
-        .spanish { border-top: 8px solid #8247e5; }
-        .english { border-top: 8px solid #28a745; }
-        h2 { margin-top: 0; display: flex; align-items: center; gap: 10px; }
-        .alert-box { background: #fff5f5; border: 1px solid #feb2b2; color: #c53030; padding: 15px; border-radius: 10px; margin-bottom: 15px; }
-        .alert-box strong { text-transform: uppercase; font-size: 0.9em; }
-        .contract-label { font-weight: bold; margin-bottom: 5px; display: block; color: #4a5568; }
-        .contract-box { background: #edf2f7; padding: 12px; border-radius: 8px; font-family: 'Courier New', Courier, monospace; word-break: break-all; font-size: 0.85em; color: #2d3748; border: 1px solid #cbd5e0; }
-        
-        .action-area { text-align: center; margin-top: 40px; }
-        .btn { display: inline-block; padding: 18px 40px; border-radius: 50px; text-decoration: none; font-weight: bold; font-size: 1.1em; transition: 0.3s; margin: 10px; }
-        .btn-depay { background: #8247e5; color: white; box-shadow: 0 4px 14px rgba(130, 71, 229, 0.4); }
-        .btn-depay:hover { background: #6d39c3; transform: translateY(-3px); }
-        
-        .btn-whatsapp { background: #25D366; color: white; box-shadow: 0 4px 14px rgba(37, 211, 102, 0.4); }
-        .btn-whatsapp:hover { background: #1ebe57; transform: translateY(-3px); }
-        
-        .footer-note { font-size: 0.8em; color: #718096; margin-top: 20px; }
+        body { font-family: sans-serif; margin: 0; padding: 20px; background: #f4f4f4; text-align: center; }
+        .box { background: white; max-width: 600px; margin: 20px auto; padding: 25px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+        .alert { color: red; font-weight: bold; font-size: 1.2em; border: 2px solid red; padding: 10px; margin: 10px 0; }
+        .contract { background: #eee; padding: 10px; font-family: monospace; word-break: break-all; margin: 10px 0; border: 1px dashed #333; }
+        .btn-pay { background: #8247e5; color: white; padding: 20px; text-decoration: none; display: block; border-radius: 10px; font-weight: bold; font-size: 1.3em; margin: 20px 0; }
+        .btn-wa { background: #25D366; color: white; padding: 15px; text-decoration: none; display: inline-block; border-radius: 50px; font-weight: bold; margin-top: 20px; }
+        hr { margin: 40px 0; border: 1px solid #ccc; }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <div class="header">
-        <h1>🚀 NEO PISK ($PISK)</h1>
-        <p>Official Presale / Preventa Oficial</p>
-    </div>
-
-    <div class="columns">
-        <div class="column spanish">
-            <h2>🇪🇸 Instrucciones</h2>
-            <div class="alert-box">
-                <strong>Importante:</strong> En el proceso de pago, pega tu dirección de <b>MetaMask</b> (Red Polygon/ETH) donde dice "Wallet address".
-            </div>
-            <p>Los tokens se envían manualmente en un lapso de 1 a 12 horas. Para ver tus tokens, importa este contrato:</p>
-            <span class="contract-label">Contrato $PISK:</span>
-            <div class="contract-box">TU_CONTRATO_AQUI</div>
-        </div>
-
-        <div class="column english">
-            <h2>🇺🇸 Instructions</h2>
-            <div class="alert-box">
-                <strong>Important:</strong> During checkout, paste your <b>MetaMask</b> address (Polygon/ETH Network) in the "Wallet address" field.
-            </div>
-            <p>Tokens are sent manually within 1-12 hours. To view your tokens, import this contract address:</p>
-            <span class="contract-label">$PISK Contract:</span>
-            <div class="contract-box">YOUR_CONTRACT_HERE</div>
-        </div>
-    </div>
-
-    <div class="action-area">
-        <a href="https://link.depay.com/5gMMmzTo75pzPjZEIfMMB3" class="btn btn-depay">
-            💳 BUY $PISK / COMPRAR AHORA
-        </a>
-        <br>
-        <a href="https://wa.me/51908066095?text=Hola,%20tengo%20una%20duda%20sobre%20la%20preventa%20de%20Neo%20Pisk" class="btn btn-whatsapp" target="_blank">
-            💬 Soporte WhatsApp / Live Support
-        </a>
+    <div class="box" style="border-top: 10px solid #8247e5;">
+        <h2>🇪🇸 COMPRAR NEO PISK</h2>
+        <p class="alert">¡ATENCIÓN! LEER ANTES DE PAGAR:</p>
+        <p>En el cuadro de pago, <strong>DEBES PEGAR TU DIRECCIÓN DE METAMASK (RED POLYGON)</strong> para poder enviarte tus tokens.</p>
+        <p>Los tokens se envían manualmente en un plazo de 1 a 12 horas.</p>
+        <p><strong>Dirección del Contrato para agregar a tu billetera:</strong></p>
+        <div class="contract">TU_CONTRATO_DE_REMIX_AQUI</div>
         
-        <p class="footer-note">
-            Secure payment powered by DePay. Support available 24/7.<br>
-            Pago seguro vía DePay. Soporte disponible 24/7.
-        </p>
+        <a href="https://link.depay.com/5gMMmzTo75pzPjZEIfMMB3" class="btn-pay">
+            PAGAR CON CRIPTO AHORA (SOL / BNB / POL)
+        </a>
     </div>
-</div>
+
+    <hr>
+
+    <div class="box" style="border-top: 10px solid #28a745;">
+        <h2>🇺🇸 BUY NEO PISK</h2>
+        <p class="alert">ATTENTION! READ BEFORE PAYING:</p>
+        <p>In the payment box, <strong>YOU MUST PASTE YOUR METAMASK ADDRESS (POLYGON NETWORK)</strong> to receive your tokens.</p>
+        <p>Tokens are sent manually within 1 to 12 hours.</p>
+        <p><strong>Contract Address to add to your wallet:</strong></p>
+        <div class="contract">YOUR_REMIX_CONTRACT_HERE</div>
+
+        <a href="https://link.depay.com/5gMMmzTo75pzPjZEIfMMB3" class="btn-pay" style="background: #28a745;">
+            PAY WITH CRYPTO NOW (SOL / BNB / POL)
+        </a>
+    </div>
+
+    <a href="https://wa.me/51908066095" class="btn-wa" target="_blank">
+        📲 SOPORTE / SUPPORT WHATSAPP
+    </a>
 
 </body>
 </html>
