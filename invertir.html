@@ -3,65 +3,150 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Neo Pisk Presale</title>
+    <title>EcoPisk ($PISK) Presale</title>
     <style>
-        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; margin: 0; padding: 20px; background-color: #f4f4f9; }
-        .container { max-width: 1000px; margin: auto; background: white; padding: 30px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        /* Fondo con rayas neón animadas */
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            line-height: 1.6; 
+            color: #fff; 
+            margin: 0; 
+            padding: 20px; 
+            background: #0a0a0a;
+            background-image: linear-gradient(90deg, rgba(57, 255, 20, 0.05) 1px, transparent 1px), 
+                              linear-gradient(rgba(57, 255, 20, 0.05) 1px, transparent 1px);
+            background-size: 30px 30px;
+            overflow-x: hidden;
+        }
+
+        /* Contenedor Principal */
+        .container { 
+            max-width: 900px; 
+            margin: auto; 
+            background: rgba(20, 20, 20, 0.95); 
+            padding: 30px; 
+            border-radius: 20px; 
+            box-shadow: 0 0 20px #39ff14; /* Brillo verde fosforescente */
+            border: 1px solid #39ff14;
+        }
+
         .header { text-align: center; margin-bottom: 30px; }
+        
+        .logo { 
+            max-width: 180px; 
+            height: auto; 
+            margin-bottom: 10px;
+            filter: drop-shadow(0 0 10px #39ff14);
+        }
+
         .columns { display: flex; gap: 20px; flex-wrap: wrap; }
-        .column { flex: 1; min-width: 300px; padding: 20px; border: 1px solid #ddd; border-radius: 10px; }
-        .spanish { border-left: 5px solid #8247e5; } /* Color Polygon */
-        .english { border-left: 5px solid #28a745; }
-        h2 { color: #8247e5; margin-top: 0; }
-        .alert { color: #d9534f; font-weight: bold; font-size: 1.1em; }
-        .contract-box { background: #eee; padding: 10px; border-radius: 5px; font-family: monospace; word-break: break-all; margin: 10px 0; border: 1px dashed #666; }
-        .payment-section { text-align: center; margin-top: 40px; padding-top: 20px; border-top: 2px solid #eee; }
-        .btn-depay { background-color: #8247e5; color: white; padding: 15px 30px; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 1.2em; display: inline-block; transition: 0.3s; }
-        .btn-depay:hover { background-color: #6d39c3; transform: scale(1.05); }
+        
+        .column { 
+            flex: 1; 
+            min-width: 300px; 
+            padding: 20px; 
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px; 
+            border: 1px solid rgba(57, 255, 20, 0.3);
+        }
+
+        h2 { color: #39ff14; text-transform: uppercase; letter-spacing: 2px; }
+        
+        .alert { 
+            color: #ff3131; 
+            font-weight: bold; 
+            font-size: 1.2em; 
+            text-shadow: 0 0 5px #ff3131;
+        }
+
+        .contract-box { 
+            background: #000; 
+            color: #39ff14;
+            padding: 15px; 
+            border-radius: 8px; 
+            font-family: 'Courier New', monospace; 
+            word-break: break-all; 
+            margin: 15px 0; 
+            border: 1px solid #39ff14;
+            box-shadow: inset 0 0 10px #39ff14;
+        }
+
+        .payment-section { text-align: center; margin-top: 40px; }
+
+        /* Botón de Pago Estilo Neón */
+        .btn-depay { 
+            background-color: transparent; 
+            color: #39ff14; 
+            padding: 15px 40px; 
+            text-decoration: none; 
+            border-radius: 50px; 
+            font-weight: bold; 
+            font-size: 1.3em; 
+            display: inline-block; 
+            border: 2px solid #39ff14;
+            box-shadow: 0 0 15px #39ff14;
+            transition: 0.4s;
+            text-transform: uppercase;
+        }
+
+        .btn-depay:hover { 
+            background-color: #39ff14; 
+            color: #000; 
+            box-shadow: 0 0 30px #39ff14;
+        }
+
+        /* Botón WhatsApp */
+        .btn-ws {
+            display: inline-flex;
+            align-items: center;
+            margin-top: 20px;
+            color: #25d366;
+            text-decoration: none;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
 
 <div class="container">
     <div class="header">
-        <h1>🚀 Neo Pisk ($PISK) Presale</h1>
+        <img src="logo-eco-pisk.jpg" alt="EcoPisk Logo" class="logo">
+        <h1>🚀 EcoPisk ($PISK) Presale</h1>
     </div>
 
     <div class="columns">
-        <div class="column spanish">
-            <h2>🇪🇸 Instrucciones</h2>
-            <p class="alert">⚠️ LEER ANTES DE COMPRAR:</p>
-            <ul>
-                <li><strong>Dirección de Envío:</strong> En el cuadro de pago, DEBES pegar tu dirección de <strong>MetaMask o Trust Wallet</strong> (Red Polygon o Ethereum).</li>
-                <li><strong>Entrega:</strong> Los tokens se envían manualmente en un plazo de 1 a 12 horas.</li>
-                <li><strong>Ver el Token:</strong> Agrega este contrato en tu MetaMask para ver tus $PISK:</li>
-            </ul>
-            <div class="contract-box">TU_CONTRATO_DE_REMIX_AQUI</div>
-            <p><i>*Asegúrate de estar en la Red Polygon.</i></p>
+        <div class="column">
+            <h2>🇪🇸 LEER AQUÍ</h2>
+            <p class="alert">ATENCIÓN ANTES DE COMPRAR:</p>
+            <p>En el cuadro de pago de DePay, <strong>DEBES PEGAR TU BILLETERA METAMASK (Red Polygon)</strong>. Ahí recibirás tus tokens.</p>
+            <p><strong>Contrato para agregar a MetaMask:</strong></p>
+            <div class="contract-box">0x9d5B2A73d16dAF61712BA8527d94F6997a0E6323</div>
+            <p><i>*Entrega manual en 1-12 horas.</i></p>
         </div>
 
-        <div class="column english">
-            <h2>🇺🇸 Instructions</h2>
-            <p class="alert">⚠️ READ BEFORE BUYING:</p>
-            <ul>
-                <li><strong>Shipping Address:</strong> In the payment box, you MUST paste your <strong>MetaMask or Trust Wallet</strong> address (Polygon or Ethereum Network).</li>
-                <li><strong>Delivery:</strong> Tokens are sent manually within 1 to 12 hours.</li>
-                <li><strong>View Token:</strong> Add this contract to your MetaMask to see your $PISK:</li>
-            </ul>
-            <div class="contract-box">YOUR_REMIX_CONTRACT_HERE</div>
-            <p><i>*Make sure you are on the Polygon Network.</i></p>
+        <div class="column">
+            <h2>🇺🇸 READ HERE</h2>
+            <p class="alert">ATTENTION BEFORE BUYING:</p>
+            <p>In the DePay payment box, <strong>YOU MUST PASTE YOUR METAMASK WALLET (Polygon Network)</strong>. That's where you'll receive your tokens.</p>
+            <p><strong>Contract to add to MetaMask:</strong></p>
+            <div class="contract-box">0x9d5B2A73d16dAF61712BA8527d94F6997a0E6323</div>
+            <p><i>*Manual delivery within 1-12 hours.</i></p>
         </div>
     </div>
 
     <div class="payment-section">
-        <p><strong>Haz clic abajo para pagar con Cripto (Polygon, BNB, ETH)</strong><br>
-        Click below to pay with Crypto (Polygon, BNB, ETH)</p>
-        
+        <p><strong>PAGA AQUÍ / PAY HERE:</strong></p>
         <a href="https://link.depay.com/5gMMmzTo75pzPjZEIfMMB3" class="btn-depay">
-            BUY $PISK NOW / COMPRAR AHORA
+            BUY $PISK NOW
+        </a>
+        <br>
+        <a href="https://wa.me/TUNUMERO" class="btn-ws">
+            💬 Contacto WhatsApp / Support
         </a>
     </div>
 </div>
 
 </body>
 </html>
+
+              
