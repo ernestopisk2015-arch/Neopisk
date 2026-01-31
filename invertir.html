@@ -78,4 +78,108 @@
         
         .column { 
             flex: 1; 
-            min-width
+            min-width: 320px; 
+            padding: 25px; 
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 20px; 
+            border: 1px solid rgba(57, 255, 20, 0.4);
+        }
+
+        h2 { color: #39ff14; border-bottom: 1px solid #39ff14; padding-bottom: 10px; font-size: 1.5em; }
+        h3 { color: #39ff14; margin: 0; text-transform: uppercase; letter-spacing: 1px; }
+        
+        .alert { 
+            color: #ff3131; 
+            font-weight: bold; 
+            text-shadow: 0 0 8px #ff3131;
+            text-transform: uppercase;
+        }
+
+        .contract-box { 
+            background: #000; 
+            color: #39ff14;
+            padding: 15px; 
+            border-radius: 10px; 
+            font-family: 'Courier New', monospace; 
+            word-break: break-all; 
+            margin: 20px 0; 
+            border: 1px solid #39ff14;
+            box-shadow: inset 0 0 15px rgba(57, 255, 20, 0.5);
+            font-size: 0.95em;
+            text-align: center;
+        }
+
+        .payment-section { text-align: center; margin-top: 50px; }
+
+        .btn-depay { 
+            background-color: transparent; 
+            color: #39ff14; 
+            padding: 20px 60px; 
+            text-decoration: none; 
+            border-radius: 50px; 
+            font-weight: bold; 
+            font-size: 1.6em; 
+            display: inline-block; 
+            border: 3px solid #39ff14;
+            box-shadow: 0 0 25px #39ff14;
+            transition: 0.3s all;
+            text-transform: uppercase;
+        }
+
+        .btn-depay:hover { 
+            background-color: #39ff14; 
+            color: #000; 
+            box-shadow: 0 0 50px #39ff14;
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <div class="logo-container">
+            <img src="asset/IMG-20260126-WA0020.jpg" alt="Neo Pisk Logo" class="logo">
+            <img src="logo-eco-pisk.jpg" alt="EcoPisk Logo" class="logo">
+        </div>
+        <h1>Neo Pisk & EcoPisk Presale</h1>
+    </div>
+
+    <div class="wallet-section">
+        <h3>Billeteras Compatibles / Compatible Wallets</h3>
+        <p style="margin-bottom: 5px;">Recomendamos usar / We recommend using:</p>
+        <img src="asset/metamasklogo.jpg" alt="MetaMask Logo" class="wallet-logo">
+        <p style="font-size: 0.9em; color: #39ff14; margin-top: 10px;">MetaMask, Trust Wallet, Binance Web3 Wallet</p>
+    </div>
+
+    <div class="columns">
+        <div class="column">
+            <h2>🇪🇸 ESPAÑOL</h2>
+            <p class="alert">⚠️ IMPORTANTE ANTES DE PAGAR:</p>
+            <p>En la ventana de pago, en el cuadro donde dice "Wallet address", <strong>PEGUE SU DIRECCIÓN DE METAMASK</strong>.</p>
+            <p>Esa es la dirección donde le enviaremos sus tokens $PISK.</p>
+            <p><strong>Contrato del Token:</strong></p>
+            <div class="contract-box">0x9d5B2A73d16dAF61712BA8527d94F6997a0E6323</div>
+            <p><i>* Entrega manual en 1-12 horas.</i></p>
+        </div>
+
+        <div class="column">
+            <h2>🇺🇸 ENGLISH</h2>
+            <p class="alert">⚠️ IMPORTANT BEFORE PAYING:</p>
+            <p>In the payment window, where it says "Wallet address", <strong>PASTE YOUR METAMASK WALLET ADDRESS</strong>.</p>
+            <p>This is where we will send your $PISK tokens.</p>
+            <p><strong>Token Contract:</strong></p>
+            <div class="contract-box">0x9d5B2A73d16dAF61712BA8527d94F6997a0E6323</div>
+            <p><i>* Manual delivery within 1-12 hours.</i></p>
+        </div>
+    </div>
+
+    <div class="payment-section">
+        <a href="https://link.depay.com/5gMMmzTo75pzPjZEIfMMB3" class="btn-depay">
+            BUY $PISK NOW / COMPRAR
+        </a>
+    </div>
+</div>
+
+</body>
+</html>
