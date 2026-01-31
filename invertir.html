@@ -1,139 +1,77 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Neo Pisk & EcoPisk Presale</title>
-    
-    <link rel="icon" type="image/jpg" href="https://raw.githubusercontent.com/ernestopisk2015-arch/Eco-Pisk-Park/refs/heads/main/logo-eco-pisk.jpg">
-
+    <title>Neo Pisk Presale - Official</title>
     <style>
-        body { 
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
-            line-height: 1.6; color: #ffffff; margin: 0; padding: 20px; background: #050505;
-            background-image: linear-gradient(0deg, transparent 24%, rgba(57, 255, 20, .05) 25%, rgba(57, 255, 20, .05) 26%, transparent 27%, transparent 74%, rgba(57, 255, 20, .05) 75%, rgba(57, 255, 20, .05) 76%, transparent 77%, transparent), 
-                              linear-gradient(90deg, transparent 24%, rgba(57, 255, 20, .05) 25%, rgba(57, 255, 20, .05) 26%, transparent 27%, transparent 74%, rgba(57, 255, 20, .05) 75%, rgba(57, 255, 20, .05) 76%, transparent 77%, transparent);
-            background-size: 50px 50px;
-        }
-
-        .container { 
-            max-width: 1000px; margin: 40px auto; background: rgba(10, 10, 10, 0.95); 
-            padding: 40px; border-radius: 30px; box-shadow: 0 0 40px rgba(57, 255, 20, 0.3); border: 2px solid #39ff14;
-        }
-
-        .header, .payment-section, .direct-pay-section { text-align: center; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; margin: 0; padding: 10px; background-color: #f0f2f5; }
+        .container { max-width: 900px; margin: 20px auto; background: white; padding: 25px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        .header { text-align: center; margin-bottom: 30px; border-bottom: 3px solid #8247e5; padding-bottom: 10px; }
+        .columns { display: flex; gap: 20px; flex-wrap: wrap; }
+        .column { flex: 1; min-width: 320px; padding: 20px; border-radius: 15px; background: #fff; border: 1px solid #eee; }
+        .spanish { border-top: 8px solid #8247e5; }
+        .english { border-top: 8px solid #28a745; }
+        h2 { margin-top: 0; display: flex; align-items: center; gap: 10px; }
+        .alert-box { background: #fff5f5; border: 1px solid #feb2b2; color: #c53030; padding: 15px; border-radius: 10px; margin-bottom: 15px; }
+        .alert-box strong { text-transform: uppercase; font-size: 0.9em; }
+        .contract-label { font-weight: bold; margin-bottom: 5px; display: block; color: #4a5568; }
+        .contract-box { background: #edf2f7; padding: 12px; border-radius: 8px; font-family: 'Courier New', Courier, monospace; word-break: break-all; font-size: 0.85em; color: #2d3748; border: 1px solid #cbd5e0; }
         
-        .neon-frame {
-            border: 3px solid #39ff14; box-shadow: 0 0 20px #39ff14, inset 0 0 10px #39ff14;
-            border-radius: 15px; background: #000;
-        }
-
-        .logo-container { display: flex; justify-content: center; gap: 30px; margin-bottom: 20px; flex-wrap: wrap; }
-        .logo-main { max-width: 160px; height: auto; }
-
-        h1 { color: #39ff14; text-shadow: 0 0 15px #39ff14; text-transform: uppercase; letter-spacing: 2px; font-size: 2.5em; }
-
-        .wallet-section {
-            background: rgba(255, 255, 255, 0.02); border: 2px solid #39ff14;
-            border-radius: 20px; padding: 30px; margin-bottom: 30px; text-align: center;
-        }
-
-        .metamask-big { max-width: 280px; height: auto; margin: 15px 0; }
-
-        .columns { display: flex; gap: 25px; flex-wrap: wrap; }
-        .column { 
-            flex: 1; min-width: 320px; padding: 25px; background: rgba(255, 255, 255, 0.03);
-            border-radius: 20px; border: 1px solid rgba(57, 255, 20, 0.4);
-        }
-
-        .flag-title { display: flex; align-items: center; gap: 10px; color: #39ff14; border-bottom: 1px solid #39ff14; padding-bottom: 10px; font-size: 1.5em; }
-        .flag-icon { width: 30px; height: auto; }
-
-        .alert { color: #ff3131; font-weight: bold; text-shadow: 0 0 8px #ff3131; text-transform: uppercase; }
-
-        .contract-box { 
-            background: #000; color: #39ff14; padding: 15px; border-radius: 10px; font-family: 'Courier New', monospace; 
-            word-break: break-all; margin: 20px 0; border: 1px solid #39ff14; box-shadow: inset 0 0 15px rgba(57, 255, 20, 0.5);
-            font-size: 1.1em; text-align: center;
-        }
-
-        .direct-pay-section {
-            margin-top: 40px; padding: 30px; border: 2px dashed #39ff14; border-radius: 25px; background: rgba(57, 255, 20, 0.07);
-        }
-
-        .qr-code {
-            background: white; padding: 10px; border-radius: 10px; margin: 20px auto; max-width: 200px;
-            box-shadow: 0 0 20px #39ff14; border: 5px solid #000;
-        }
-
-        .btn-depay { 
-            background-color: transparent; color: #39ff14; padding: 20px 60px; text-decoration: none; border-radius: 50px; 
-            font-weight: bold; font-size: 1.8em; display: inline-block; border: 3px solid #39ff14;
-            box-shadow: 0 0 25px #39ff14; transition: 0.3s all; text-transform: uppercase;
-        }
-
-        .btn-depay:hover { background-color: #39ff14; color: #000; box-shadow: 0 0 50px #39ff14; transform: scale(1.05); }
-
-        .whatsapp-link { color: #25d366; text-decoration: none; font-size: 1.2em; font-weight: bold; display: inline-block; margin-top: 15px; }
+        .action-area { text-align: center; margin-top: 40px; }
+        .btn { display: inline-block; padding: 18px 40px; border-radius: 50px; text-decoration: none; font-weight: bold; font-size: 1.1em; transition: 0.3s; margin: 10px; }
+        .btn-depay { background: #8247e5; color: white; box-shadow: 0 4px 14px rgba(130, 71, 229, 0.4); }
+        .btn-depay:hover { background: #6d39c3; transform: translateY(-3px); }
+        
+        .btn-whatsapp { background: #25D366; color: white; box-shadow: 0 4px 14px rgba(37, 211, 102, 0.4); }
+        .btn-whatsapp:hover { background: #1ebe57; transform: translateY(-3px); }
+        
+        .footer-note { font-size: 0.8em; color: #718096; margin-top: 20px; }
     </style>
 </head>
 <body>
 
 <div class="container">
     <div class="header">
-        <div class="logo-container">
-            <img src="asset/IMG-20260126-WA0020.jpg" alt="Neo Pisk Logo" class="logo-main neon-frame">
-            <img src="https://raw.githubusercontent.com/ernestopisk2015-arch/Eco-Pisk-Park/refs/heads/main/logo-eco-pisk.jpg" alt="EcoPisk Logo" class="logo-main neon-frame">
-        </div>
-        <h1>Neo Pisk & EcoPisk Presale</h1>
-    </div>
-
-    <div class="wallet-section">
-        <h3 style="color: #39ff14; margin: 0; font-size: 1.8em;">BILLETERA OFICIAL / OFFICIAL WALLET</h3>
-        <img src="asset/metamasklogo.jpg" alt="MetaMask" class="metamask-big neon-frame">
-        <p style="font-size: 1.2em; margin-top: 15px;">Usa <strong>MetaMask</strong> o <strong>Trust Wallet</strong> para comprar.</p>
+        <h1>🚀 NEO PISK ($PISK)</h1>
+        <p>Official Presale / Preventa Oficial</p>
     </div>
 
     <div class="columns">
-        <div class="column">
-            <div class="flag-title">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/8/89/Bandera_de_Espa%C3%B1a.svg" class="flag-icon" alt="España">
-                ESPAÑOL
+        <div class="column spanish">
+            <h2>🇪🇸 Instrucciones</h2>
+            <div class="alert-box">
+                <strong>Importante:</strong> En el proceso de pago, pega tu dirección de <b>MetaMask</b> (Red Polygon/ETH) donde dice "Wallet address".
             </div>
-            <p class="alert">⚠️ IMPORTANTE:</p>
-            <p>Al pagar con DePay, pega tu dirección de MetaMask. <br> <strong>Contrato $PISK:</strong></p>
-            <div class="contract-box">0x9d5B2A73d16dAF61712BA8527d94F6997a0E6323</div>
+            <p>Los tokens se envían manualmente en un lapso de 1 a 12 horas. Para ver tus tokens, importa este contrato:</p>
+            <span class="contract-label">Contrato $PISK:</span>
+            <div class="contract-box">TU_CONTRATO_AQUI</div>
         </div>
 
-        <div class="column">
-            <div class="flag-title">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/a/a4/Flag_of_the_United_States.svg" class="flag-icon" alt="USA">
-                ENGLISH
+        <div class="column english">
+            <h2>🇺🇸 Instructions</h2>
+            <div class="alert-box">
+                <strong>Important:</strong> During checkout, paste your <b>MetaMask</b> address (Polygon/ETH Network) in the "Wallet address" field.
             </div>
-            <p class="alert">⚠️ IMPORTANT:</p>
-            <p>When using DePay, paste your MetaMask address. <br> <strong>$PISK Contract:</strong></p>
-            <div class="contract-box">0x9d5B2A73d16dAF61712BA8527d94F6997a0E6323</div>
+            <p>Tokens are sent manually within 1-12 hours. To view your tokens, import this contract address:</p>
+            <span class="contract-label">$PISK Contract:</span>
+            <div class="contract-box">YOUR_CONTRACT_HERE</div>
         </div>
     </div>
 
-    <div class="payment-section" style="margin-top: 30px;">
-        <a href="https://link.depay.com/5gMMmzTo75pzPjZEIfMMB3" class="btn-depay">BUY $PISK NOW (WEB3)</a>
-    </div>
-
-    <div class="direct-pay-section">
-        <h3 style="color: #39ff14; margin-top:0;">🏦 PAGO DIRECTO (BINANCE / BINGX)</h3>
-        <p>Escanea el QR o copia la dirección (Red <strong>Polygon</strong>):</p>
+    <div class="action-area">
+        <a href="https://link.depay.com/5gMMmzTo75pzPjZEIfMMB3" class="btn btn-depay">
+            💳 BUY $PISK / COMPRAR AHORA
+        </a>
+        <br>
+        <a href="https://wa.me/51908066095?text=Hola,%20tengo%20una%20duda%20sobre%20la%20preventa%20de%20Neo%20Pisk" class="btn btn-whatsapp" target="_blank">
+            💬 Soporte WhatsApp / Live Support
+        </a>
         
-        <div class="qr-code">
-            <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=0x4739888625C8397101d9b3aeDe4633600FB91F47" alt="QR Payment">
-        </div>
-
-        <div class="contract-box" style="background: #111; font-size: 1.1em;">
-            0x4739888625C8397101d9b3aeDe4633600FB91F47
-        </div>
-        
-        <p class="alert">✅ ENVÍA EL COMPROBANTE:</p>
-        <a href="https://wa.me/TU_NUMERO_AQUI" class="whatsapp-link">🟢 WHATSAPP / SEND PROOF</a>
+        <p class="footer-note">
+            Secure payment powered by DePay. Support available 24/7.<br>
+            Pago seguro vía DePay. Soporte disponible 24/7.
+        </p>
     </div>
 </div>
 
