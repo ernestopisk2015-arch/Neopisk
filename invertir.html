@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EcoPisk ($PISK) Presale</title>
+    <title>Neo Pisk & EcoPisk Presale</title>
     <style>
-        /* Estilo Base Neón */
+        /* Estilo Base Neón con fondo de rayas */
         body { 
             font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
             line-height: 1.6; 
@@ -13,52 +13,49 @@
             margin: 0; 
             padding: 20px; 
             background: #050505;
-            /* Fondo de rayas fosforescentes */
             background-image: linear-gradient(0deg, transparent 24%, rgba(57, 255, 20, .05) 25%, rgba(57, 255, 20, .05) 26%, transparent 27%, transparent 74%, rgba(57, 255, 20, .05) 75%, rgba(57, 255, 20, .05) 76%, transparent 77%, transparent), 
                               linear-gradient(90deg, transparent 24%, rgba(57, 255, 20, .05) 25%, rgba(57, 255, 20, .05) 26%, transparent 27%, transparent 74%, rgba(57, 255, 20, .05) 75%, rgba(57, 255, 20, .05) 76%, transparent 77%, transparent);
             background-size: 50px 50px;
         }
 
-        /* Contenedor Principal con Brillo */
+        /* Contenedor Principal */
         .container { 
-            max-width: 950px; 
+            max-width: 1000px; 
             margin: 40px auto; 
-            background: rgba(10, 10, 10, 0.9); 
+            background: rgba(10, 10, 10, 0.95); 
             padding: 40px; 
             border-radius: 30px; 
-            box-shadow: 0 0 30px rgba(57, 255, 20, 0.2), inset 0 0 10px rgba(57, 255, 20, 0.2); 
+            box-shadow: 0 0 40px rgba(57, 255, 20, 0.3); 
             border: 2px solid #39ff14;
             position: relative;
-            overflow: hidden;
-        }
-
-        /* Efecto de línea de escaneo moviéndose */
-        .container::before {
-            content: " ";
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
-            z-index: 2;
-            background-size: 100% 2px, 3px 100%;
-            pointer-events: none;
         }
 
         .header { text-align: center; margin-bottom: 40px; }
         
-        .logo { 
-            max-width: 200px; 
-            height: auto; 
-            border-radius: 20px;
+        /* Contenedor para los dos logos */
+        .logo-container {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
             margin-bottom: 20px;
-            box-shadow: 0 0 25px #39ff14;
+            flex-wrap: wrap;
+        }
+
+        .logo { 
+            max-width: 150px; 
+            height: auto; 
+            border-radius: 15px;
+            box-shadow: 0 0 20px #39ff14;
             border: 2px solid #39ff14;
+            background: #000;
         }
 
         h1 { 
             color: #39ff14; 
             text-shadow: 0 0 15px #39ff14; 
             text-transform: uppercase; 
-            letter-spacing: 3px;
+            letter-spacing: 2px;
+            font-size: 2.5em;
         }
 
         .columns { display: flex; gap: 25px; flex-wrap: wrap; }
@@ -70,17 +67,13 @@
             background: rgba(255, 255, 255, 0.03);
             border-radius: 20px; 
             border: 1px solid rgba(57, 255, 20, 0.4);
-            transition: 0.3s;
         }
-
-        .column:hover { border-color: #39ff14; background: rgba(57, 255, 20, 0.05); }
 
         h2 { color: #39ff14; border-bottom: 1px solid #39ff14; padding-bottom: 10px; }
         
         .alert { 
             color: #ff3131; 
             font-weight: bold; 
-            font-size: 1.1em; 
             text-shadow: 0 0 8px #ff3131;
             text-transform: uppercase;
         }
@@ -95,7 +88,8 @@
             margin: 20px 0; 
             border: 1px solid #39ff14;
             box-shadow: inset 0 0 15px rgba(57, 255, 20, 0.5);
-            font-size: 0.9em;
+            font-size: 0.95em;
+            text-align: center;
         }
 
         .payment-section { text-align: center; margin-top: 50px; }
@@ -104,68 +98,29 @@
         .btn-depay { 
             background-color: transparent; 
             color: #39ff14; 
-            padding: 20px 50px; 
+            padding: 20px 60px; 
             text-decoration: none; 
             border-radius: 50px; 
             font-weight: bold; 
-            font-size: 1.5em; 
+            font-size: 1.6em; 
             display: inline-block; 
             border: 3px solid #39ff14;
-            box-shadow: 0 0 20px #39ff14;
+            box-shadow: 0 0 25px #39ff14;
             transition: 0.3s all;
             text-transform: uppercase;
-            cursor: pointer;
         }
 
         .btn-depay:hover { 
             background-color: #39ff14; 
             color: #000; 
-            box-shadow: 0 0 40px #39ff14, 0 0 60px #39ff14;
+            box-shadow: 0 0 50px #39ff14;
             transform: scale(1.05);
         }
-
-        .footer-info { margin-top: 20px; font-size: 0.9em; color: #aaa; }
     </style>
 </head>
 <body>
 
 <div class="container">
     <div class="header">
-        <img src="logo-eco-pisk.jpg" alt="EcoPisk Logo" class="logo">
-        <h1>EcoPisk ($PISK) Presale</h1>
-    </div>
-
-    <div class="columns">
-        <div class="column">
-            <h2>🇪🇸 ESPAÑOL</h2>
-            <p class="alert">⚠️ IMPORTANTE ANTES DE PAGAR:</p>
-            <p>En la ventana de pago, donde pide "Wallet address", <strong>DEBES PEGAR TU BILLETERA METAMASK (Red Polygon o ETH)</strong>.</p>
-            <p>Ahí es donde recibirás tus tokens $PISK.</p>
-            <p><strong>Contrato para importar a tu billetera:</strong></p>
-            <div class="contract-box">0x9d5B2A73d16dAF61712BA8527d94F6997a0E6323</div>
-            <p><i>* Los tokens se envían manualmente en un máximo de 12 horas.</i></p>
-        </div>
-
-        <div class="column">
-            <h2>🇺🇸 ENGLISH</h2>
-            <p class="alert">⚠️ IMPORTANT BEFORE PAYING:</p>
-            <p>In the payment window, where it asks for "Wallet address", <strong>YOU MUST PASTE YOUR METAMASK WALLET (Polygon or ETH Network)</strong>.</p>
-            <p>This is where you will receive your $PISK tokens.</p>
-            <p><strong>Contract to import into your wallet:</strong></p>
-            <div class="contract-box">0x9d5B2A73d16dAF61712BA8527d94F6997a0E6323</div>
-            <p><i>* Tokens are sent manually within 12 hours.</i></p>
-        </div>
-    </div>
-
-    <div class="payment-section">
-        <a href="https://link.depay.com/5gMMmzTo75pzPjZEIfMMB3" class="btn-depay">
-            BUY $PISK NOW / COMPRAR
-        </a>
-        <div class="footer-info">
-            <p>Powered by DePay & EcoPisk Team</p>
-        </div>
-    </div>
-</div>
-
-</body>
-</html>
+        <div class="logo-container">
+            <img src="asset/IMG-20260126-WA0
