@@ -27,7 +27,6 @@
             border-radius: 30px; 
             box-shadow: 0 0 40px rgba(57, 255, 20, 0.3); 
             border: 2px solid #39ff14;
-            position: relative;
         }
 
         .header { text-align: center; margin-bottom: 40px; }
@@ -42,10 +41,10 @@
         }
 
         .logo { 
-            max-width: 150px; 
+            max-width: 140px; 
             height: auto; 
             border-radius: 15px;
-            box-shadow: 0 0 20px #39ff14;
+            box-shadow: 0 0 15px #39ff14;
             border: 2px solid #39ff14;
             background: #000;
         }
@@ -55,108 +54,28 @@
             text-shadow: 0 0 15px #39ff14; 
             text-transform: uppercase; 
             letter-spacing: 2px;
-            font-size: 2.5em;
+            font-size: 2.2em;
+        }
+
+        /* Cuadro de Billeteras */
+        .wallet-section {
+            background: rgba(57, 255, 20, 0.05);
+            border: 1px solid #39ff14;
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .wallet-logo {
+            max-width: 120px;
+            height: auto;
+            filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.5));
+            margin-top: 10px;
         }
 
         .columns { display: flex; gap: 25px; flex-wrap: wrap; }
         
         .column { 
             flex: 1; 
-            min-width: 320px; 
-            padding: 25px; 
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 20px; 
-            border: 1px solid rgba(57, 255, 20, 0.4);
-        }
-
-        h2 { color: #39ff14; border-bottom: 1px solid #39ff14; padding-bottom: 10px; }
-        
-        .alert { 
-            color: #ff3131; 
-            font-weight: bold; 
-            text-shadow: 0 0 8px #ff3131;
-            text-transform: uppercase;
-        }
-
-        .contract-box { 
-            background: #000; 
-            color: #39ff14;
-            padding: 15px; 
-            border-radius: 10px; 
-            font-family: 'Courier New', monospace; 
-            word-break: break-all; 
-            margin: 20px 0; 
-            border: 1px solid #39ff14;
-            box-shadow: inset 0 0 15px rgba(57, 255, 20, 0.5);
-            font-size: 0.95em;
-            text-align: center;
-        }
-
-        .payment-section { text-align: center; margin-top: 50px; }
-
-        /* Botón de Pago Neón */
-        .btn-depay { 
-            background-color: transparent; 
-            color: #39ff14; 
-            padding: 20px 60px; 
-            text-decoration: none; 
-            border-radius: 50px; 
-            font-weight: bold; 
-            font-size: 1.6em; 
-            display: inline-block; 
-            border: 3px solid #39ff14;
-            box-shadow: 0 0 25px #39ff14;
-            transition: 0.3s all;
-            text-transform: uppercase;
-        }
-
-        .btn-depay:hover { 
-            background-color: #39ff14; 
-            color: #000; 
-            box-shadow: 0 0 50px #39ff14;
-            transform: scale(1.05);
-        }
-    </style>
-</head>
-<body>
-
-<div class="container">
-    <div class="header">
-        <div class="logo-container">
-            <img src="asset/IMG-20260126-WA0020.jpg" alt="Neo Pisk Logo" class="logo">
-            <img src="https://raw.githubusercontent.com/ernestopisk2015-arch/Eco-Pisk-Park/refs/heads/main/logo-eco-pisk.jpg" alt="EcoPisk Logo" class="logo">
-        </div>
-        <h1>Neo Pisk & EcoPisk Presale</h1>
-    </div>
-
-    <div class="columns">
-        <div class="column">
-            <h2>🇪🇸 ESPAÑOL</h2>
-            <p class="alert">⚠️ IMPORTANTE ANTES DE PAGAR:</p>
-            <p>En la ventana de pago, en el cuadro donde dice "Wallet address", <strong>PEGUE SU DIRECCIÓN DE METAMASK (Red Polygon o ETH)</strong>.</p>
-            <p>Esa es la dirección donde le enviaremos sus tokens una vez verificado el pago.</p>
-            <p><strong>Contrato del Token para su billetera:</strong></p>
-            <div class="contract-box">0x9d5B2A73d16dAF61712BA8527d94F6997a0E6323</div>
-            <p><i>* Los tokens se envían manualmente en un plazo de 1 a 12 horas.</i></p>
-        </div>
-
-        <div class="column">
-            <h2>🇺🇸 ENGLISH</h2>
-            <p class="alert">⚠️ IMPORTANT BEFORE PAYING:</p>
-            <p>In the payment window, where it says "Wallet address", <strong>PASTE YOUR METAMASK WALLET ADDRESS (Polygon or ETH Network)</strong>.</p>
-            <p>This is where we will send your tokens after the payment is verified.</p>
-            <p><strong>Token Contract to import into your wallet:</strong></p>
-            <div class="contract-box">0x9d5B2A73d16dAF61712BA8527d94F6997a0E6323</div>
-            <p><i>* Tokens are sent manually within 1 to 12 hours.</i></p>
-        </div>
-    </div>
-
-    <div class="payment-section">
-        <a href="https://link.depay.com/5gMMmzTo75pzPjZEIfMMB3" class="btn-depay">
-            BUY $PISK NOW / COMPRAR
-        </a>
-    </div>
-</div>
-
-</body>
-</html>
+            min-width
