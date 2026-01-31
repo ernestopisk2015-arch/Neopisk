@@ -3,120 +3,65 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Neo Pisk | Portal de Inversión</title>
+    <title>Neo Pisk Presale</title>
     <style>
-        :root { --primary: #4CAF50; --secondary: #00d4ff; --bg: #051405; }
-        body { 
-            background-color: var(--bg); 
-            color: white; 
-            font-family: 'Segoe UI', Tahoma, sans-serif; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            min-height: 100vh; 
-            margin: 0; 
-        }
-        .invest-card { 
-            background: rgba(255, 255, 255, 0.05); 
-            backdrop-filter: blur(10px); 
-            padding: 40px; 
-            border-radius: 20px; 
-            border: 1px solid rgba(76, 175, 80, 0.3); 
-            text-align: center; 
-            width: 90%; 
-            max-width: 400px; 
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5); 
-        }
-        h1 { 
-            font-size: 28px; 
-            background: linear-gradient(to right, #4CAF50, #00d4ff); 
-            -webkit-background-clip: text; 
-            -webkit-text-fill-color: transparent; 
-            margin-bottom: 10px;
-        }
-        .stats { 
-            background: rgba(0,0,0,0.3); 
-            padding: 15px; 
-            border-radius: 10px; 
-            margin: 20px 0; 
-            border-left: 4px solid var(--primary); 
-            text-align: left;
-        }
-        .instructions {
-            font-size: 13px;
-            text-align: left;
-            background: rgba(255, 255, 255, 0.1);
-            padding: 10px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            color: #ccc;
-        }
-        .btn-invest { 
-            display: block;
-            text-decoration: none;
-            background: linear-gradient(45deg, var(--primary), var(--secondary)); 
-            color: white; 
-            padding: 18px; 
-            border-radius: 50px; 
-            font-size: 18px; 
-            font-weight: bold; 
-            cursor: pointer; 
-            transition: 0.3s; 
-            box-shadow: 0 0 20px rgba(0, 212, 255, 0.5); 
-            text-transform: uppercase;
-            border: none;
-            width: 100%;
-        }
-        .btn-invest:hover { transform: scale(1.05); opacity: 0.9; }
-
-        /* Estilos del botón de WhatsApp */
-        .whatsapp-btn {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background-color: #25d366;
-            color: white;
-            border-radius: 50px;
-            padding: 15px 25px;
-            text-decoration: none;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-            z-index: 1000;
-            transition: 0.3s;
-        }
-        .whatsapp-btn:hover { transform: scale(1.1); background-color: #128c7e; }
+        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; margin: 0; padding: 20px; background-color: #f4f4f9; }
+        .container { max-width: 1000px; margin: auto; background: white; padding: 30px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        .header { text-align: center; margin-bottom: 30px; }
+        .columns { display: flex; gap: 20px; flex-wrap: wrap; }
+        .column { flex: 1; min-width: 300px; padding: 20px; border: 1px solid #ddd; border-radius: 10px; }
+        .spanish { border-left: 5px solid #8247e5; } /* Color Polygon */
+        .english { border-left: 5px solid #28a745; }
+        h2 { color: #8247e5; margin-top: 0; }
+        .alert { color: #d9534f; font-weight: bold; font-size: 1.1em; }
+        .contract-box { background: #eee; padding: 10px; border-radius: 5px; font-family: monospace; word-break: break-all; margin: 10px 0; border: 1px dashed #666; }
+        .payment-section { text-align: center; margin-top: 40px; padding-top: 20px; border-top: 2px solid #eee; }
+        .btn-depay { background-color: #8247e5; color: white; padding: 15px 30px; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 1.2em; display: inline-block; transition: 0.3s; }
+        .btn-depay:hover { background-color: #6d39c3; transform: scale(1.05); }
     </style>
 </head>
 <body>
 
-<div class="invest-card">
-    <h1>Neo Pisk Investment</h1>
-    <p>Portal Oficial de Venta Privada</p>
-    
-    <div class="stats">
-        <div>Activo: <strong>PISK Token</strong></div>
-        <div>Precio: <strong>0.10 USDT (PEN 0.33)</strong></div>
-        <div>Red: <strong>Polygon (MATIC)</strong></div>
+<div class="container">
+    <div class="header">
+        <h1>🚀 Neo Pisk ($PISK) Presale</h1>
     </div>
 
-    <div class="instructions">
-        <strong>Pasos para invertir:</strong><br>
-        1. Conecta tu wallet y pon tu dirección de envío.<br>
-        2. Si usas móvil, usa el navegador de <strong>MetaMask</strong>.
+    <div class="columns">
+        <div class="column spanish">
+            <h2>🇪🇸 Instrucciones</h2>
+            <p class="alert">⚠️ LEER ANTES DE COMPRAR:</p>
+            <ul>
+                <li><strong>Dirección de Envío:</strong> En el cuadro de pago, DEBES pegar tu dirección de <strong>MetaMask o Trust Wallet</strong> (Red Polygon o Ethereum).</li>
+                <li><strong>Entrega:</strong> Los tokens se envían manualmente en un plazo de 1 a 12 horas.</li>
+                <li><strong>Ver el Token:</strong> Agrega este contrato en tu MetaMask para ver tus $PISK:</li>
+            </ul>
+            <div class="contract-box">TU_CONTRATO_DE_REMIX_AQUI</div>
+            <p><i>*Asegúrate de estar en la Red Polygon.</i></p>
+        </div>
+
+        <div class="column english">
+            <h2>🇺🇸 Instructions</h2>
+            <p class="alert">⚠️ READ BEFORE BUYING:</p>
+            <ul>
+                <li><strong>Shipping Address:</strong> In the payment box, you MUST paste your <strong>MetaMask or Trust Wallet</strong> address (Polygon or Ethereum Network).</li>
+                <li><strong>Delivery:</strong> Tokens are sent manually within 1 to 12 hours.</li>
+                <li><strong>View Token:</strong> Add this contract to your MetaMask to see your $PISK:</li>
+            </ul>
+            <div class="contract-box">YOUR_REMIX_CONTRACT_HERE</div>
+            <p><i>*Make sure you are on the Polygon Network.</i></p>
+        </div>
     </div>
 
-    <a href="https://link.depay.com/5gMMmzTo75pzPjZEIfMMB3" class="btn-invest" target="_blank">
-        INVERTIR AHORA
-    </a>
-    
-    <p style="margin-top: 20px; font-size: 12px; opacity: 0.6;">🛡️ Pago seguro vía DePay Protocol</p>
+    <div class="payment-section">
+        <p><strong>Haz clic abajo para pagar con Cripto (Polygon, BNB, ETH)</strong><br>
+        Click below to pay with Crypto (Polygon, BNB, ETH)</p>
+        
+        <a href="https://link.depay.com/5gMMmzTo75pzPjZEIfMMB3" class="btn-depay">
+            BUY $PISK NOW / COMPRAR AHORA
+        </a>
+    </div>
 </div>
-
-<a href="https://wa.me/TU_NUMERO_AQUI?text=Hola,%20tengo%20dudas%20sobre%20la%20compra%20de%20Neo%20Pisk" class="whatsapp-btn" target="_blank">
-    💬 Ayuda por WhatsApp
-</a>
 
 </body>
 </html>
