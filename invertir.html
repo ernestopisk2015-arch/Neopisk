@@ -1,11 +1,11 @@
-<!DOCTYPE html>
+      <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Neo Pisk & EcoPisk Presale</title>
     <style>
-        /* Estilo Base Neón con fondo de rayas */
+        /* Fondo Neón con Rayas Fosforescentes */
         body { 
             font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
             line-height: 1.6; 
@@ -31,7 +31,15 @@
 
         .header { text-align: center; margin-bottom: 40px; }
         
-        /* Contenedor para los dos logos */
+        /* Marcos Neón para Imágenes */
+        .neon-frame {
+            border: 3px solid #39ff14;
+            box-shadow: 0 0 20px #39ff14, inset 0 0 10px #39ff14;
+            border-radius: 15px;
+            background: #000;
+            transition: 0.3s;
+        }
+
         .logo-container {
             display: flex;
             justify-content: center;
@@ -40,13 +48,9 @@
             flex-wrap: wrap;
         }
 
-        .logo { 
-            max-width: 140px; 
+        .logo-main { 
+            max-width: 160px; 
             height: auto; 
-            border-radius: 15px;
-            box-shadow: 0 0 15px #39ff14;
-            border: 2px solid #39ff14;
-            background: #000;
         }
 
         h1 { 
@@ -54,24 +58,25 @@
             text-shadow: 0 0 15px #39ff14; 
             text-transform: uppercase; 
             letter-spacing: 2px;
-            font-size: 2.2em;
+            font-size: 2.5em;
+            margin-top: 20px;
         }
 
-        /* Cuadro de Billeteras */
+        /* Cuadro de Billeteras - MetaMask Gigante */
         .wallet-section {
-            background: rgba(57, 255, 20, 0.05);
-            border: 1px solid #39ff14;
+            background: rgba(255, 255, 255, 0.02);
+            border: 2px solid #39ff14;
             border-radius: 20px;
-            padding: 20px;
+            padding: 30px;
             margin-bottom: 30px;
             text-align: center;
+            box-shadow: 0 0 15px rgba(57, 255, 20, 0.2);
         }
 
-        .wallet-logo {
-            max-width: 120px;
+        .metamask-big {
+            max-width: 250px; /* Logo más grande */
             height: auto;
-            filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.5));
-            margin-top: 10px;
+            margin: 15px 0;
         }
 
         .columns { display: flex; gap: 25px; flex-wrap: wrap; }
@@ -85,8 +90,7 @@
             border: 1px solid rgba(57, 255, 20, 0.4);
         }
 
-        h2 { color: #39ff14; border-bottom: 1px solid #39ff14; padding-bottom: 10px; font-size: 1.5em; }
-        h3 { color: #39ff14; margin: 0; text-transform: uppercase; letter-spacing: 1px; }
+        h2 { color: #39ff14; border-bottom: 1px solid #39ff14; padding-bottom: 10px; }
         
         .alert { 
             color: #ff3131; 
@@ -105,7 +109,7 @@
             margin: 20px 0; 
             border: 1px solid #39ff14;
             box-shadow: inset 0 0 15px rgba(57, 255, 20, 0.5);
-            font-size: 0.95em;
+            font-size: 1.1em;
             text-align: center;
         }
 
@@ -118,7 +122,7 @@
             text-decoration: none; 
             border-radius: 50px; 
             font-weight: bold; 
-            font-size: 1.6em; 
+            font-size: 1.8em; 
             display: inline-block; 
             border: 3px solid #39ff14;
             box-shadow: 0 0 25px #39ff14;
@@ -139,25 +143,24 @@
 <div class="container">
     <div class="header">
         <div class="logo-container">
-            <img src="asset/IMG-20260126-WA0020.jpg" alt="Neo Pisk Logo" class="logo">
-            <img src="logo-eco-pisk.jpg" alt="EcoPisk Logo" class="logo">
+            <img src="asset/IMG-20260126-WA0020.jpg" alt="Neo Pisk Logo" class="logo-main neon-frame">
+            <img src="https://raw.githubusercontent.com/ernestopisk2015-arch/Eco-Pisk-Park/refs/heads/main/logo-eco-pisk.jpg" alt="EcoPisk Logo" class="logo-main neon-frame">
         </div>
         <h1>Neo Pisk & EcoPisk Presale</h1>
     </div>
 
     <div class="wallet-section">
-        <h3>Billeteras Compatibles / Compatible Wallets</h3>
-        <p style="margin-bottom: 5px;">Recomendamos usar / We recommend using:</p>
-        <img src="asset/metamasklogo.jpg" alt="MetaMask Logo" class="wallet-logo">
-        <p style="font-size: 0.9em; color: #39ff14; margin-top: 10px;">MetaMask, Trust Wallet, Binance Web3 Wallet</p>
+        <h3 style="color: #39ff14; margin: 0; font-size: 1.8em;">BILLETERA OFICIAL / OFFICIAL WALLET</h3>
+        <img src="asset/metamasklogo.jpg" alt="MetaMask" class="metamask-big neon-frame">
+        <p style="font-size: 1.2em; margin-top: 15px;">Usa <strong>MetaMask</strong> o <strong>Trust Wallet</strong> para comprar.</p>
     </div>
 
     <div class="columns">
         <div class="column">
             <h2>🇪🇸 ESPAÑOL</h2>
-            <p class="alert">⚠️ IMPORTANTE ANTES DE PAGAR:</p>
-            <p>En la ventana de pago, en el cuadro donde dice "Wallet address", <strong>PEGUE SU DIRECCIÓN DE METAMASK</strong>.</p>
-            <p>Esa es la dirección donde le enviaremos sus tokens $PISK.</p>
+            <p class="alert">⚠️ LEER ANTES DE PAGAR:</p>
+            <p>Al momento de pagar, <strong>PEGUE SU DIRECCIÓN DE METAMASK</strong> en el cuadro que solicita DePay.</p>
+            <p>Recibirá sus tokens en esa misma dirección.</p>
             <p><strong>Contrato del Token:</strong></p>
             <div class="contract-box">0x9d5B2A73d16dAF61712BA8527d94F6997a0E6323</div>
             <p><i>* Entrega manual en 1-12 horas.</i></p>
@@ -165,21 +168,5 @@
 
         <div class="column">
             <h2>🇺🇸 ENGLISH</h2>
-            <p class="alert">⚠️ IMPORTANT BEFORE PAYING:</p>
-            <p>In the payment window, where it says "Wallet address", <strong>PASTE YOUR METAMASK WALLET ADDRESS</strong>.</p>
-            <p>This is where we will send your $PISK tokens.</p>
-            <p><strong>Token Contract:</strong></p>
-            <div class="contract-box">0x9d5B2A73d16dAF61712BA8527d94F6997a0E6323</div>
-            <p><i>* Manual delivery within 1-12 hours.</i></p>
-        </div>
-    </div>
-
-    <div class="payment-section">
-        <a href="https://link.depay.com/5gMMmzTo75pzPjZEIfMMB3" class="btn-depay">
-            BUY $PISK NOW / COMPRAR
-        </a>
-    </div>
-</div>
-
-</body>
-</html>
+            <p class="alert">⚠️ READ BEFORE PAYING:</p>
+            <p>During payment, <strong>PASTE YOUR METAMASK ADDRESS</strong> in the box provided by DePay.</   
