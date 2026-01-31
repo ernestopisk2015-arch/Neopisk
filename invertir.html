@@ -68,6 +68,25 @@
             width: 100%;
         }
         .btn-invest:hover { transform: scale(1.05); opacity: 0.9; }
+
+        /* Estilos del botón de WhatsApp */
+        .whatsapp-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #25d366;
+            color: white;
+            border-radius: 50px;
+            padding: 15px 25px;
+            text-decoration: none;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            z-index: 1000;
+            transition: 0.3s;
+        }
+        .whatsapp-btn:hover { transform: scale(1.1); background-color: #128c7e; }
     </style>
 </head>
 <body>
@@ -83,17 +102,21 @@
     </div>
 
     <div class="instructions">
-        <strong>Instrucciones:</strong><br>
-        1. Indica tu wallet para recibir PISK.<br>
-        2. Si usas móvil, abre este link desde el navegador de <strong>MetaMask</strong>.
+        <strong>Pasos para invertir:</strong><br>
+        1. Conecta tu wallet y pon tu dirección de envío.<br>
+        2. Si usas móvil, usa el navegador de <strong>MetaMask</strong>.
     </div>
 
     <a href="https://link.depay.com/5gMMmzTo75pzPjZEIfMMB3" class="btn-invest" target="_blank">
         INVERTIR AHORA
     </a>
     
-    <p style="margin-top: 20px; font-size: 12px; opacity: 0.6;">🛡️ Verificado por DePay & Polygon Network</p>
+    <p style="margin-top: 20px; font-size: 12px; opacity: 0.6;">🛡️ Pago seguro vía DePay Protocol</p>
 </div>
+
+<a href="https://wa.me/TU_NUMERO_AQUI?text=Hola,%20tengo%20dudas%20sobre%20la%20compra%20de%20Neo%20Pisk" class="whatsapp-btn" target="_blank">
+    💬 Ayuda por WhatsApp
+</a>
 
 </body>
 </html>
