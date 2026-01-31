@@ -3,50 +3,139 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Neo Pisk - Buy Now</title>
+    <title>Neo Pisk & EcoPisk Presale</title>
+    
+    <link rel="icon" type="image/jpg" href="https://raw.githubusercontent.com/ernestopisk2015-arch/Eco-Pisk-Park/refs/heads/main/logo-eco-pisk.jpg">
+
     <style>
-        body { font-family: sans-serif; margin: 0; padding: 20px; background: #f4f4f4; text-align: center; }
-        .box { background: white; max-width: 600px; margin: 20px auto; padding: 25px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
-        .alert { color: red; font-weight: bold; font-size: 1.2em; border: 2px solid red; padding: 10px; margin: 10px 0; }
-        .contract { background: #eee; padding: 10px; font-family: monospace; word-break: break-all; margin: 10px 0; border: 1px dashed #333; }
-        .btn-pay { background: #8247e5; color: white; padding: 20px; text-decoration: none; display: block; border-radius: 10px; font-weight: bold; font-size: 1.3em; margin: 20px 0; }
-        .btn-wa { background: #25D366; color: white; padding: 15px; text-decoration: none; display: inline-block; border-radius: 50px; font-weight: bold; margin-top: 20px; }
-        hr { margin: 40px 0; border: 1px solid #ccc; }
+        body { 
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
+            line-height: 1.6; 
+            color: #ffffff; 
+            margin: 0; 
+            padding: 20px; 
+            background: #050505;
+            background-image: linear-gradient(0deg, transparent 24%, rgba(57, 255, 20, .05) 25%, rgba(57, 255, 20, .05) 26%, transparent 27%, transparent 74%, rgba(57, 255, 20, .05) 75%, rgba(57, 255, 20, .05) 76%, transparent 77%, transparent), 
+                              linear-gradient(90deg, transparent 24%, rgba(57, 255, 20, .05) 25%, rgba(57, 255, 20, .05) 26%, transparent 27%, transparent 74%, rgba(57, 255, 20, .05) 75%, rgba(57, 255, 20, .05) 76%, transparent 77%, transparent);
+            background-size: 50px 50px;
+        }
+
+        .container { 
+            max-width: 1000px; 
+            margin: 40px auto; 
+            background: rgba(10, 10, 10, 0.95); 
+            padding: 40px; 
+            border-radius: 30px; 
+            box-shadow: 0 0 40px rgba(57, 255, 20, 0.3); 
+            border: 2px solid #39ff14;
+        }
+
+        .header { text-align: center; margin-bottom: 40px; }
+        .logo-main { max-width: 160px; height: auto; margin: 10px; border: 3px solid #39ff14; box-shadow: 0 0 20px #39ff14; border-radius: 15px; }
+
+        h1 { color: #39ff14; text-shadow: 0 0 15px #39ff14; text-transform: uppercase; text-align: center; }
+
+        .wallet-section {
+            background: rgba(255, 255, 255, 0.02);
+            border: 2px solid #39ff14;
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .columns { display: flex; gap: 25px; flex-wrap: wrap; margin-bottom: 40px; }
+        .column { flex: 1; min-width: 320px; padding: 25px; background: rgba(255, 255, 255, 0.03); border-radius: 20px; border: 1px solid rgba(57, 255, 20, 0.4); }
+
+        .flag-title { display: flex; align-items: center; gap: 10px; color: #39ff14; border-bottom: 1px solid #39ff14; padding-bottom: 10px; font-size: 1.5em; margin-bottom: 15px; }
+        .flag-icon { width: 30px; }
+
+        .alert { color: #ff3131; font-weight: bold; text-shadow: 0 0 8px #ff3131; }
+        .contract-box { background: #000; color: #39ff14; padding: 15px; border-radius: 10px; border: 1px solid #39ff14; font-family: monospace; word-break: break-all; margin: 15px 0; text-align: center; }
+
+        /* Estilo para la Tabla de FAQ */
+        .faq-section { margin-top: 40px; border-top: 2px solid #39ff14; padding-top: 30px; }
+        .faq-table { width: 100%; border-collapse: collapse; margin-top: 20px; background: rgba(255, 255, 255, 0.02); }
+        .faq-table th, .faq-table td { border: 1px solid rgba(57, 255, 20, 0.3); padding: 15px; text-align: left; }
+        .faq-table th { background: rgba(57, 255, 20, 0.1); color: #39ff14; text-transform: uppercase; }
+
+        .payment-section { text-align: center; margin-top: 50px; }
+        .btn-depay { 
+            background: transparent; color: #39ff14; padding: 20px 60px; text-decoration: none; border-radius: 50px; 
+            font-weight: bold; font-size: 1.8em; display: inline-block; border: 3px solid #39ff14;
+            box-shadow: 0 0 25px #39ff14; transition: 0.3s; text-transform: uppercase;
+        }
+        .btn-depay:hover { background: #39ff14; color: #000; box-shadow: 0 0 50px #39ff14; }
+
+        .btn-wa {
+            background: transparent; color: #25D366; padding: 15px 40px; text-decoration: none; border-radius: 50px; 
+            font-weight: bold; font-size: 1.2em; display: inline-block; border: 2px solid #25D366;
+            box-shadow: 0 0 15px #25D366; margin-top: 20px; transition: 0.3s;
+        }
+        .btn-wa:hover { background: #25D366; color: #000; }
     </style>
 </head>
 <body>
 
-    <div class="box" style="border-top: 10px solid #8247e5;">
-        <h2>🇪🇸 COMPRAR NEO PISK</h2>
-        <p class="alert">¡ATENCIÓN! LEER ANTES DE PAGAR:</p>
-        <p>En el cuadro de pago, <strong>DEBES PEGAR TU DIRECCIÓN DE METAMASK (RED POLYGON)</strong> para poder enviarte tus tokens.</p>
-        <p>Los tokens se envían manualmente en un plazo de 1 a 12 horas.</p>
-        <p><strong>Dirección del Contrato para agregar a tu billetera:</strong></p>
-        <div class="contract">TU_CONTRATO_DE_REMIX_AQUI</div>
-        
-        <a href="https://link.depay.com/5gMMmzTo75pzPjZEIfMMB3" class="btn-pay">
-            PAGAR CON CRIPTO AHORA (SOL / BNB / POL)
-        </a>
+<div class="container">
+    <div class="header">
+        <img src="https://raw.githubusercontent.com/ernestopisk2015-arch/Eco-Pisk-Park/refs/heads/main/logo-eco-pisk.jpg" alt="Logo" class="logo-main">
+        <h1>Neo Pisk & EcoPisk Presale</h1>
     </div>
 
-    <hr>
-
-    <div class="box" style="border-top: 10px solid #28a745;">
-        <h2>🇺🇸 BUY NEO PISK</h2>
-        <p class="alert">ATTENTION! READ BEFORE PAYING:</p>
-        <p>In the payment box, <strong>YOU MUST PASTE YOUR METAMASK ADDRESS (POLYGON NETWORK)</strong> to receive your tokens.</p>
-        <p>Tokens are sent manually within 1 to 12 hours.</p>
-        <p><strong>Contract Address to add to your wallet:</strong></p>
-        <div class="contract">YOUR_REMIX_CONTRACT_HERE</div>
-
-        <a href="https://link.depay.com/5gMMmzTo75pzPjZEIfMMB3" class="btn-pay" style="background: #28a745;">
-            PAY WITH CRYPTO NOW (SOL / BNB / POL)
-        </a>
+    <div class="wallet-section">
+        <h3 style="color: #39ff14;">BILLETERA OFICIAL / OFFICIAL WALLET</h3>
+        <p>Usa <strong>MetaMask</strong> o <strong>Trust Wallet</strong> (Red Polygon).</p>
     </div>
 
-    <a href="https://wa.me/51908066095" class="btn-wa" target="_blank">
-        📲 SOPORTE / SUPPORT WHATSAPP
-    </a>
+    <div class="columns">
+        <div class="column">
+            <div class="flag-title">🇪🇸 INSTRUCCIONES</div>
+            <p class="alert">⚠️ LEER ANTES DE PAGAR:</p>
+            <p>Al pagar, <strong>PEGUE SU DIRECCIÓN DE METAMASK</strong> en el cuadro del sistema para recibir sus tokens.</p>
+            <div class="contract-box">0x9d5B2A73d16dAF61712BA8527d94F6997a0E6323</div>
+        </div>
+
+        <div class="column">
+            <div class="flag-title">🇺🇸 INSTRUCTIONS</div>
+            <p class="alert">⚠️ READ BEFORE PAYING:</p>
+            <p>During payment, <strong>PASTE YOUR METAMASK ADDRESS</strong> in the box to receive your tokens.</p>
+            <div class="contract-box">0x9d5B2A73d16dAF61712BA8527d94F6997a0E6323</div>
+        </div>
+    </div>
+
+    <div class="faq-section">
+        <h2 style="color: #39ff14; text-align: center;">Preguntas Frecuentes / FAQ</h2>
+        <table class="faq-table">
+            <thead>
+                <tr>
+                    <th>Pregunta / Question</th>
+                    <th>Respuesta / Answer</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>¿Puedo pagar con otras redes?<br><i>Can I pay with other networks?</i></td>
+                    <td>Sí, aceptamos Polygon, BNB y pronto más redes.<br><i>Yes, we accept Polygon, BNB, and more soon.</i></td>
+                </tr>
+                <tr>
+                    <td>¿Es seguro?<br><i>Is it safe?</i></td>
+                    <td>Sí, usamos DePay para procesar pagos transparentes.<br><i>Yes, we use DePay for transparent payments.</i></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="payment-section">
+        <a href="https://link.depay.com/5gMMmzTo75pzPjZEIfMMB3" class="btn-depay">
+            BUY $PISK NOW / COMPRAR
+        </a>
+        <br>
+        <a href="https://wa.me/51908066095?text=Hola,%20tengo%20una%20duda%20sobre%20la%20preventa" class="btn-wa" target="_blank">
+            SOPORTE WHATSAPP / SUPPORT
+        </a>
+    </div>
+</div>
 
 </body>
 </html>
