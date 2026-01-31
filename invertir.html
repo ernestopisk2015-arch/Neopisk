@@ -32,6 +32,7 @@
             background: linear-gradient(to right, #4CAF50, #00d4ff); 
             -webkit-background-clip: text; 
             -webkit-text-fill-color: transparent; 
+            margin-bottom: 10px;
         }
         .stats { 
             background: rgba(0,0,0,0.3); 
@@ -40,6 +41,15 @@
             margin: 20px 0; 
             border-left: 4px solid var(--primary); 
             text-align: left;
+        }
+        .instructions {
+            font-size: 13px;
+            text-align: left;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            color: #ccc;
         }
         .btn-invest { 
             display: block;
@@ -57,7 +67,7 @@
             border: none;
             width: 100%;
         }
-        .btn-invest:hover { transform: scale(1.05); }
+        .btn-invest:hover { transform: scale(1.05); opacity: 0.9; }
     </style>
 </head>
 <body>
@@ -69,10 +79,16 @@
     <div class="stats">
         <div>Activo: <strong>PISK Token</strong></div>
         <div>Precio: <strong>0.10 USDT (PEN 0.33)</strong></div>
-        <div>Red: <strong>Polygon</strong></div>
+        <div>Red: <strong>Polygon (MATIC)</strong></div>
     </div>
 
-    <a href="https://link.depay.com/7n3sk8SGCztqjCGtwvbp4Y" class="btn-invest">
+    <div class="instructions">
+        <strong>Instrucciones:</strong><br>
+        1. Indica tu wallet para recibir PISK.<br>
+        2. Si usas móvil, abre este link desde el navegador de <strong>MetaMask</strong>.
+    </div>
+
+    <a href="https://link.depay.com/5gMMmzTo75pzPjZEIfMMB3" class="btn-invest" target="_blank">
         INVERTIR AHORA
     </a>
     
@@ -81,4 +97,3 @@
 
 </body>
 </html>
-
