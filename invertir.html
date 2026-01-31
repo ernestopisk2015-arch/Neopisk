@@ -1,9 +1,12 @@
-      <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Neo Pisk & EcoPisk Presale</title>
+    
+    <link rel="icon" type="image/jpg" href="https://raw.githubusercontent.com/ernestopisk2015-arch/Eco-Pisk-Park/refs/heads/main/logo-eco-pisk.jpg">
+
     <style>
         /* Fondo Neón con Rayas Fosforescentes */
         body { 
@@ -37,7 +40,6 @@
             box-shadow: 0 0 20px #39ff14, inset 0 0 10px #39ff14;
             border-radius: 15px;
             background: #000;
-            transition: 0.3s;
         }
 
         .logo-container {
@@ -62,7 +64,7 @@
             margin-top: 20px;
         }
 
-        /* Cuadro de Billeteras - MetaMask Gigante */
+        /* Cuadro de MetaMask Gigante */
         .wallet-section {
             background: rgba(255, 255, 255, 0.02);
             border: 2px solid #39ff14;
@@ -70,11 +72,10 @@
             padding: 30px;
             margin-bottom: 30px;
             text-align: center;
-            box-shadow: 0 0 15px rgba(57, 255, 20, 0.2);
         }
 
         .metamask-big {
-            max-width: 250px; /* Logo más grande */
+            max-width: 280px;
             height: auto;
             margin: 15px 0;
         }
@@ -90,8 +91,18 @@
             border: 1px solid rgba(57, 255, 20, 0.4);
         }
 
-        h2 { color: #39ff14; border-bottom: 1px solid #39ff14; padding-bottom: 10px; }
-        
+        .flag-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #39ff14;
+            border-bottom: 1px solid #39ff14;
+            padding-bottom: 10px;
+            font-size: 1.5em;
+        }
+
+        .flag-icon { width: 30px; height: auto; }
+
         .alert { 
             color: #ff3131; 
             font-weight: bold; 
@@ -157,23 +168,29 @@
 
     <div class="columns">
         <div class="column">
-            <h2>🇪🇸 ESPAÑOL</h2>
+            <div class="flag-title">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/8/89/Bandera_de_Espa%C3%B1a.svg" class="flag-icon" alt="España">
+                INSTRUCCIONES
+            </div>
             <p class="alert">⚠️ LEER ANTES DE PAGAR:</p>
-            <p>Al momento de pagar, <strong>PEGUE SU DIRECCIÓN DE METAMASK</strong> en el cuadro que solicita DePay.</p>
-            <p>Recibirá sus tokens en esa misma dirección.</p>
+            <p>Al pagar, <strong>PEGUE SU DIRECCIÓN DE METAMASK</strong> en el cuadro que solicita el sistema.</p>
+            <p>Sus tokens llegarán a esa dirección en la red Polygon.</p>
             <p><strong>Contrato del Token:</strong></p>
             <div class="contract-box">0x9d5B2A73d16dAF61712BA8527d94F6997a0E6323</div>
-            <p><i>* Entrega manual en 1-12 horas.</i></p>
+            <p><i>* Entrega manual: 1-12 horas.</i></p>
         </div>
 
         <div class="column">
-            <h2>🇺🇸 ENGLISH</h2>
+            <div class="flag-title">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/a/a4/Flag_of_the_United_States.svg" class="flag-icon" alt="USA">
+                INSTRUCTIONS
+            </div>
             <p class="alert">⚠️ READ BEFORE PAYING:</p>
-            <p>During payment, <strong>PASTE YOUR METAMASK ADDRESS</strong> in the box provided by DePay.</p>
-            <p>You will receive your tokens at that same address.</p>
+            <p>During payment, <strong>PASTE YOUR METAMASK ADDRESS</strong> in the required box.</p>
+            <p>Tokens will arrive at that address on the Polygon network.</p>
             <p><strong>Token Contract:</strong></p>
             <div class="contract-box">0x9d5B2A73d16dAF61712BA8527d94F6997a0E6323</div>
-            <p><i>* Manual delivery within 1-12 hours.</i></p>
+            <p><i>* Manual delivery: 1-12 hours.</i></p>
         </div>
     </div>
 
@@ -186,3 +203,4 @@
 
 </body>
 </html>
+        
