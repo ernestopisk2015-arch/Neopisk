@@ -109,7 +109,17 @@
 </a>
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@900&family=Montserrat:wght@400;700&display=swap');
+/* Eliminamos cualquier punto o decoración global para este enlace */
+.hydro-portal-btn, 
+.hydro-portal-btn:link, 
+.hydro-portal-btn:visited, 
+.hydro-portal-btn:hover, 
+.hydro-portal-btn:active {
+  text-decoration: none !important;
+  list-style: none !important;
+  list-style-type: none !important;
+  outline: none;
+}
 
 .hydro-portal-btn {
   display: flex;
@@ -120,18 +130,16 @@
   margin: 40px auto;
   padding: 60px 20px;
   
-  /* Fuentes tecnológicas */
   font-family: 'Orbitron', sans-serif;
-  text-decoration: none;
-  text-align: center;
   position: relative;
-  border-radius: 12px;
+  border-radius: 15px;
   overflow: hidden;
-  border: 2px solid #00faff;
+  border: 3px solid #00faff;
   
-  /* Imagen de fondo desde tu GitHub con el espacio corregido (%20) */
-  background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.8)), 
-              url('https://raw.githubusercontent.com/ernestopisk2015-arch/Neopisk/main/asset/fabrica%20hydrogen.jpg');
+  /* URL BLINDADA Y REPARADA */
+  background-color: #000;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.8)), 
+                    url('https://ernestopisk2015-arch.github.io/Neopisk/asset/fabrica%20hydrogen.jpg');
   background-size: cover;
   background-position: center;
   
@@ -143,6 +151,7 @@
 .btn-content {
   position: relative;
   z-index: 5;
+  pointer-events: none; /* Evita que el texto interfiera con el click */
 }
 
 .main-title {
@@ -151,7 +160,8 @@
   font-weight: 900;
   letter-spacing: 3px;
   display: block;
-  text-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
+  text-decoration: none;
+  text-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
 }
 
 .subtitle {
@@ -161,39 +171,34 @@
   font-size: 16px;
   font-weight: 700;
   color: #ffffff;
-  letter-spacing: 1px;
-  text-transform: none; /* Mantiene minúsculas para legibilidad */
-  opacity: 0.9;
+  text-decoration: none;
+  opacity: 0.95;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
 }
 
-/* EFECTO HOVER */
+/* Efecto al pasar el mouse */
 .hydro-portal-btn:hover {
   transform: translateY(-5px);
   border-color: #ffffff;
-  box-shadow: 0 15px 40px rgba(0, 250, 255, 0.5);
-  background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.5)), 
-              url('https://raw.githubusercontent.com/ernestopisk2015-arch/Neopisk/main/asset/fabrica%20hydrogen.jpg');
-  background-size: cover;
+  box-shadow: 0 15px 40px rgba(0, 250, 255, 0.6);
+  background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.5)), 
+                    url('https://ernestopisk2015-arch.github.io/Neopisk/asset/fabrica%20hydrogen.jpg');
 }
 
-.hydro-portal-btn:hover .main-title {
-  color: #ffffff;
-  text-shadow: 0 0 20px #00faff;
-}
-
-/* Destello de luz pasando por el botón */
-.hydro-portal-btn::before {
+/* Destello de luz */
+.hydro-portal-btn::after {
   content: '';
   position: absolute;
   top: 0;
   left: -150%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-  transition: all 0.7s;
+  background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: all 0.6s;
+  z-index: 2;
 }
 
-.hydro-portal-btn:hover::before {
+.hydro-portal-btn:hover::after {
   left: 150%;
 }
 </style>
