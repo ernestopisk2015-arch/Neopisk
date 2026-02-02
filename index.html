@@ -85,207 +85,115 @@
             <div class="w-[300px] shrink-0 text-center font-black text-4xl text-red-600 uppercase text-center">BAJAJ</div>
         </div>
     </div>
-<div style="text-align: center; margin: 45px 0;">
-    <a href="hydrogen.html" class="hydro-portal-btn">
-  <div class="btn-content">
-    <span class="main-title">HYDROGEN TECH PORTAL</span>
-    <span class="subtitle">Perené River Vision: Transforming water into energy in the Peruvian Jungle</span>
-  </div>
-</a>
+<div style="text-align: center; padding: 20px;">
+
+    <a href="tec.html" class="portal-btn-universal tech-bg">
+        <div class="btn-content">
+            <span class="pisk-title">NEO PISK TECH PORTAL</span>
+            <span class="pisk-subtitle">Web3 & Tokenization: Transforming real assets into digital economy</span>
+        </div>
+    </a>
+
+    <a href="hydrogen.html" class="portal-btn-universal hydro-bg">
+        <div class="btn-content">
+            <span class="pisk-title">HYDROGEN TECH PORTAL</span>
+            <span class="pisk-subtitle">Perené River Vision: Transforming water into energy in the Peruvian Jungle</span>
+        </div>
+    </a>
+
+    <a href="https://ecopisk.lat" target="_blank" class="portal-btn-universal cacao-bg">
+        <div class="btn-content">
+            <span class="pisk-title">TOKENIZACIÓN DE CACAO</span>
+            <span class="pisk-subtitle">CACAO & CAFÉ SELVA CENTRAL • Blockchain Assets • ecopisk.lat</span>
+        </div>
+    </a>
+
+</div>
 
 <style>
-/* Reset absoluto para evitar puntos, bordes o botones extra */
-.hydro-portal-btn {
-  text-decoration: none !important;
-  list-style: none !important;
-  outline: none !important;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  max-width: 650px;
-  margin: 40px auto;
-  padding: 65px 20px;
-  font-family: 'Orbitron', sans-serif;
-  position: relative;
-  border-radius: 15px;
-  overflow: hidden;
-  border: 3px solid #00faff;
-  cursor: pointer;
-  
-  /* FONDO CON LA RUTA DE GITHUB PAGES */
-  background-color: #000;
-  background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.8)), 
-                    url('https://ernestopisk2015-arch.github.io/Neopisk/asset/fabrica%20hydrogen.jpg');
-  background-size: cover;
-  background-position: center;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 250, 255, 0.2);
-  transition: all 0.4s ease-in-out;
-}
-
-/* Contenedor de texto libre de interferencias */
-.btn-content {
-  position: relative;
-  z-index: 5;
-  pointer-events: none; /* Asegura que el click pase directamente al enlace */
-}
-
-.main-title {
-  color: #ffd700;
-  font-size: 28px;
-  font-weight: 900;
-  letter-spacing: 3px;
-  display: block;
-  text-transform: uppercase;
-  text-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
-}
-
-.subtitle {
-  font-family: 'Montserrat', sans-serif;
-  display: block;
-  margin-top: 15px;
-  font-size: 16px;
-  font-weight: 700;
-  color: #ffffff;
-  opacity: 0.95;
-  text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
-  line-height: 1.4;
-}
-
-/* Efectos de Hover mejorados */
-.hydro-portal-btn:hover {
-  transform: translateY(-5px);
-  border-color: #ffffff;
-  box-shadow: 0 15px 40px rgba(0, 250, 255, 0.6);
-  background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.5)), 
-                    url('https://ernestopisk2015-arch.github.io/Neopisk/asset/fabrica%20hydrogen.jpg');
-}
-
-.hydro-portal-btn:hover .main-title {
-  color: #ffffff;
-  text-shadow: 0 0 20px #00faff;
-}
-
-/* Destello sutil de luz */
-.hydro-portal-btn::after {
-  content: '';
-  position: absolute;
-  top: 0; left: -150%;
-  width: 100%; height: 100%;
-  background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-  transition: all 0.6s;
-  z-index: 2;
-}
-
-.hydro-portal-btn:hover::after {
-  left: 150%;
-}
-</style>
-       <a href="https://ecopisk.lat" target="_blank" class="eco-button">
-  <div class="btn-content">
-    <div class="main-text">TOKENIZACIÓN DE CACAO</div>
-    <span class="location-text">CACAO & CAFÉ SELVA CENTRAL</span>
-    <div class="subtitle">Blockchain Assets • Sustainable Harvesting • ecopisk.lat</div>
-  </div>
-</a>
-
-<style>
-  /* Importamos fuentes para un look más profesional */
-  @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@800&family=Open+Sans:wght@600&display=swap');
-
-  .eco-button {
+/* ESTILOS UNIFICADOS PARA QUE NADA SE BLOQUEE */
+.portal-btn-universal {
+    text-decoration: none !important;
     display: flex;
     align-items: center;
     justify-content: center;
     width: 100%;
-    max-width: 680px;
-    margin: 40px auto;
-    padding: 70px 30px;
-    text-decoration: none !important;
-    
-    border-radius: 20px;
+    max-width: 650px;
+    margin: 30px auto;
+    padding: 65px 20px;
+    font-family: 'Orbitron', sans-serif;
     position: relative;
+    border-radius: 15px;
     overflow: hidden;
-    border: 2px solid #c19a5b;
     cursor: pointer;
-    transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
-    
-    /* URL OPTIMIZADA */
-    background-color: #0d2e1a;
-    background-image: linear-gradient(rgba(13, 46, 26, 0.75), rgba(0, 0, 0, 0.85)), 
-                      url('https://ernestopisk2015-arch.github.io/Neopisk/asset/Tokenizacioncacao.jpg');
-    background-size: cover;
-    background-position: center;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
-  }
+    transition: all 0.4s ease-in-out;
+    border: 3px solid #ffd700;
+}
 
-  .btn-content {
+.btn-content {
     position: relative;
     z-index: 5;
-    text-align: center;
-  }
+    pointer-events: none;
+}
 
-  .main-text {
-    font-family: 'Montserrat', sans-serif;
-    font-size: 34px;
-    font-weight: 800;
+.pisk-title {
     color: #ffd700;
+    font-size: 26px;
+    font-weight: 900;
     letter-spacing: 2px;
-    text-transform: uppercase;
-    text-shadow: 2px 4px 10px rgba(0,0,0,0.9);
-  }
-
-  .location-text {
     display: block;
-    font-family: 'Open Sans', sans-serif;
-    font-size: 20px;
-    color: #f5e8c7;
-    margin: 10px 0;
-    letter-spacing: 3px;
-    font-weight: 600;
-  }
+    text-transform: uppercase;
+    text-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+}
 
-  .eco-button .subtitle {
-    display: inline-block;
+.pisk-subtitle {
+    font-family: 'Montserrat', sans-serif;
+    display: block;
     margin-top: 15px;
-    padding-top: 10px;
-    border-top: 1px solid rgba(255, 215, 0, 0.3);
     font-size: 15px;
+    font-weight: 700;
     color: #ffffff;
-    font-weight: 400;
-    letter-spacing: 1px;
-    opacity: 0.9;
-  }
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+    line-height: 1.4;
+}
 
-  /* EFECTOS DE MOVIMIENTO */
-  .eco-button:hover {
-    transform: translateY(-8px) scale(1.01);
-    border-color: #ffd700;
-    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.9);
-    background-image: linear-gradient(rgba(13, 46, 26, 0.5), rgba(0, 0, 0, 0.7)), 
-                      url('https://ernestopisk2015-arch.github.io/Neopisk/asset/Tokenizacioncacao.jpg');
-  }
+/* FONDOS INDIVIDUALES */
+.tech-bg {
+    border-color: #00faff;
+    background-image: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.8)), url('https://raw.githubusercontent.com/ernestopisk2015-arch/Neopisk/refs/heads/main/asset/logoneopisktech.jpg');
+    background-size: cover; background-position: center;
+}
 
-  /* Brillo que cruza el botón */
-  .eco-button::after {
+.hydro-bg {
+    border-color: #00faff;
+    background-image: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.8)), url('https://ernestopisk2015-arch.github.io/Neopisk/asset/fabrica%20hydrogen.jpg');
+    background-size: cover; background-position: center;
+}
+
+.cacao-bg {
+    border-color: #c19a5b;
+    background-image: linear-gradient(rgba(0,0,0,0.75), rgba(0,0,0,0.85)), url('https://ernestopisk2015-arch.github.io/Neopisk/asset/Tokenizacioncacao.jpg');
+    background-size: cover; background-position: center;
+}
+
+/* EFECTO HOVER */
+.portal-btn-universal:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(255, 215, 0, 0.4);
+}
+
+.portal-btn-universal::after {
     content: '';
     position: absolute;
-    top: 0; left: -100%;
+    top: 0; left: -150%;
     width: 100%; height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.15), transparent);
-    transition: 0.8s;
-  }
+    background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: all 0.6s;
+}
 
-  .eco-button:hover::after {
-    left: 100%;
-  }
-
-  /* Ajuste para móviles */
-  @media (max-width: 600px) {
-    .main-text { font-size: 26px; }
-    .location-text { font-size: 16px; }
-    .eco-button { padding: 50px 20px; }
-  }
+.portal-btn-universal:hover::after {
+    left: 150%;
+}
 </style>
         
         <h2 style="color: #1a3a8a; font-weight: 900; text-transform: uppercase; font-style: italic; font-size: 2.2em; margin-bottom: 15px;">🤝 Alianza Estratégica: Neo Pisk & VCM</h2>
