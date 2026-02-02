@@ -4,124 +4,87 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Neo Pisk Tech | Web3 & Tokenización</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Inter:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=Inter:wght@300;400;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary-cyan: #00f2ff;
             --neon-pink: #ff007a;
-            --deep-bg: #03050a;
+            --deep-bg: #010204;
         }
 
+        * { box-sizing: border-box; }
+        body, html { margin: 0; padding: 0; background-color: var(--deep-bg); color: #fff; font-family: 'Inter', sans-serif; }
+
         body {
-            background-color: var(--deep-bg);
-            /* EL LOGO COMO FONDO GIGANTE */
-            background-image: 
-                linear-gradient(rgba(3, 5, 10, 0.85), rgba(3, 5, 10, 0.85)),
+            background: 
+                linear-gradient(rgba(1, 2, 4, 0.8), rgba(1, 2, 4, 0.9)),
                 url('https://raw.githubusercontent.com/ernestopisk2015-arch/Neopisk/refs/heads/main/asset/logoneopisktech.jpg');
-            background-size: contain;
+            background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
             background-attachment: fixed;
-            color: #ffffff;
-            font-family: 'Inter', sans-serif;
-            margin: 0;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
         }
 
-        header {
-            padding: 80px 20px 20px;
-            text-align: center;
+        /* Efecto Escáner */
+        body::after {
+            content: "";
+            position: fixed;
+            top: -100%;
+            left: 0;
+            width: 100%;
+            height: 10px;
+            background: var(--primary-cyan);
+            opacity: 0.1;
+            box-shadow: 0 0 20px var(--primary-cyan);
+            animation: scan 6s linear infinite;
+            z-index: 999;
         }
+        @keyframes scan { 0% { top: -10%; } 100% { top: 110%; } }
 
-        h1 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: clamp(2.5rem, 8vw, 4rem);
-            margin: 0;
-            color: #fff;
-            text-shadow: 0 0 20px var(--neon-pink), 0 0 40px var(--neon-pink);
-            text-transform: uppercase;
-        }
+        header { padding: 120px 20px 60px; text-align: center; }
+        h1 { font-family: 'Orbitron', sans-serif; font-size: clamp(3rem, 10vw, 5.5rem); margin: 0; text-shadow: 0 0 30px var(--neon-pink); text-transform: uppercase; }
+        .subtitle { font-family: 'Orbitron', sans-serif; font-size: clamp(1.2rem, 4vw, 2.5rem); color: var(--primary-cyan); letter-spacing: 5px; text-shadow: 0 0 20px var(--primary-cyan); }
 
-        .subtitle {
-            font-family: 'Orbitron', sans-serif;
-            font-size: clamp(1.2rem, 4vw, 2.2rem);
-            color: var(--primary-cyan);
-            margin: 10px 0;
-            letter-spacing: 3px;
-            text-shadow: 0 0 15px var(--primary-cyan);
-        }
+        .section-title { text-align: center; font-family: 'Orbitron', sans-serif; font-size: 2.5rem; color: var(--neon-pink); margin-top: 80px; }
 
-        .container {
-            max-width: 1200px;
-            margin: auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-            padding: 40px 20px;
-        }
+        .container { max-width: 1200px; margin: auto; padding: 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; }
 
         .card {
-            background: rgba(0, 20, 30, 0.4);
-            backdrop-filter: blur(8px);
-            border: 1px solid rgba(0, 242, 255, 0.3);
-            border-radius: 15px;
-            padding: 40px 20px;
-            text-align: center;
-            transition: 0.3s;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(0, 242, 255, 0.2);
+            border-radius: 20px;
+            padding: 40px;
+            transition: 0.4s;
         }
+        .card:hover { transform: translateY(-10px); border-color: var(--primary-cyan); box-shadow: 0 0 30px rgba(0, 242, 255, 0.2); }
+        .card h2 { font-family: 'Orbitron', sans-serif; color: var(--primary-cyan); font-size: 1.8rem; margin-top: 0; }
+        .card p { font-size: 1.1rem; line-height: 1.6; color: #ccc; }
+        .card ul { padding-left: 20px; color: #00f2ff; }
+        .card ul li { margin-bottom: 10px; }
 
-        .card:hover {
-            border-color: var(--primary-cyan);
-            box-shadow: 0 0 25px rgba(0, 242, 255, 0.4);
-            background: rgba(0, 30, 45, 0.6);
-        }
+        .step-container { max-width: 1000px; margin: 40px auto; padding: 20px; }
+        .step { display: flex; align-items: center; margin-bottom: 30px; background: rgba(255, 255, 255, 0.05); border-radius: 15px; padding: 20px; border-left: 5px solid var(--neon-pink); }
+        .step-num { font-family: 'Orbitron', sans-serif; font-size: 3rem; font-weight: 900; margin-right: 30px; color: var(--neon-pink); opacity: 0.5; }
+        .step-text h3 { margin: 0; color: var(--primary-cyan); font-size: 1.5rem; }
 
-        .card h2 {
-            font-family: 'Orbitron', sans-serif;
-            color: var(--primary-cyan);
-            font-size: 1.4rem;
-            margin-bottom: 15px;
-        }
-
-        .card p {
-            font-size: 0.95rem;
-            line-height: 1.6;
-            color: #e0e0e0;
-        }
-
-        .cta-section {
-            text-align: center;
-            padding: 40px 0 80px;
-        }
-
+        .cta-section { text-align: center; padding: 60px 20px; }
         .btn-main {
             display: inline-block;
             padding: 20px 50px;
             background: var(--primary-cyan);
             color: #000;
             text-decoration: none;
-            font-weight: 800;
-            border-radius: 10px;
-            box-shadow: 0 0 25px var(--primary-cyan);
+            font-weight: 900;
+            font-family: 'Orbitron', sans-serif;
+            border-radius: 50px;
+            box-shadow: 0 0 30px var(--primary-cyan);
             font-size: 1.2rem;
-            text-transform: uppercase;
             transition: 0.3s;
         }
+        .btn-main:hover { transform: scale(1.05); background: #fff; box-shadow: 0 0 50px #fff; }
 
-        .btn-main:hover {
-            transform: scale(1.1);
-            box-shadow: 0 0 40px var(--primary-cyan);
-        }
-
-        footer {
-            text-align: center;
-            padding: 20px;
-            font-size: 0.75rem;
-            color: #555;
-            background: rgba(0,0,0,0.7);
-        }
+        footer { text-align: center; padding: 40px; background: rgba(0,0,0,0.9); font-size: 0.8rem; color: #666; letter-spacing: 2px; }
     </style>
 </head>
 <body>
@@ -133,27 +96,87 @@
 
 <div class="container">
     <div class="card">
-        <h2>EMPRESAS</h2>
-        <p>Tokenizamos tu negocio. Capta capital inmediato y asegura la lealtad de tus clientes con tu propia moneda digital.</p>
+        <h2>Tokenización para Negocios</h2>
+        <p>Convertimos tu inventario o servicios futuros en activos digitales. Ideal para obtener capital sin préstamos bancarios.</p>
+        <ul>
+            <li>Barberías y Salones VIP</li>
+            <li>Clínicas Estéticas y Salud</li>
+            <li>Restaurantes y Retail</li>
+        </ul>
     </div>
     <div class="card">
-        <h2>EVENTOS</h2>
-        <p>Rifas, conciertos y kermeses con control total. Transparencia Blockchain para instituciones y promotores.</p>
+        <h2>Eventos & Instituciones</h2>
+        <p>Elimina el efectivo en tus eventos masivos. Seguridad total y cero robos hormiga con tickets digitales inteligentes.</p>
+        <ul>
+            <li>Conciertos y Festivales</li>
+            <li>Rifas Escolares (APAFAS)</li>
+            <li>Kermeses y Eventos Sociales</li>
+        </ul>
     </div>
     <div class="card">
-        <h2>INVERSIONISTAS</h2>
-        <p>Únete al ecosistema $PISK. Proyectos reales con tecnología de vanguardia y alta rentabilidad.</p>
+        <h2>Inversionistas $PISK</h2>
+        <p>Participa en el ecosistema de Neo Pisk. Tu capital respalda proyectos tecnológicos reales con alta tracción en Lima.</p>
+        <ul>
+            <li>Respaldo en Activos Reales</li>
+            <li>Transparencia Blockchain</li>
+            <li>Crecimiento Escalable</li>
+        </ul>
     </div>
+</div>
+
+<h2 class="section-title">¿CÓMO FUNCIONA?</h2>
+<div class="step-container">
+    <div class="step">
+        <div class="step-num">01</div>
+        <div class="step-text">
+            <h3>Diagnóstico Digital</h3>
+            <p>Analizamos tu negocio o evento para crear la estrategia de tokens adecuada.</p>
+        </div>
+    </div>
+    <div class="step">
+        <div class="step-num">02</div>
+        <div class="step-text">
+            <h3>Emisión de Tokens</h3>
+            <p>Lanzamos tu moneda digital bajo el respaldo del ecosistema Neo Pisk Tech.</p>
+        </div>
+    </div>
+    <div class="step">
+        <div class="step-num">03</div>
+        <div class="step-text">
+            <h3>Capitalización y Venta</h3>
+            <p>Tus clientes compran tokens por adelantado. Tú recibes el capital y aseguras la lealtad.</p>
+        </div>
+    </div>
+</div>
+
+<div style="text-align: center; margin: 50px auto; max-width: 600px; padding: 20px; border: 1px dashed var(--primary-cyan); border-radius: 15px;">
+    <p style="font-family: 'Orbitron', sans-serif; color: var(--primary-cyan); letter-spacing: 2px; margin-bottom: 20px;">RESPALDO INSTITUCIONAL</p>
+    <a href="index.html#seccion-lideres" style="
+        display: inline-block;
+        padding: 12px 30px;
+        border: 2px solid var(--neon-pink);
+        color: var(--neon-pink);
+        text-decoration: none;
+        font-family: 'Orbitron', sans-serif;
+        font-weight: bold;
+        border-radius: 10px;
+        transition: 0.3s;
+        text-transform: uppercase;
+    " onmouseover="this.style.background='var(--neon-pink)'; this.style.color='#000';" 
+       onmouseout="this.style.background='transparent'; this.style.color='var(--neon-pink)';"
+    >
+        Conoce a nuestros Líderes
+    </a>
 </div>
 
 <div class="cta-section">
-    <a href="https://wa.me/TUNUMERO" class="btn-main">¡Tokenizar Ahora!</a>
+    <p style="font-size: 1.3rem; margin-bottom: 20px;">¿Listo para digitalizar tu economía?</p>
+    <a href="https://wa.me/519XXXXXXXX" class="btn-main">CONTACTAR CON ERNESTO</a>
 </div>
 
 <footer>
-    NEO PISK TECH © 2026 | LIMA, PERÚ
+    NEO PISK TECH © 2026 | DIGITALIZANDO EL COMERCIO EN PERÚ | SAN JUAN DE LURIGANCHO
 </footer>
 
 </body>
 </html>
-    
