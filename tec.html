@@ -1,4 +1,4 @@
-   <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -13,7 +13,7 @@
         }
 
         * { box-sizing: border-box; }
-        body, html { margin: 0; padding: 0; background-color: var(--deep-bg); color: #fff; font-family: 'Inter', sans-serif; }
+        body, html { margin: 0; padding: 0; background-color: var(--deep-bg); color: #fff; font-family: 'Inter', sans-serif; overflow-x: hidden; }
 
         body {
             background: 
@@ -68,23 +68,42 @@
         .step-num { font-family: 'Orbitron', sans-serif; font-size: 3rem; font-weight: 900; margin-right: 30px; color: var(--neon-pink); opacity: 0.5; }
         .step-text h3 { margin: 0; color: var(--primary-cyan); font-size: 1.5rem; }
 
-        .cta-section { text-align: center; padding: 60px 20px; }
-        .btn-main {
-            display: inline-block;
-            padding: 20px 50px;
-            background: var(--primary-cyan);
-            color: #000;
-            text-decoration: none;
-            font-weight: 900;
-            font-family: 'Orbitron', sans-serif;
-            border-radius: 50px;
-            box-shadow: 0 0 30px var(--primary-cyan);
-            font-size: 1.2rem;
-            transition: 0.3s;
+        /* SECCIÓN FINAL DE INTEGRACIÓN */
+        .news-integration {
+            background-color: rgba(255, 255, 255, 0.98);
+            padding: 80px 20px;
+            margin-top: 100px;
+            color: #1a2a3a;
         }
-        .btn-main:hover { transform: scale(1.05); background: #fff; box-shadow: 0 0 50px #fff; }
+        .news-container { max-width: 1100px; margin: 0 auto; }
+        .forbes-block {
+            display: flex; flex-wrap: wrap; background: #fff; border-radius: 20px; 
+            border: 1px solid #e1e8ed; overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,0.1); margin-bottom: 50px;
+        }
+        .tech-grid { display: flex; flex-wrap: wrap; gap: 30px; }
+        .video-box { flex: 1.2; min-width: 330px; background: #fdfdfd; padding: 25px; border-radius: 20px; border: 1px solid #eee; }
+        .whitepaper-box {
+            flex: 0.8; min-width: 300px; position: relative; 
+            background: url('https://raw.githubusercontent.com/ernestopisk2015-arch/Neopisk/refs/heads/main/asset/cerebro%201.jpg') center/cover no-repeat; 
+            padding: 40px 30px; border-radius: 20px; color: #fff; text-align: center; 
+            display: flex; flex-direction: column; justify-content: center; box-shadow: 0 20px 40px rgba(0,0,0,0.3); overflow: hidden;
+        }
+        .overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.65); z-index: 1; }
+        .btn-wp {
+            position: relative; z-index: 2; background: #00f2ff; color: #001a1d; 
+            padding: 16px 25px; border-radius: 12px; font-weight: bold; font-size: 15px; 
+            text-transform: uppercase; transition: 0.3s; box-shadow: 0 0 20px rgba(0, 242, 255, 0.4); 
+            cursor: pointer; display: inline-block; text-decoration: none; border: none;
+        }
+        .btn-wp:hover { transform: scale(1.05); background: #fff; }
 
-        footer { text-align: center; padding: 40px; background: rgba(0,0,0,0.9); font-size: 0.8rem; color: #666; letter-spacing: 2px; }
+        .cta-section { text-align: center; padding: 80px 20px; background: rgba(0,0,0,0.4); }
+        .btn-main {
+            display: inline-block; padding: 20px 50px; background: var(--primary-cyan); color: #000;
+            text-decoration: none; font-weight: 900; font-family: 'Orbitron', sans-serif;
+            border-radius: 50px; box-shadow: 0 0 30px var(--primary-cyan); font-size: 1.2rem; transition: 0.3s;
+        }
+        footer { text-align: center; padding: 40px; background: #000; font-size: 0.8rem; color: #666; letter-spacing: 2px; }
     </style>
 </head>
 <body>
@@ -149,29 +168,56 @@
     </div>
 </div>
 
-<div style="text-align: center; margin: 50px auto; max-width: 600px; padding: 20px; border: 1px dashed var(--primary-cyan); border-radius: 15px;">
+<div style="text-align: center; margin: 80px auto 40px; max-width: 600px; padding: 20px; border: 1px dashed var(--primary-cyan); border-radius: 15px;">
     <p style="font-family: 'Orbitron', sans-serif; color: var(--primary-cyan); letter-spacing: 2px; margin-bottom: 20px;">RESPALDO INSTITUCIONAL</p>
-    <a href="index.html#seccion-lideres" style="
-        display: inline-block;
-        padding: 12px 30px;
-        border: 2px solid var(--neon-pink);
-        color: var(--neon-pink);
-        text-decoration: none;
-        font-family: 'Orbitron', sans-serif;
-        font-weight: bold;
-        border-radius: 10px;
-        transition: 0.3s;
-        text-transform: uppercase;
-    " onmouseover="this.style.background='var(--neon-pink)'; this.style.color='#000';" 
-       onmouseout="this.style.background='transparent'; this.style.color='var(--neon-pink)';"
-    >
+    <a href="index.html#seccion-lideres" style="display: inline-block; padding: 12px 30px; border: 2px solid var(--neon-pink); color: var(--neon-pink); text-decoration: none; font-family: 'Orbitron', sans-serif; font-weight: bold; border-radius: 10px; transition: 0.3s; text-transform: uppercase;" onmouseover="this.style.background='var(--neon-pink)'; this.style.color='#000';" onmouseout="this.style.background='transparent'; this.style.color='var(--neon-pink)';">
         Conoce a nuestros Líderes
     </a>
 </div>
 
+<div class="news-integration">
+    <div class="news-container">
+        <div class="forbes-block">
+            <div style="flex: 1; min-width: 300px; background: url('https://raw.githubusercontent.com/ernestopisk2015-arch/Neopisk/refs/heads/main/asset/casa1.jpg') center/cover no-repeat; min-height: 300px;"></div>
+            <div style="flex: 1.2; padding: 40px; min-width: 300px;">
+                <span style="color: #d4af37; font-weight: bold; font-size: 0.8em; letter-spacing: 2px;">FORBES ARGENTINA</span>
+                <h3 style="margin: 15px 0; color: #1a2a3a; font-size: 1.8em; line-height: 1.2;">"Revolución Real Estate: Comprar una casa en partecitas de US$ 10 ya es posible"</h3>
+                <p style="color: #5d6d7e; font-size: 1.1em; line-height: 1.6;">
+                    Forbes confirma que la tokenización de inmuebles es la nueva forma de ahorro seguro. En <b>Neo Pisk Tech</b> usamos esta tecnología para que seas dueño de activos reales.
+                </p>
+                <a href="https://www.forbesargentina.com/negocios/revolucion-real-estate-comprar-una-casa-en-partecitas-us-10-ya-posible-argentina-n81951" target="_blank" style="color: #1a2a3a; font-weight: bold; text-decoration: none; border-bottom: 2px solid #d4af37; padding-bottom: 3px;">Leer nota completa en Forbes →</a>
+            </div>
+        </div>
+
+        <div class="tech-grid">
+            <div class="video-box">
+                <h4 style="color: #1a2a3a; margin-bottom: 15px; font-family: 'Orbitron', sans-serif;">🏨 Tokenización de Hoteles</h4>
+                <div style="position: relative; padding-bottom: 56.25%; height: 0; border-radius: 15px; overflow: hidden; border: 3px solid #1a2a3a;">
+                    <iframe style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" src="https://www.youtube.com/embed/tQODjIjVnSo" frameborder="0" allowfullscreen></iframe>
+                </div>
+                <p style="margin-top: 15px; font-size: 0.95em; color: #4a5568; line-height: 1.5; background: #f1f5f9; padding: 15px; border-radius: 10px; border-left: 5px solid #2980b9;">
+                    "Aprende cómo las reservas de hotel se convierten en activos que puedes revender. Es la misma tecnología que usamos en <b>Neo Pisk</b> para tokenizar servicios y producción real."
+                </p>
+            </div>
+
+            <div class="whitepaper-box">
+                <div class="overlay"></div>
+                <div style="position: relative; z-index: 2;">
+                    <h4 style="margin: 0; font-size: 1.4em; color: #00f2ff; text-shadow: 0 0 10px rgba(0,242,255,0.5); font-family: 'Orbitron', sans-serif;">Protocolo Técnico</h4>
+                    <p style="font-size: 0.95em; color: #e2e8f0; margin: 20px 0 30px; line-height: 1.4;">
+                        Descarga el <b>White Paper V1.1</b> y conoce el sistema de auditoría con <b>1,059 clones</b> de respaldo en GitHub.
+                    </p>
+                    <a href="https://docs.google.com/document/d/1xP754W2_Lnj5JZ_PZiuT2wagCoY6M_O2Fb8nXUvg-WQ/edit?usp=sharing" target="_blank" class="btn-wp">📥 Descargar White Paper</a>
+                    <div style="margin-top: 25px; font-size: 0.75em; color: #94a3b8; font-weight: bold;">VALIDADO POR NEO PISK TECH 2026</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="cta-section">
-    <p style="font-size: 1.3rem; margin-bottom: 20px;">¿Listo para digitalizar tu economía?</p>
-    <a href="https://wa.me/51992228824" class="btn-main">CONTACTAR CON ERNESTO</a>
+    <p style="font-size: 1.3rem; margin-bottom: 20px; font-family: 'Orbitron', sans-serif; color: var(--primary-cyan);">¿Listo para digitalizar tu economía?</p>
+    <a href="https://wa.me/519XXXXXXXX" class="btn-main">CONTACTAR CON ERNESTO</a>
 </div>
 
 <footer>
@@ -179,4 +225,4 @@
 </footer>
 
 </body>
-</html> 
+</html>
