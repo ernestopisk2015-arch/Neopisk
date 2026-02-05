@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+    <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -129,7 +129,7 @@
         <input type="number" id="inputUSDT" placeholder="Monto USDT">
         <button class="btn-approve" onclick="approveUSDT()">1. AUTORIZAR USDT</button>
         <button class="btn-buy" onclick="buyPisk()">2. ADQUIRIR TOKENS $PISK</button>
-        <div id="status" style="font-size: 12px; margin-top: 15px; color: #444;">Ready on Polygon Network</div>
+        <div id="status" style="font-size: 12px; margin-top: 15px; color: #d4af37; font-weight: bold;">Listo en Polygon Network</div>
     </div>
 
     <div class="presale-container">
@@ -165,7 +165,7 @@
                 <b>Smartphone:</b> Copia la URL abajo.
             </p>
             <button onclick="copiarURL()" class="btn-metamask">COPIAR URL PARA METAMASK</button>
-            <button onclick="copyContract()" style="background:#000; color:var(--gold); border:1px dashed var(--gold); font-size:10px; padding:10px;">COPIAR CONTRATO $PISK</button>
+            <button onclick="copyContract()" style="background:#000; color:var(--gold); border:1px dashed var(--gold); font-size:10px; padding:10px; width: 100%; cursor: pointer;">COPIAR CONTRATO $PISK</button>
             <a href="https://wa.me/51908066095" class="btn-support-ws" target="_blank">💬 SOPORTE WHATSAPP</a>
         </div>
 
@@ -179,7 +179,7 @@
                 <b>Smartphone:</b> Copy the URL below.
             </p>
             <button onclick="copiarURL()" class="btn-metamask">COPY URL FOR METAMASK</button>
-            <button onclick="copyContract()" style="background:#000; color:var(--gold); border:1px dashed var(--gold); font-size:10px; padding:10px;">COPY $PISK CONTRACT</button>
+            <button onclick="copyContract()" style="background:#000; color:var(--gold); border:1px dashed var(--gold); font-size:10px; padding:10px; width: 100%; cursor: pointer;">COPY $PISK CONTRACT</button>
             <a href="https://wa.me/51908066095" class="btn-support-ws" target="_blank">💬 WHATSAPP SUPPORT</a>
         </div>
     </div>
@@ -204,20 +204,79 @@
 </a>
 
 <script>
+    // CONFIGURACIÓN DE SMART CONTRACTS
+    const contractAddr = "0x07Fc7AC9D681Cdd3D100c68f6f5646970CC7fF60"; 
+    const usdtAddr = "0xc2132D05D31c914a87C6611C10748AEb04B58e8F"; 
     const piskAddr = "0x9d5B2A73d16dAF61712BA8527d94F6997a0E6323";
+
+    const minABI = [
+        { "constant": false, "inputs": [{ "name": "_spender", "type": "address" }, { "name": "_value", "type": "uint256" }], "name": "approve", "outputs": [{ "name": "", "type": "bool" }], "type": "function" },
+        { "constant": true, "inputs": [{ "name": "_owner", "type": "address" }], "name": "balanceOf", "outputs": [{ "name": "balance", "type": "uint256" }], "type": "function" },
+        { "constant": true, "inputs": [{ "name": "_owner", "type": "address" }, { "name": "_spender", "type": "address" }], "name": "allowance", "outputs": [{ "name": "", "type": "uint256" }], "type": "function" }
+    ];
+
+    const buyABI = [{ "inputs": [{ "name": "_amountUSDT", "type": "uint256" }], "name": "buyWithUSDT", "outputs": [], "stateMutability": "nonpayable", "type": "function" }];
+
     function copiarURL() { navigator.clipboard.writeText("https://neopisk.lat/invertir.html"); alert("URL Copiada"); }
     function copyContract() { navigator.clipboard.writeText(piskAddr); alert("Contrato $PISK Copiado"); }
     
     async function verMiSaldo() {
         if (!window.ethereum) return alert("Instala MetaMask");
+        const web3 = new Web3(window.ethereum);
         const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
-        document.getElementById("status").innerText = "Conectado: " + accounts[0].substring(0,6) + "...";
+        const pisk = new web3.eth.Contract(minABI, piskAddr);
+        const bal = await pisk.methods.balanceOf(accounts[0]).call();
+        const normal = parseFloat(web3.utils.fromWei(bal, 'ether')).toFixed(2);
+        document.getElementById("saldoDisplay").innerText = normal + " $PISK";
+        document.getElementById("status").innerText = "✅ Conectado: " + accounts[0].substring(0,8);
     }
-    async function approveUSDT() { document.getElementById("status").innerText = "Autorizando USDT..."; }
-    async function buyPisk() { document.getElementById("status").innerText = "Procesando adquisición..."; }
+
+    async function approveUSDT() {
+        const val = document.getElementById("inputUSDT").value;
+        if(!val || val <= 0) return alert("Ingresa un monto válido");
+        try {
+            const web3 = new Web3(window.ethereum);
+            const accounts = await web3.eth.getAccounts();
+            const usdt = new web3.eth.Contract(minABI, usdtAddr);
+            const montoFinal = (parseFloat(val) * 1000000).toFixed(0);
+
+            document.getElementById("status").innerText = "⏳ Verificando permisos...";
+            const allowance = await usdt.methods.allowance(accounts[0], contractAddr).call();
+            
+            if (parseInt(allowance) > 0) {
+                document.getElementById("status").innerText = "⏳ Reseteando permiso anterior...";
+                await usdt.methods.approve(contractAddr, "0").send({ from: accounts[0] });
+            }
+
+            document.getElementById("status").innerText = "⏳ Autorizando " + val + " USDT...";
+            await usdt.methods.approve(contractAddr, montoFinal).send({ 
+                from: accounts[0],
+                gasPrice: await web3.eth.getGasPrice()
+            });
+            document.getElementById("status").innerText = "✅ Autorizado. Procede al paso 2.";
+        } catch (e) { document.getElementById("status").innerText = "❌ Error en Autorización"; }
+    }
+
+    async function buyPisk() {
+        const val = document.getElementById("inputUSDT").value;
+        if(!val) return alert("Autoriza primero el monto");
+        try {
+            const web3 = new Web3(window.ethereum);
+            const accounts = await web3.eth.getAccounts();
+            const neo = new web3.eth.Contract(buyABI, contractAddr);
+            const montoFinal = (parseFloat(val) * 1000000).toFixed(0);
+
+            document.getElementById("status").innerText = "🚀 Confirmando compra...";
+            await neo.methods.buyWithUSDT(montoFinal).send({ 
+                from: accounts[0],
+                gas: 300000,
+                gasPrice: await web3.eth.getGasPrice()
+            });
+            document.getElementById("status").innerText = "🎉 ¡COMPRA EXITOSA!";
+            verMiSaldo();
+        } catch (e) { document.getElementById("status").innerText = "❌ Error en la compra"; }
+    }
 </script>
 
 </body>
 </html>
-   
-   
