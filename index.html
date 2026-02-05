@@ -670,24 +670,7 @@ function calcularPiskUSD() {
         <div class="roadmap-item"><div class="roadmap-dot"></div><p class="font-bold text-xl text-yellow-400 uppercase italic">Q4: Red de Carga</p><p class="opacity-80 italic">Inauguración de la red nacional.</p></div>
     </div>
 </section>
-    <section id="lideres" class="founders-section" style="padding: 60px 20px; text-align: center; background: #000;">
-    <h2 style="color: var(--gold-primary); letter-spacing: 3px; margin-bottom: 40px;">NUESTROS LÍDERES</h2>
-    
-    <div style="display: flex; justify-content: center; gap: 30px; flex-wrap: wrap;">
-        <div class="leader-card">
-            <img src="asset/lider1.jpg" alt="Líder 1" style="width: 200px; height: 200px; border-radius: 50%; border: 3px solid var(--gold-primary); object-fit: cover;">
-            <h3 style="color: white; margin-top: 15px;">Nombre del Líder</h3>
-            <p style="color: var(--gold-primary);">CEO & Founder</p>
-        </div>
-
-        <div class="leader-card">
-            <img src="asset/lider2.jpg" alt="Líder 2" style="width: 200px; height: 200px; border-radius: 50%; border: 3px solid var(--gold-primary); object-fit: cover;">
-            <h3 style="color: white; margin-top: 15px;">Nombre del Líder</h3>
-            <p style="color: var(--gold-primary);">CTO</p>
-        </div>
-    </div>
-</section>
-<section id="liderazgo" style="padding: 60px 20px; background-color: #f9f9f9; text-align: center; font-family: 'Arial', sans-serif;">
+   <section id="lideres" style="padding: 100px 20px 80px 20px; background-color: #f9f9f9; text-align: center; font-family: 'Arial', sans-serif;">
     <h2 style="color: #222; text-transform: uppercase; letter-spacing: 3px; margin-bottom: 50px; font-size: 2.5rem; font-weight: 800;">Liderazgo Estratégico</h2>
     
     <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 30px; max-width: 1300px; margin: 0 auto;">
@@ -737,6 +720,19 @@ function calcularPiskUSD() {
 </footer>
 
 <script>
+// Forzar el scroll suave al cargar si hay un ancla en la URL
+window.onload = function() {
+    if(window.location.hash === "#lideres") {
+        const element = document.getElementById("lideres");
+        if(element) {
+            setTimeout(() => {
+                element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 500);
+        }
+    }
+};
+
+// Función de calculadora (la mantengo igual)
 function calcularPiskUSD() {
     const usd = document.getElementById('usdInput').value;
     const precioTokenUSD = 0.10; 
@@ -748,6 +744,3 @@ function calcularPiskUSD() {
     }
 }
 </script>
-</body>
-</html>
-  
