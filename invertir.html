@@ -1,11 +1,11 @@
-   <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Neo Pisk Presale - Official Gold</title>
+    <title>Neo Pisk - Official Investment Portal</title>
     
-    <link rel="icon" type="image/jpg" href="asset/IMG-20260126-WA0020.jpg">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.8.1/web3.min.js"></script>
 
     <style>
         :root {
@@ -13,153 +13,83 @@
             --gold-light: #f9e2af;
             --bg-dark: #0a0a0a;
             --card-bg: #151515;
+            --neon-blue: #00d2ff;
         }
 
         body { 
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
-            line-height: 1.6; 
+            font-family: 'Segoe UI', sans-serif; 
             color: var(--gold-light); 
             margin: 0; 
             padding: 10px; 
-            background-color: var(--bg-dark);
             background: radial-gradient(circle at center, #1a1a1a 0%, #000000 100%);
+            min-height: 100vh;
         }
 
         .container { 
-            max-width: 900px; 
+            max-width: 850px; 
             margin: 20px auto; 
             background: var(--card-bg); 
             padding: 30px; 
-            border-radius: 20px; 
+            border-radius: 25px; 
             box-shadow: 0 10px 50px rgba(0,0,0,0.8);
             border: 1px solid rgba(212, 175, 55, 0.2);
         }
 
-        .header { 
-            text-align: center; 
-            margin-bottom: 30px; 
-            border-bottom: 2px solid var(--gold-primary); 
-            padding-bottom: 15px; 
-        }
-
-        /* AUMENTO: Logos principales más grandes (150px) */
-        .logo-row {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 30px;
-            margin-bottom: 15px;
-        }
-        .logo-row img {
-            width: 150px; 
-            height: 150px;
-            object-fit: contain;
-            filter: drop-shadow(0 0 15px rgba(212, 175, 55, 0.5));
-        }
-
-        /* AUMENTO: Logos de billeteras más grandes (65px) */
-        .wallet-header-logos {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 25px;
-            margin: 15px auto;
-        }
-
-        .wallet-header-logos img {
-            height: 65px; 
-            width: auto;
-            border-radius: 8px;
-            filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.1));
-        }
-
-        .payment-methods-box {
-            border: 1px solid var(--gold-primary);
-            background: rgba(212, 175, 55, 0.05);
-            padding: 15px;
-            border-radius: 12px;
-            margin: 15px auto;
-            max-width: 500px;
+        .header { text-align: center; border-bottom: 2px solid var(--gold-primary); padding-bottom: 20px; }
+        .logo-row { display: flex; justify-content: center; align-items: center; gap: 30px; margin-bottom: 15px; }
+        .logo-row img { width: 120px; height: 120px; object-fit: contain; filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.3)); }
+        
+        /* PANEL DE INVERSIÓN */
+        .investment-card {
+            background: rgba(0,0,0,0.4);
+            border-radius: 20px;
+            padding: 25px;
+            border: 1px solid var(--neon-blue);
+            margin: 20px 0;
+            box-shadow: 0 0 20px rgba(0, 210, 255, 0.1);
             text-align: center;
         }
 
-        h1 { color: var(--gold-primary); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 0; font-size: 2.2rem; }
-
-        .columns { display: flex; gap: 20px; flex-wrap: wrap; }
-
-        .column { 
-            flex: 1; 
-            min-width: 320px; 
-            padding: 25px; 
-            border-radius: 15px; 
-            background: rgba(255, 255, 255, 0.03); 
-            border: 1px solid rgba(212, 175, 55, 0.1); 
+        .balance-display { font-size: 28px; color: var(--neon-blue); font-weight: bold; margin: 10px 0; }
+        
+        input { 
+            width: 80%; padding: 15px; border-radius: 12px; border: 1px solid #333; 
+            background: #000; color: var(--neon-blue); font-size: 22px; 
+            text-align: center; margin: 15px 0; outline: none;
         }
-
-        .spanish { border-top: 5px solid var(--gold-primary); }
-        .english { border-top: 5px solid #b8860b; }
-
-        h2 { margin-top: 0; color: var(--gold-primary); font-size: 1.4rem; }
-
-        .alert-box { 
-            background: rgba(197, 48, 48, 0.1); 
-            border: 1px solid #c53030; 
-            color: #feb2b2; 
-            padding: 15px; 
-            border-radius: 10px; 
-            margin-bottom: 15px; 
-        }
-
-        .contract-label { font-weight: bold; margin-bottom: 5px; display: block; color: var(--gold-primary); }
-
-        .contract-box { 
-            background: #000; 
-            padding: 12px; 
-            border-radius: 8px; 
-            font-family: 'Courier New', monospace; 
-            word-break: break-all; 
-            font-size: 0.9em; 
-            color: var(--gold-light); 
-            border: 1px dashed var(--gold-primary);
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        .contract-box:hover { background: #111; box-shadow: 0 0 10px rgba(212, 175, 55, 0.3); }
-
-        .action-area { text-align: center; margin-top: 40px; }
 
         .btn { 
-            display: inline-block; 
-            padding: 18px 45px; 
-            border-radius: 50px; 
-            text-decoration: none; 
-            font-weight: bold; 
-            font-size: 1.1em; 
-            transition: 0.3s; 
-            margin: 10px; 
-            border: none;
+            padding: 16px 30px; border-radius: 50px; border: none; 
+            font-weight: bold; cursor: pointer; transition: 0.3s; width: 90%;
+            text-transform: uppercase; margin: 10px 0;
+        }
+        .btn-connect { background: transparent; color: var(--neon-blue); border: 1px solid var(--neon-blue); }
+        .btn-buy { background: var(--neon-blue); color: #000; font-size: 18px; box-shadow: 0 4px 15px rgba(0, 210, 255, 0.3); }
+        .btn-buy:hover { transform: translateY(-3px); filter: brightness(1.2); }
+
+        #status { font-size: 13px; color: #888; margin-top: 15px; text-align: center; }
+
+        /* COLUMNAS CON BANDERAS */
+        .columns { display: flex; gap: 20px; margin-top: 30px; flex-wrap: wrap; }
+        .column { flex: 1; min-width: 300px; padding: 25px; background: rgba(255,255,255,0.02); border-radius: 20px; border: 1px solid #222; text-align: center; }
+        
+        .flag-circle {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--gold-primary);
+            margin-bottom: 15px;
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
         }
 
-        .btn-depay { 
-            background: linear-gradient(135deg, var(--gold-primary), #b8860b); 
-            color: #000; 
-            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4); 
+        .contract-box { 
+            background: #000; padding: 12px; border-radius: 8px; border: 1px dashed var(--gold-primary);
+            font-family: monospace; font-size: 12px; margin-top: 10px; cursor: pointer; word-break: break-all;
+            color: var(--gold-light);
         }
-
-        .btn-depay:hover { transform: translateY(-3px); filter: brightness(1.2); }
-
-        .btn-whatsapp { 
-            background: transparent; 
-            color: #25D366; 
-            border: 2px solid #25D366;
-        }
-
-        .btn-whatsapp:hover { background: #25D366; color: #000; }
-
-        .footer-note { font-size: 0.8em; color: #666; margin-top: 25px; }
-
-        @media (max-width: 768px) { .columns { flex-direction: column; } }
+        
+        h3 { margin-top: 0; color: var(--gold-primary); }
     </style>
 </head>
 <body>
@@ -167,77 +97,101 @@
 <div class="container">
     <div class="header">
         <div class="logo-row">
-            <img src="asset/IMG-20260126-WA0020.jpg" alt="Neo Pisk Logo">
-            <img src="asset/Eco Pisk.jpg" alt="Eco Pisk Logo">
+            <img src="asset/IMG-20260126-WA0020.jpg" alt="Neo Pisk">
+            <img src="asset/Eco Pisk.jpg" alt="Eco Pisk">
         </div>
-        <h1>🚀 NEO PISK & ECO PISK</h1>
+        <h1>NEO PISK & ECO PISK</h1>
+        <p style="color: var(--gold-primary); font-weight: bold; letter-spacing: 1px;">OFFICIAL GOLD PRESALE</p>
+    </div>
+
+    <div class="investment-card">
+        <button class="btn btn-connect" onclick="conectarBilletera()">🔍 CONECTAR BILLETERA / CONNECT WALLET</button>
+        <div style="margin-top: 15px;">
+            <span style="font-size: 12px; color: #888;">TU BALANCE / YOUR BALANCE:</span>
+            <div id="saldoDisplay" class="balance-display">0.00 $PISK</div>
+        </div>
         
-        <div class="wallet-header-logos">
-            <img src="asset/metamasklogo.jpg" alt="MetaMask Logo">
-            <img src="asset/trust-wallet-stablecoin-usdt-750x375.jpeg" alt="Trust Wallet Logo">
-        </div>
-
-        <div class="payment-methods-box">
-            <strong style="color: var(--gold-primary); display: block; margin-bottom: 5px;">💳 MEDIOS DE PAGO RECOMENDADOS (DePay)</strong>
-            <p style="margin: 0; font-size: 1em;">Para una compra automática usa <b>MetaMask</b> o <b>Trust Wallet</b>.</p>
-        </div>
-
-        <p style="color: var(--gold-primary); font-weight: bold;">Official Gold Presale / Preventa Oficial</p>
+        <input type="number" id="inputUSDT" placeholder="Monto USDT" step="1">
+        
+        <button class="btn btn-buy" onclick="ejecutarCompra()">🚀 COMPRAR $PISK AHORA / BUY NOW</button>
+        <div id="status">Ready / Listo (Polygon Network)</div>
     </div>
 
     <div class="columns">
-        <div class="column spanish">
-            <h2>🇪🇸 Instrucciones</h2>
-            <div class="alert-box">
-                <strong>Importante:</strong> En el proceso de pago, pega tu dirección de <b>MetaMask</b> (Red Polygon/ETH) donde dice "Wallet address".
+        <div class="column">
+            <img src="https://flagcdn.com/w160/es.png" class="flag-circle" alt="España">
+            <h3>🇪🇸 Instrucciones</h3>
+            <p style="font-size: 14px; text-align: left;">1. Conecta tu MetaMask.<br>2. Ingresa los USDT.<br>3. Los tokens aparecerán en tu saldo automáticamente tras la compra.</p>
+            <div class="contract-box" onclick="navigator.clipboard.writeText('0x9d5B2A73d16dAF61712BA8527d94F6997a0E6323'); alert('Copiado');">
+                Importar Contrato: 0x9d5B2A73d16dAF61712BA8527d94F6997a0E6323
             </div>
-            <p>Los tokens se envían manualmente en un lapso de 1 a 12 horas. Para ver tus tokens, importa este contrato:</p>
-            <span class="contract-label">Contrato $PISK / $ECO:</span>
-            <div class="contract-box" onclick="copyText('0x9d5B2A73d16dAF61712BA8527d94F6997a0E6323')">0x9d5B2A73d16dAF61712BA8527d94F6997a0E6323</div>
         </div>
 
-        <div class="column english">
-            <h2>🇺🇸 Instructions</h2>
-            <div class="alert-box">
-                <strong>Important:</strong> During checkout, paste your <b>MetaMask</b> address (Polygon/ETH Network) in the "Wallet address" field.
+        <div class="column">
+            <img src="https://flagcdn.com/w160/us.png" class="flag-circle" alt="USA">
+            <h3>🇺🇸 Instructions</h3>
+            <p style="font-size: 14px; text-align: left;">1. Connect your MetaMask.<br>2. Enter USDT amount.<br>3. Tokens will show in your balance automatically after purchase.</p>
+            <div class="contract-box" onclick="navigator.clipboard.writeText('0x9d5B2A73d16dAF61712BA8527d94F6997a0E6323'); alert('Copied');">
+                Import Contract: 0x9d5B2A73d16dAF61712BA8527d94F6997a0E6323
             </div>
-            <p>Tokens are sent manually within 1-12 hours. To view your tokens, import this contract address:</p>
-            <span class="contract-label">$PISK / $ECO Contract:</span>
-            <div class="contract-box" onclick="copyText('0x9d5B2A73d16dAF61712BA8527d94F6997a0E6323')">0x9d5B2A73d16dAF61712BA8527d94F6997a0E6323</div>
         </div>
-    </div>
-
-    <div style="margin: 30px auto 0; max-width: 840px; border: 1px solid #28a745; padding: 20px; border-radius: 15px; background: rgba(40, 167, 69, 0.05); text-align: center;">
-        <span class="contract-label" style="color: #25D366; font-size: 1.2rem;">💳 PAGO DIRECTO DESDE EXCHANGES</span>
-        <p style="font-size: 0.95em; margin-bottom: 15px;">Si pagas desde <b>OKX, Binance, BingX, Bybit o Bitmart</b>, envía (Red Polygon) a esta dirección:</p>
-        <div class="contract-box" onclick="copyText('0x4739888625C8397101d9b3aeDe4633600FB91F47')" style="border-color: #25D366; max-width: 500px; margin: 0 auto;">0x4739888625C8397101d9b3aeDe4633600FB91F47</div>
-        <p style="font-size: 0.85em; margin-top: 10px; color: #fff;">*Una vez realizado el envío, envía tu comprobante por WhatsApp abajo.</p>
-    </div>
-
-    <div class="action-area">
-        <a href="https://link.depay.com/5gMMmzTo75pzPjZEIfMMB3" class="btn btn-depay" target="_blank">
-            💳 BUY NOW / COMPRAR AHORA
-        </a>
-        <br>
-        <a href="https://wa.me/51908066095?text=Hola,%20acabo%20de%20realizar%20un%20pago%20desde%20un%20Exchange.%20Aquí%20adjunto%20mi%20comprobante." class="btn btn-whatsapp" target="_blank">
-            💬 Enviar Comprobante / Send Receipt
-        </a>
-        
-        <p class="footer-note">
-            Secure payment powered by DePay. Support available 24/7.<br>
-            Pago seguro vía DePay. Soporte disponible 24/7.
-        </p>
     </div>
 </div>
 
 <script>
-    function copyText(text) {
-        navigator.clipboard.writeText(text).then(() => {
-            alert("Copiado con éxito: " + text);
-        });
+    const contractAddr = "0x07Fc7AC9D681Cdd3D100c68f6f5646970CC7fF60"; 
+    const usdtAddr = "0xc2132D05D31c914a87C6611C10748AEb04B58e8F"; 
+    const piskAddr = "0x9d5B2A73d16dAF61712BA8527d94F6997a0E6323";
+
+    const ABI_ERC20 = [
+        { "constant": false, "inputs": [{ "name": "_spender", "type": "address" }, { "name": "_value", "type": "uint256" }], "name": "approve", "outputs": [{ "name": "", "type": "bool" }], "type": "function" },
+        { "constant": true, "inputs": [{ "name": "_owner", "type": "address" }], "name": "balanceOf", "outputs": [{ "name": "balance", "type": "uint256" }], "type": "function" }
+    ];
+
+    const ABI_NEO = [
+        { "inputs": [{ "internalType": "uint256", "name": "_amountUSDT", "type": "uint256" }], "name": "buyWithUSDT", "outputs": [], "stateMutability": "nonpayable", "type": "function" }
+    ];
+
+    async function conectarBilletera() {
+        if (!window.ethereum) return alert("Instala MetaMask");
+        const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+        actualizarSaldo(accounts[0]);
+        document.getElementById("status").innerText = "✅ Billetera conectada / Wallet connected";
+    }
+
+    async function actualizarSaldo(account) {
+        const web3 = new Web3(window.ethereum);
+        const piskContract = new web3.eth.Contract(ABI_ERC20, piskAddr);
+        const bal = await piskContract.methods.balanceOf(account).call();
+        const display = parseFloat(web3.utils.fromWei(bal, 'ether')).toFixed(2);
+        document.getElementById("saldoDisplay").innerText = display + " $PISK";
+    }
+
+    async function ejecutarCompra() {
+        const status = document.getElementById("status");
+        const val = document.getElementById("inputUSDT").value;
+        if (!val || val <= 0) return alert("Ingresa un monto / Enter amount");
+
+        const web3 = new Web3(window.ethereum);
+        const accounts = await web3.eth.getAccounts();
+        const montoFinal = (parseFloat(val) * 1000000).toFixed(0); 
+
+        try {
+            status.innerText = "⏳ Paso 1/2: Autorizando USDT...";
+            const usdt = new web3.eth.Contract(ABI_ERC20, usdtAddr);
+            await usdt.methods.approve(contractAddr, montoFinal).send({ from: accounts[0] });
+
+            status.innerText = "🚀 Paso 2/2: Confirmando Compra...";
+            const neo = new web3.eth.Contract(ABI_NEO, contractAddr);
+            await neo.methods.buyWithUSDT(montoFinal).send({ from: accounts[0] });
+
+            status.innerText = "🎉 ¡ÉXITO / SUCCESS!";
+            actualizarSaldo(accounts[0]);
+        } catch (e) {
+            status.innerText = "❌ Error en transacción (Revisa tu POL para gas)";
+        }
     }
 </script>
 
 </body>
-</html>   
- 
+</html>
