@@ -1,4 +1,4 @@
-    <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -30,7 +30,7 @@
 
         /* CABECERA */
         .header { text-align: center; border-bottom: 1px solid var(--gold); padding: 30px 0; margin-bottom: 30px; }
-        .logo-row img { width: 90px; filter: drop-shadow(0 0 10px var(--gold)); margin: 0 15px; }
+        .logo-row img { width: 90px; filter: drop-shadow(0 0 10px var(--gold)); margin: 0 15px; border-radius: 50%; }
         h1 { color: var(--gold); letter-spacing: 4px; font-size: 2.2em; margin: 15px 0 5px 0; }
 
         /* PANEL CENTRAL DE COMPRA */
@@ -72,16 +72,15 @@
         .progress-bar { background: #222; height: 10px; border-radius: 10px; margin: 10px 0; overflow: hidden; }
         .progress-fill { background: var(--gold); height: 100%; width: 15%; border-radius: 10px; box-shadow: 0 0 10px var(--gold); }
 
-        /* SECCIÓN DE INSTRUCCIONES DUAL (BANDERAS Y BOTONES) */
+        /* SECCIÓN DE INSTRUCCIONES DUAL */
         .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 30px; }
         .info-card { background: var(--panel-bg); padding: 25px; border-radius: 20px; border: 1px solid #333; text-align: center; }
         .flag-icon { width: 45px; height: 45px; border-radius: 50%; border: 2px solid var(--gold); margin-bottom: 15px; object-fit: cover; }
         
-        @keyframes pulse { 0% {box-shadow: 0 0 0 0 rgba(0,210,255,0.7);} 70% {box-shadow: 0 0 0 10px rgba(0,210,255,0);} 100% {box-shadow: 0 0 0 0 rgba(0,210,255,0);} }
         .btn-metamask {
             background-image: linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.65)), url('asset/metamasklogo.jpg');
             background-size: cover; height: 50px; border: 1px solid var(--gold); color: #fff; 
-            border-radius: 10px; width: 100%; cursor: pointer; font-size: 11px; font-weight: bold; animation: pulse 2s infinite; margin-bottom: 10px;
+            border-radius: 10px; width: 100%; cursor: pointer; font-size: 11px; font-weight: bold; margin-bottom: 10px;
         }
 
         .btn-support-ws {
@@ -90,19 +89,16 @@
             text-decoration: none; font-weight: bold; font-size: 12px; margin-top: 10px;
         }
 
-        /* AVISO LEGAL EN CUADROS */
         .legal-container { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px; }
         .legal-box { border: 1px solid rgba(212, 175, 55, 0.3); padding: 15px; border-radius: 10px; font-size: 11px; color: #888; text-align: justify; background: rgba(0,0,0,0.3); }
 
-        /* FOOTER */
         .footer { text-align: center; padding: 40px 0; border-top: 1px solid #222; font-size: 13px; color: #555; }
         .footer a { color: var(--gold); text-decoration: none; }
 
-        /* WHATSAPP FLOTANTE */
         .btn-whatsapp-float {
             position: fixed; bottom: 20px; right: 20px; background: #25D366; color: white; 
             width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; 
-            justify-content: center; box-shadow: 0 4px 15px rgba(0,0,0,0.5); text-decoration: none; z-index: 1000; transition: 0.3s;
+            justify-content: center; box-shadow: 0 4px 15px rgba(0,0,0,0.5); text-decoration: none; z-index: 1000;
         }
 
         @media (max-width: 768px) { .presale-grid, .info-grid, .legal-container { grid-template-columns: 1fr; } }
@@ -220,6 +216,12 @@
     function copiarURL() { navigator.clipboard.writeText("https://neopisk.lat/invertir.html"); alert("URL Copiada"); }
     function copyContract() { navigator.clipboard.writeText(piskAddr); alert("Contrato $PISK Copiado"); }
     
+    // Función para obtener Gas Price con un extra del 50% para evitar que la red lo rechace
+    async function getSafeGasPrice(web3) {
+        const gasPrice = await web3.eth.getGasPrice();
+        return Math.floor(parseInt(gasPrice) * 1.5).toString();
+    }
+
     async function verMiSaldo() {
         if (!window.ethereum) return alert("Instala MetaMask");
         const web3 = new Web3(window.ethereum);
@@ -237,24 +239,30 @@
         try {
             const web3 = new Web3(window.ethereum);
             const accounts = await web3.eth.getAccounts();
+            if(accounts.length === 0) return alert("Conecta tu billetera primero");
             const usdt = new web3.eth.Contract(minABI, usdtAddr);
             const montoFinal = (parseFloat(val) * 1000000).toFixed(0);
+            const gasPrice = await getSafeGasPrice(web3);
 
             document.getElementById("status").innerText = "⏳ Verificando permisos...";
             const allowance = await usdt.methods.allowance(accounts[0], contractAddr).call();
             
+            // Si ya hay una autorización previa, la reseteamos para evitar errores de USDT
             if (parseInt(allowance) > 0) {
                 document.getElementById("status").innerText = "⏳ Reseteando permiso anterior...";
-                await usdt.methods.approve(contractAddr, "0").send({ from: accounts[0] });
+                await usdt.methods.approve(contractAddr, "0").send({ from: accounts[0], gasPrice: gasPrice });
             }
 
             document.getElementById("status").innerText = "⏳ Autorizando " + val + " USDT...";
             await usdt.methods.approve(contractAddr, montoFinal).send({ 
                 from: accounts[0],
-                gasPrice: await web3.eth.getGasPrice()
+                gasPrice: gasPrice
             });
             document.getElementById("status").innerText = "✅ Autorizado. Procede al paso 2.";
-        } catch (e) { document.getElementById("status").innerText = "❌ Error en Autorización"; }
+        } catch (e) { 
+            console.error(e);
+            document.getElementById("status").innerText = "❌ Error en Autorización"; 
+        }
     }
 
     async function buyPisk() {
@@ -263,18 +271,23 @@
         try {
             const web3 = new Web3(window.ethereum);
             const accounts = await web3.eth.getAccounts();
+            if(accounts.length === 0) return alert("Conecta tu billetera primero");
             const neo = new web3.eth.Contract(buyABI, contractAddr);
             const montoFinal = (parseFloat(val) * 1000000).toFixed(0);
+            const gasPrice = await getSafeGasPrice(web3);
 
             document.getElementById("status").innerText = "🚀 Confirmando compra...";
             await neo.methods.buyWithUSDT(montoFinal).send({ 
                 from: accounts[0],
-                gas: 300000,
-                gasPrice: await web3.eth.getGasPrice()
+                gas: 250000, // Gas limit fijo suficiente para Polygon
+                gasPrice: gasPrice
             });
             document.getElementById("status").innerText = "🎉 ¡COMPRA EXITOSA!";
             verMiSaldo();
-        } catch (e) { document.getElementById("status").innerText = "❌ Error en la compra"; }
+        } catch (e) { 
+            console.error(e);
+            document.getElementById("status").innerText = "❌ Error en la compra"; 
+        }
     }
 </script>
 
