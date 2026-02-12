@@ -1,249 +1,409 @@
+
+Invertir mejorado · HTML
+Copiar
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Neo Pisk Tech | Web3 & Tokenización</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=Inter:wght@300;400;700;800&display=swap" rel="stylesheet">
+    <title>Neo Pisk - Founder Portal</title>
+    
+    <link rel="icon" type="image/jpg" href="asset/IMG-20260126-WA0020.jpg">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.7.4/web3.min.js"></script>
+
     <style>
         :root {
-            --primary-cyan: #00f2ff;
-            --neon-pink: #ff007a;
-            --deep-bg: #010204;
+            --gold: #d4af37;
+            --gold-light: #f9e2af;
+            --cyan: #00d2ff;
+            --bg-dark: #080808;
+            --panel-bg: #121212;
         }
 
-        * { box-sizing: border-box; }
-        body, html { margin: 0; padding: 0; background-color: var(--deep-bg); color: #fff; font-family: 'Inter', sans-serif; overflow-x: hidden; }
-
-        body {
-            background: 
-                linear-gradient(rgba(1, 2, 4, 0.8), rgba(1, 2, 4, 0.9)),
-                url('https://raw.githubusercontent.com/ernestopisk2015-arch/Neopisk/refs/heads/main/asset/logoneopisktech.jpg');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            background-attachment: fixed;
+        body { 
+            font-family: 'Segoe UI', sans-serif; 
+            margin: 0; 
+            padding: 10px; 
+            background: radial-gradient(circle at center, #1a1a1a 0%, #000 100%);
+            color: white;
+            min-height: 100vh;
         }
 
-        /* Efecto Escáner */
-        body::after {
-            content: "";
+        .main-container { max-width: 1000px; margin: 0 auto; padding-bottom: 50px; }
+
+        /* CABECERA */
+        .header { text-align: center; border-bottom: 1px solid var(--gold); padding: 30px 0; margin-bottom: 30px; }
+        .logo-row img { width: 90px; filter: drop-shadow(0 0 10px var(--gold)); margin: 0 15px; border-radius: 50%; }
+        h1 { color: var(--gold); letter-spacing: 4px; font-size: 2.2em; margin: 15px 0 5px 0; }
+
+        /* PANEL CENTRAL DE COMPRA */
+        .center-panel {
+            background: rgba(0, 0, 0, 0.8);
+            border: 2px solid var(--cyan);
+            border-radius: 30px;
+            padding: 40px 20px;
+            text-align: center;
+            box-shadow: 0 0 30px rgba(0, 210, 255, 0.2);
+            margin-bottom: 40px;
+        }
+
+        .balance-box { background: #000; padding: 15px; border-radius: 15px; border: 1px solid #222; margin-bottom: 25px; }
+        #saldoDisplay { font-size: 38px; color: var(--cyan); font-weight: bold; }
+
+        input { 
+            width: 80%; padding: 15px; border-radius: 12px; border: 1px solid #333; 
+            background: #000; color: var(--cyan); font-size: 22px; text-align: center; margin-bottom: 20px; outline: none;
+        }
+
+        button { 
+            width: 85%; padding: 16px; margin: 8px 0; border-radius: 12px; border: none; 
+            font-weight: bold; cursor: pointer; transition: 0.3s; text-transform: uppercase; 
+        }
+        .btn-buy { background: var(--cyan); color: #000; box-shadow: 0 4px 15px rgba(0,210,255,0.4); font-size: 16px; }
+        .btn-approve { background: #333; color: #fff; }
+
+        /* PREVENTA ESTILIZADA */
+        .presale-container {
+            background: linear-gradient(145deg, #151515, #0a0a0a);
+            border: 1px solid var(--gold);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 40px;
+        }
+        .presale-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+        .phase-badge { background: var(--gold); color: #000; padding: 4px 12px; border-radius: 5px; font-size: 12px; font-weight: bold; }
+        .progress-bar { background: #222; height: 10px; border-radius: 10px; margin: 10px 0; overflow: hidden; }
+        .progress-fill { background: var(--gold); height: 100%; width: 15%; border-radius: 10px; box-shadow: 0 0 10px var(--gold); }
+
+        /* SECCIÓN DE INSTRUCCIONES DUAL */
+        .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 30px; }
+        .info-card { background: var(--panel-bg); padding: 25px; border-radius: 20px; border: 1px solid #333; text-align: center; }
+        .flag-icon { width: 45px; height: 45px; border-radius: 50%; border: 2px solid var(--gold); margin-bottom: 15px; object-fit: cover; }
+        
+        .btn-metamask {
+            background-image: linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.65)), url('asset/metamasklogo.jpg');
+            background-size: cover; height: 50px; border: 1px solid var(--gold); color: #fff; 
+            border-radius: 10px; width: 100%; cursor: pointer; font-size: 11px; font-weight: bold; margin-bottom: 10px;
+        }
+
+        .btn-support-ws {
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+            background: #25D366; color: black; padding: 12px; border-radius: 10px; 
+            text-decoration: none; font-weight: bold; font-size: 12px; margin-top: 10px;
+        }
+
+        .legal-container { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px; }
+        .legal-box { border: 1px solid rgba(212, 175, 55, 0.3); padding: 15px; border-radius: 10px; font-size: 11px; color: #888; text-align: justify; background: rgba(0,0,0,0.3); }
+
+        .footer { text-align: center; padding: 40px 0; border-top: 1px solid #222; font-size: 13px; color: #555; }
+        .footer a { color: var(--gold); text-decoration: none; }
+
+        .btn-whatsapp-float {
+            position: fixed; bottom: 20px; right: 20px; background: #25D366; color: white; 
+            width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; 
+            justify-content: center; box-shadow: 0 4px 15px rgba(0,0,0,0.5); text-decoration: none; z-index: 1000;
+        }
+
+        /* MODAL PARA MÓVIL */
+        .modal-overlay {
+            display: none;
             position: fixed;
-            top: -100%;
+            top: 0;
             left: 0;
             width: 100%;
-            height: 10px;
-            background: var(--primary-cyan);
-            opacity: 0.1;
-            box-shadow: 0 0 20px var(--primary-cyan);
-            animation: scan 6s linear infinite;
-            z-index: 999;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
         }
-        @keyframes scan { 0% { top: -10%; } 100% { top: 110%; } }
-
-        header { padding: 120px 20px 60px; text-align: center; }
-        h1 { font-family: 'Orbitron', sans-serif; font-size: clamp(3rem, 10vw, 5.5rem); margin: 0; text-shadow: 0 0 30px var(--neon-pink); text-transform: uppercase; }
-        .subtitle { font-family: 'Orbitron', sans-serif; font-size: clamp(1.2rem, 4vw, 2.5rem); color: var(--primary-cyan); letter-spacing: 5px; text-shadow: 0 0 20px var(--primary-cyan); }
-
-        .section-title { text-align: center; font-family: 'Orbitron', sans-serif; font-size: 2.5rem; color: var(--neon-pink); margin-top: 80px; }
-
-        .container { max-width: 1200px; margin: auto; padding: 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; }
-
-        .card {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(0, 242, 255, 0.2);
+        .modal-content {
+            background: #1a1a1a;
+            border: 2px solid var(--gold);
             border-radius: 20px;
-            padding: 40px;
-            transition: 0.4s;
+            padding: 30px;
+            max-width: 90%;
+            text-align: center;
         }
-        .card:hover { transform: translateY(-10px); border-color: var(--primary-cyan); box-shadow: 0 0 30px rgba(0, 242, 255, 0.2); }
-        .card h2 { font-family: 'Orbitron', sans-serif; color: var(--primary-cyan); font-size: 1.8rem; margin-top: 0; }
-        .card p { font-size: 1.1rem; line-height: 1.6; color: #ccc; }
-        .card ul { padding-left: 20px; color: #00f2ff; }
-        .card ul li { margin-bottom: 10px; }
+        .modal-content h3 {
+            color: var(--gold);
+            margin-top: 0;
+        }
+        .btn-open-metamask {
+            background: linear-gradient(135deg, #f6851b, #e2761b);
+            color: white;
+            padding: 18px 30px;
+            border-radius: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            margin: 15px 0;
+            width: 100%;
+            box-shadow: 0 5px 20px rgba(246, 133, 27, 0.4);
+        }
+        .btn-close-modal {
+            background: #333;
+            color: white;
+            padding: 12px;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+            margin-top: 10px;
+        }
 
-        .step-container { max-width: 1000px; margin: 40px auto; padding: 20px; }
-        .step { display: flex; align-items: center; margin-bottom: 30px; background: rgba(255, 255, 255, 0.05); border-radius: 15px; padding: 20px; border-left: 5px solid var(--neon-pink); }
-        .step-num { font-family: 'Orbitron', sans-serif; font-size: 3rem; font-weight: 900; margin-right: 30px; color: var(--neon-pink); opacity: 0.5; }
-        .step-text h3 { margin: 0; color: var(--primary-cyan); font-size: 1.5rem; }
-
-        /* SECCIÓN FINAL DE INTEGRACIÓN */
-        .news-integration {
-            background-color: rgba(255, 255, 255, 0.98);
-            padding: 80px 20px;
-            margin-top: 100px;
-            color: #1a2a3a;
+        @media (max-width: 768px) { 
+            .presale-grid, .info-grid, .legal-container { grid-template-columns: 1fr; }
+            h1 { font-size: 1.5em; }
+            #saldoDisplay { font-size: 28px; }
         }
-        .news-container { max-width: 1100px; margin: 0 auto; }
-        .forbes-block {
-            display: flex; flex-wrap: wrap; background: #fff; border-radius: 20px; 
-            border: 1px solid #e1e8ed; overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,0.1); margin-bottom: 50px;
-        }
-        .tech-grid { display: flex; flex-wrap: wrap; gap: 30px; }
-        .video-box { flex: 1.2; min-width: 330px; background: #fdfdfd; padding: 25px; border-radius: 20px; border: 1px solid #eee; }
-        .whitepaper-box {
-            flex: 0.8; min-width: 300px; position: relative; 
-            background: url('https://raw.githubusercontent.com/ernestopisk2015-arch/Neopisk/refs/heads/main/asset/cerebro%201.jpg') center/cover no-repeat; 
-            padding: 40px 30px; border-radius: 20px; color: #fff; text-align: center; 
-            display: flex; flex-direction: column; justify-content: center; box-shadow: 0 20px 40px rgba(0,0,0,0.3); overflow: hidden;
-        }
-        .overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.65); z-index: 1; }
-        .btn-wp {
-            position: relative; z-index: 2; background: #00f2ff; color: #001a1d; 
-            padding: 16px 25px; border-radius: 12px; font-weight: bold; font-size: 15px; 
-            text-transform: uppercase; transition: 0.3s; box-shadow: 0 0 20px rgba(0, 242, 255, 0.4); 
-            cursor: pointer; display: inline-block; text-decoration: none; border: none;
-        }
-        .btn-wp:hover { transform: scale(1.05); background: #fff; }
-
-        .cta-section { text-align: center; padding: 80px 20px; background: rgba(0,0,0,0.4); }
-        .btn-main {
-            display: inline-block; padding: 20px 50px; background: var(--primary-cyan); color: #000;
-            text-decoration: none; font-weight: 900; font-family: 'Orbitron', sans-serif;
-            border-radius: 50px; box-shadow: 0 0 30px var(--primary-cyan); font-size: 1.2rem; transition: 0.3s;
-        }
-        footer { text-align: center; padding: 40px; background: #000; font-size: 0.8rem; color: #666; letter-spacing: 2px; }
     </style>
 </head>
 <body>
 
-<header>
-    <h1>NEO PISK TECH</h1>
-    <p class="subtitle">WEB3 & TOKENIZACIÓN</p>
-</header>
-
-<div class="container">
-    <div class="card">
-        <h2>Tokenización para Negocios</h2>
-        <p>Convertimos tu inventario o servicios futuros en activos digitales. Ideal para obtener capital sin préstamos bancarios.</p>
-        <ul>
-            <li>Barberías y Salones VIP</li>
-            <li>Clínicas Estéticas y Salud</li>
-            <li>Restaurantes y Retail</li>
-        </ul>
-    </div>
-    <div class="card">
-        <h2>Eventos & Instituciones</h2>
-        <p>Elimina el efectivo en tus eventos masivos. Seguridad total y cero robos hormiga con tickets digitales inteligentes.</p>
-        <ul>
-            <li>Conciertos y Festivales</li>
-            <li>Rifas Escolares (APAFAS)</li>
-            <li>Kermeses y Eventos Sociales</li>
-        </ul>
-    </div>
-    <div class="card">
-        <h2>Inversionistas $PISK</h2>
-        <p>Participa en el ecosistema de Neo Pisk. Tu capital respalda proyectos tecnológicos reales con alta tracción en Lima.</p>
-        <ul>
-            <li>Respaldo en Activos Reales</li>
-            <li>Transparencia Blockchain</li>
-            <li>Crecimiento Escalable</li>
-        </ul>
+<!-- MODAL PARA ABRIR METAMASK EN MÓVIL -->
+<div id="modalMetamask" class="modal-overlay">
+    <div class="modal-content">
+        <h3>🦊 Abrir MetaMask</h3>
+        <p>Para conectar tu billetera, abre esta página en el navegador de MetaMask</p>
+        <button class="btn-open-metamask" onclick="abrirEnMetamask()">
+            📱 ABRIR EN METAMASK
+        </button>
+        <button class="btn-close-modal" onclick="cerrarModal()">Cancelar</button>
     </div>
 </div>
 
-<h2 class="section-title">¿CÓMO FUNCIONA?</h2>
-<div class="step-container">
-    <div class="step">
-        <div class="step-num">01</div>
-        <div class="step-text">
-            <h3>Diagnóstico Digital</h3>
-            <p>Analizamos tu negocio o evento para crear la estrategia de tokens adecuada.</p>
+<div class="main-container">
+    <div class="header">
+        <div class="logo-row">
+            <img src="asset/IMG-20260126-WA0020.jpg" alt="Logo Neo">
+            <img src="asset/Eco Pisk.jpg" alt="Logo Eco">
+        </div>
+        <h1>NEO PISK & ECO PISK</h1>
+        <p style="color: var(--gold); letter-spacing: 5px; font-size: 11px;">FOUNDER PARTNER PORTAL • SOCIO FUNDADOR</p>
+    </div>
+
+    <div class="center-panel">
+        <div class="balance-box">
+            <div style="font-size: 11px; color: #666; margin-bottom: 5px;">TU SALDO / YOUR BALANCE</div>
+            <div id="saldoDisplay">0.00 $PISK</div>
+        </div>
+        <button class="btn-approve" style="background: transparent; border: 1px solid var(--cyan); color: var(--cyan);" onclick="verMiSaldo()">🔍 CONECTAR BILLETERA</button>
+        <input type="number" id="inputUSDT" placeholder="Monto USDT">
+        <button class="btn-approve" onclick="approveUSDT()">1. AUTORIZAR USDT</button>
+        <button class="btn-buy" onclick="buyPisk()">2. ADQUIRIR TOKENS $PISK</button>
+        <div id="status" style="font-size: 12px; margin-top: 15px; color: #d4af37; font-weight: bold;">Listo en Polygon Network</div>
+    </div>
+
+    <div class="presale-container">
+        <h3 style="text-align: center; color: var(--gold); margin-top: 0; letter-spacing: 2px;">💎 TOKENOMICS SOCIO FUNDADOR</h3>
+        <div class="presale-grid">
+            <div style="border-right: 1px solid #222; padding-right: 20px;">
+                <p><b>EMISIÓN TOTAL:</b> 100,000,000 $PISK</p>
+                <p><b>POLÍTICA:</b> BUYBACK & BURN</p>
+                <p><span class="phase-badge">FASE 1</span> <span style="color: #39FF14;">SOLD OUT 100%</span></p>
+                <p><span class="phase-badge">FASE 2</span> ACTUAL: $0.10 USD</p>
+                <div class="progress-bar"><div class="progress-fill"></div></div>
+                <small>15% Completado</small>
+            </div>
+            <div style="padding-left: 10px;">
+                <p><b>TOTAL SUPPLY:</b> 100,000,000 $PISK</p>
+                <p><b>POLICY:</b> BUYBACK & BURN</p>
+                <p><span class="phase-badge">PHASE 1</span> <span style="color: #39FF14;">SOLD OUT 100%</span></p>
+                <p><span class="phase-badge">PHASE 2</span> CURRENT: $0.10 USD</p>
+                <div class="progress-bar"><div class="progress-fill"></div></div>
+                <small>15% Completed</small>
+            </div>
         </div>
     </div>
-    <div class="step">
-        <div class="step-num">02</div>
-        <div class="step-text">
-            <h3>Emisión de Tokens</h3>
-            <p>Lanzamos tu moneda digital bajo el respaldo del ecosistema Neo Pisk Tech.</p>
+
+    <div class="info-grid">
+        <div class="info-card">
+            <img src="https://flagcdn.com/w160/es.png" class="flag-icon" alt="España">
+            <h4 style="color: var(--gold); margin: 0 0 15px 0;">INSTRUCCIONES</h4>
+            <p style="font-size: 13px; text-align: left; margin-bottom: 15px;">
+                1. Conecta tu MetaMask.<br>
+                2. Autoriza USDT para la compra.<br>
+                3. Confirma tu adquisición.<br>
+                <b>Smartphone:</b> Copia la URL abajo.
+            </p>
+            <button onclick="copiarURL()" class="btn-metamask">COPIAR URL PARA METAMASK</button>
+            <button onclick="copyContract()" style="background:#000; color:var(--gold); border:1px dashed var(--gold); font-size:10px; padding:10px; width: 100%; cursor: pointer;">COPIAR CONTRATO $PISK</button>
+            <a href="https://wa.me/51908066095" class="btn-support-ws" target="_blank">💬 SOPORTE WHATSAPP</a>
+        </div>
+
+        <div class="info-card">
+            <img src="https://flagcdn.com/w160/us.png" class="flag-icon" alt="USA">
+            <h4 style="color: var(--gold); margin: 0 0 15px 0;">INSTRUCTIONS</h4>
+            <p style="font-size: 13px; text-align: left; margin-bottom: 15px;">
+                1. Connect your MetaMask wallet.<br>
+                2. Approve USDT for purchase.<br>
+                3. Confirm your acquisition.<br>
+                <b>Smartphone:</b> Copy the URL below.
+            </p>
+            <button onclick="copiarURL()" class="btn-metamask">COPY URL FOR METAMASK</button>
+            <button onclick="copyContract()" style="background:#000; color:var(--gold); border:1px dashed var(--gold); font-size:10px; padding:10px; width: 100%; cursor: pointer;">COPY $PISK CONTRACT</button>
+            <a href="https://wa.me/51908066095" class="btn-support-ws" target="_blank">💬 WHATSAPP SUPPORT</a>
         </div>
     </div>
-    <div class="step">
-        <div class="step-num">03</div>
-        <div class="step-text">
-            <h3>Capitalización y Venta</h3>
-            <p>Tus clientes compran tokens por adelantado. Tú recibes el capital y aseguras la lealtad.</p>
+
+    <div class="legal-container">
+        <div class="legal-box">
+            <b style="color: var(--gold);">⚖️ AVISO LEGAL:</b> La adquisición de $PISK representa utilidad digital diseñada para el ecosistema Neo Pisk. El usuario acepta la gobernanza digital para el desarrollo de infraestructura en Lima Este.
         </div>
+        <div class="legal-box">
+            <b style="color: var(--gold);">⚖️ LEGAL NOTICE:</b> The acquisition of $PISK represents digital utility for the Neo Pisk ecosystem. The user accepts digital governance for infrastructure development in East Lima.
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>Propiedad Oficial: <b>Neo Pisk & Eco Pisk</b></p>
+        <p>Web: <a href="https://neopisk.lat/" target="_blank">neopisk.lat</a></p>
     </div>
 </div>
 
-<div style="text-align: center; margin: 80px auto 40px; max-width: 600px; padding: 20px; border: 1px dashed var(--primary-cyan); border-radius: 15px; background: rgba(0, 242, 255, 0.03);">
-    <p style="font-family: 'Orbitron', sans-serif; color: var(--primary-cyan); letter-spacing: 2px; margin-bottom: 20px; font-weight: 900;">RESPALDO INSTITUCIONAL</p>
+<a href="https://wa.me/51908066095" class="btn-whatsapp-float" target="_blank">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" width="35" alt="WhatsApp">
+</a>
+
+<script>
+    // CONFIGURACIÓN DE SMART CONTRACTS
+    const contractAddr = "0x07Fc7AC9D681Cdd3D100c68f6f5646970CC7fF60"; 
+    const usdtAddr = "0xc2132D05D31c914a87C6611C10748AEb04B58e8F"; 
+    const piskAddr = "0x9d5B2A73d16dAF61712BA8527d94F6997a0E6323";
+
+    const minABI = [
+        { "constant": false, "inputs": [{ "name": "_spender", "type": "address" }, { "name": "_value", "type": "uint256" }], "name": "approve", "outputs": [{ "name": "", "type": "bool" }], "type": "function" },
+        { "constant": true, "inputs": [{ "name": "_owner", "type": "address" }], "name": "balanceOf", "outputs": [{ "name": "balance", "type": "uint256" }], "type": "function" },
+        { "constant": true, "inputs": [{ "name": "_owner", "type": "address" }, { "name": "_spender", "type": "address" }], "name": "allowance", "outputs": [{ "name": "", "type": "uint256" }], "type": "function" }
+    ];
+
+    const buyABI = [{ "inputs": [{ "name": "_amountUSDT", "type": "uint256" }], "name": "buyWithUSDT", "outputs": [], "stateMutability": "nonpayable", "type": "function" }];
+
+    // ========== FUNCIONES PARA DETECTAR MÓVIL Y ABRIR METAMASK ==========
     
-    <a href="index.html#lideres" 
-       style="display: inline-block; padding: 15px 35px; border: 2px solid var(--neon-pink); color: var(--neon-pink); text-decoration: none; font-family: 'Orbitron', sans-serif; font-weight: bold; border-radius: 10px; transition: 0.3s; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 0 15px rgba(255, 0, 122, 0.2);" 
-       onmouseover="this.style.background='var(--neon-pink)'; this.style.color='#000'; this.style.boxShadow='0 0 30px var(--neon-pink)';" 
-       onmouseout="this.style.background='transparent'; this.style.color='var(--neon-pink)'; this.style.boxShadow='0 0 15px rgba(255, 0, 122, 0.2)';"
-    >
-        Conoce a nuestros Líderes
-    </a>
-</div>
+    function esMobil() {
+        return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    }
 
-<div class="news-integration">
-    <div class="news-container">
-        <div class="forbes-block">
-            <div style="flex: 1; min-width: 300px; background: url('https://raw.githubusercontent.com/ernestopisk2015-arch/Neopisk/refs/heads/main/asset/casa1.jpg') center/cover no-repeat; min-height: 300px;"></div>
-            <div style="flex: 1.2; padding: 40px; min-width: 300px;">
-                <span style="color: #d4af37; font-weight: bold; font-size: 0.8em; letter-spacing: 2px;">FORBES ARGENTINA</span>
-                <h3 style="margin: 15px 0; color: #1a2a3a; font-size: 1.8em; line-height: 1.2;">"Revolución Real Estate: Comprar una casa en partecitas de US$ 10 ya es posible"</h3>
-                <p style="color: #5d6d7e; font-size: 1.1em; line-height: 1.6;">
-                    Forbes confirma que la tokenización de inmuebles es la nueva forma de ahorro seguro. En <b>Neo Pisk Tech</b> usamos esta tecnología para que seas dueño de activos reales.
-                </p>
-                <a href="https://www.forbesargentina.com/negocios/revolucion-real-estate-comprar-una-casa-en-partecitas-us-10-ya-posible-argentina-n81951" target="_blank" style="color: #1a2a3a; font-weight: bold; text-decoration: none; border-bottom: 2px solid #d4af37; padding-bottom: 3px;">Leer nota completa en Forbes →</a>
-            </div>
-        </div>
+    function esMetaMaskInstalado() {
+        return typeof window.ethereum !== 'undefined' && window.ethereum.isMetaMask;
+    }
 
-        <div class="tech-grid">
-            <div class="video-box">
-                <h4 style="color: #1a2a3a; margin-bottom: 15px; font-family: 'Orbitron', sans-serif;">🏨 Tokenización de Hoteles</h4>
-                <div style="position: relative; padding-bottom: 56.25%; height: 0; border-radius: 15px; overflow: hidden; border: 3px solid #1a2a3a;">
-                    <iframe style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" src="https://www.youtube.com/embed/tQODjIjVnSo" frameborder="0" allowfullscreen></iframe>
-                </div>
-                <p style="margin-top: 15px; font-size: 0.95em; color: #4a5568; line-height: 1.5; background: #f1f5f9; padding: 15px; border-radius: 10px; border-left: 5px solid #2980b9;">
-                    "Aprende cómo las reservas de hotel se convierten en activos que puedes revender. Es la misma tecnología que usamos en <b>Neo Pisk</b> para tokenizar servicios y producción real."
-                </p>
-            </div>
+    function abrirEnMetamask() {
+        const urlActual = window.location.href;
+        const deepLink = `https://metamask.app.link/dapp/${urlActual.replace(/^https?:\/\//, '')}`;
+        window.location.href = deepLink;
+    }
 
-            <div class="whitepaper-box">
-                <div class="overlay"></div>
-                <div style="position: relative; z-index: 2;">
-                    <h4 style="margin: 0; font-size: 1.4em; color: #00f2ff; text-shadow: 0 0 10px rgba(0,242,255,0.5); font-family: 'Orbitron', sans-serif;">Protocolo Técnico</h4>
-                    <p style="font-size: 0.95em; color: #e2e8f0; margin: 20px 0 30px; line-height: 1.4;">
-                        Descarga el <b>White Paper V1.1</b> y conoce el sistema de auditoría con <b>1,059 clones</b> de respaldo en GitHub.
-                    </p>
-                    <a href="https://docs.google.com/document/d/1xP754W2_Lnj5JZ_PZiuT2wagCoY6M_O2Fb8nXUvg-WQ/edit?usp=sharing" target="_blank" class="btn-wp">📥 Descargar White Paper</a>
-                    <div style="margin-top: 25px; font-size: 0.75em; color: #94a3b8; font-weight: bold;">VALIDADO POR NEO PISK TECH 2026</div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+    function mostrarModal() {
+        document.getElementById('modalMetamask').style.display = 'flex';
+    }
 
-<div class="cta-section">
-    <p style="font-size: 1.3rem; margin-bottom: 20px; font-family: 'Orbitron', sans-serif; color: var(--primary-cyan);">¿Listo para digitalizar tu economía?</p>
-    <a href="https://wa.me/519XXXXXXXX" class="btn-main">CONTACTAR CON ERNESTO</a>
-</div>
+    function cerrarModal() {
+        document.getElementById('modalMetamask').style.display = 'none';
+    }
 
-<footer>
-    NEO PISK TECH © 2026 | DIGITALIZANDO EL COMERCIO EN PERÚ | SAN JUAN DE LURIGANCHO
-</footer>
-    <div style="background-color: #f4f4f4; border-top: 1px solid #e0e0e0; padding: 40px 20px; font-family: 'Arial', sans-serif;">
-    <div style="max-width: 900px; margin: 0 auto; text-align: center;">
-        
-        <div style="display: inline-block; background: #333; color: #fff; padding: 5px 15px; border-radius: 4px; font-size: 0.75em; font-weight: bold; margin-bottom: 15px; letter-spacing: 1px;">
-            COMPLIANCE & LEGAL
-        </div>
-        
-        <p style="color: #666; font-size: 0.85em; line-height: 1.6; margin: 0 auto; max-width: 800px;">
-            <b>Aviso Legal:</b> Neo Pisk Tech es una plataforma de infraestructura tecnológica. No ofrece valores financieros tradicionales ni instrumentos de inversión regulados por mercados de valores tradicionales. Los tokens <b>$PISK</b> representan derechos de participación digital sobre activos productivos tokenizados bajo contratos inteligentes (Smart Contracts) auditables en la blockchain. La valorización de los activos depende del rendimiento económico real de los proyectos vinculados y no de la especulación de mercado.
-        </p>
-        
-        <div style="margin-top: 20px; font-size: 0.75em; color: #999;">
-            &copy; 2026 Neo Pisk Tech | RWA Protocol v1.2 | San Juan de Lurigancho, Lima, Perú.
-        </div>
-    </div>
-</div>
+    // ========== FUNCIONES PRINCIPALES ==========
+
+    function copiarURL() { 
+        navigator.clipboard.writeText("https://neopisk.lat/invertir.html"); 
+        alert("URL Copiada"); 
+    }
+    
+    function copyContract() { 
+        navigator.clipboard.writeText(piskAddr); 
+        alert("Contrato $PISK Copiado"); 
+    }
+    
+    async function getSafeGasPrice(web3) {
+        const gasPrice = await web3.eth.getGasPrice();
+        return Math.floor(parseInt(gasPrice) * 1.5).toString();
+    }
+
+    async function verMiSaldo() {
+        // NUEVA LÓGICA: Detectar si está en móvil sin MetaMask
+        if (esMobil() && !esMetaMaskInstalado()) {
+            mostrarModal();
+            return;
+        }
+
+        if (!window.ethereum) {
+            alert("Instala MetaMask para continuar");
+            return;
+        }
+
+        try {
+            const web3 = new Web3(window.ethereum);
+            const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+            const pisk = new web3.eth.Contract(minABI, piskAddr);
+            const bal = await pisk.methods.balanceOf(accounts[0]).call();
+            const normal = parseFloat(web3.utils.fromWei(bal, 'ether')).toFixed(2);
+            document.getElementById("saldoDisplay").innerText = normal + " $PISK";
+            document.getElementById("status").innerText = "✅ Conectado: " + accounts[0].substring(0,8);
+        } catch (error) {
+            console.error(error);
+            document.getElementById("status").innerText = "❌ Error al conectar";
+        }
+    }
+
+    async function approveUSDT() {
+        const val = document.getElementById("inputUSDT").value;
+        if(!val || val <= 0) return alert("Ingresa un monto válido");
+        try {
+            const web3 = new Web3(window.ethereum);
+            const accounts = await web3.eth.getAccounts();
+            if(accounts.length === 0) return alert("Conecta tu billetera primero");
+            const usdt = new web3.eth.Contract(minABI, usdtAddr);
+            const montoFinal = (parseFloat(val) * 1000000).toFixed(0);
+            const gasPrice = await getSafeGasPrice(web3);
+
+            document.getElementById("status").innerText = "⏳ Verificando permisos...";
+            const allowance = await usdt.methods.allowance(accounts[0], contractAddr).call();
+            
+            if (parseInt(allowance) > 0) {
+                document.getElementById("status").innerText = "⏳ Reseteando permiso anterior...";
+                await usdt.methods.approve(contractAddr, "0").send({ from: accounts[0], gasPrice: gasPrice });
+            }
+
+            document.getElementById("status").innerText = "⏳ Autorizando " + val + " USDT...";
+            await usdt.methods.approve(contractAddr, montoFinal).send({ 
+                from: accounts[0],
+                gasPrice: gasPrice
+            });
+            document.getElementById("status").innerText = "✅ Autorizado. Procede al paso 2.";
+        } catch (e) { 
+            console.error(e);
+            document.getElementById("status").innerText = "❌ Error en Autorización"; 
+        }
+    }
+
+    async function buyPisk() {
+        const val = document.getElementById("inputUSDT").value;
+        if(!val) return alert("Autoriza primero el monto");
+        try {
+            const web3 = new Web3(window.ethereum);
+            const accounts = await web3.eth.getAccounts();
+            if(accounts.length === 0) return alert("Conecta tu billetera primero");
+            const neo = new web3.eth.Contract(buyABI, contractAddr);
+            const montoFinal = (parseFloat(val) * 1000000).toFixed(0);
+            const gasPrice = await getSafeGasPrice(web3);
+
+            document.getElementById("status").innerText = "🚀 Confirmando compra...";
+            await neo.methods.buyWithUSDT(montoFinal).send({ 
+                from: accounts[0],
+                gas: 250000,
+                gasPrice: gasPrice
+            });
+            document.getElementById("status").innerText = "🎉 ¡COMPRA EXITOSA!";
+            verMiSaldo();
+        } catch (e) { 
+            console.error(e);
+            document.getElementById("status").innerText = "❌ Error en la compra"; 
+        }
+    }
+</script>
 
 </body>
 </html>
