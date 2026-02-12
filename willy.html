@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Neo Pisk Tech — Tokenomics Cacao RWA</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #F5C842;
+    --gold2: #E6A817;
+    --dark: #0A0A0F;
+    --dark2: #111118;
+    --dark3: #1A1A24;
+    --fire: #FF5E1A;
+    --fire2: #FF8C42;
+    --green: #2EE89A;
+    --blue: #4A9EFF;
+    --text: #E8E8F0;
+    --muted: #8888AA;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--dark);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    overflow-x: hidden;
+  }
+
+  .slides { width: 100%; }
+
+  .slide {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 40px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .nav-dots {
+    position: fixed;
+    right: 24px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 100;
+  }
+  .dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--muted);
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  .dot.active { background: var(--gold); transform: scale(1.5); }
+
+  .slide-label {
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 16px;
+    opacity: 0.7;
+  }
+
+  .slide-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(28px, 5vw, 60px);
+    font-weight: 800;
+    margin-bottom: 16px;
+    text-align: center;
+    line-height: 1.1;
+  }
+
+  .slide-desc {
+    color: var(--muted);
+    font-size: 16px;
+    text-align: center;
+    margin-bottom: 40px;
+    max-width: 700px;
+  }
+
+  .highlight { color: var(--gold); font-weight: 600; }
+
+  .badge {
+    display: inline-block;
+    background: rgba(245,200,66,0.1);
+    border: 1px solid rgba(245,200,66,0.3);
+    color: var(--gold);
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 8px 20px;
+    border-radius: 100px;
+    margin-bottom: 24px;
+  }
+
+  .grid-bg {
+    position: absolute;
+    inset: 0;
+    background-image: linear-gradient(rgba(245,200,66,0.04) 1px, transparent 1px),
+                      linear-gradient(90deg, rgba(245,200,66,0.04) 1px, transparent 1px);
+    background-size: 50px 50px;
+    pointer-events: none;
+  }
+
+  .content-container {
+    position: relative;
+    max-width: 1100px;
+    width: 100%;
+    text-align: center;
+  }
+
+  .section-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+    margin: 40px 0;
+  }
+
+  .card {
+    background: var(--dark3);
+    border-radius: 20px;
+    padding: 32px;
+    border: 1px solid rgba(245,200,66,0.15);
+    transition: all 0.3s;
+  }
+
+  .card:hover {
+    transform: translateY(-8px);
+    border-color: var(--gold);
+    box-shadow: 0 12px 32px rgba(245,200,66,0.15);
+  }
+
+  .card-icon {
+    font-size: 48px;
+    margin-bottom: 16px;
+  }
+
+  .card-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+
+  .card-text {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  .conclusion {
+    font-size: 18px;
+    line-height: 1.7;
+    max-width: 800px;
+    margin: 48px auto;
+  }
+
+  .progress-bar {
+    position: fixed;
+    top: 0; left: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--gold), var(--fire));
+    transition: width 0.4s ease;
+    z-index: 200;
+  }
+
+  @media (max-width: 768px) {
+    .slide { padding: 40px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="progressBar"></div>
+
+<nav class="nav-dots" id="navDots"></nav>
+
+<div class="slides">
+
+  <!-- SLIDE 1: PORTADA -->
+  <section class="slide" id="s1">
+    <div class="grid-bg"></div>
+    <div class="content-container">
+      <div class="badge">Neo Pisk Tech · Tokenomics Cacao RWA</div>
+      <h1 class="slide-title">Estructura de Doble Token<br>para Corporación AgroTec</h1>
+      <p class="slide-desc">Enfoque en Cacao Peruano y Tierras Ecozuzo – Blindaje Patrimonial + Captación Masiva</p>
+    </div>
+  </section>
+
+  <!-- SLIDE 2: INTRO Y CONTEXTO -->
+  <section class="slide" id="s2">
+    <div class="content-container">
+      <div class="badge">Contexto 2025–2026</div>
+      <h2 class="slide-title">El cacao peruano en su momento histórico</h2>
+      <p class="slide-desc">
+        El sector cacaotero peruano está en un punto de inflexión histórico y estratégico. En 2025, Perú rompió récords: producción nacional estimada en <span class="highlight">~182,708–202,345 toneladas</span> (ciclo 2024–2025, +11% vs. anterior), exportaciones de cacao y derivados alcanzaron <span class="highlight">~US$ 1,454–1,547 millones</span> entre enero-noviembre (+22–30% vs. 2024), impulsadas por precios promedio de <span class="highlight">US$ 8.88/kg</span> (+12% vs. 2024). Esto consolidó a Perú como líder en cacao fino de aroma y segundo en industrialización regional (~40–45% procesado localmente), con fuerte demanda en UE, EE.UU. y Asia por calidad, sostenibilidad y trazabilidad.
+      </p>
+      <p class="slide-desc">
+        Pero 2026 trae ajustes inevitables: precios internacionales caen (cotizaciones ~US$ 5,800–6,476/tonelada o menos, con mínimos ~US$ 3,700–4,500 en febrero), por mayor oferta africana (Costa de Marfil, Ghana), normalización post-crisis 2024–2025 y riesgos agroclimáticos en selva central/norte (lluvias excesivas, moniliasis, escoba de bruja). En este contexto de volatilidad, la <span class="highlight">tokenización RWA de cacao y tierras cacaoteras/vivienda Ecozuzo</span> (tus ~100,000 m² en Pozuzo, Huánuco – zona emergente de cacao premium CCN-51 y potencial eco-vivienda sostenible) se vuelve esencial: protege el patrimonio real (titularidad SUNARP), genera liquidez inmediata vía mercados digitales y capta capital global sin depender solo de precios del commodity.
+      </p>
+    </div>
+  </section>
+
+  <!-- SLIDE 3: ESTRUCTURA DOBLE TOKEN -->
+  <section class="slide" id="s3">
+    <div class="content-container">
+      <div class="badge">La Solución</div>
+      <h2 class="slide-title">Proponemos la estructura de doble token</h2>
+      <p class="slide-desc">para blindar legalmente tus activos mientras captamos inversión masiva de inversores locales y globales:</p>
+
+      <div class="section-grid">
+        <div class="card">
+          <div class="card-icon">🔒</div>
+          <div class="card-title">1. Token Interno (Patrimonio y Tierra Cacaotera / Ecozuzo)</div>
+          <div class="card-text">
+            Naturaleza técnica: Token restringido (soulbound-like o ERC-721 con bloqueo parcial de transferencias públicas).<br><br>
+            Función principal: Representa tierras de cultivo de cacao y tierras destinadas a vivienda Ecozuzo. Se vende a inversores locales y globales como participación en el patrimonio real.<br><br>
+            Custodia segura: El 20% de la emisión total queda bajo custodia en Neo Pisk Tech mediante contrato inteligente. Neo Pisk solo puede vender o transferir esos tokens a los 6 meses de haber sido creado el contrato. Wallet multi-sig (tú + Neo Pisk Tech + auditor externo). No expuesto completamente a mercados abiertos → valor estable, inmune a caídas de precio del cacao 2026 (ej. -30–60% desde picos 2025).<br><br>
+            Seguridad técnica: Smart contract con pausa/emergencia y upgradeability (OpenZeppelin UUPS). Respaldado 100% por títulos físicos en SUNARP, producción tangible (cacao en grano fermentado/seco) y certificaciones sostenibles (Rainforest Alliance, Fairtrade).<br><br>
+            Smart Contract "Cajero Automático": Regla 95/5 automática: Al comprar (USDT/ETH/stablecoin), 95% neto a wallet AgroTec (capital para siembra/cosecha ante riesgos 2026), 5% fee tecnológico a Neo Pisk Tech. Auditoría recomendada (Certik/OpenZeppelin). Chain: Polygon/Base (bajos costos, alta velocidad, ideal Latam).<br><br>
+            Ventaja para AgroTec: Tus tierras y plantaciones en Pozuzo quedan protegidas como activo híbrido off-chain/on-chain, con venta controlada a inversores serios que aportan capital real al proyecto.
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-icon">🌿</div>
+          <div class="card-title">2. Token RWA (Cacao y Mercado Líquido) – "Público y Especulativo"</div>
+          <div class="card-text">
+            Naturaleza técnica: Token fungible ERC-20 (compatible con DEX en Polygon/Base, fees ~US$0.01–0.10/tx).<br><br>
+            Mecánica de valor: Precio por oferta/demanda pura (no yield fijo → evita SMV). Representa participación simbólica en ecosistema cacao: plusvalía tierras, producción futura, trazabilidad sostenible desde finca Pozuzo.<br><br>
+            Emisión sugerida (escalable a producción real): Total 20,000,000 tokens.<br>
+            • 60% preventa/venta pública (inversores buscan cacao premium peruano post-récord 2025).<br>
+            • 20% liquidez inicial (pool lockeado 12–24 meses).<br>
+            • 20% reserva técnica: en custodia en Neo Pisk Tech bajo contrato inteligente. Neo Pisk solo puede vender o transferir esos tokens a los 6 meses de haber sido creado el contrato (para VPS, APIs Groq, mejoras IA Karla).<br><br>
+            Integración con cacao real: Cada token vinculado a certificados digitales (kg cacao proyectado, hash de trazabilidad). Beneficios: acceso preferencial a cacao certificado, plusvalía por expansión sostenible en selva central.<br><br>
+            Smart Contract "Cajero Automático": Regla 95/5 automática: Al comprar (USDT/ETH/stablecoin), 95% neto a wallet AgroTec (capital para siembra/cosecha ante riesgos 2026), 5% fee tecnológico a Neo Pisk Tech. Auditoría recomendada (Certik/OpenZeppelin). Chain: Polygon/Base (bajos costos, alta velocidad, ideal Latam).
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 4: LEGAL Y TÉCNICO -->
+  <section class="slide" id="s4">
+    <div class="content-container">
+      <div class="badge">Aspectos Clave</div>
+      <h2 class="slide-title">Aspectos Legales y Registrales en Perú (2026)</h2>
+      <p class="slide-desc">
+        Marco: Zona gris (sin ley RWA específica). SMV supervisa promesas de rentabilidad → no ofrecemos dividendos/yield fijo.<br><br>
+        Estructura legal: Contrato de Asociación en Participación (Código Civil arts. 1401–1415) + Certificado Digital emitido por AgroTec (vinculado al token).<br>
+        • No registro individual SUNARP por token ~US$100 (inviable por costos notariales). Empresa mantiene titularidad registral total; inversor tiene derecho económico proporcional.<br>
+        • Trazabilidad: Hash blockchain + QR en certificados para auditoría física (visitas Pozuzo).<br><br>
+        Cumplimiento: KYC básico vía bot Karla, no oferta pública sin SMV, SUNAT (renta de capital posible → consultar contador especializado).
+      </p>
+
+      <h2 class="slide-title" style="margin: 48px 0 24px;">Infraestructura Técnica Completa (Neo Pisk Tech)</h2>
+      <div class="section-grid">
+        <div class="card">
+          <div class="card-icon">🖥️</div>
+          <div class="card-title">VPS central</div>
+          <div class="card-text">KVM Linux (vps3288730 – IP 69.169.109.120) → aloja bots Telegram/WhatsApp, IA Karla (Llama-3.3-70b), Google Sheet (ID: 1dOWxf_s74la4Ey2S3nmK1CSYDtDtQfZtySgjT4oa-wU) para leads, trazabilidad cacao y auditoría producción.</div>
+        </div>
+        <div class="card">
+          <div class="card-icon">🤖</div>
+          <div class="card-title">IA Karla</div>
+          <div class="card-text">Gestiona leads 24/7, explica tokenización simple ("compra participación en cacao real Pozuzo, respaldado por récord 2025"), deriva a visitas presenciales/búnker.</div>
+        </div>
+        <div class="card">
+          <div class="card-icon">🛡️</div>
+          <div class="card-title">Seguridad y Escalabilidad</div>
+          <div class="card-text">Encriptación end-to-end, backups diarios, multi-sig wallets, monitoring uptime. Duplicable para cooperativas cacaoteras o más hectáreas en Huánuco/Ucayali. Incluye la custodia inteligente del 20% de ambos tokens con lock de 6 meses.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 5: PROYECCIÓN Y CONCLUSIÓN -->
+  <section class="slide" id="s5">
+    <div class="content-container">
+      <div class="badge">Futuro</div>
+      <h2 class="slide-title">Proyección de Crecimiento (2026–2028) – Enfoque Cacao y Ecozuzo</h2>
+      <p class="slide-desc">
+        Drivers:<br>
+        • Cacao peruano premium (demanda UE por sostenibilidad/trazabilidad blockchain post-récord 2025).<br>
+        • Escasez tokens + narrativa "cacao real Perú + vivienda sostenible Ecozuzo".<br>
+        • Hitos: cada tonelada certificada o hectárea nueva aumenta "prestigio" → precio token.<br>
+        • Reserva del 20% en custodia Neo Pisk (lock 6 meses vía smart contract) asegura estabilidad y uso técnico responsable.
+      </p>
+
+      <h2 class="slide-title" style="margin: 48px 0 24px;">Conclusión para ti, Willy</h2>
+      <p class="conclusion">
+        Con este doble token enfocado en cacao y tierras Ecozuzo (activo real fuerte pese a volatilidad 2026), <span class="highlight">no prometes nada fijo</span> (evitas SMV), <span class="highlight">ofreces participación especulativa en un commodity premium y desarrollo sostenible</span> que el mercado valora libremente. La gente compra hoy porque cree en el cacao peruano (calidad, sostenibilidad, plusvalía Pozuzo post-récord 2025) y en el potencial de vivienda eco en selva central. Tú capitalizas para expandir plantaciones y proyectos Ecozuzo ante riesgos climáticos/precios bajos, la empresa crece, y tus títulos SUNARP + producción cacao siguen como muro inquebrantable. El 20% de ambos tokens queda en custodia segura en Neo Pisk Tech bajo contrato inteligente, con liberación solo a los 6 meses de creación del contrato.
+      </p>
+
+      <p class="slide-desc" style="margin-top: 32px;">
+        ¿Quieres ajustar emisión por toneladas proyectadas (ej. vincular a 1 token = fracción de kg cacao o m² Ecozuzo), detalle código smart contract o demo bot explicando "Token Cacao Pozuzo"? Estoy listo para avanzar.
+      </p>
+    </div>
+  </section>
+
+</div>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  const navDots = document.getElementById('navDots');
+  const progressBar = document.getElementById('progressBar');
+
+  slides.forEach((_, i) => {
+    const dot = document.createElement('div');
+    dot.className = 'dot' + (i === 0 ? ' active' : '');
+    dot.addEventListener('click', () => {
+      slides[i].scrollIntoView({ behavior: 'smooth' });
+    });
+    navDots.appendChild(dot);
+  });
+
+  window.addEventListener('scroll', () => {
+    const scrollY = window.scrollY;
+    const totalHeight = document.body.scrollHeight - window.innerHeight;
+    const progress = (scrollY / totalHeight) * 100;
+    progressBar.style.width = progress + '%';
+
+    const dots = document.querySelectorAll('.dot');
+    slides.forEach((slide, i) => {
+      const rect = slide.getBoundingClientRect();
+      if (rect.top <= window.innerHeight / 2 && rect.bottom >= window.innerHeight / 2) {
+        dots.forEach(d => d.classList.remove('active'));
+        dots[i].classList.add('active');
+      }
+    });
+  });
+</script>
+</body>
+</html>
