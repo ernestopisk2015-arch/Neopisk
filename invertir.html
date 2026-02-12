@@ -80,4 +80,152 @@
         .btn-metamask {
             background-image: linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.65)), url('asset/metamasklogo.jpg');
             background-size: cover; height: 50px; border: 1px solid var(--gold); color: #fff; 
-            border-radius: 10px; width: 100%; cursor: pointer
+            border-radius: 10px; width: 100%; cursor: pointer; font-size: 11px; font-weight: bold; margin-bottom: 10px;
+        }
+
+        .btn-support-ws {
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+            background: #25D366; color: black; padding: 12px; border-radius: 10px; 
+            text-decoration: none; font-weight: bold; font-size: 12px; margin-top: 10px;
+        }
+
+        .legal-container { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px; }
+        .legal-box { border: 1px solid rgba(212, 175, 55, 0.3); padding: 15px; border-radius: 10px; font-size: 11px; color: #888; text-align: justify; background: rgba(0,0,0,0.3); }
+
+        .footer { text-align: center; padding: 40px 0; border-top: 1px solid #222; font-size: 13px; color: #555; }
+        .footer a { color: var(--gold); text-decoration: none; }
+
+        .btn-whatsapp-float {
+            position: fixed; bottom: 20px; right: 20px; background: #25D366; color: white; 
+            width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; 
+            justify-content: center; box-shadow: 0 4px 15px rgba(0,0,0,0.5); text-decoration: none; z-index: 1000;
+        }
+
+        /* MODAL PARA MÓVIL */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background: #1a1a1a;
+            border: 2px solid var(--gold);
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 90%;
+            text-align: center;
+        }
+        .modal-content h3 {
+            color: var(--gold);
+            margin-top: 0;
+        }
+        .btn-open-metamask {
+            background: linear-gradient(135deg, #f6851b, #e2761b);
+            color: white;
+            padding: 18px 30px;
+            border-radius: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            margin: 15px 0;
+            width: 100%;
+            box-shadow: 0 5px 20px rgba(246, 133, 27, 0.4);
+        }
+        .btn-close-modal {
+            background: #333;
+            color: white;
+            padding: 12px;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        @media (max-width: 768px) { 
+            .presale-grid, .info-grid, .legal-container { grid-template-columns: 1fr; }
+            h1 { font-size: 1.5em; }
+            #saldoDisplay { font-size: 28px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- MODAL PARA ABRIR METAMASK EN MÓVIL -->
+<div id="modalMetamask" class="modal-overlay">
+    <div class="modal-content">
+        <h3>🦊 Conectar con MetaMask</h3>
+        <p style="font-size: 14px; line-height: 1.6;">
+            Para conectar tu billetera desde el celular, 
+            <b>abre esta página dentro del navegador de MetaMask</b>
+        </p>
+        <button class="btn-open-metamask" onclick="abrirEnMetamask()">
+            📱 ABRIR EN METAMASK
+        </button>
+        <p style="font-size: 11px; color: #888; margin: 10px 0;">
+            Al presionar el botón, se abrirá automáticamente la app MetaMask
+        </p>
+        <button class="btn-close-modal" onclick="cerrarModal()">Cancelar</button>
+    </div>
+</div>
+
+<div class="main-container">
+    <div class="header">
+        <div class="logo-row">
+            <img src="asset/IMG-20260126-WA0020.jpg" alt="Logo Neo">
+            <img src="asset/Eco Pisk.jpg" alt="Logo Eco">
+        </div>
+        <h1>NEO PISK & ECO PISK</h1>
+        <p style="color: var(--gold); letter-spacing: 5px; font-size: 11px;">FOUNDER PARTNER PORTAL • SOCIO FUNDADOR</p>
+    </div>
+
+    <div class="center-panel">
+        <div class="balance-box">
+            <div style="font-size: 11px; color: #666; margin-bottom: 5px;">TU SALDO / YOUR BALANCE</div>
+            <div id="saldoDisplay">0.00 $PISK</div>
+        </div>
+        <button class="btn-approve" style="background: transparent; border: 1px solid var(--cyan); color: var(--cyan);" onclick="verMiSaldo()">🔍 CONECTAR BILLETERA</button>
+        <input type="number" id="inputUSDT" placeholder="Monto USDT">
+        <button class="btn-approve" onclick="approveUSDT()">1. AUTORIZAR USDT</button>
+        <button class="btn-buy" onclick="buyPisk()">2. ADQUIRIR TOKENS $PISK</button>
+        <div id="status" style="font-size: 12px; margin-top: 15px; color: #d4af37; font-weight: bold;">Listo en Polygon Network</div>
+    </div>
+
+    <div class="presale-container">
+        <h3 style="text-align: center; color: var(--gold); margin-top: 0; letter-spacing: 2px;">💎 TOKENOMICS SOCIO FUNDADOR</h3>
+        <div class="presale-grid">
+            <div style="border-right: 1px solid #222; padding-right: 20px;">
+                <p><b>EMISIÓN TOTAL:</b> 100,000,000 $PISK</p>
+                <p><b>POLÍTICA:</b> BUYBACK & BURN</p>
+                <p><span class="phase-badge">FASE 1</span> <span style="color: #39FF14;">SOLD OUT 100%</span></p>
+                <p><span class="phase-badge">FASE 2</span> ACTUAL: $0.10 USD</p>
+                <div class="progress-bar"><div class="progress-fill"></div></div>
+                <small>15% Completado</small>
+            </div>
+            <div style="padding-left: 10px;">
+                <p><b>TOTAL SUPPLY:</b> 100,000,000 $PISK</p>
+                <p><b>POLICY:</b> BUYBACK & BURN</p>
+                <p><span class="phase-badge">PHASE 1</span> <span style="color: #39FF14;">SOLD OUT 100%</span></p>
+                <p><span class="phase-badge">PHASE 2</span> CURRENT: $0.10 USD</p>
+                <div class="progress-bar"><div class="progress-fill"></div></div>
+                <small>15% Completed</small>
+            </div>
+        </div>
+    </div>
+
+    <div class="info-grid">
+        <div class="info-card">
+            <img src="https://flagcdn.com/w160/es.png" class="flag-icon" alt="España">
+            <h4 style="color: var(--gold); margin: 0 0 15px 0;">INSTRUCCIONES</h4>
+            <p style="font-size: 13px; text-align: left; margin-bottom: 15px;">
+                1. Conecta tu MetaMask.<br>
+                2. Autoriza USDT para la compra.<br>
+                3. Confirma tu adquisición.<br>
+                <b>Smartphone:</b> Copia la URL ab
