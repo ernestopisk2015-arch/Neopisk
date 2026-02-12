@@ -228,4 +228,186 @@
                 1. Conecta tu MetaMask.<br>
                 2. Autoriza USDT para la compra.<br>
                 3. Confirma tu adquisición.<br>
-                <b>Smartphone:</b> Copia la URL ab
+                <b>Smartphone:</b> Copia la URL abajo.
+            </p>
+            <button onclick="copiarURL()" class="btn-metamask">COPIAR URL PARA METAMASK</button>
+            <button onclick="copyContract()" style="background:#000; color:var(--gold); border:1px dashed var(--gold); font-size:10px; padding:10px; width: 100%; cursor: pointer;">COPIAR CONTRATO $PISK</button>
+            <a href="https://wa.me/51908066095" class="btn-support-ws" target="_blank">💬 SOPORTE WHATSAPP</a>
+        </div>
+
+        <div class="info-card">
+            <img src="https://flagcdn.com/w160/us.png" class="flag-icon" alt="USA">
+            <h4 style="color: var(--gold); margin: 0 0 15px 0;">INSTRUCTIONS</h4>
+            <p style="font-size: 13px; text-align: left; margin-bottom: 15px;">
+                1. Connect your MetaMask wallet.<br>
+                2. Approve USDT for purchase.<br>
+                3. Confirm your acquisition.<br>
+                <b>Smartphone:</b> Copy the URL below.
+            </p>
+            <button onclick="copiarURL()" class="btn-metamask">COPY URL FOR METAMASK</button>
+            <button onclick="copyContract()" style="background:#000; color:var(--gold); border:1px dashed var(--gold); font-size:10px; padding:10px; width: 100%; cursor: pointer;">COPY $PISK CONTRACT</button>
+            <a href="https://wa.me/51908066095" class="btn-support-ws" target="_blank">💬 WHATSAPP SUPPORT</a>
+        </div>
+    </div>
+
+    <div class="legal-container">
+        <div class="legal-box">
+            <b style="color: var(--gold);">⚖️ AVISO LEGAL:</b> La adquisición de $PISK representa utilidad digital diseñada para el ecosistema Neo Pisk. El usuario acepta la gobernanza digital para el desarrollo de infraestructura en Lima Este.
+        </div>
+        <div class="legal-box">
+            <b style="color: var(--gold);">⚖️ LEGAL NOTICE:</b> The acquisition of $PISK represents digital utility for the Neo Pisk ecosystem. The user accepts digital governance for infrastructure development in East Lima.
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>Propiedad Oficial: <b>Neo Pisk & Eco Pisk</b></p>
+        <p>Web: <a href="https://neopisk.lat/" target="_blank">neopisk.lat</a></p>
+    </div>
+</div>
+
+<a href="https://wa.me/51908066095" class="btn-whatsapp-float" target="_blank">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" width="35" alt="WhatsApp">
+</a>
+
+<script>
+    // CONFIGURACIÓN DE SMART CONTRACTS
+    const contractAddr = "0x07Fc7AC9D681Cdd3D100c68f6f5646970CC7fF60"; 
+    const usdtAddr = "0xc2132D05D31c914a87C6611C10748AEb04B58e8F"; 
+    const piskAddr = "0x9d5B2A73d16dAF61712BA8527d94F6997a0E6323";
+
+    const minABI = [
+        { "constant": false, "inputs": [{ "name": "_spender", "type": "address" }, { "name": "_value", "type": "uint256" }], "name": "approve", "outputs": [{ "name": "", "type": "bool" }], "type": "function" },
+        { "constant": true, "inputs": [{ "name": "_owner", "type": "address" }], "name": "balanceOf", "outputs": [{ "name": "balance", "type": "uint256" }], "type": "function" },
+        { "constant": true, "inputs": [{ "name": "_owner", "type": "address" }, { "name": "_spender", "type": "address" }], "name": "allowance", "outputs": [{ "name": "", "type": "uint256" }], "type": "function" }
+    ];
+
+    const buyABI = [{ "inputs": [{ "name": "_amountUSDT", "type": "uint256" }], "name": "buyWithUSDT", "outputs": [], "stateMutability": "nonpayable", "type": "function" }];
+
+    // ========== FUNCIONES PARA DETECTAR MÓVIL Y ABRIR METAMASK ==========
+    
+    function esMobil() {
+        return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    }
+
+    function esMetaMaskInstalado() {
+        return typeof window.ethereum !== 'undefined' && window.ethereum.isMetaMask;
+    }
+
+    function abrirEnMetamask() {
+        const urlActual = window.location.href;
+        const urlSinProtocolo = urlActual.replace(/^https?:\/\//, '');
+        const deepLink = `https://metamask.app.link/dapp/${urlSinProtocolo}`;
+        window.location.href = deepLink;
+    }
+
+    function mostrarModal() {
+        document.getElementById('modalMetamask').style.display = 'flex';
+    }
+
+    function cerrarModal() {
+        document.getElementById('modalMetamask').style.display = 'none';
+    }
+
+    // ========== FUNCIONES PRINCIPALES ==========
+
+    function copiarURL() { 
+        navigator.clipboard.writeText("https://neopisk.lat/invertir.html"); 
+        alert("URL Copiada"); 
+    }
+    
+    function copyContract() { 
+        navigator.clipboard.writeText(piskAddr); 
+        alert("Contrato $PISK Copiado"); 
+    }
+    
+    async function getSafeGasPrice(web3) {
+        const gasPrice = await web3.eth.getGasPrice();
+        return Math.floor(parseInt(gasPrice) * 1.5).toString();
+    }
+
+    async function verMiSaldo() {
+        // SI ESTÁ EN MÓVIL, SIEMPRE MOSTRAR EL MODAL
+        if (esMobil()) {
+            mostrarModal();
+            return;
+        }
+
+        // SOLO PARA DESKTOP
+        if (!window.ethereum) {
+            alert("Instala MetaMask para continuar");
+            return;
+        }
+
+        try {
+            const web3 = new Web3(window.ethereum);
+            const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+            const pisk = new web3.eth.Contract(minABI, piskAddr);
+            const bal = await pisk.methods.balanceOf(accounts[0]).call();
+            const normal = parseFloat(web3.utils.fromWei(bal, 'ether')).toFixed(2);
+            document.getElementById("saldoDisplay").innerText = normal + " $PISK";
+            document.getElementById("status").innerText = "✅ Conectado: " + accounts[0].substring(0,8);
+        } catch (error) {
+            console.error(error);
+            document.getElementById("status").innerText = "❌ Error al conectar";
+        }
+    }
+
+    async function approveUSDT() {
+        const val = document.getElementById("inputUSDT").value;
+        if(!val || val <= 0) return alert("Ingresa un monto válido");
+        try {
+            const web3 = new Web3(window.ethereum);
+            const accounts = await web3.eth.getAccounts();
+            if(accounts.length === 0) return alert("Conecta tu billetera primero");
+            const usdt = new web3.eth.Contract(minABI, usdtAddr);
+            const montoFinal = (parseFloat(val) * 1000000).toFixed(0);
+            const gasPrice = await getSafeGasPrice(web3);
+
+            document.getElementById("status").innerText = "⏳ Verificando permisos...";
+            const allowance = await usdt.methods.allowance(accounts[0], contractAddr).call();
+            
+            if (parseInt(allowance) > 0) {
+                document.getElementById("status").innerText = "⏳ Reseteando permiso anterior...";
+                await usdt.methods.approve(contractAddr, "0").send({ from: accounts[0], gasPrice: gasPrice });
+            }
+
+            document.getElementById("status").innerText = "⏳ Autorizando " + val + " USDT...";
+            await usdt.methods.approve(contractAddr, montoFinal).send({ 
+                from: accounts[0],
+                gasPrice: gasPrice
+            });
+            document.getElementById("status").innerText = "✅ Autorizado. Procede al paso 2.";
+        } catch (e) { 
+            console.error(e);
+            document.getElementById("status").innerText = "❌ Error en Autorización"; 
+        }
+    }
+
+    async function buyPisk() {
+        const val = document.getElementById("inputUSDT").value;
+        if(!val) return alert("Autoriza primero el monto");
+        try {
+            const web3 = new Web3(window.ethereum);
+            const accounts = await web3.eth.getAccounts();
+            if(accounts.length === 0) return alert("Conecta tu billetera primero");
+            const neo = new web3.eth.Contract(buyABI, contractAddr);
+            const montoFinal = (parseFloat(val) * 1000000).toFixed(0);
+            const gasPrice = await getSafeGasPrice(web3);
+
+            document.getElementById("status").innerText = "🚀 Confirmando compra...";
+            await neo.methods.buyWithUSDT(montoFinal).send({ 
+                from: accounts[0],
+                gas: 250000,
+                gasPrice: gasPrice
+            });
+            document.getElementById("status").innerText = "🎉 ¡COMPRA EXITOSA!";
+            verMiSaldo();
+        } catch (e) { 
+            console.error(e);
+            document.getElementById("status").innerText = "❌ Error en la compra"; 
+        }
+    }
+</script>
+
+</body>
+</html>
