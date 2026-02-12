@@ -101,10 +101,80 @@
             justify-content: center; box-shadow: 0 4px 15px rgba(0,0,0,0.5); text-decoration: none; z-index: 1000;
         }
 
-        @media (max-width: 768px) { .presale-grid, .info-grid, .legal-container { grid-template-columns: 1fr; } }
+        /* MODAL PARA MÓVIL */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background: #1a1a1a;
+            border: 2px solid var(--gold);
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 90%;
+            text-align: center;
+        }
+        .modal-content h3 {
+            color: var(--gold);
+            margin-top: 0;
+        }
+        .btn-open-metamask {
+            background: linear-gradient(135deg, #f6851b, #e2761b);
+            color: white;
+            padding: 18px 30px;
+            border-radius: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            margin: 15px 0;
+            width: 100%;
+            box-shadow: 0 5px 20px rgba(246, 133, 27, 0.4);
+        }
+        .btn-close-modal {
+            background: #333;
+            color: white;
+            padding: 12px;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        @media (max-width: 768px) { 
+            .presale-grid, .info-grid, .legal-container { grid-template-columns: 1fr; }
+            h1 { font-size: 1.5em; }
+            #saldoDisplay { font-size: 28px; }
+        }
     </style>
 </head>
 <body>
+
+<!-- MODAL PARA ABRIR METAMASK EN MÓVIL -->
+<div id="modalMetamask" class="modal-overlay">
+    <div class="modal-content">
+        <h3>🦊 Conectar con MetaMask</h3>
+        <p style="font-size: 14px; line-height: 1.6;">
+            Para conectar tu billetera desde el celular, 
+            <b>abre esta página dentro del navegador de MetaMask</b>
+        </p>
+        <button class="btn-open-metamask" onclick="abrirEnMetamask()">
+            📱 ABRIR EN METAMASK
+        </button>
+        <p style="font-size: 11px; color: #888; margin: 10px 0;">
+            Al presionar el botón, se abrirá automáticamente la app MetaMask
+        </p>
+        <button class="btn-close-modal" onclick="cerrarModal()">Cancelar</button>
+    </div>
+</div>
 
 <div class="main-container">
     <div class="header">
@@ -213,83 +283,49 @@
 
     const buyABI = [{ "inputs": [{ "name": "_amountUSDT", "type": "uint256" }], "name": "buyWithUSDT", "outputs": [], "stateMutability": "nonpayable", "type": "function" }];
 
-    function copiarURL() { navigator.clipboard.writeText("https://neopisk.lat/invertir.html"); alert("URL Copiada"); }
-    function copyContract() { navigator.clipboard.writeText(piskAddr); alert("Contrato $PISK Copiado"); }
+    // ========== FUNCIONES PARA DETECTAR MÓVIL Y ABRIR METAMASK ==========
     
-    // Función para obtener Gas Price con un extra del 50% para evitar que la red lo rechace
+    function esMobil() {
+        return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    }
+
+    function esMetaMaskInstalado() {
+        return typeof window.ethereum !== 'undefined' && window.ethereum.isMetaMask;
+    }
+
+    function abrirEnMetamask() {
+        const urlActual = window.location.href;
+        const deepLink = `https://metamask.app.link/dapp/${urlActual.replace(/^https?:\/\//, '')}`;
+        window.location.href = deepLink;
+    }
+
+    function mostrarModal() {
+        document.getElementById('modalMetamask').style.display = 'flex';
+    }
+
+    function cerrarModal() {
+        document.getElementById('modalMetamask').style.display = 'none';
+    }
+
+    // ========== FUNCIONES PRINCIPALES ==========
+
+    function copiarURL() { 
+        navigator.clipboard.writeText("https://neopisk.lat/invertir.html"); 
+        alert("URL Copiada"); 
+    }
+    
+    function copyContract() { 
+        navigator.clipboard.writeText(piskAddr); 
+        alert("Contrato $PISK Copiado"); 
+    }
+    
     async function getSafeGasPrice(web3) {
         const gasPrice = await web3.eth.getGasPrice();
         return Math.floor(parseInt(gasPrice) * 1.5).toString();
     }
 
     async function verMiSaldo() {
-        if (!window.ethereum) return alert("Instala MetaMask");
-        const web3 = new Web3(window.ethereum);
-        const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
-        const pisk = new web3.eth.Contract(minABI, piskAddr);
-        const bal = await pisk.methods.balanceOf(accounts[0]).call();
-        const normal = parseFloat(web3.utils.fromWei(bal, 'ether')).toFixed(2);
-        document.getElementById("saldoDisplay").innerText = normal + " $PISK";
-        document.getElementById("status").innerText = "✅ Conectado: " + accounts[0].substring(0,8);
-    }
-
-    async function approveUSDT() {
-        const val = document.getElementById("inputUSDT").value;
-        if(!val || val <= 0) return alert("Ingresa un monto válido");
-        try {
-            const web3 = new Web3(window.ethereum);
-            const accounts = await web3.eth.getAccounts();
-            if(accounts.length === 0) return alert("Conecta tu billetera primero");
-            const usdt = new web3.eth.Contract(minABI, usdtAddr);
-            const montoFinal = (parseFloat(val) * 1000000).toFixed(0);
-            const gasPrice = await getSafeGasPrice(web3);
-
-            document.getElementById("status").innerText = "⏳ Verificando permisos...";
-            const allowance = await usdt.methods.allowance(accounts[0], contractAddr).call();
-            
-            // Si ya hay una autorización previa, la reseteamos para evitar errores de USDT
-            if (parseInt(allowance) > 0) {
-                document.getElementById("status").innerText = "⏳ Reseteando permiso anterior...";
-                await usdt.methods.approve(contractAddr, "0").send({ from: accounts[0], gasPrice: gasPrice });
-            }
-
-            document.getElementById("status").innerText = "⏳ Autorizando " + val + " USDT...";
-            await usdt.methods.approve(contractAddr, montoFinal).send({ 
-                from: accounts[0],
-                gasPrice: gasPrice
-            });
-            document.getElementById("status").innerText = "✅ Autorizado. Procede al paso 2.";
-        } catch (e) { 
-            console.error(e);
-            document.getElementById("status").innerText = "❌ Error en Autorización"; 
-        }
-    }
-
-    async function buyPisk() {
-        const val = document.getElementById("inputUSDT").value;
-        if(!val) return alert("Autoriza primero el monto");
-        try {
-            const web3 = new Web3(window.ethereum);
-            const accounts = await web3.eth.getAccounts();
-            if(accounts.length === 0) return alert("Conecta tu billetera primero");
-            const neo = new web3.eth.Contract(buyABI, contractAddr);
-            const montoFinal = (parseFloat(val) * 1000000).toFixed(0);
-            const gasPrice = await getSafeGasPrice(web3);
-
-            document.getElementById("status").innerText = "🚀 Confirmando compra...";
-            await neo.methods.buyWithUSDT(montoFinal).send({ 
-                from: accounts[0],
-                gas: 250000, // Gas limit fijo suficiente para Polygon
-                gasPrice: gasPrice
-            });
-            document.getElementById("status").innerText = "🎉 ¡COMPRA EXITOSA!";
-            verMiSaldo();
-        } catch (e) { 
-            console.error(e);
-            document.getElementById("status").innerText = "❌ Error en la compra"; 
-        }
-    }
-</script>
-
-</body>
-</html>
+        // SI ESTÁ EN MÓVIL, SIEMPRE MOSTRAR EL MODAL
+        if (esMobil()) {
+            mostrarModal();
+            return;
