@@ -101,7 +101,7 @@
             justify-content: center; box-shadow: 0 4px 15px rgba(0,0,0,0.5); text-decoration: none; z-index: 1000;
         }
 
-        /* MODAL PARA MÓVIL */
+        /* MODAL MEJORADO PARA MÓVIL */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -109,22 +109,24 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.9);
+            background: rgba(0, 0, 0, 0.95);
             z-index: 9999;
             justify-content: center;
             align-items: center;
         }
         .modal-content {
-            background: #1a1a1a;
+            background: linear-gradient(145deg, #1a1a1a, #0a0a0a);
             border: 2px solid var(--gold);
             border-radius: 20px;
             padding: 30px;
             max-width: 90%;
             text-align: center;
+            box-shadow: 0 0 40px rgba(212, 175, 55, 0.3);
         }
         .modal-content h3 {
             color: var(--gold);
             margin-top: 0;
+            font-size: 22px;
         }
         .btn-open-metamask {
             background: linear-gradient(135deg, #f6851b, #e2761b);
@@ -158,20 +160,23 @@
 </head>
 <body>
 
-<!-- MODAL PARA ABRIR METAMASK EN MÓVIL -->
+<!-- MODAL MEJORADO PARA ABRIR METAMASK EN MÓVIL -->
 <div id="modalMetamask" class="modal-overlay">
     <div class="modal-content">
-        <h3>🦊 Conectar con MetaMask</h3>
-        <p style="font-size: 14px; line-height: 1.6;">
-            Para conectar tu billetera desde el celular, 
-            <b>abre esta página dentro del navegador de MetaMask</b>
+        <h3>🦊 Conectar MetaMask</h3>
+        <p style="font-size: 15px; line-height: 1.7; color: #ccc;">
+            Detectamos que estás en móvil.<br>
+            <b style="color: var(--gold);">Debes abrir esta página dentro del navegador de MetaMask</b>
         </p>
         <button class="btn-open-metamask" onclick="abrirEnMetamask()">
             📱 ABRIR EN METAMASK
         </button>
-        <p style="font-size: 11px; color: #888; margin: 10px 0;">
-            Al presionar el botón, se abrirá automáticamente la app MetaMask
+        <p style="font-size: 12px; color: #888; margin: 15px 0; line-height: 1.5;">
+            O copia manualmente la URL y pégala en el navegador de MetaMask
         </p>
+        <button onclick="copiarURLModal()" style="background: #444; color: white; padding: 10px; border-radius: 8px; border: none; cursor: pointer; font-size: 13px; margin-bottom: 10px;">
+            📋 COPIAR URL
+        </button>
         <button class="btn-close-modal" onclick="cerrarModal()">Cancelar</button>
     </div>
 </div>
@@ -228,7 +233,7 @@
                 1. Conecta tu MetaMask.<br>
                 2. Autoriza USDT para la compra.<br>
                 3. Confirma tu adquisición.<br>
-                <b>Smartphone:</b> Copia la URL abajo.
+                <b>Smartphone:</b> Abre en navegador MetaMask.
             </p>
             <button onclick="copiarURL()" class="btn-metamask">COPIAR URL PARA METAMASK</button>
             <button onclick="copyContract()" style="background:#000; color:var(--gold); border:1px dashed var(--gold); font-size:10px; padding:10px; width: 100%; cursor: pointer;">COPIAR CONTRATO $PISK</button>
@@ -242,7 +247,7 @@
                 1. Connect your MetaMask wallet.<br>
                 2. Approve USDT for purchase.<br>
                 3. Confirm your acquisition.<br>
-                <b>Smartphone:</b> Copy the URL below.
+                <b>Smartphone:</b> Open in MetaMask browser.
             </p>
             <button onclick="copiarURL()" class="btn-metamask">COPY URL FOR METAMASK</button>
             <button onclick="copyContract()" style="background:#000; color:var(--gold); border:1px dashed var(--gold); font-size:10px; padding:10px; width: 100%; cursor: pointer;">COPY $PISK CONTRACT</button>
@@ -283,21 +288,48 @@
 
     const buyABI = [{ "inputs": [{ "name": "_amountUSDT", "type": "uint256" }], "name": "buyWithUSDT", "outputs": [], "stateMutability": "nonpayable", "type": "function" }];
 
-    // ========== FUNCIONES PARA DETECTAR MÓVIL Y ABRIR METAMASK ==========
+    // ========== FUNCIONES MEJORADAS PARA MÓVIL ==========
     
     function esMobil() {
         return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
     }
 
-    function esMetaMaskInstalado() {
-        return typeof window.ethereum !== 'undefined' && window.ethereum.isMetaMask;
+    function estaDentroDeMetaMask() {
+        // Verifica si estamos dentro del navegador de MetaMask
+        return typeof window.ethereum !== 'undefined' && 
+               (window.ethereum.isMetaMask || window.ethereum.providers?.some(p => p.isMetaMask));
     }
 
     function abrirEnMetamask() {
         const urlActual = window.location.href;
         const urlSinProtocolo = urlActual.replace(/^https?:\/\//, '');
+        
+        // Deep link correcto para MetaMask
         const deepLink = `https://metamask.app.link/dapp/${urlSinProtocolo}`;
+        
+        // Intentar abrir MetaMask
         window.location.href = deepLink;
+        
+        // Cerrar modal después de un momento
+        setTimeout(() => {
+            cerrarModal();
+        }, 1000);
+    }
+
+    function copiarURLModal() {
+        const url = window.location.href;
+        navigator.clipboard.writeText(url).then(() => {
+            alert("✅ URL copiada. Ahora:\n1. Abre MetaMask\n2. Ve al navegador\n3. Pega esta URL");
+        }).catch(() => {
+            // Fallback si clipboard API no funciona
+            const input = document.createElement('input');
+            input.value = url;
+            document.body.appendChild(input);
+            input.select();
+            document.execCommand('copy');
+            document.body.removeChild(input);
+            alert("✅ URL copiada. Pégala en el navegador de MetaMask");
+        });
     }
 
     function mostrarModal() {
@@ -311,13 +343,15 @@
     // ========== FUNCIONES PRINCIPALES ==========
 
     function copiarURL() { 
-        navigator.clipboard.writeText("https://neopisk.lat/invertir.html"); 
-        alert("URL Copiada"); 
+        navigator.clipboard.writeText("https://neopisk.lat/invertir.html").then(() => {
+            alert("✅ URL Copiada - Pégala en el navegador de MetaMask");
+        }); 
     }
     
     function copyContract() { 
-        navigator.clipboard.writeText(piskAddr); 
-        alert("Contrato $PISK Copiado"); 
+        navigator.clipboard.writeText(piskAddr).then(() => {
+            alert("✅ Contrato $PISK Copiado");
+        }); 
     }
     
     async function getSafeGasPrice(web3) {
@@ -326,39 +360,73 @@
     }
 
     async function verMiSaldo() {
-        // SI ESTÁ EN MÓVIL, SIEMPRE MOSTRAR EL MODAL
-        if (esMobil()) {
+        // VERIFICAR SI ESTÁ EN MÓVIL Y NO DENTRO DE METAMASK
+        if (esMobil() && !estaDentroDeMetaMask()) {
             mostrarModal();
             return;
         }
 
-        // SOLO PARA DESKTOP
+        // SI NO HAY METAMASK EN DESKTOP
         if (!window.ethereum) {
-            alert("Instala MetaMask para continuar");
+            alert("❌ MetaMask no detectado. Instala MetaMask para continuar.");
             return;
         }
 
         try {
             const web3 = new Web3(window.ethereum);
+            
+            // Solicitar conexión
             const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+            
+            if (!accounts || accounts.length === 0) {
+                alert("❌ No se pudo conectar a MetaMask");
+                return;
+            }
+
+            // Verificar que estamos en Polygon
+            const chainId = await web3.eth.getChainId();
+            if (chainId !== 137) {
+                alert("⚠️ Por favor cambia a Polygon Network en MetaMask");
+                return;
+            }
+
             const pisk = new web3.eth.Contract(minABI, piskAddr);
             const bal = await pisk.methods.balanceOf(accounts[0]).call();
             const normal = parseFloat(web3.utils.fromWei(bal, 'ether')).toFixed(2);
+            
             document.getElementById("saldoDisplay").innerText = normal + " $PISK";
-            document.getElementById("status").innerText = "✅ Conectado: " + accounts[0].substring(0,8);
+            document.getElementById("status").innerText = "✅ Conectado: " + accounts[0].substring(0,8) + "...";
+            
         } catch (error) {
-            console.error(error);
-            document.getElementById("status").innerText = "❌ Error al conectar";
+            console.error("Error al conectar:", error);
+            
+            if (error.code === 4001) {
+                document.getElementById("status").innerText = "❌ Conexión rechazada por el usuario";
+            } else {
+                document.getElementById("status").innerText = "❌ Error al conectar - Intenta nuevamente";
+            }
         }
     }
 
     async function approveUSDT() {
         const val = document.getElementById("inputUSDT").value;
-        if(!val || val <= 0) return alert("Ingresa un monto válido");
+        if(!val || val <= 0) return alert("⚠️ Ingresa un monto válido");
+        
+        // Verificar conexión móvil
+        if (esMobil() && !estaDentroDeMetaMask()) {
+            mostrarModal();
+            return;
+        }
+
         try {
             const web3 = new Web3(window.ethereum);
             const accounts = await web3.eth.getAccounts();
-            if(accounts.length === 0) return alert("Conecta tu billetera primero");
+            
+            if(accounts.length === 0) {
+                alert("⚠️ Conecta tu billetera primero usando el botón 'CONECTAR BILLETERA'");
+                return;
+            }
+
             const usdt = new web3.eth.Contract(minABI, usdtAddr);
             const montoFinal = (parseFloat(val) * 1000000).toFixed(0);
             const gasPrice = await getSafeGasPrice(web3);
@@ -376,37 +444,76 @@
                 from: accounts[0],
                 gasPrice: gasPrice
             });
-            document.getElementById("status").innerText = "✅ Autorizado. Procede al paso 2.";
+            
+            document.getElementById("status").innerText = "✅ Autorizado correctamente. Ahora procede al paso 2.";
+            
         } catch (e) { 
-            console.error(e);
-            document.getElementById("status").innerText = "❌ Error en Autorización"; 
+            console.error("Error en approve:", e);
+            
+            if (e.code === 4001) {
+                document.getElementById("status").innerText = "❌ Transacción rechazada";
+            } else {
+                document.getElementById("status").innerText = "❌ Error en Autorización - Revisa tu red";
+            }
         }
     }
 
     async function buyPisk() {
         const val = document.getElementById("inputUSDT").value;
-        if(!val) return alert("Autoriza primero el monto");
+        if(!val) return alert("⚠️ Autoriza primero el monto en el paso 1");
+        
+        // Verificar conexión móvil
+        if (esMobil() && !estaDentroDeMetaMask()) {
+            mostrarModal();
+            return;
+        }
+
         try {
             const web3 = new Web3(window.ethereum);
             const accounts = await web3.eth.getAccounts();
-            if(accounts.length === 0) return alert("Conecta tu billetera primero");
+            
+            if(accounts.length === 0) {
+                alert("⚠️ Conecta tu billetera primero");
+                return;
+            }
+
             const neo = new web3.eth.Contract(buyABI, contractAddr);
             const montoFinal = (parseFloat(val) * 1000000).toFixed(0);
             const gasPrice = await getSafeGasPrice(web3);
 
-            document.getElementById("status").innerText = "🚀 Confirmando compra...";
+            document.getElementById("status").innerText = "🚀 Confirmando compra en blockchain...";
+            
             await neo.methods.buyWithUSDT(montoFinal).send({ 
                 from: accounts[0],
                 gas: 250000,
                 gasPrice: gasPrice
             });
-            document.getElementById("status").innerText = "🎉 ¡COMPRA EXITOSA!";
-            verMiSaldo();
+            
+            document.getElementById("status").innerText = "🎉 ¡COMPRA EXITOSA! Actualizando saldo...";
+            
+            // Actualizar saldo después de 3 segundos
+            setTimeout(() => {
+                verMiSaldo();
+            }, 3000);
+            
         } catch (e) { 
-            console.error(e);
-            document.getElementById("status").innerText = "❌ Error en la compra"; 
+            console.error("Error en compra:", e);
+            
+            if (e.code === 4001) {
+                document.getElementById("status").innerText = "❌ Compra cancelada";
+            } else {
+                document.getElementById("status").innerText = "❌ Error en la compra - Verifica tu saldo USDT";
+            }
         }
     }
+
+    // AUTO-DETECTAR AL CARGAR LA PÁGINA
+    window.addEventListener('load', function() {
+        // Si está en móvil y NO dentro de MetaMask, mostrar hint
+        if (esMobil() && !estaDentroDeMetaMask()) {
+            console.log("📱 Móvil detectado - Use el navegador de MetaMask para conectar");
+        }
+    });
 </script>
 
 </body>
