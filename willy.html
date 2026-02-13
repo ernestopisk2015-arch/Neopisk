@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Neo Pisk Tech — Tokenomics Cacao RWA</title>
+<title>Neo Pisk Tech — Tokenomics & Propuesta Ejecutiva Cacao RWA</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -18,6 +18,10 @@
     --blue: #4A9EFF;
     --text: #E8E8F0;
     --muted: #8888AA;
+    --primary: #1a472a;
+    --secondary: #27ae60;
+    --accent: #f39c12;
+    --light: #f4f4f4;
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -86,7 +90,7 @@
     font-size: 16px;
     text-align: center;
     margin-bottom: 40px;
-    max-width: 700px;
+    max-width: 900px;
   }
 
   .highlight { color: var(--gold); font-weight: 600; }
@@ -117,7 +121,7 @@
 
   .content-container {
     position: relative;
-    max-width: 1100px;
+    max-width: 1200px;
     width: 100%;
     text-align: center;
   }
@@ -164,7 +168,7 @@
   .conclusion {
     font-size: 18px;
     line-height: 1.7;
-    max-width: 800px;
+    max-width: 900px;
     margin: 48px auto;
   }
 
@@ -177,8 +181,93 @@
     z-index: 200;
   }
 
+  /* Estilos del segundo código adaptados */
+  .token-grid {
+    display: flex;
+    gap: 20px;
+    margin: 30px 0;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .token-card {
+    flex: 1;
+    min-width: 300px;
+    padding: 25px;
+    border-radius: 15px;
+    color: white;
+    transition: transform 0.3s;
+  }
+  .card-cacao { background: #3e2723; border-bottom: 5px solid #795548; }
+  .card-rwa { background: #0d47a1; border-bottom: 5px solid #2196f3; }
+
+  .success-box {
+    background: #e8f5e9;
+    padding: 25px;
+    border-radius: 12px;
+    border: 1px solid #c8e6c9;
+    margin-top: 20px;
+    color: #2e7d32;
+  }
+  .case-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 15px;
+    margin-top: 15px;
+  }
+  .case-item {
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    font-size: 13px;
+    color: #333;
+  }
+
+  .automation-flow {
+    background: #fff3e0;
+    padding: 30px;
+    border-radius: 15px;
+    border-top: 5px solid var(--accent);
+    margin-top: 30px;
+    color: #e65100;
+  }
+  .step-container {
+    display: flex;
+    justify-content: space-around;
+    text-align: center;
+    gap: 10px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+  }
+  .step-box {
+    flex: 1;
+    min-width: 200px;
+    background: white;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    color: #333;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    font-size: 14px;
+  }
+  th, td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: left;
+  }
+  th {
+    background: #f8f9fa;
+    color: var(--primary);
+  }
+
   @media (max-width: 768px) {
     .slide { padding: 40px 20px; }
+    .token-grid, .case-grid, .step-container { flex-direction: column; }
   }
 </style>
 </head>
@@ -287,8 +376,116 @@
     </div>
   </section>
 
-  <!-- SLIDE 5: PROYECCIÓN Y CONCLUSIÓN -->
+  <!-- SLIDE 5: MODELOS DE ÉXITO Y ESTRUCTURA DUAL -->
   <section class="slide" id="s5">
+    <div class="content-container">
+      <div class="badge">Modelos de Éxito Global</div>
+      <h2 class="slide-title">ESTRATEGIA DE TOKENIZACIÓN DUAL 2026</h2>
+      <p class="slide-desc">Willy, esta propuesta elimina el "ruido" legal y la carga operativa. Implementamos un modelo de <strong>Real World Assets (RWA)</strong> que ya es un éxito global, adaptado 100% a la legalidad peruana y a tus activos en SUNARP.</p>
+
+      <div class="success-box">
+        <h3 style="margin-top:0; color: #2e7d32;">🌍 Modelos de Éxito en el Mundo</h3>
+        <p style="font-size: 14px; color: #2e7d32;">No estamos inventando el modelo; lo estamos liderando en Perú basándonos en gigantes:</p>
+        <div class="case-grid">
+          <div class="case-item"><strong>Agrotoken (Arg/Bra):</strong> Líder en tokenización de granos (soja/maíz). Permite transaccionar cosechas como dinero digital.</div>
+          <div class="case-item"><strong>RealT (USA):</strong> Más de $100M invertidos en propiedades fraccionadas digitalmente con respaldo jurídico.</div>
+          <div class="case-item"><strong>EthicHub:</strong> Éxito financiando caficultores mediante capital global Web3 con riesgo compartido.</div>
+          <div class="case-item"><strong>Landshare:</strong> Convierte la tierra agrícola en un activo líquido y accesible para inversores de todo el mundo.</div>
+        </div>
+      </div>
+
+      <h2 class="slide-title" style="margin: 48px 0 24px;">Estructura Dual: Seguridad y Crecimiento</h2>
+      <div class="token-grid">
+        <div class="token-card card-cacao">
+          <h3 style="margin-top:0;">1. TOKEN AGRO-CACAO</h3>
+          <p style="font-size: 14px;"><strong>Uso:</strong> Financiamiento de Campaña (Capital de Trabajo).</p>
+          <ul style="font-size: 13px;">
+            <li>Respaldado por la <strong>Cosecha Real</strong>.</li>
+            <li>Renta fija tras la venta del producto.</li>
+            <li>Ideal para inversores que buscan seguridad y estabilidad.</li>
+          </ul>
+        </div>
+        <div class="token-card card-rwa">
+          <h3 style="margin-top:0;">2. TOKEN AGRO-RWA</h3>
+          <p style="font-size: 14px;"><strong>Uso:</strong> Expansión Patrimonial (Activos Fijos).</p>
+          <ul style="font-size: 13px;">
+            <li>Respaldado por la <strong>Partida Registral de SUNARP</strong>.</li>
+            <li>Gana valor por la plusvalía de la tierra y la marca.</li>
+            <li>Atrae capital global que busca activos "refugio".</li>
+          </ul>
+        </div>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Característica</th>
+            <th>Token AGRO-CACAO (Interno)</th>
+            <th>Token AGRO-RWA (Patrimonial)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Sustento</strong></td>
+            <td>Producción agrícola tangible.</td>
+            <td>Títulos de propiedad y activos fijos.</td>
+          </tr>
+          <tr>
+            <td><strong>Perfil Cliente</strong></td>
+            <td>Ahorrista que busca renta segura.</td>
+            <td>Inversor Web3 que busca valorización.</td>
+          </tr>
+          <tr>
+            <td><strong>Rol de AgroTec</strong></td>
+            <td>Garantiza la gestión del cultivo.</td>
+            <td>Respalda con su patrimonio legal.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- SLIDE 6: AUTOMATIZACIÓN Y GARANTÍA -->
+  <section class="slide" id="s6">
+    <div class="content-container">
+      <div class="badge">Sistema Automatizado</div>
+      <h2 class="slide-title">Sistema de Venta y Educación 24/7</h2>
+      <p class="slide-desc">Willy, tu equipo no necesita explicar tecnología. <strong>Neo Pisk Tech</strong> automatiza el aprendizaje del cliente:</p>
+
+      <div class="automation-flow">
+        <h3 style="margin-top:0; color: #e65100;">🚀 Sistema de Venta y Educación 24/7</h3>
+        <p style="font-size: 14px;">Willy, tu equipo no necesita explicar tecnología. <strong>Neo Pisk Tech</strong> automatiza el aprendizaje del cliente:</p>
+        <div class="step-container">
+          <div class="step-box">
+            <div style="font-size:24px;">🎥</div>
+            <strong>Video Tutorial</strong><br><small>Explica el beneficio y la seguridad en 2 min.</small>
+          </div>
+          <div class="step-box">
+            <div style="font-size:24px;">🤖</div>
+            <strong>Asistente IA</strong><br><small>Responde dudas técnicas y legales al instante.</small>
+          </div>
+          <div class="step-box">
+            <div style="font-size:24px;">💳</div>
+            <strong>Compra Directa</strong><br><small>Interfaz simple para adquirir tokens en segundos.</small>
+          </div>
+        </div>
+      </div>
+
+      <h2 class="slide-title" style="margin: 48px 0 24px;">Garantía y Transparencia</h2>
+      <div style="background: #f9f9f9; padding: 25px; border-radius: 12px; border: 1px solid #ddd; margin-top: 20px; color: #333;">
+        <p style="margin-top:0;"><strong>Respaldo Legal (Art. 440 LGS):</strong> El sistema opera bajo contratos de Asociación en Participación. No es captación bancaria, es inversión productiva en sociedad.</p>
+        <p><strong>Seguridad SUNARP:</strong> Los tokens están vinculados a la <strong>Partida N° [Ingresar Partida Aquí]</strong> de la Corporación AgroTec S.A.C.</p>
+        <p style="margin-bottom:0;"><strong>Compromiso Neo Pisk:</strong> Mi participación del 20% está bloqueada por <strong>Smart Contract (Vesting) por 6 meses</strong>. Solo gano si el proyecto es un éxito y el token sube.</p>
+      </div>
+
+      <div style="text-align: center; margin-top: 40px; color: #999; font-size: 11px;">
+        Desarrollado por Neo Pisk Tech para el crecimiento global de AgroTec. | 2026
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 7: PROYECCIÓN Y CONCLUSIÓN FINAL -->
+  <section class="slide" id="s7">
     <div class="content-container">
       <div class="badge">Futuro</div>
       <h2 class="slide-title">Proyección de Crecimiento (2026–2028) – Enfoque Cacao y Ecozuzo</h2>
