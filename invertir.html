@@ -1013,33 +1013,49 @@
             </div>
 
             <!-- Panel de compra Web3 -->
-            <div style="max-width: 700px; margin: 0 auto; background: linear-gradient(145deg, #1a1a1a, #0a0a0a); border: 3px solid var(--neopisk-gold); border-radius: 25px; padding: 3rem 2rem; box-shadow: 0 20px 60px rgba(212, 175, 55, 0.4); text-align: center;">
+            <div style="max-width: 700px; margin: 0 auto; background: linear-gradient(145deg, #1a1a1a, #0a0a0a); border: 3px solid var(--neopisk-gold); border-radius: 25px; padding: 2rem 1rem; box-shadow: 0 20px 60px rgba(212, 175, 55, 0.4); text-align: center;">
                 
                 <!-- Botón único grande para MetaMask -->
-                <a href="metamask.html" style="display: block; text-decoration: none; background: linear-gradient(135deg, #f6851b, #e2761b); padding: 2.5rem 2rem; border-radius: 20px; box-shadow: 0 10px 40px rgba(246, 133, 27, 0.5); transition: all 0.3s; border: 3px solid var(--neopisk-gold); position: relative; overflow: hidden;">
+                <a href="metamask.html" style="display: block; text-decoration: none; position: relative; padding: 3rem 1.5rem; border-radius: 20px; box-shadow: 0 10px 40px rgba(246, 133, 27, 0.5); transition: all 0.3s; border: 3px solid var(--neopisk-gold); overflow: hidden; background: linear-gradient(135deg, rgba(246, 133, 27, 0.95), rgba(226, 118, 27, 0.95)), url('asset/metamasklogo.jpg'); background-size: cover; background-position: center; background-blend-mode: overlay;">
+                    
+                    <!-- Overlay oscuro para mejor legibilidad -->
+                    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); z-index: 1;"></div>
+                    
                     <div style="position: relative; z-index: 2;">
-                        <div style="margin-bottom: 1.5rem;">
-                            <img src="asset/metamasklogo.jpg" style="width: 100px; height: 100px; border-radius: 50%; border: 4px solid white; box-shadow: 0 5px 20px rgba(0,0,0,0.3);" alt="MetaMask">
+                        <div style="color: white; font-size: clamp(1.5rem, 5vw, 2.2rem); font-weight: 900; margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 1px; text-shadow: 3px 3px 6px rgba(0,0,0,0.7); font-family: 'Space Grotesk', sans-serif; line-height: 1.2;">
+                            🦊 Inversión Automática<br>con MetaMask
                         </div>
-                        <div style="color: white; font-size: 2rem; font-weight: 900; margin-bottom: 0.75rem; text-transform: uppercase; letter-spacing: 1px; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); font-family: 'Space Grotesk', sans-serif;">
-                            🦊 Inversión Automática con MetaMask
-                        </div>
-                        <div style="color: rgba(255,255,255,0.9); font-size: 1.1rem; font-weight: 600; margin-bottom: 1.5rem;">
+                        <div style="color: rgba(255,255,255,0.95); font-size: clamp(0.9rem, 3vw, 1.1rem); font-weight: 600; margin-bottom: 1.5rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.7);">
                             Compra directa con USDT en Polygon Network
                         </div>
-                        <div style="display: inline-block; background: rgba(255,255,255,0.2); padding: 0.75rem 1.5rem; border-radius: 30px; backdrop-filter: blur(10px);">
-                            <span style="color: white; font-weight: 700; font-size: 1rem;">
-                                ⚡ Proceso 100% Automático • Sin Intermediarios
+                        <div style="display: inline-block; background: rgba(255,255,255,0.25); padding: 0.75rem 1.25rem; border-radius: 30px; backdrop-filter: blur(10px); border: 2px solid rgba(255,255,255,0.3);">
+                            <span style="color: white; font-weight: 700; font-size: clamp(0.8rem, 2.5vw, 1rem); text-shadow: 1px 1px 3px rgba(0,0,0,0.5);">
+                                ⚡ Proceso 100% Automático
                             </span>
                         </div>
                     </div>
                 </a>
 
                 <!-- Status -->
-                <div id="status" style="font-size: 0.9rem; margin-top: 2rem; color: #d4af37; font-weight: 600; text-align: center;">
+                <div id="status" style="font-size: clamp(0.8rem, 2.5vw, 0.9rem); margin-top: 2rem; color: #d4af37; font-weight: 600; text-align: center; padding: 0 1rem;">
                     Haz clic para conectar tu billetera MetaMask
                 </div>
             </div>
+            
+            <style>
+                /* Optimización para móviles */
+                @media (max-width: 768px) {
+                    a[href="metamask.html"] {
+                        padding: 2.5rem 1rem !important;
+                    }
+                }
+                
+                /* Efecto hover mejorado */
+                a[href="metamask.html"]:hover {
+                    transform: translateY(-5px);
+                    box-shadow: 0 15px 50px rgba(246, 133, 27, 0.7);
+                }
+            </style>
 
             <!-- Tokenomics -->
             <div style="max-width: 900px; margin: 3rem auto; background: linear-gradient(145deg, #151515, #0a0a0a); border: 1px solid var(--neopisk-gold); border-radius: 20px; padding: 2.5rem;">
@@ -1667,3 +1683,5 @@ console.log("✅ JavaScript cargado correctamente");
 </script>
 </body>
 </html>
+      
+   
