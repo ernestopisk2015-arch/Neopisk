@@ -1635,38 +1635,6 @@ async function getSafeGasPrice(web3) {
     return Math.floor(parseInt(gasPrice) * 1.5).toString();
 }
 
-async function verMiSaldo() {
-    if (!window.ethereum) {
-        alert("❌ MetaMask no detectado. Instala MetaMask para continuar.");
-        return;
-    }
-    try {
-        const web3 = new Web3(window.ethereum);
-        const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
-        if (!accounts || accounts.length === 0) {
-            alert("❌ No se pudo conectar a MetaMask");
-            return;
-        }
-        const chainId = await web3.eth.getChainId();
-        if (chainId !== 137) {
-            alert("⚠️ Por favor cambia a Polygon Network en MetaMask");
-            return;
-        }
-        const pisk = new web3.eth.Contract(minABI, piskAddr);
-        const bal = await pisk.methods.balanceOf(accounts[0]).call();
-        const normal = parseFloat(web3.utils.fromWei(bal, 'ether')).toFixed(2);
-        document.getElementById("saldoDisplay").innerText = normal + " $PISK";
-        document.getElementById("status").innerText = "✅ Conectado: " + accounts[0].substring(0,8) + "...";
-    } catch (error) {
-        console.error("Error al conectar:", error);
-        if (error.code === 4001) {
-            document.getElementById("status").innerText = "❌ Conexión rechazada por el usuario";
-        } else {
-            document.getElementById("status").innerText = "❌ Error al conectar - Intenta nuevamente";
-        }
-    }
-}
-
 async function approveUSDT() {
     const val = document.getElementById("inputUSDT").value;
     if(!val || val <= 0) return alert("⚠️ Ingresa un monto válido");
@@ -1852,10 +1820,6 @@ function abrirEnMetaMask() {
 // MODIFICAR verMiSaldo PARA USAR EL MODAL
 // =====================================================
 
-// Guardar la función original
-const verMiSaldoOriginal = verMiSaldo;
-
-// Reemplazar con nueva función que detecta móvil
 async function verMiSaldo() {
     // SI ESTÁ EN MÓVIL Y NO DENTRO DE METAMASK, MOSTRAR MODAL
     if (esMobil() && !estaDentroDeMetaMask()) {
@@ -1900,5 +1864,4 @@ async function verMiSaldo() {
 console.log("✅ JavaScript cargado correctamente");
 </script>
 </body>
-</html>
- 
+</html>         
