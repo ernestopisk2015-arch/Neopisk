@@ -1499,19 +1499,18 @@ async function verMiSaldo() {
     
     if (!window.ethereum) {
         if (isMobile) {
-            // En móvil: ofrecer abrir en MetaMask
+            // EN MÓVIL: Redirigir automáticamente a MetaMask
             const currentUrl = window.location.href;
             const metamaskDeepLink = `https://metamask.app.link/dapp/${currentUrl.replace(/^https?:\/\//, '')}`;
             
             const userChoice = confirm(
                 "📱 Para conectar tu billetera en móvil:\n\n" +
-                "1️⃣ Instala la app MetaMask si no la tienes\n" +
-                "2️⃣ Presiona OK para abrir esta página en MetaMask\n\n" +
-                "O CANCELA para copiar la URL y pegarla manualmente en MetaMask"
+                "Presiona OK para abrir esta página en MetaMask\n\n" +
+                "O CANCELA para copiar la URL y abrirla manualmente"
             );
             
             if (userChoice) {
-                // Abrir en MetaMask
+                // Redirigir a MetaMask
                 window.location.href = metamaskDeepLink;
             } else {
                 // Copiar URL
@@ -1522,15 +1521,15 @@ async function verMiSaldo() {
                           "2. Toca el menú (☰)\n" +
                           "3. Toca 'Navegador'\n" +
                           "4. Pega la URL copiada\n" +
-                          "5. Vuelve a conectar tu billetera");
+                          "5. Conecta tu billetera");
                 }).catch(() => {
-                    alert("📋 Copia esta URL manualmente:\n\n" + currentUrl + "\n\n" +
-                          "Luego ábrela en el navegador de MetaMask");
+                    alert("📋 Copia esta URL:\n\n" + currentUrl + "\n\n" +
+                          "Ábrela en el navegador de MetaMask");
                 });
             }
             return;
         } else {
-            // En desktop: instalar extensión
+            // EN DESKTOP: Instalar extensión
             const installChoice = confirm(
                 "❌ MetaMask no detectado\n\n" +
                 "¿Quieres instalar MetaMask ahora?\n\n" +
@@ -1722,4 +1721,3 @@ console.log("✅ JavaScript cargado correctamente");
 </script>
 </body>
 </html>
-   
