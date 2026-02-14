@@ -569,7 +569,7 @@
                 <h2 class="metamask-title font-display">🦊 Conecta con MetaMask</h2>
                 <p class="metamask-subtitle">Opción preferida para socios fundadores - Compra directa con criptomonedas</p>
                 <div class="metamask-buttons">
-                    <a href="https://neopisk.lat/founder.html" target="_blank" class="btn-metamask-primary">
+                    <a href="metamask.html" class="btn-metamask-primary">
                         <img src="asset/metamasklogo.jpg" style="width: 30px; height: 30px; border-radius: 50%;" alt="MetaMask">
                         Abrir Portal MetaMask
                     </a>
@@ -593,7 +593,7 @@
                 <h2 class="metamask-title font-display">🦊 Connect with MetaMask</h2>
                 <p class="metamask-subtitle">Preferred option for founding partners - Direct purchase with cryptocurrencies</p>
                 <div class="metamask-buttons">
-                    <a href="https://neopisk.lat/founder.html" target="_blank" class="btn-metamask-primary">
+                    <a href="metamask.html" class="btn-metamask-primary">
                         <img src="asset/metamasklogo.jpg" style="width: 30px; height: 30px; border-radius: 50%;" alt="MetaMask">
                         Open MetaMask Portal
                     </a>
@@ -920,151 +920,9 @@
                 padding: 1.25rem;
             }
         }
-        /* MODAL METAMASK PARA MÓVIL - COPIADO DE FOUNDER.HTML */
-        .metamask-modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.95);
-            z-index: 10000;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .metamask-modal {
-            background: linear-gradient(135deg, #f6851b 0%, #e2761b 100%);
-            border-radius: 25px;
-            padding: 40px 30px;
-            max-width: 90%;
-            width: 350px;
-            text-align: center;
-            box-shadow: 0 15px 50px rgba(246, 133, 27, 0.5);
-            animation: modalSlideIn 0.3s ease-out;
-        }
-
-        @keyframes modalSlideIn {
-            from {
-                transform: translateY(-50px);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-
-        .metamask-logo-modal {
-            width: 100px;
-            height: 100px;
-            margin: 0 auto 20px;
-            filter: drop-shadow(0 5px 15px rgba(0,0,0,0.3));
-        }
-
-        .metamask-modal h3 {
-            color: white;
-            font-size: 22px;
-            margin: 0 0 15px 0;
-            font-weight: 900;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        }
-
-        .metamask-modal p {
-            color: white;
-            font-size: 14px;
-            line-height: 1.6;
-            margin-bottom: 25px;
-            opacity: 0.95;
-        }
-
-        .btn-open-metamask-modal {
-            background: white;
-            color: #f6851b;
-            padding: 16px 30px;
-            border-radius: 15px;
-            border: none;
-            font-size: 16px;
-            font-weight: 900;
-            cursor: pointer;
-            width: 100%;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
-            transition: all 0.3s;
-            text-transform: uppercase;
-        }
-
-        .btn-open-metamask-modal:active {
-            transform: scale(0.95);
-        }
-
-        .btn-cancel-modal {
-            background: transparent;
-            color: white;
-            border: 2px solid white;
-            padding: 12px;
-            border-radius: 10px;
-            margin-top: 15px;
-            cursor: pointer;
-            font-size: 14px;
-            width: 100%;
-        }
     </style>
 </head>
 <body>
-<!-- MODAL METAMASK PARA MÓVIL -->
-<div id="metamaskModal" class="metamask-modal-overlay" style="display: none;">
-    <div class="metamask-modal">
-        <svg class="metamask-logo-modal" viewBox="0 0 318.6 318.6" xmlns="http://www.w3.org/2000/svg">
-            <polygon fill="#E2761B" stroke="#E2761B" points="274.1,35.5 174.6,109.4 193,65.8"/>
-            <g fill="#E4761B" stroke="#E4761B">
-                <polygon points="44.4,35.5 143.1,110.1 125.6,65.8"/>
-                <polygon points="238.3,206.8 211.8,247.4 268.5,263 284.8,207.7"/>
-                <polygon points="33.9,207.7 50.1,263 106.8,247.4 80.3,206.8"/>
-                <polygon points="103.6,138.2 87.8,162.1 144.1,164.6 142.1,104.1"/>
-                <polygon points="214.9,138.2 175.9,103.4 174.6,164.6 230.8,162.1"/>
-                <polygon points="106.8,247.4 140.6,230.9 111.4,208.1"/>
-                <polygon points="177.9,230.9 211.8,247.4 207.1,208.1"/>
-            </g>
-            <g fill="#D7C1B3" stroke="#D7C1B3">
-                <polygon points="211.8,247.4 177.9,230.9 180.6,253 180.3,262.3"/>
-                <polygon points="106.8,247.4 138.3,262.3 138.1,253 140.6,230.9"/>
-            </g>
-            <polygon fill="#233447" stroke="#233447" points="138.8,193.5 110.6,185.2 130.5,176.1"/>
-            <polygon fill="#233447" stroke="#233447" points="179.7,193.5 188,176.1 208,185.2"/>
-            <g fill="#CD6116" stroke="#CD6116">
-                <polygon points="106.8,247.4 111.6,206.8 80.3,207.7"/>
-                <polygon points="207,206.8 211.8,247.4 238.3,207.7"/>
-                <polygon points="230.8,162.1 174.6,164.6 179.8,193.5 188.1,176.1 208.1,185.2"/>
-                <polygon points="110.6,185.2 130.6,176.1 138.8,193.5 144.1,164.6 87.8,162.1"/>
-            </g>
-            <g fill="#E4751F" stroke="#E4751F">
-                <polygon points="87.8,162.1 111.4,208.1 110.6,185.2"/>
-                <polygon points="208.1,185.2 207.1,208.1 230.8,162.1"/>
-                <polygon points="144.1,164.6 138.8,193.5 145.4,227.6 146.9,182.7"/>
-                <polygon points="174.6,164.6 171.9,182.6 173.1,227.6 179.8,193.5"/>
-            </g>
-            <polygon fill="#F6851B" stroke="#F6851B" points="179.8,193.5 173.1,227.6 177.9,230.9 207.1,208.1 208.1,185.2"/>
-            <polygon fill="#F6851B" stroke="#F6851B" points="110.6,185.2 111.4,208.1 140.6,230.9 145.4,227.6 138.8,193.5"/>
-            <polygon fill="#C0AD9E" stroke="#C0AD9E" points="180.3,262.3 180.6,253 178.1,250.8 140.4,250.8 138.1,253 138.3,262.3 106.8,247.4 117.8,256.4 140.1,271.9 178.4,271.9 200.8,256.4 211.8,247.4"/>
-            <polygon fill="#161616" stroke="#161616" points="177.9,230.9 173.1,227.6 145.4,227.6 140.6,230.9 138.1,253 140.4,250.8 178.1,250.8 180.6,253"/>
-            <g fill="#763D16" stroke="#763D16">
-                <polygon points="278.3,114.2 286.8,73.4 274.1,35.5 177.9,106.9 214.9,138.2 267.2,153.5 278.8,140 273.8,136.4 281.8,129.1 275.6,124.3 283.6,118.2"/>
-                <polygon points="31.8,73.4 40.3,114.2 34.9,118.2 42.9,124.3 36.8,129.1 44.8,136.4 39.8,140 51.3,153.5 103.6,138.2 140.6,106.9 44.4,35.5"/>
-            </g>
-            <polygon fill="#F6851B" stroke="#F6851B" points="267.2,153.5 214.9,138.2 230.8,162.1 207.1,208.1 238.3,207.7 284.8,207.7"/>
-            <polygon fill="#F6851B" stroke="#F6851B" points="103.6,138.2 51.3,153.5 33.9,207.7 80.3,207.7 111.4,208.1 87.8,162.1"/>
-            <polygon fill="#F6851B" stroke="#F6851B" points="174.6,164.6 177.9,106.9 193.1,65.8 125.6,65.8 140.6,106.9 144.1,164.6 145.3,182.8 145.4,227.6 173.1,227.6 173.3,182.8"/>
-        </svg>
-        <h3>🦊 Conectar con MetaMask</h3>
-        <p>Para conectar tu billetera, necesitas abrir esta página dentro del <strong>navegador de MetaMask</strong></p>
-        <button class="btn-open-metamask-modal" onclick="abrirEnMetaMask()">
-            🚀 ABRIR EN METAMASK
-        </button>
-        <button class="btn-cancel-modal" onclick="cerrarModalMetaMask()">Cancelar</button>
-    </div>
-</div>
-
     <!-- Header -->
     <header class="header">
         <div class="header-content">
@@ -1155,39 +1013,31 @@
             </div>
 
             <!-- Panel de compra Web3 -->
-            <div style="max-width: 600px; margin: 0 auto; background: linear-gradient(145deg, #1a1a1a, #0a0a0a); border: 3px solid var(--neopisk-gold); border-radius: 25px; padding: 2.5rem; box-shadow: 0 20px 60px rgba(212, 175, 55, 0.4);">
+            <div style="max-width: 700px; margin: 0 auto; background: linear-gradient(145deg, #1a1a1a, #0a0a0a); border: 3px solid var(--neopisk-gold); border-radius: 25px; padding: 3rem 2rem; box-shadow: 0 20px 60px rgba(212, 175, 55, 0.4); text-align: center;">
                 
-                <!-- Balance -->
-                <div style="background: #000; padding: 1.5rem; border-radius: 15px; border: 1px solid #222; margin-bottom: 1.5rem; text-align: center;">
-                    <div style="font-size: 0.75rem; color: #666; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 1px;">
-                        Tu Saldo / Your Balance
+                <!-- Botón único grande para MetaMask -->
+                <a href="metamask.html" style="display: block; text-decoration: none; background: linear-gradient(135deg, #f6851b, #e2761b); padding: 2.5rem 2rem; border-radius: 20px; box-shadow: 0 10px 40px rgba(246, 133, 27, 0.5); transition: all 0.3s; border: 3px solid var(--neopisk-gold); position: relative; overflow: hidden;">
+                    <div style="position: relative; z-index: 2;">
+                        <div style="margin-bottom: 1.5rem;">
+                            <img src="asset/metamasklogo.jpg" style="width: 100px; height: 100px; border-radius: 50%; border: 4px solid white; box-shadow: 0 5px 20px rgba(0,0,0,0.3);" alt="MetaMask">
+                        </div>
+                        <div style="color: white; font-size: 2rem; font-weight: 900; margin-bottom: 0.75rem; text-transform: uppercase; letter-spacing: 1px; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); font-family: 'Space Grotesk', sans-serif;">
+                            🦊 Inversión Automática con MetaMask
+                        </div>
+                        <div style="color: rgba(255,255,255,0.9); font-size: 1.1rem; font-weight: 600; margin-bottom: 1.5rem;">
+                            Compra directa con USDT en Polygon Network
+                        </div>
+                        <div style="display: inline-block; background: rgba(255,255,255,0.2); padding: 0.75rem 1.5rem; border-radius: 30px; backdrop-filter: blur(10px);">
+                            <span style="color: white; font-weight: 700; font-size: 1rem;">
+                                ⚡ Proceso 100% Automático • Sin Intermediarios
+                            </span>
+                        </div>
                     </div>
-                    <div id="saldoDisplay" style="font-size: 2.5rem; color: #00d2ff; font-weight: bold; font-family: 'IBM Plex Mono', monospace;">
-                        0.00 $PISK
-                    </div>
-                </div>
-
-                <!-- Botón conectar -->
-                <button onclick="verMiSaldo()" style="width: 100%; padding: 1.25rem; background: transparent; border: 2px solid #00d2ff; color: #00d2ff; border-radius: 12px; font-weight: bold; cursor: pointer; margin-bottom: 1.5rem; font-size: 1rem; transition: all 0.3s;" onmouseover="this.style.background='rgba(0,210,255,0.1)'" onmouseout="this.style.background='transparent'">
-                    🔍 CONECTAR BILLETERA
-                </button>
-
-                <!-- Input USDT -->
-                <input type="number" id="inputUSDT" placeholder="Monto en USDT" style="width: 100%; padding: 1.25rem; border-radius: 12px; border: 2px solid #333; background: #000; color: #00d2ff; font-size: 1.5rem; text-align: center; margin-bottom: 1.5rem; font-family: 'IBM Plex Mono', monospace; outline: none;">
-
-                <!-- Botón aprobar -->
-                <button onclick="approveUSDT()" style="width: 100%; padding: 1.25rem; background: #333; color: white; border: none; border-radius: 12px; font-weight: bold; cursor: pointer; margin-bottom: 1rem; font-size: 1rem; text-transform: uppercase; transition: all 0.3s;" onmouseover="this.style.background='#444'" onmouseout="this.style.background='#333'">
-                    1. AUTORIZAR USDT
-                </button>
-
-                <!-- Botón comprar -->
-                <button onclick="buyPisk()" style="width: 100%; padding: 1.25rem; background: #00d2ff; color: #000; border: none; border-radius: 12px; font-weight: bold; cursor: pointer; font-size: 1rem; text-transform: uppercase; box-shadow: 0 4px 15px rgba(0,210,255,0.4); transition: all 0.3s;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 20px rgba(0,210,255,0.6)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 15px rgba(0,210,255,0.4)'">
-                    2. ADQUIRIR TOKENS $PISK
-                </button>
+                </a>
 
                 <!-- Status -->
-                <div id="status" style="font-size: 0.875rem; margin-top: 1.5rem; color: #d4af37; font-weight: bold; text-align: center; min-height: 20px;">
-                    Listo en Polygon Network
+                <div id="status" style="font-size: 0.9rem; margin-top: 2rem; color: #d4af37; font-weight: 600; text-align: center;">
+                    Haz clic para conectar tu billetera MetaMask
                 </div>
             </div>
 
@@ -1635,6 +1485,38 @@ async function getSafeGasPrice(web3) {
     return Math.floor(parseInt(gasPrice) * 1.5).toString();
 }
 
+async function verMiSaldo() {
+    if (!window.ethereum) {
+        alert("❌ MetaMask no detectado. Instala MetaMask para continuar.");
+        return;
+    }
+    try {
+        const web3 = new Web3(window.ethereum);
+        const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+        if (!accounts || accounts.length === 0) {
+            alert("❌ No se pudo conectar a MetaMask");
+            return;
+        }
+        const chainId = await web3.eth.getChainId();
+        if (chainId !== 137) {
+            alert("⚠️ Por favor cambia a Polygon Network en MetaMask");
+            return;
+        }
+        const pisk = new web3.eth.Contract(minABI, piskAddr);
+        const bal = await pisk.methods.balanceOf(accounts[0]).call();
+        const normal = parseFloat(web3.utils.fromWei(bal, 'ether')).toFixed(2);
+        document.getElementById("saldoDisplay").innerText = normal + " $PISK";
+        document.getElementById("status").innerText = "✅ Conectado: " + accounts[0].substring(0,8) + "...";
+    } catch (error) {
+        console.error("Error al conectar:", error);
+        if (error.code === 4001) {
+            document.getElementById("status").innerText = "❌ Conexión rechazada por el usuario";
+        } else {
+            document.getElementById("status").innerText = "❌ Error al conectar - Intenta nuevamente";
+        }
+    }
+}
+
 async function approveUSDT() {
     const val = document.getElementById("inputUSDT").value;
     if(!val || val <= 0) return alert("⚠️ Ingresa un monto válido");
@@ -1781,87 +1663,7 @@ function copiarURLMetaMask() {
     });
 }
 
-// =====================================================
-// FUNCIONES DE MODAL METAMASK MÓVIL (DE FOUNDER.HTML)
-// =====================================================
-
-function esMobil() {
-    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-}
-
-function estaDentroDeMetaMask() {
-    return typeof window.ethereum !== 'undefined' && 
-           (window.ethereum.isMetaMask || window.ethereum.providers?.some(p => p.isMetaMask));
-}
-
-function mostrarModalMetaMask() {
-    document.getElementById('metamaskModal').style.display = 'flex';
-}
-
-function cerrarModalMetaMask() {
-    document.getElementById('metamaskModal').style.display = 'none';
-}
-
-function abrirEnMetaMask() {
-    const urlActual = window.location.href;
-    const urlSinProtocolo = urlActual.replace(/^https?:\/\//, '');
-    const deepLink = `https://metamask.app.link/dapp/${urlSinProtocolo}`;
-    
-    // Intentar abrir en MetaMask
-    window.location.href = deepLink;
-    
-    // Cerrar modal después de redirigir
-    setTimeout(() => {
-        cerrarModalMetaMask();
-    }, 1000);
-}
-
-// =====================================================
-// MODIFICAR verMiSaldo PARA USAR EL MODAL
-// =====================================================
-
-async function verMiSaldo() {
-    // SI ESTÁ EN MÓVIL Y NO DENTRO DE METAMASK, MOSTRAR MODAL
-    if (esMobil() && !estaDentroDeMetaMask()) {
-        mostrarModalMetaMask();
-        document.getElementById("status").innerText = "📱 Abre en navegador MetaMask";
-        return;
-    }
-    
-    // Si no es móvil o ya está en MetaMask, ejecutar función original
-    if (!window.ethereum) {
-        alert("❌ MetaMask no detectado.\n\nInstala MetaMask desde metamask.io");
-        return;
-    }
-    
-    try {
-        const web3 = new Web3(window.ethereum);
-        const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
-        if (!accounts || accounts.length === 0) {
-            alert("❌ No se pudo conectar a MetaMask");
-            return;
-        }
-        const chainId = await web3.eth.getChainId();
-        if (chainId !== 137) {
-            alert("⚠️ Por favor cambia a Polygon Network en MetaMask");
-            return;
-        }
-        const pisk = new web3.eth.Contract(minABI, piskAddr);
-        const bal = await pisk.methods.balanceOf(accounts[0]).call();
-        const normal = parseFloat(web3.utils.fromWei(bal, 'ether')).toFixed(2);
-        document.getElementById("saldoDisplay").innerText = normal + " $PISK";
-        document.getElementById("status").innerText = "✅ Conectado: " + accounts[0].substring(0,8) + "...";
-    } catch (error) {
-        console.error("Error al conectar:", error);
-        if (error.code === 4001) {
-            document.getElementById("status").innerText = "❌ Conexión rechazada por el usuario";
-        } else {
-            document.getElementById("status").innerText = "❌ Error al conectar - Intenta nuevamente";
-        }
-    }
-}
-
 console.log("✅ JavaScript cargado correctamente");
 </script>
 </body>
-</html>         
+</html>
