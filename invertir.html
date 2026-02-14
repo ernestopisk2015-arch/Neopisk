@@ -569,10 +569,10 @@
                 <h2 class="metamask-title font-display">🦊 Conecta con MetaMask</h2>
                 <p class="metamask-subtitle">Opción preferida para socios fundadores - Compra directa con criptomonedas</p>
                 <div class="metamask-buttons">
-                    <a href="https://neopisk.lat/founder.html" target="_blank" class="btn-metamask-primary">
+                    <button id="btnMetaMaskPrincipal" class="btn-metamask-primary" onclick="abrirMetaMaskInteligente()" style="border: none; cursor: pointer; text-decoration: none;">
                         <img src="asset/metamasklogo.jpg" style="width: 30px; height: 30px; border-radius: 50%;" alt="MetaMask">
-                        Abrir Portal MetaMask
-                    </a>
+                        <span id="textoBotonPrincipal">Abrir Portal MetaMask</span>
+                    </button>
                     <button class="btn-metamask-secondary" onclick="copiarURLMetaMask()">
                         <i class="fas fa-copy"></i> Copiar URL para MetaMask
                     </button>
@@ -593,10 +593,10 @@
                 <h2 class="metamask-title font-display">🦊 Connect with MetaMask</h2>
                 <p class="metamask-subtitle">Preferred option for founding partners - Direct purchase with cryptocurrencies</p>
                 <div class="metamask-buttons">
-                    <a href="https://neopisk.lat/founder.html" target="_blank" class="btn-metamask-primary">
+                    <button id="btnMetaMaskPrincipalEN" class="btn-metamask-primary" onclick="abrirMetaMaskInteligente()" style="border: none; cursor: pointer; text-decoration: none;">
                         <img src="asset/metamasklogo.jpg" style="width: 30px; height: 30px; border-radius: 50%;" alt="MetaMask">
-                        Open MetaMask Portal
-                    </a>
+                        <span id="textoBotonPrincipalEN">Open MetaMask Portal</span>
+                    </button>
                     <button class="btn-metamask-secondary" onclick="copiarURLMetaMask()">
                         <i class="fas fa-copy"></i> Copy URL for MetaMask
                     </button>
@@ -1494,56 +1494,10 @@ async function getSafeGasPrice(web3) {
 }
 
 async function verMiSaldo() {
-    // Detectar si es móvil
-    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-    
     if (!window.ethereum) {
-        if (isMobile) {
-            // EN MÓVIL: Redirigir automáticamente a MetaMask
-            const currentUrl = window.location.href;
-            const metamaskDeepLink = `https://metamask.app.link/dapp/${currentUrl.replace(/^https?:\/\//, '')}`;
-            
-            const userChoice = confirm(
-                "📱 Para conectar tu billetera en móvil:\n\n" +
-                "Presiona OK para abrir esta página en MetaMask\n\n" +
-                "O CANCELA para copiar la URL y abrirla manualmente"
-            );
-            
-            if (userChoice) {
-                // Redirigir a MetaMask
-                window.location.href = metamaskDeepLink;
-            } else {
-                // Copiar URL
-                navigator.clipboard.writeText(currentUrl).then(() => {
-                    alert("✅ URL copiada!\n\n" +
-                          "Ahora:\n" +
-                          "1. Abre la app MetaMask\n" +
-                          "2. Toca el menú (☰)\n" +
-                          "3. Toca 'Navegador'\n" +
-                          "4. Pega la URL copiada\n" +
-                          "5. Conecta tu billetera");
-                }).catch(() => {
-                    alert("📋 Copia esta URL:\n\n" + currentUrl + "\n\n" +
-                          "Ábrela en el navegador de MetaMask");
-                });
-            }
-            return;
-        } else {
-            // EN DESKTOP: Instalar extensión
-            const installChoice = confirm(
-                "❌ MetaMask no detectado\n\n" +
-                "¿Quieres instalar MetaMask ahora?\n\n" +
-                "OK = Ir a metamask.io\n" +
-                "CANCELAR = Cerrar"
-            );
-            
-            if (installChoice) {
-                window.open("https://metamask.io/download/", "_blank");
-            }
-            return;
-        }
+        alert("❌ MetaMask no detectado.\n\nUsa el botón naranja 'Abrir en MetaMask' arriba para conectar tu billetera.");
+        return;
     }
-    
     try {
         const web3 = new Web3(window.ethereum);
         const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
@@ -1710,10 +1664,48 @@ function cambiarIdioma(lang) {
     dividerText.textContent = lang === 'en' ? 'Or choose another method' : 'O elige otro método';
 }
 
+// =====================================================
+// DETECCIÓN AUTOMÁTICA DE MÓVIL PARA BOTONES METAMASK
+// =====================================================
+
+// Cambiar texto de botones según dispositivo al cargar
+document.addEventListener('DOMContentLoaded', function() {
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    const textoBotonES = document.getElementById('textoBotonPrincipal');
+    const textoBotonEN = document.getElementById('textoBotonPrincipalEN');
+    
+    if (isMobile) {
+        if (textoBotonES) textoBotonES.textContent = 'Abrir en MetaMask';
+        if (textoBotonEN) textoBotonEN.textContent = 'Open in MetaMask';
+    } else {
+        if (textoBotonES) textoBotonES.textContent = 'Abrir Portal MetaMask';
+        if (textoBotonEN) textoBotonEN.textContent = 'Open MetaMask Portal';
+    }
+});
+
+// Función inteligente que detecta móvil/desktop
+function abrirMetaMaskInteligente() {
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    
+    if (isMobile) {
+        // EN MÓVIL: Abrir con deep link de MetaMask
+        const founderUrl = 'https://neopisk.lat/founder.html';
+        const metamaskDeepLink = `https://metamask.app.link/dapp/${founderUrl.replace(/^https?:\/\//, '')}`;
+        
+        // Redirigir automáticamente
+        window.location.href = metamaskDeepLink;
+    } else {
+        // EN DESKTOP: Abrir founder.html en nueva pestaña
+        window.open('https://neopisk.lat/founder.html', '_blank');
+    }
+}
+
 function copiarURLMetaMask() {
     const url = 'https://neopisk.lat/founder.html';
     navigator.clipboard.writeText(url).then(() => {
-        alert('✅ URL copiada');
+        alert('✅ URL copiada!\n\nPégala en el navegador de MetaMask móvil.');
+    }).catch(() => {
+        alert('✅ URL: ' + url);
     });
 }
 
@@ -1721,3 +1713,5 @@ console.log("✅ JavaScript cargado correctamente");
 </script>
 </body>
 </html>
+          
+         
