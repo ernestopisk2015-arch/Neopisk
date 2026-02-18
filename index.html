@@ -1,14 +1,14 @@
-  <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <title>Neo Pisk - Real Asset Investment Platform</title>
+    <title>Neo Pisk - Tokenización de Activos Reales</title>
     <link rel="icon" type="image/jpeg" href="asset/IMG-20260126-WA0020.jpg">
 
-    <meta property="og:title" content="Neo Pisk - Inversión con Activos Reales Tokenizados">
-    <meta property="og:description" content="Ecosistema de inversión respaldado por flota operativa, tecnología robótica y energía limpia. Retornos verificables desde Q1 2026.">
+    <meta property="og:title" content="Neo Pisk - Tokenización de Activos Reales con Agrotec Perú">
+    <meta property="og:description" content="Ecosistema de inversión respaldado por 100 hectáreas de cacao y tierras en Codo de Pozuzo. Token $PISK con retornos verificables.">
     <meta property="og:image" content="https://i.postimg.cc/Js4BXv4X/byd.jpg">
     <meta property="og:url" content="https://ernestopisk2015-arch.github.io/Neopisk/">
     
@@ -28,13 +28,10 @@
             --neopisk-mint: #00D9A3;
             --neopisk-white: #FAFAFA;
             --neopisk-error: #E63946;
+            --neopisk-green: #2D6A4F;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Inter', sans-serif;
@@ -44,15 +41,10 @@
             overflow-x: hidden;
         }
 
-        .font-display {
-            font-family: 'Space Grotesk', sans-serif;
-        }
+        .font-display { font-family: 'Space Grotesk', sans-serif; }
+        .font-mono { font-family: 'IBM Plex Mono', monospace; }
 
-        .font-mono {
-            font-family: 'IBM Plex Mono', monospace;
-        }
-
-        /* Hero Section with Parallax Effect */
+        /* Hero */
         .hero-section {
             position: relative;
             height: 100vh;
@@ -66,21 +58,17 @@
 
         .hero-bg {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            opacity: 0.15;
-            background: url('https://i.postimg.cc/wMvXhZN1/Llama-en-Machu-Picchu-pc-jpg.webp') center/cover;
-            filter: grayscale(100%);
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            opacity: 0.18;
+            background: url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=1600') center/cover;
+            filter: grayscale(40%);
         }
 
         .hero-grid {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
             background-image: 
                 linear-gradient(var(--neopisk-gold) 1px, transparent 1px),
                 linear-gradient(90deg, var(--neopisk-gold) 1px, transparent 1px);
@@ -121,8 +109,8 @@
         }
 
         .hero-subtitle {
-            font-size: clamp(1rem, 3vw, 2rem);
-            color: rgba(255, 255, 255, 0.8);
+            font-size: clamp(1rem, 3vw, 1.75rem);
+            color: rgba(255, 255, 255, 0.85);
             margin-bottom: 3rem;
             font-weight: 300;
             max-width: 800px;
@@ -142,13 +130,11 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        .stat-item {
-            text-align: center;
-        }
+        .stat-item { text-align: center; }
 
         .stat-value {
             display: block;
-            font-size: clamp(1.5rem, 4vw, 2.5rem);
+            font-size: clamp(1.25rem, 4vw, 2.25rem);
             font-weight: 700;
             color: var(--neopisk-gold);
             margin-bottom: 0.5rem;
@@ -156,24 +142,21 @@
         }
 
         .stat-label {
-            font-size: clamp(0.7rem, 2vw, 0.875rem);
+            font-size: clamp(0.65rem, 2vw, 0.8rem);
             color: rgba(255, 255, 255, 0.7);
             text-transform: uppercase;
             letter-spacing: 1px;
             line-height: 1.3;
         }
 
-        /* Section Styling */
+        /* Sections */
         .section {
             padding: 6rem 2rem;
             max-width: 1400px;
             margin: 0 auto;
         }
 
-        .section-header {
-            text-align: center;
-            margin-bottom: 4rem;
-        }
+        .section-header { text-align: center; margin-bottom: 4rem; }
 
         .section-badge {
             display: inline-block;
@@ -204,7 +187,7 @@
             line-height: 1.8;
         }
 
-        /* Card Components */
+        /* Cards */
         .card {
             background: white;
             border-radius: 20px;
@@ -245,116 +228,28 @@
             line-height: 1.7;
         }
 
-        /* Proof Section */
-        .proof-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-top: 3rem;
-        }
-
-        .proof-card {
-            position: relative;
-            border-radius: 20px;
-            overflow: hidden;
-            aspect-ratio: 16/9;
-            cursor: pointer;
-            transition: transform 0.3s ease;
-        }
-
-        .proof-card:hover {
-            transform: scale(1.02);
-        }
-
-        .proof-card img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .proof-overlay {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            padding: 1.5rem;
-            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+        /* Agrotec Highlight */
+        .agrotec-banner {
+            background: linear-gradient(135deg, var(--neopisk-green) 0%, #1b4332 100%);
+            border-radius: 30px;
+            padding: 3rem;
             color: white;
+            position: relative;
+            overflow: hidden;
         }
 
-        .proof-title {
-            font-size: 1.125rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-        }
-
-        .proof-meta {
-            font-size: 0.875rem;
-            opacity: 0.8;
-        }
-
-        /* Ecosystem Grid */
-        .ecosystem-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
-            margin-top: 3rem;
-        }
-
-        .ecosystem-card {
-            background: white;
-            border-radius: 20px;
-            padding: 2rem;
-            border: 2px solid transparent;
-            transition: all 0.3s ease;
-            text-align: center;
-        }
-
-        .ecosystem-card:hover {
-            border-color: var(--neopisk-gold);
-            transform: translateY(-5px);
-            box-shadow: 0 20px 40px rgba(212, 175, 55, 0.2);
-        }
-
-        .ecosystem-icon {
-            width: 80px;
-            height: 80px;
-            margin: 0 auto 1.5rem;
-            background: linear-gradient(135deg, var(--neopisk-navy), var(--neopisk-slate));
+        .agrotec-banner::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 400px;
+            height: 400px;
+            background: rgba(255,255,255,0.04);
             border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2rem;
-            color: var(--neopisk-gold);
         }
 
-        /* Partners Section */
-        .partners-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 2rem;
-            align-items: center;
-            margin-top: 3rem;
-            padding: 2rem;
-            background: rgba(212, 175, 55, 0.03);
-            border-radius: 20px;
-        }
-
-        .partner-logo {
-            text-align: center;
-            font-weight: 900;
-            font-size: 1.5rem;
-            color: var(--neopisk-slate);
-            opacity: 0.7;
-            transition: opacity 0.3s ease;
-        }
-
-        .partner-logo:hover {
-            opacity: 1;
-        }
-
-        /* Investment Calculator */
+        /* Calculator */
         .calculator {
             background: linear-gradient(135deg, var(--neopisk-navy), #1a2942);
             border-radius: 30px;
@@ -378,9 +273,7 @@
             backdrop-filter: blur(10px);
         }
 
-        .calculator-input::placeholder {
-            color: rgba(255, 255, 255, 0.5);
-        }
+        .calculator-input::placeholder { color: rgba(255, 255, 255, 0.5); }
 
         .calculator-result {
             background: var(--neopisk-gold);
@@ -405,7 +298,24 @@
             margin-bottom: 0.5rem;
         }
 
-        /* Team Section */
+        /* Progress Bar */
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 1rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--neopisk-gold), var(--neopisk-mint));
+            border-radius: 10px;
+            transition: width 0.3s ease;
+        }
+
+        /* Team */
         .team-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -474,94 +384,16 @@
             transition: transform 0.2s ease;
         }
 
-        .team-social:hover {
-            transform: scale(1.05);
-        }
-
-        /* CTA Buttons */
-        .btn {
-            display: inline-block;
-            padding: 1.25rem 2.5rem;
-            border-radius: 50px;
-            font-weight: 700;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-size: 0.875rem;
-        }
-
-        .btn-primary {
-            background: var(--neopisk-gold);
-            color: var(--neopisk-navy);
-            box-shadow: 0 4px 20px rgba(212, 175, 55, 0.4);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(212, 175, 55, 0.6);
-        }
-
-        .btn-secondary {
-            background: transparent;
-            color: white;
-            border: 2px solid white;
-        }
-
-        .btn-secondary:hover {
-            background: white;
-            color: var(--neopisk-navy);
-        }
-
-        /* Floating Action Buttons */
-        .fab-container {
-            position: fixed;
-            bottom: 2rem;
-            right: 2rem;
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-            z-index: 1000;
-        }
-
-        .fab {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 1.75rem;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-            transition: transform 0.3s ease;
-            text-decoration: none;
-        }
-
-        .fab:hover {
-            transform: scale(1.1);
-        }
-
-        .fab-whatsapp {
-            background: #25d366;
-        }
-
-        .fab-telegram {
-            background: #0088cc;
-        }
+        .team-social:hover { transform: scale(1.05); }
 
         /* Roadmap */
-        .roadmap {
-            position: relative;
-            padding: 3rem 0;
-        }
+        .roadmap { position: relative; padding: 3rem 0; }
 
         .roadmap::before {
             content: '';
             position: absolute;
             left: 50%;
-            top: 0;
-            bottom: 0;
+            top: 0; bottom: 0;
             width: 2px;
             background: linear-gradient(to bottom, var(--neopisk-gold), transparent);
             transform: translateX(-50%);
@@ -575,15 +407,8 @@
             gap: 4rem;
         }
 
-        .roadmap-item:nth-child(even) .roadmap-content {
-            grid-column: 2;
-        }
-
-        .roadmap-item:nth-child(even) .roadmap-date {
-            grid-column: 1;
-            grid-row: 1;
-            text-align: right;
-        }
+        .roadmap-item:nth-child(even) .roadmap-content { grid-column: 2; }
+        .roadmap-item:nth-child(even) .roadmap-date { grid-column: 1; grid-row: 1; text-align: right; }
 
         .roadmap-dot {
             position: absolute;
@@ -625,78 +450,73 @@
             line-height: 1.6;
         }
 
-        /* Responsive */
-        @media (max-width: 768px) {
-            .roadmap::before {
-                left: 20px;
-            }
-
-            .roadmap-item {
-                grid-template-columns: 1fr;
-                padding-left: 60px;
-            }
-
-            .roadmap-item:nth-child(even) .roadmap-content,
-            .roadmap-item:nth-child(even) .roadmap-date {
-                grid-column: 1;
-                grid-row: auto;
-                text-align: left;
-            }
-
-            .roadmap-dot {
-                left: 20px;
-            }
-
-            .hero-stats {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 1rem;
-                padding: 1.5rem;
-                margin-top: 2rem;
-            }
-            
-            .hero-section {
-                min-height: 600px;
-                height: auto;
-                padding: 2rem 0;
-            }
-            
-            .hero-content {
-                padding: 1rem;
-            }
-            
-            .stat-value {
-                font-size: 1.25rem !important;
-            }
-            
-            .stat-label {
-                font-size: 0.65rem !important;
-            }
+        /* Buttons */
+        .btn {
+            display: inline-block;
+            padding: 1.25rem 2.5rem;
+            border-radius: 50px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.875rem;
         }
 
-        /* Loading Animation */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        .btn-primary {
+            background: var(--neopisk-gold);
+            color: var(--neopisk-navy);
+            box-shadow: 0 4px 20px rgba(212, 175, 55, 0.4);
         }
 
-        .fade-in-up {
-            animation: fadeInUp 0.8s ease-out;
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(212, 175, 55, 0.6);
         }
+
+        .btn-secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+
+        .btn-secondary:hover { background: white; color: var(--neopisk-navy); }
+
+        /* FABs */
+        .fab-container {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            z-index: 1000;
+        }
+
+        .fab {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.75rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease;
+            text-decoration: none;
+        }
+
+        .fab:hover { transform: scale(1.1); }
+        .fab-whatsapp { background: #25d366; }
+        .fab-telegram { background: #0088cc; }
 
         /* Video Modal */
         .video-modal {
             display: none;
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
             background: rgba(0, 0, 0, 0.95);
             z-index: 9999;
             padding: 2rem;
@@ -732,26 +552,7 @@
             transition: transform 0.2s ease;
         }
 
-        .video-close:hover {
-            transform: scale(1.1);
-        }
-
-        /* Progress Bar */
-        .progress-bar {
-            width: 100%;
-            height: 8px;
-            background: rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
-            overflow: hidden;
-            margin-top: 1rem;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--neopisk-gold), var(--neopisk-mint));
-            border-radius: 10px;
-            transition: width 0.3s ease;
-        }
+        .video-close:hover { transform: scale(1.1); }
 
         /* Faith Banner */
         .faith-banner {
@@ -763,45 +564,114 @@
             font-style: italic;
             opacity: 0.9;
         }
+
+        /* Token Flow Visual */
+        .token-flow {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr auto 1fr;
+            gap: 1rem;
+            align-items: center;
+            margin: 3rem 0;
+        }
+
+        .flow-box {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.07);
+            border: 2px solid rgba(212, 175, 55, 0.2);
+        }
+
+        .flow-arrow {
+            font-size: 2rem;
+            color: var(--neopisk-gold);
+            text-align: center;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .roadmap::before { left: 20px; }
+            .roadmap-item { grid-template-columns: 1fr; padding-left: 60px; }
+            .roadmap-item:nth-child(even) .roadmap-content,
+            .roadmap-item:nth-child(even) .roadmap-date { grid-column: 1; grid-row: auto; text-align: left; }
+            .roadmap-dot { left: 20px; }
+            .hero-stats { grid-template-columns: repeat(2, 1fr); gap: 1rem; padding: 1.5rem; margin-top: 2rem; }
+            .hero-section { min-height: 600px; height: auto; padding: 2rem 0; }
+            .hero-content { padding: 1rem; }
+            .stat-value { font-size: 1.1rem !important; }
+            .stat-label { font-size: 0.6rem !important; }
+            .token-flow { grid-template-columns: 1fr; }
+            .flow-arrow { transform: rotate(90deg); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in-up { animation: fadeInUp 0.8s ease-out; }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+
+        .agrotec-label {
+            display: inline-block;
+            background: linear-gradient(90deg, var(--neopisk-gold), #a07c1e, var(--neopisk-gold));
+            background-size: 200%;
+            animation: shimmer 3s linear infinite;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 900;
+        }
     </style>
 </head>
 <body>
+
     <!-- Faith Banner -->
     <div class="faith-banner">
         "Todo lo puedo en Cristo que me fortalece" — Filipenses 4:13
     </div>
 
-    <!-- Hero Section -->
+    <!-- ═══════════════ HERO ═══════════════ -->
     <section class="hero-section">
         <div class="hero-bg"></div>
         <div class="hero-grid"></div>
         
-        <div class="hero-content">
-            <div class="hero-badge">Real Asset Investment Platform</div>
+        <div class="hero-content fade-in-up">
+            <div class="hero-badge">Real Asset Tokenization Platform</div>
             
             <h1 class="hero-title font-display">NEO PISK</h1>
             <p class="hero-subtitle">
-                Inversión respaldada por activos reales operativos. <br>
-                Retornos verificables desde el primer día.
+                Tokenizamos activos reales productivos.<br>
+                Respaldados por tierra, cacao y contratos verificables en Perú.
             </p>
             
             <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: 2rem;">
-                <a href="#invertir" class="btn btn-primary">Invertir Ahora</a>
+                <a href="#invertir" class="btn btn-primary">Invertir en $PISK</a>
                 <a href="https://docs.google.com/document/d/1FaaZDSKgsv_6CkeuQH1gfRxOpQ-Dlj5vy0Thm7-7tB8/edit?usp=sharing" target="_blank" class="btn btn-secondary">Ver Whitepaper</a>
             </div>
 
             <div class="hero-stats">
                 <div class="stat-item">
                     <span class="stat-value font-mono">PREVENTA</span>
-                    <span class="stat-label">Primeras unidades en venta</span>
+                    <span class="stat-label">Fase 2 activa</span>
                 </div>
                 <div class="stat-item">
-                    <span class="stat-value font-mono">10 Autos</span>
-                    <span class="stat-label">Meta de flota</span>
+                    <span class="stat-value font-mono">100 Ha</span>
+                    <span class="stat-label">Activo real tokenizado</span>
                 </div>
                 <div class="stat-item">
-                    <span class="stat-value font-mono">S/ 21K</span>
-                    <span class="stat-label">Ingresos meta mensual</span>
+                    <span class="stat-value font-mono">4% ventas</span>
+                    <span class="stat-label">Royalty Agrotec al token</span>
                 </div>
                 <div class="stat-item">
                     <span class="stat-value font-mono">$0.10</span>
@@ -811,337 +681,141 @@
         </div>
     </section>
 
-    <!-- Value Proposition -->
+    <!-- ═══════════════ AGROTEC PARTNERSHIP ═══════════════ -->
     <section class="section">
         <div class="section-header">
-            <span class="section-badge">Por qué Neo Pisk</span>
-            <h2 class="section-title font-display">Inversión Real, No Promesas</h2>
+            <span class="section-badge">Contrato Estratégico</span>
+            <h2 class="section-title font-display">El Activo Que Respalda <span class="agrotec-label">$PISK</span></h2>
             <p class="section-description">
-                Estamos en preventa adquiriendo las primeras unidades de nuestra flota. 
-                Operaremos vehículos generando ingresos diarios en las plataformas de movilidad más grandes del Perú. 
-                Parte de las utilidades se inyecta a liquidez del token, beneficiando a todos los holders.
+                Neo Pisk firmará contrato con <strong>Corporación Agrotec Perú</strong> para tokenizar 100 hectáreas 
+                productivas de cacao y tierras para vivienda en Codo de Pozuzo. 
+                El 4% de las ventas se paga en tokens $PISK. 
+                El 50% de ese ingreso va directo a liquidez del token.
+            </p>
+        </div>
+
+        <!-- Flujo del modelo -->
+        <div class="agrotec-banner">
+            <h3 style="text-align:center; font-size: 1.75rem; font-weight: 700; color: var(--neopisk-gold); margin-bottom: 2.5rem;">
+                ¿Cómo fluye el valor al token $PISK?
+            </h3>
+            <div class="token-flow">
+                <div class="flow-box">
+                    <div style="font-size: 2.5rem; margin-bottom: 0.75rem;">🌱</div>
+                    <div style="font-weight: 700; color: var(--neopisk-navy); font-size: 1rem;">Agrotec vende</div>
+                    <div style="color: var(--neopisk-slate); font-size: 0.875rem; margin-top: 0.5rem;">Cacao, tierra y productos de 100 Ha en Codo de Pozuzo</div>
+                </div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-box">
+                    <div style="font-size: 2.5rem; margin-bottom: 0.75rem;">📄</div>
+                    <div style="font-weight: 700; color: var(--neopisk-navy); font-size: 1rem;">Royalty 4%</div>
+                    <div style="color: var(--neopisk-slate); font-size: 0.875rem; margin-top: 0.5rem;">Del total de ventas, pagado a Neo Pisk en tokens $PISK</div>
+                </div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-box">
+                    <div style="font-size: 2.5rem; margin-bottom: 0.75rem;">💰</div>
+                    <div style="font-weight: 700; color: var(--neopisk-gold); font-size: 1rem;">50% a liquidez</div>
+                    <div style="color: var(--neopisk-slate); font-size: 0.875rem; margin-top: 0.5rem;">La mitad del royalty inyectado al pool — todos los holders ganan</div>
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 1.5rem; color: rgba(255,255,255,0.7); font-size: 0.95rem;">
+                El otro 50% financia operaciones de Neo Pisk: tecnología, equipo y expansión de tokenización.
+            </div>
+        </div>
+
+        <!-- Detalles del activo -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-top: 3rem;">
+            <div class="card" style="border-left: 5px solid var(--neopisk-green);">
+                <div class="card-icon" style="background: linear-gradient(135deg, var(--neopisk-green), #52b788);">
+                    <i class="fas fa-seedling"></i>
+                </div>
+                <h3 class="card-title font-display">Cacao Productivo</h3>
+                <p class="card-description">
+                    Hectáreas de cacao en plena producción en Codo de Pozuzo, Pasco. 
+                    Cultivo establecido con demanda exportadora. 
+                    Ingresos continuos y verificables en campo.
+                </p>
+            </div>
+            <div class="card" style="border-left: 5px solid var(--neopisk-gold);">
+                <div class="card-icon">
+                    <i class="fas fa-home"></i>
+                </div>
+                <h3 class="card-title font-display">Tierras para Vivienda</h3>
+                <p class="card-description">
+                    Lotes habilitados para proyectos habitacionales dentro del predio de Agrotec. 
+                    Alta valorización por expansión urbana en la región Selva Central.
+                </p>
+            </div>
+            <div class="card" style="border-left: 5px solid var(--neopisk-mint);">
+                <div class="card-icon" style="background: linear-gradient(135deg, #0d7377, var(--neopisk-mint));">
+                    <i class="fas fa-file-signature"></i>
+                </div>
+                <h3 class="card-title font-display">Contrato Verificable</h3>
+                <p class="card-description">
+                    Acuerdo formal con Corporación Agrotec Perú estableciendo el 4% de royalty en ventas. 
+                    Transparencia total: los pagos y distribución al token serán auditables.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════ POR QUÉ NEOPISK ═══════════════ -->
+    <section class="section" style="background: rgba(212, 175, 55, 0.03); max-width: 100%;">
+        <div style="max-width: 1400px; margin: 0 auto; padding: 0 2rem;">
+        <div class="section-header">
+            <span class="section-badge">Por qué Neo Pisk</span>
+            <h2 class="section-title font-display">Tokenización Real, No Promesas</h2>
+            <p class="section-description">
+                Somos desarrolladores de tokenización. Nuestro modelo conecta activos productivos del Perú 
+                con inversores globales mediante blockchain, generando valor verificable para todos.
             </p>
         </div>
 
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
             <div class="card">
-                <div class="card-icon">
-                    <i class="fas fa-check-circle"></i>
-                </div>
-                <h3 class="card-title font-display">Tracción Verificable</h3>
+                <div class="card-icon"><i class="fas fa-handshake"></i></div>
+                <h3 class="card-title font-display">Contrato Institucional</h3>
                 <p class="card-description">
-                    Flota operativa generando S/ 70 diarios por vehículo en DIDI, Yango e InDrive. 
-                    Resultados auditables en tiempo real.
+                    Alianza formal con Corporación Agrotec Perú. No dependemos de proyecciones: 
+                    el activo ya existe, produce y genera ingresos hoy.
                 </p>
             </div>
-
             <div class="card">
-                <div class="card-icon">
-                    <i class="fas fa-shield-alt"></i>
-                </div>
-                <h3 class="card-title font-display">Respaldo Institucional</h3>
+                <div class="card-icon"><i class="fas fa-cube"></i></div>
+                <h3 class="card-title font-display">Blockchain Transparente</h3>
                 <p class="card-description">
-                    Alianza estratégica con VCM Subastas capturando activos de Mapfre, Pacífico e 
-                    Interseguro a precios preferenciales.
+                    Cada pago de royalty, cada inyección de liquidez y cada operación de Buyback & Burn 
+                    registrada en la cadena. Sin caja negra.
                 </p>
             </div>
-
             <div class="card">
-                <div class="card-icon">
-                    <i class="fas fa-chart-line"></i>
-                </div>
-                <h3 class="card-title font-display">Modelo Escalable</h3>
+                <div class="card-icon"><i class="fas fa-chart-line"></i></div>
+                <h3 class="card-title font-display">Buyback & Burn</h3>
                 <p class="card-description">
-                    De 1 a 10 vehículos en operación. Próxima fase: Flota BYD eléctrica 
-                    y expansión a robótica comercial.
+                    El 50% del royalty compra $PISK del mercado y los quema. 
+                    Menor oferta + mayor demanda = precio sostenido en el tiempo.
                 </p>
             </div>
-
             <div class="card">
-                <div class="card-icon">
-                    <i class="fas fa-coins"></i>
-                </div>
-                <h3 class="card-title font-display">Tokenización Web3</h3>
+                <div class="card-icon"><i class="fas fa-globe-americas"></i></div>
+                <h3 class="card-title font-display">Modelo Replicable</h3>
                 <p class="card-description">
-                    Parte de las utilidades operativas se inyectan a liquidez del token $PISK. 
-                    Política de Buyback & Burn para incremento de valor sostenido. Todos ganan cuando sube el precio.
+                    Agrotec es el primer contrato. Neo Pisk tokenizará más activos reales peruanos: 
+                    agricultura, inmobiliario y energías limpias bajo el mismo esquema.
                 </p>
             </div>
         </div>
-    </section>
-
-    <!-- Proof Section -->
-    <section class="section" style="background: rgba(212, 175, 55, 0.03);">
-        <div class="section-header">
-            <span class="section-badge">Evidencia Real</span>
-            <h2 class="section-title font-display">Probado en las Calles</h2>
-            <p class="section-description">
-                Este proyecto nace de la operación diaria de mi propia camioneta. 
-                No es teoría, es experiencia validada en campo.
-            </p>
-        </div>
-
-        <div class="proof-grid">
-            <div class="proof-card" onclick="openVideo('yWqB9RB3cpQ')">
-                <img src="asset/image-1.jpg" alt="Validación Neo Pisk">
-                <div class="proof-overlay">
-                    <div class="proof-title">✅ Validación Real en Operación</div>
-                    <div class="proof-meta">Ver testimonio completo</div>
-                </div>
-            </div>
-
-            <div class="proof-card" onclick="openVideo('SDT_5cG1Nyw')">
-                <img src="https://i.postimg.cc/Js4BXv4X/byd.jpg" alt="BYD Seagull">
-                <div class="proof-overlay">
-                    <div class="proof-title">⚡ Próxima Fase: Flota BYD Eléctrica</div>
-                    <div class="proof-meta">Visión 2026</div>
-                </div>
-            </div>
-
-            <div class="proof-card" onclick="openVideo('0Moim3jc54k')">
-                <img src="https://i.postimg.cc/mtcrG4DY/torito.jpg" alt="Bajaj Retrofit">
-                <div class="proof-overlay">
-                    <div class="proof-title">🛠️ Tecnología Retrofit Bajaj</div>
-                    <div class="proof-meta">Transformación eléctrica</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- LinkXpress Partner Highlight -->
-        <div style="max-width: 900px; margin: 4rem auto; background: white; border-radius: 20px; padding: 2.5rem; box-shadow: 0 10px 40px rgba(0,0,0,0.1);">
-            <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 2rem; align-items: center;">
-                <div style="text-align: center;">
-                    <img src="asset/Screenshot_20260127-192717.Google.png" alt="LinkXpress" style="max-width: 200px; width: 100%; border-radius: 10px;">
-                </div>
-                <div>
-                    <h3 style="font-size: 1.75rem; font-weight: 700; color: var(--neopisk-navy); margin-bottom: 0.5rem;">LinkXpress</h3>
-                    <p style="color: var(--neopisk-mint); font-weight: 700; text-transform: uppercase; font-size: 0.875rem; margin-bottom: 1rem;">Agente de Aduana Oficial</p>
-                    <p style="color: var(--neopisk-slate); line-height: 1.7;">
-                        Aliado estratégico garantizando importación segura de tecnología BYD, 
-                        Neotix y componentes de hidrógeno. Operaciones aduaneras certificadas.
-                    </p>
-                </div>
-            </div>
         </div>
     </section>
 
-    <!-- Ecosystem -->
-    <section class="section">
-        <div class="section-header">
-            <span class="section-badge">Ecosistema Integrado</span>
-            <h2 class="section-title font-display">Múltiples Verticales de Negocio</h2>
-            <p class="section-description">
-                Diversificación estratégica en movilidad, tecnología y energía limpia. 
-                Un ecosistema completo de activos reales tokenizados.
-            </p>
-        </div>
-
-        <div class="ecosystem-grid">
-            <div class="ecosystem-card">
-                <div class="ecosystem-icon">
-                    <i class="fas fa-car"></i>
-                </div>
-                <h3 style="font-size: 1.25rem; font-weight: 700; color: var(--neopisk-navy); margin-bottom: 1rem;">
-                    Motors & Fleet
-                </h3>
-                <p style="color: var(--neopisk-slate); margin-bottom: 1.5rem;">
-                    Flota operativa GNV y eléctrica en plataformas de movilidad. 
-                    Generación de ingresos diarios verificables.
-                </p>
-                <a href="tec.html" style="color: var(--neopisk-gold); font-weight: 600; text-decoration: none;">
-                    Ver detalles →
-                </a>
-            </div>
-
-            <div class="ecosystem-card">
-                <div class="ecosystem-icon">
-                    <i class="fas fa-cube"></i>
-                </div>
-                <h3 style="font-size: 1.25rem; font-weight: 700; color: var(--neopisk-navy); margin-bottom: 1rem;">
-                    Web3 Tokenization
-                </h3>
-                <p style="color: var(--neopisk-slate); margin-bottom: 1.5rem;">
-                    Transformación de activos reales en tokens digitales. 
-                    Liquidez instantánea y transparencia blockchain.
-                </p>
-                <a href="tec.html" style="color: var(--neopisk-gold); font-weight: 600; text-decoration: none;">
-                    Ver portal →
-                </a>
-            </div>
-
-            <div class="ecosystem-card">
-                <div class="ecosystem-icon">
-                    <i class="fas fa-atom"></i>
-                </div>
-                <h3 style="font-size: 1.25rem; font-weight: 700; color: var(--neopisk-navy); margin-bottom: 1rem;">
-                    Hydrogen Tech
-                </h3>
-                <p style="color: var(--neopisk-slate); margin-bottom: 1.5rem;">
-                    Río Perené Vision: Transformando agua en energía limpia. 
-                    Infraestructura de hidrógeno verde para Perú.
-                </p>
-                <a href="hydrogen.html" style="color: var(--neopisk-gold); font-weight: 600; text-decoration: none;">
-                    Ver proyecto →
-                </a>
-            </div>
-
-            <div class="ecosystem-card">
-                <div class="ecosystem-icon">
-                    <i class="fas fa-leaf"></i>
-                </div>
-                <h3 style="font-size: 1.25rem; font-weight: 700; color: var(--neopisk-navy); margin-bottom: 1rem;">
-                    Sustainable Agriculture
-                </h3>
-                <p style="color: var(--neopisk-slate); margin-bottom: 1.5rem;">
-                    Tokenización de cacao y café de Selva Central. 
-                    Blockchain para trazabilidad y comercio justo.
-                </p>
-                <a href="https://ecopisk.lat" target="_blank" style="color: var(--neopisk-gold); font-weight: 600; text-decoration: none;">
-                    Visitar ecopisk.lat →
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Advanced Robotics -->
-    <section class="section" style="background: linear-gradient(135deg, var(--neopisk-navy), #1a2942); color: white;">
-        <div class="section-header">
-            <span class="section-badge" style="background: rgba(255,255,255,0.1); color: var(--neopisk-gold);">
-                Advanced Technology
-            </span>
-            <h2 class="section-title font-display" style="color: white;">Robótica de Próxima Generación</h2>
-            <p class="section-description" style="color: rgba(255,255,255,0.8);">
-                Importación y distribución de robots humanoides de clase mundial. 
-                Soporte técnico certificado en Perú.
-            </p>
-        </div>
-
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 3rem; margin-top: 3rem;">
-            <!-- Neotix N2 -->
-            <div style="background: rgba(255,255,255,0.05); border-radius: 20px; padding: 2.5rem; backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.1);">
-                <div style="position: relative; border-radius: 15px; overflow: hidden; margin-bottom: 2rem; cursor: pointer;" onclick="openVideo('Z8xpz9G3628')">
-                    <img src="https://i.postimg.cc/Pq3j58dn/the-noetix-robotics-n2-humanoid-robot-displayed-at-the-companys-offices-in-beijing-china-on.jpg" 
-                         style="width: 100%; border-radius: 15px;">
-                    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 60px; height: 60px; background: rgba(212, 175, 55, 0.9); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem;">
-                        ▶
-                    </div>
-                </div>
-                <h3 style="font-size: 1.75rem; font-weight: 700; margin-bottom: 1rem;">NEOTIX N2</h3>
-                <div style="display: inline-block; padding: 0.5rem 1rem; background: rgba(212, 175, 55, 0.2); border-radius: 50px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; margin-bottom: 1.5rem; color: var(--neopisk-gold);">
-                    Disponible en Perú
-                </div>
-                <ul style="list-style: none; padding: 0; margin: 0 0 2rem 0;">
-                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; gap: 0.75rem;">
-                        <i class="fas fa-check-circle" style="color: var(--neopisk-gold);"></i>
-                        IA integrada para soporte comercial
-                    </li>
-                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; gap: 0.75rem;">
-                        <i class="fas fa-check-circle" style="color: var(--neopisk-gold);"></i>
-                        Movilidad humanoide avanzada
-                    </li>
-                    <li style="padding: 0.75rem 0; display: flex; align-items: center; gap: 0.75rem;">
-                        <i class="fas fa-check-circle" style="color: var(--neopisk-gold);"></i>
-                        Soporte técnico certificado
-                    </li>
-                </ul>
-                <a href="https://wa.me/5194811503" target="_blank" 
-                   style="display: block; width: 100%; padding: 1.25rem; background: var(--neopisk-gold); color: var(--neopisk-navy); text-align: center; border-radius: 50px; font-weight: 700; text-decoration: none; text-transform: uppercase; font-size: 0.875rem;">
-                    Consultar Disponibilidad
-                </a>
-            </div>
-
-            <!-- Unitree R1 -->
-            <div style="background: rgba(255,255,255,0.05); border-radius: 20px; padding: 2.5rem; backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.1); position: relative;">
-                <div style="position: absolute; top: 1rem; right: 1rem; background: var(--neopisk-error); color: white; padding: 0.5rem 1rem; border-radius: 50px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; animation: pulse 2s infinite;">
-                    15% OFF con $PISK
-                </div>
-                
-                <div style="position: relative; border-radius: 15px; overflow: hidden; margin-bottom: 2rem; cursor: pointer;" onclick="openVideo('54EjUHhdgls')">
-                    <img src="https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=800" 
-                         style="width: 100%; border-radius: 15px; aspect-ratio: 16/9; object-fit: cover;">
-                    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 60px; height: 60px; background: rgba(212, 175, 55, 0.9); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem;">
-                        ▶
-                    </div>
-                </div>
-                
-                <h3 style="font-size: 1.75rem; font-weight: 700; margin-bottom: 1rem;">UNITREE R1</h3>
-                <div style="display: inline-block; padding: 0.5rem 1rem; background: rgba(0, 217, 163, 0.2); border-radius: 50px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; margin-bottom: 1.5rem; color: var(--neopisk-mint);">
-                    Preventa Limitada
-                </div>
-                
-                <ul style="list-style: none; padding: 0; margin: 0 0 2rem 0;">
-                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; gap: 0.75rem;">
-                        <i class="fas fa-check-circle" style="color: var(--neopisk-gold);"></i>
-                        Movilidad autónoma de alto rendimiento
-                    </li>
-                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; gap: 0.75rem;">
-                        <i class="fas fa-check-circle" style="color: var(--neopisk-gold);"></i>
-                        Sistema de visión IA integrado
-                    </li>
-                    <li style="padding: 0.75rem 0; display: flex; align-items: center; gap: 0.75rem;">
-                        <i class="fas fa-check-circle" style="color: var(--neopisk-gold);"></i>
-                        Importación garantizada Q2 2026
-                    </li>
-                </ul>
-                
-                <div style="text-align: center; margin-bottom: 1.5rem;">
-                    <div style="font-size: 0.875rem; color: rgba(255,255,255,0.6); text-transform: uppercase; margin-bottom: 0.5rem;">Precio sugerido:</div>
-                    <div style="font-size: 3rem; font-weight: 900; color: white; font-family: 'IBM Plex Mono', monospace;">$4,900</div>
-                    <div style="font-size: 0.875rem; color: rgba(255,255,255,0.6);">USD</div>
-                </div>
-                
-                <a href="https://wa.me/5194811503" target="_blank" 
-                   style="display: block; width: 100%; padding: 1.25rem; background: var(--neopisk-mint); color: var(--neopisk-navy); text-align: center; border-radius: 50px; font-weight: 700; text-decoration: none; text-transform: uppercase; font-size: 0.875rem;">
-                    Reservar Mi Unidad
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Strategic Partners -->
-    <section class="section">
-        <div class="section-header">
-            <span class="section-badge">Respaldo Estratégico</span>
-            <h2 class="section-title font-display">Alianzas con las Mejores</h2>
-        </div>
-
-        <div style="background: white; border-radius: 30px; padding: 3rem; box-shadow: 0 10px 40px rgba(0,0,0,0.05); margin-bottom: 3rem;">
-            <h3 style="text-align: center; font-size: 1.75rem; font-weight: 700; color: var(--neopisk-navy); margin-bottom: 2rem;">
-                Alianza VCM Subastas
-            </h3>
-            <p style="text-align: center; color: var(--neopisk-slate); max-width: 700px; margin: 0 auto 2rem; line-height: 1.7;">
-                Captura de activos vehiculares adjudicados de las compañías aseguradoras más grandes del Perú
-            </p>
-            
-            <div class="partners-grid">
-                <div class="partner-logo" style="color: #d32f2f;">MAPFRE</div>
-                <div class="partner-logo" style="color: #0288d1;">PACÍFICO</div>
-                <div class="partner-logo" style="color: #00897b;">INTERSEGURO</div>
-                <div class="partner-logo" style="color: var(--neopisk-navy);">VCM SUBASTAS</div>
-            </div>
-        </div>
-
-        <!-- Platform Partners -->
-        <div style="background: rgba(212, 175, 55, 0.03); border-radius: 20px; padding: 2rem;">
-            <h4 style="text-align: center; font-size: 1.25rem; font-weight: 700; color: var(--neopisk-navy); margin-bottom: 2rem;">
-                Plataformas de Movilidad Activas
-            </h4>
-            <div style="display: flex; justify-content: center; gap: 3rem; flex-wrap: wrap; font-weight: 900; font-size: 1.5rem;">
-                <span style="color: #0066ff;">YANGO</span>
-                <span style="color: #ff6600;">DIDI</span>
-                <span style="color: #00d359;">inDrive</span>
-            </div>
-        </div>
-    </section>
-
-    <!-- Investment Section -->
-    <section id="invertir" class="section" style="background: rgba(212, 175, 55, 0.03);">
+    <!-- ═══════════════ INVERSIÓN / TOKENOMICS ═══════════════ -->
+    <section id="invertir" class="section">
         <div class="section-header">
             <span class="section-badge">Tokenomics</span>
             <h2 class="section-title font-display">Únete como Socio Fundador</h2>
             <p class="section-description">
-                Token $PISK respaldado por flujo de caja real. 100% de utilidades operativas 
-                inyectadas a liquidez con política de Buyback & Burn.
+                Token $PISK respaldado por flujo de caja real proveniente del contrato con Agrotec. 
+                Política de Buyback & Burn financiada directamente por el royalty del 4%.
             </p>
         </div>
 
@@ -1150,15 +824,34 @@
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 2rem;">
                 <div style="background: white; padding: 2rem; border-radius: 15px; border-left: 4px solid #2d66f7;">
                     <div style="font-size: 0.75rem; color: #2d66f7; font-weight: 700; text-transform: uppercase; margin-bottom: 0.5rem;">Emisión Total</div>
-                    <div style="font-size: 1.75rem; font-weight: 900; color: var(--neopisk-navy); font-family: 'IBM Plex Mono', monospace;">100,000,000 $PISK</div>
+                    <div style="font-size: 1.5rem; font-weight: 900; color: var(--neopisk-navy); font-family: 'IBM Plex Mono', monospace;">100,000,000 $PISK</div>
                 </div>
                 <div style="background: white; padding: 2rem; border-radius: 15px; border-left: 4px solid var(--neopisk-error);">
                     <div style="font-size: 0.75rem; color: var(--neopisk-error); font-weight: 700; text-transform: uppercase; margin-bottom: 0.5rem;">Política</div>
-                    <div style="font-size: 1.75rem; font-weight: 900; color: var(--neopisk-navy);">BUYBACK & BURN</div>
+                    <div style="font-size: 1.5rem; font-weight: 900; color: var(--neopisk-navy);">BUYBACK & BURN</div>
                 </div>
             </div>
 
-            <!-- Phase Progress -->
+            <!-- Distribución del royalty -->
+            <div style="background: white; padding: 2rem; border-radius: 20px; margin-bottom: 2rem; border: 2px solid rgba(212,175,55,0.2);">
+                <h4 style="font-size: 1.125rem; font-weight: 700; color: var(--neopisk-navy); margin-bottom: 1.5rem; text-align: center;">
+                    Distribución del Royalty Agrotec (4% de ventas)
+                </h4>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div style="background: rgba(212,175,55,0.08); border-radius: 12px; padding: 1.5rem; text-align: center; border: 2px solid var(--neopisk-gold);">
+                        <div style="font-size: 2.5rem; font-weight: 900; color: var(--neopisk-gold);">50%</div>
+                        <div style="font-weight: 700; color: var(--neopisk-navy); margin-top: 0.5rem;">Liquidez $PISK</div>
+                        <div style="font-size: 0.8rem; color: var(--neopisk-slate); margin-top: 0.5rem;">Buyback & Burn automático. Todos los holders se benefician.</div>
+                    </div>
+                    <div style="background: rgba(0,0,0,0.03); border-radius: 12px; padding: 1.5rem; text-align: center; border: 2px solid rgba(0,0,0,0.08);">
+                        <div style="font-size: 2.5rem; font-weight: 900; color: var(--neopisk-slate);">50%</div>
+                        <div style="font-weight: 700; color: var(--neopisk-navy); margin-top: 0.5rem;">Operaciones Neo Pisk</div>
+                        <div style="font-size: 0.8rem; color: var(--neopisk-slate); margin-top: 0.5rem;">Tecnología, equipo y expansión de nuevos contratos.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fases de venta -->
             <div style="background: white; padding: 2rem; border-radius: 20px; margin-bottom: 2rem;">
                 <div style="margin-bottom: 1.5rem;">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
@@ -1169,10 +862,9 @@
                         <div class="progress-fill" style="width: 100%; background: var(--neopisk-error);"></div>
                     </div>
                 </div>
-
                 <div>
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-                        <span style="font-size: 0.875rem; font-weight: 700; color: var(--neopisk-navy);">FASE 2 ($0.10 USD) - ACTUAL</span>
+                        <span style="font-size: 0.875rem; font-weight: 700; color: var(--neopisk-navy);">FASE 2 ($0.10 USD) — ACTUAL</span>
                         <span style="font-size: 0.875rem; font-weight: 900; color: var(--neopisk-mint);">15% COMPLETADO</span>
                     </div>
                     <div class="progress-bar">
@@ -1202,11 +894,11 @@
 
                 <div style="display: grid; gap: 1rem; margin-top: 2rem;">
                     <a href="https://neopisk.lat/invertir.html" target="_blank" 
-                       style="background: var(--neopisk-gold); color: var(--neopisk-navy); padding: 1.5rem; border-radius: 50px; text-align: center; text-decoration: none; font-weight: 900; text-transform: uppercase; font-size: 1.125rem; box-shadow: 0 10px 30px rgba(212, 175, 55, 0.4); transition: transform 0.3s ease;">
+                       style="background: var(--neopisk-gold); color: var(--neopisk-navy); padding: 1.5rem; border-radius: 50px; text-align: center; text-decoration: none; font-weight: 900; text-transform: uppercase; font-size: 1.125rem; box-shadow: 0 10px 30px rgba(212, 175, 55, 0.4);">
                         Comprar $PISK Ahora
                     </a>
                     <a href="https://docs.google.com/document/d/1FaaZDSKgsv_6CkeuQH1gfRxOpQ-Dlj5vy0Thm7-7tB8/edit?usp=sharing" target="_blank" 
-                       style="background: transparent; color: white; padding: 1.5rem; border-radius: 50px; text-align: center; text-decoration: none; font-weight: 700; text-transform: uppercase; font-size: 1rem; border: 2px solid white; transition: all 0.3s ease;">
+                       style="background: transparent; color: white; padding: 1.5rem; border-radius: 50px; text-align: center; text-decoration: none; font-weight: 700; text-transform: uppercase; font-size: 1rem; border: 2px solid white;">
                         Leer Whitepaper Completo
                     </a>
                 </div>
@@ -1214,13 +906,14 @@
         </div>
     </section>
 
-    <!-- Roadmap -->
-    <section class="section">
+    <!-- ═══════════════ ROADMAP ═══════════════ -->
+    <section class="section" style="background: rgba(212, 175, 55, 0.03); max-width: 100%;">
+        <div style="max-width: 1400px; margin: 0 auto; padding: 0 2rem;">
         <div class="section-header">
             <span class="section-badge">Visión 2026</span>
             <h2 class="section-title font-display">Roadmap Estratégico</h2>
             <p class="section-description">
-                Plan de ejecución trimestral con hitos verificables y métricas claras de progreso.
+                Plan de ejecución trimestral enfocado en tokenización, contratos y crecimiento del ecosistema $PISK.
             </p>
         </div>
 
@@ -1229,12 +922,12 @@
                 <div class="roadmap-dot"></div>
                 <div class="roadmap-content">
                     <div class="roadmap-quarter font-display">Q1 2026</div>
-                    <div class="roadmap-title">Lanzamiento Operativo</div>
+                    <div class="roadmap-title">Firma y Lanzamiento</div>
                     <div class="roadmap-description">
-                        • Consolidación flota GNV 10 unidades<br>
-                        • Inauguración Búnker de operaciones<br>
-                        • Inicio fase BYD Seagull eléctrica<br>
-                        • Integración completa VCM Subastas
+                        • Firma del contrato con Corporación Agrotec Perú<br>
+                        • Estructuración legal del royalty del 4%<br>
+                        • Lanzamiento oficial de preventa Fase 2 ($0.10)<br>
+                        • Publicación del contrato en whitepaper actualizado
                     </div>
                 </div>
             </div>
@@ -1243,12 +936,12 @@
                 <div class="roadmap-dot"></div>
                 <div class="roadmap-content">
                     <div class="roadmap-quarter font-display">Q2 2026</div>
-                    <div class="roadmap-title">Expansión Tecnológica</div>
+                    <div class="roadmap-title">Primer Buyback & Burn</div>
                     <div class="roadmap-description">
-                        • Producción Bajaj Retrofit eléctrico<br>
-                        • Primera importación robots Neotix N2<br>
-                        • Apertura centro de servicio técnico<br>
-                        • Lanzamiento programa de franquicias
+                        • Recepción del primer pago de royalty Agrotec<br>
+                        • Primer evento de Buyback & Burn verificable<br>
+                        • Publicación de reporte de transparencia financiera<br>
+                        • Inicio de gestiones con segundo activo a tokenizar
                     </div>
                 </div>
             </div>
@@ -1257,12 +950,12 @@
                 <div class="roadmap-dot"></div>
                 <div class="roadmap-content">
                     <div class="roadmap-quarter font-display">Q3 2026</div>
-                    <div class="roadmap-title">Diversificación</div>
+                    <div class="roadmap-title">Expansión del Portafolio</div>
                     <div class="roadmap-description">
-                        • Despliegue robótica comercial nacional<br>
-                        • Integración Unitree R1<br>
-                        • Fase piloto hidrógeno Río Perené<br>
-                        • Expansión ecopisk.lat en blockchain
+                        • Segundo contrato de tokenización firmado<br>
+                        • Apertura de nuevas verticales: inmobiliario o energía<br>
+                        • Integración de dashboard de tracking en tiempo real<br>
+                        • Expansión de comunidad de holders internacionales
                     </div>
                 </div>
             </div>
@@ -1271,30 +964,88 @@
                 <div class="roadmap-dot"></div>
                 <div class="roadmap-content">
                     <div class="roadmap-quarter font-display">Q4 2026</div>
-                    <div class="roadmap-title">Infraestructura Energética</div>
+                    <div class="roadmap-title">Consolidación y Auditoría</div>
                     <div class="roadmap-description">
-                        • Inauguración red de carga nacional<br>
-                        • Primera estación hidrógeno verde<br>
-                        • Integración drones Joby S4 regional<br>
-                        • Auditoría financiera independiente
+                        • Auditoría financiera independiente del ecosistema<br>
+                        • Reporte anual de impacto y retorno al holder<br>
+                        • Lanzamiento de Fase 3 del token a precio mayor<br>
+                        • Inicio de negociaciones para listing en exchange
                     </div>
                 </div>
             </div>
         </div>
+        </div>
     </section>
 
-    <!-- Team Section -->
-    <section class="section" style="background: rgba(212, 175, 55, 0.03);">
+    <!-- ═══════════════ ALIADOS ═══════════════ -->
+    <section class="section">
+        <div class="section-header">
+            <span class="section-badge">Respaldo Estratégico</span>
+            <h2 class="section-title font-display">Alianzas que Dan Certeza</h2>
+        </div>
+
+        <!-- Agrotec -->
+        <div style="background: white; border-radius: 30px; padding: 3rem; box-shadow: 0 10px 40px rgba(0,0,0,0.06); margin-bottom: 2rem; border: 2px solid rgba(45, 106, 79, 0.2);">
+            <div style="display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap;">
+                <div style="width: 70px; height: 70px; background: linear-gradient(135deg, var(--neopisk-green), #52b788); border-radius: 15px; display: flex; align-items: center; justify-content: center; font-size: 2rem; color: white; flex-shrink: 0;">
+                    🌿
+                </div>
+                <div>
+                    <h3 style="font-size: 1.75rem; font-weight: 700; color: var(--neopisk-navy);">Corporación Agrotec Perú</h3>
+                    <p style="color: var(--neopisk-mint); font-weight: 700; text-transform: uppercase; font-size: 0.875rem; margin-bottom: 0.75rem;">Socio Principal de Tokenización</p>
+                    <p style="color: var(--neopisk-slate); line-height: 1.7; max-width: 700px;">
+                        Empresa agroindustrial con 100 hectáreas en Codo de Pozuzo. 
+                        Producción de cacao para exportación y desarrollo de tierras habitacionales. 
+                        El contrato de royalty del 4% es el motor principal del valor del token $PISK.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- LinkXpress -->
+        <div style="background: white; border-radius: 20px; padding: 2.5rem; box-shadow: 0 4px 20px rgba(0,0,0,0.05); margin-bottom: 2rem;">
+            <div style="display: grid; grid-template-columns: auto 1fr; gap: 2rem; align-items: center;">
+                <div>
+                    <img src="asset/Screenshot_20260127-192717.Google.png" alt="LinkXpress" style="max-width: 150px; width: 100%; border-radius: 10px;">
+                </div>
+                <div>
+                    <h3 style="font-size: 1.5rem; font-weight: 700; color: var(--neopisk-navy); margin-bottom: 0.5rem;">LinkXpress</h3>
+                    <p style="color: var(--neopisk-mint); font-weight: 700; text-transform: uppercase; font-size: 0.875rem; margin-bottom: 0.75rem;">Agente de Aduana Oficial</p>
+                    <p style="color: var(--neopisk-slate); line-height: 1.7;">
+                        Aliado logístico para importación de tecnología y equipos necesarios 
+                        en la expansión del ecosistema Neo Pisk. Operaciones aduaneras certificadas.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Plataformas adicionales -->
+        <div style="background: rgba(212, 175, 55, 0.04); border-radius: 20px; padding: 2rem;">
+            <h4 style="text-align: center; font-size: 1.125rem; font-weight: 700; color: var(--neopisk-navy); margin-bottom: 1.5rem;">
+                Ecosistema Complementario
+            </h4>
+            <div style="display: flex; justify-content: center; gap: 3rem; flex-wrap: wrap; font-weight: 900; font-size: 1.25rem; color: var(--neopisk-slate); opacity: 0.75;">
+                <span>ECOPISK</span>
+                <span>BLOCKCHAIN PERU</span>
+                <span>WEB3 LATAM</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════ TEAM ═══════════════ -->
+    <section class="section" style="background: rgba(212, 175, 55, 0.03); max-width: 100%;">
+        <div style="max-width: 1400px; margin: 0 auto; padding: 0 2rem;">
         <div class="section-header">
             <span class="section-badge">Liderazgo</span>
             <h2 class="section-title font-display">Equipo Ejecutivo</h2>
             <p class="section-description">
                 Experiencia comprobada en operaciones, tecnología y gestión financiera. 
-                Comprometidos con la transparencia y excelencia operativa.
+                Comprometidos con la transparencia y excelencia en cada contrato de tokenización.
             </p>
         </div>
 
         <div class="team-grid">
+            <!-- Ernesto -->
             <div class="team-card">
                 <img src="asset/IMG_20260119_091506939.jpg" alt="Ernesto Piskulich" class="team-image">
                 <div class="team-info">
@@ -1302,7 +1053,7 @@
                     <div class="team-role">CEO & Fundador</div>
                     <div class="team-bio">
                         Estratega en adquisición de activos reales y arquitectura financiera blockchain. 
-                        Experiencia directa en operación de flota y tokenización Web3.
+                        Visionario en la tokenización de activos productivos peruanos para inversores globales.
                     </div>
                     <a href="https://www.facebook.com/share/1ArekGRGgE/" target="_blank" class="team-social">
                         <i class="fab fa-facebook"></i> Ver Perfil
@@ -1310,29 +1061,15 @@
                 </div>
             </div>
 
-            <div class="team-card">
-                <img src="https://raw.githubusercontent.com/ernestopisk2015-arch/Neopisk/main/asset/Luis%20Gavilan.jpg" alt="Luis Gavilán" class="team-image">
-                <div class="team-info">
-                    <div class="team-name font-display">Luis Gavilán</div>
-                    <div class="team-role">Gerente de Flota</div>
-                    <div class="team-bio">
-                        Experto en optimización de rutas, mantenimiento preventivo y gestión de transporte pesado. 
-                        15+ años en logística operativa.
-                    </div>
-                    <a href="https://www.facebook.com/share/1ATjUgWrbp/" target="_blank" class="team-social">
-                        <i class="fab fa-facebook"></i> Ver Perfil
-                    </a>
-                </div>
-            </div>
-
+            <!-- Jefferson -->
             <div class="team-card">
                 <img src="asset/Jefferson Avalos.jpg" alt="Jefferson Ávalos" class="team-image" style="object-position: center 20%;">
                 <div class="team-info">
                     <div class="team-name font-display">Jefferson Ávalos</div>
                     <div class="team-role">Gerente de Operaciones</div>
                     <div class="team-bio">
-                        Líder en logística operativa y optimización de rendimientos en campo. 
-                        Implementación de sistemas de gestión eficiente.
+                        Líder en logística operativa y optimización de rendimientos. 
+                        Responsable de la ejecución de contratos y seguimiento de activos tokenizados.
                     </div>
                     <a href="https://www.facebook.com/share/1K1u1x6YJy/" target="_blank" class="team-social">
                         <i class="fab fa-facebook"></i> Ver Perfil
@@ -1340,6 +1077,7 @@
                 </div>
             </div>
 
+            <!-- Rosmeri -->
             <div class="team-card">
                 <img src="https://raw.githubusercontent.com/ernestopisk2015-arch/Neopisk/refs/heads/main/asset/Rosmey.png" alt="Rosmeri Cabanillas" class="team-image">
                 <div class="team-info">
@@ -1347,7 +1085,7 @@
                     <div class="team-role">Gerente de Relaciones Públicas</div>
                     <div class="team-bio">
                         Especialista en comunicación estratégica y gestión de imagen corporativa. 
-                        Construcción de alianzas institucionales clave.
+                        Construcción de alianzas institucionales clave para el ecosistema.
                     </div>
                     <a href="https://www.facebook.com/rOvZiita?locale=es_LA" target="_blank" class="team-social">
                         <i class="fab fa-facebook"></i> Ver Perfil
@@ -1355,22 +1093,23 @@
                 </div>
             </div>
         </div>
+        </div>
     </section>
 
-    <!-- Final CTA -->
-    <section class="section" style="background: linear-gradient(135deg, var(--neopisk-navy), #1a2942); color: white; text-align: center;">
-        <div style="max-width: 800px; margin: 0 auto;">
+    <!-- ═══════════════ FINAL CTA ═══════════════ -->
+    <section class="section" style="background: linear-gradient(135deg, var(--neopisk-navy), #1a2942); color: white; text-align: center; max-width: 100%;">
+        <div style="max-width: 800px; margin: 0 auto; padding: 0 2rem;">
             <h2 style="font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 700; margin-bottom: 1.5rem; color: white;" class="font-display">
-                ¿Listo para Invertir en Activos Reales?
+                ¿Listo para Invertir en Activos Reales Tokenizados?
             </h2>
             <p style="font-size: 1.25rem; color: rgba(255,255,255,0.8); margin-bottom: 3rem; line-height: 1.8;">
                 Únete a los socios fundadores de Neo Pisk y construye patrimonio respaldado 
-                por operaciones verificables y tecnología de punta.
+                por tierra, cacao y contratos verificables con Corporación Agrotec Perú.
             </p>
             
             <div style="display: flex; gap: 1.5rem; justify-content: center; flex-wrap: wrap;">
                 <a href="https://neopisk.lat/invertir.html" target="_blank" class="btn btn-primary" style="font-size: 1rem; padding: 1.5rem 3rem;">
-                    Invertir Ahora
+                    Invertir en $PISK
                 </a>
                 <a href="https://wa.me/5194811503" target="_blank" class="btn btn-secondary" style="font-size: 1rem; padding: 1.5rem 3rem;">
                     Agendar Llamada
@@ -1380,13 +1119,19 @@
             <div style="margin-top: 4rem; padding-top: 3rem; border-top: 1px solid rgba(255,255,255,0.1);">
                 <p style="font-size: 0.875rem; color: rgba(255,255,255,0.6); margin-bottom: 2rem;">Síguenos en redes sociales</p>
                 <div style="display: flex; gap: 2rem; justify-content: center;">
-                    <a href="https://www.facebook.com/ernest.pisk" target="_blank" style="color: white; font-size: 2rem; transition: transform 0.2s ease;" onmouseover="this.style.transform='scale(1.2)'" onmouseout="this.style.transform='scale(1)'">
+                    <a href="https://www.facebook.com/ernest.pisk" target="_blank" 
+                       style="color: white; font-size: 2rem; transition: transform 0.2s ease;"
+                       onmouseover="this.style.transform='scale(1.2)'" onmouseout="this.style.transform='scale(1)'">
                         <i class="fab fa-facebook"></i>
                     </a>
-                    <a href="https://www.youtube.com/@NeoPisk" target="_blank" style="color: white; font-size: 2rem; transition: transform 0.2s ease;" onmouseover="this.style.transform='scale(1.2)'" onmouseout="this.style.transform='scale(1)'">
+                    <a href="https://www.youtube.com/@NeoPisk" target="_blank" 
+                       style="color: white; font-size: 2rem; transition: transform 0.2s ease;"
+                       onmouseover="this.style.transform='scale(1.2)'" onmouseout="this.style.transform='scale(1)'">
                         <i class="fab fa-youtube"></i>
                     </a>
-                    <a href="https://t.me/NeoPisk_bot" target="_blank" style="color: white; font-size: 2rem; transition: transform 0.2s ease;" onmouseover="this.style.transform='scale(1.2)'" onmouseout="this.style.transform='scale(1)'">
+                    <a href="https://t.me/NeoPisk_bot" target="_blank" 
+                       style="color: white; font-size: 2rem; transition: transform 0.2s ease;"
+                       onmouseover="this.style.transform='scale(1.2)'" onmouseout="this.style.transform='scale(1)'">
                         <i class="fab fa-telegram"></i>
                     </a>
                 </div>
@@ -1401,16 +1146,16 @@
                 NEO PISK
             </div>
             <p style="color: rgba(255,255,255,0.6); margin-bottom: 1.5rem;">
-                Real Asset Investment Platform
+                Real Asset Tokenization Platform
             </p>
             <p style="font-size: 0.875rem; color: rgba(255,255,255,0.5);">
-                Ernesto Alejandro Piskulich Ceel - CEO Fundador<br>
+                Ernesto Alejandro Piskulich Ceel — CEO Fundador<br>
                 © 2026 Neo Pisk. Todos los derechos reservados.
             </p>
         </div>
     </footer>
 
-    <!-- Floating Action Buttons -->
+    <!-- Floating Buttons -->
     <div class="fab-container">
         <a href="https://wa.me/5194811503" target="_blank" class="fab fab-whatsapp">
             <i class="fab fa-whatsapp"></i>
@@ -1461,11 +1206,8 @@
             document.body.style.overflow = 'auto';
         }
 
-        // Close modal on escape key
         document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                closeVideo();
-            }
+            if (e.key === 'Escape') closeVideo();
         });
 
         // Smooth scroll
@@ -1473,42 +1215,18 @@
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
                 const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
+                if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
             });
         });
 
-        // Fade in on scroll
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -100px 0px'
-        };
-
+        // Scroll animations
         const observer = new IntersectionObserver(function(entries) {
             entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('fade-in-up');
-                }
+                if (entry.isIntersecting) entry.target.classList.add('fade-in-up');
             });
-        }, observerOptions);
+        }, { threshold: 0.1, rootMargin: '0px 0px -100px 0px' });
 
-        document.querySelectorAll('.section').forEach(section => {
-            observer.observe(section);
-        });
-
-        // Pulse animation for discount badge
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes pulse {
-                0%, 100% { transform: scale(1); }
-                50% { transform: scale(1.05); }
-            }
-        `;
-        document.head.appendChild(style);
+        document.querySelectorAll('.section').forEach(section => observer.observe(section));
     </script>
 </body>
 </html>
