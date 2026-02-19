@@ -3,542 +3,1231 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Neo Pisk Tech — Tokenomics & Propuesta Ejecutiva Cacao RWA</title>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<title>Neo Pisk Tech — Propuesta Técnica RWA · Agrotec Perú</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,600;0,700;1,400&family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --gold: #F5C842;
-    --gold2: #E6A817;
-    --dark: #0A0A0F;
-    --dark2: #111118;
-    --dark3: #1A1A24;
-    --fire: #FF5E1A;
-    --fire2: #FF8C42;
-    --green: #2EE89A;
-    --blue: #4A9EFF;
-    --text: #E8E8F0;
-    --muted: #8888AA;
-    --primary: #1a472a;
-    --secondary: #27ae60;
-    --accent: #f39c12;
-    --light: #f4f4f4;
-  }
+:root {
+  --ink: #0C0F0A;
+  --paper: #F7F4EE;
+  --paper2: #EDE9E1;
+  --gold: #B8860B;
+  --gold-light: #D4AF37;
+  --green: #1E4D2B;
+  --green-mid: #2D6A4F;
+  --green-light: #52B788;
+  --accent: #C0392B;
+  --muted: #6B6B5E;
+  --border: #D4CFC4;
+  --white: #FFFFFF;
+}
 
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
 
-  body {
-    background: var(--dark);
-    color: var(--text);
-    font-family: 'DM Sans', sans-serif;
-    overflow-x: hidden;
-  }
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: 'Outfit', sans-serif;
+  font-weight: 400;
+  overflow-x: hidden;
+}
 
-  .slides { width: 100%; }
+/* ─── PRINT HEADER ─── */
+.doc-header {
+  background: var(--green);
+  color: white;
+  padding: 3rem 4rem;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 2rem;
+  position: relative;
+  overflow: hidden;
+}
 
-  .slide {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 60px 40px;
-    position: relative;
-    overflow: hidden;
-  }
+.doc-header::before {
+  content: '';
+  position: absolute;
+  top: -60px; right: -60px;
+  width: 250px; height: 250px;
+  border: 40px solid rgba(255,255,255,0.05);
+  border-radius: 50%;
+}
 
-  .nav-dots {
-    position: fixed;
-    right: 24px;
-    top: 50%;
-    transform: translateY(-50%);
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    z-index: 100;
-  }
-  .dot {
-    width: 8px; height: 8px;
-    border-radius: 50%;
-    background: var(--muted);
-    cursor: pointer;
-    transition: all 0.3s;
-  }
-  .dot.active { background: var(--gold); transform: scale(1.5); }
+.doc-header::after {
+  content: '';
+  position: absolute;
+  bottom: -80px; left: 30%;
+  width: 300px; height: 300px;
+  border: 50px solid rgba(212,175,55,0.08);
+  border-radius: 50%;
+}
 
-  .slide-label {
-    font-family: 'Syne', sans-serif;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 4px;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 16px;
-    opacity: 0.7;
-  }
+.header-left { position: relative; z-index: 1; }
 
-  .slide-title {
-    font-family: 'Syne', sans-serif;
-    font-size: clamp(28px, 5vw, 60px);
-    font-weight: 800;
-    margin-bottom: 16px;
-    text-align: center;
-    line-height: 1.1;
-  }
+.header-eyebrow {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.55);
+  margin-bottom: 0.75rem;
+}
 
-  .slide-desc {
-    color: var(--muted);
-    font-size: 16px;
-    text-align: center;
-    margin-bottom: 40px;
-    max-width: 900px;
-  }
+.header-title {
+  font-family: 'Fraunces', serif;
+  font-size: clamp(1.8rem, 4vw, 3rem);
+  font-weight: 700;
+  line-height: 1.1;
+  margin-bottom: 0.75rem;
+}
 
-  .highlight { color: var(--gold); font-weight: 600; }
+.header-title span { color: var(--gold-light); }
 
-  .badge {
-    display: inline-block;
-    background: rgba(245,200,66,0.1);
-    border: 1px solid rgba(245,200,66,0.3);
-    color: var(--gold);
-    font-family: 'Syne', sans-serif;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    padding: 8px 20px;
-    border-radius: 100px;
-    margin-bottom: 24px;
-  }
+.header-subtitle {
+  font-size: 1rem;
+  color: rgba(255,255,255,0.7);
+  font-weight: 300;
+  max-width: 500px;
+}
 
-  .grid-bg {
-    position: absolute;
-    inset: 0;
-    background-image: linear-gradient(rgba(245,200,66,0.04) 1px, transparent 1px),
-                      linear-gradient(90deg, rgba(245,200,66,0.04) 1px, transparent 1px);
-    background-size: 50px 50px;
-    pointer-events: none;
-  }
+.header-right {
+  position: relative;
+  z-index: 1;
+  text-align: right;
+}
 
-  .content-container {
-    position: relative;
-    max-width: 1200px;
-    width: 100%;
-    text-align: center;
-  }
+.doc-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.7rem;
+  color: rgba(255,255,255,0.5);
+  letter-spacing: 1px;
+}
 
-  .section-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 24px;
-    margin: 40px 0;
-  }
+.doc-meta strong { color: var(--gold-light); }
 
-  .card {
-    background: var(--dark3);
-    border-radius: 20px;
-    padding: 32px;
-    border: 1px solid rgba(245,200,66,0.15);
-    transition: all 0.3s;
-  }
+.version-badge {
+  display: inline-block;
+  background: rgba(212,175,55,0.2);
+  border: 1px solid rgba(212,175,55,0.4);
+  color: var(--gold-light);
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 0.4rem 1rem;
+  border-radius: 4px;
+  margin-top: 1rem;
+}
 
-  .card:hover {
-    transform: translateY(-8px);
-    border-color: var(--gold);
-    box-shadow: 0 12px 32px rgba(245,200,66,0.15);
-  }
+/* ─── STATUS BAR ─── */
+.status-bar {
+  background: var(--ink);
+  padding: 1rem 4rem;
+  display: flex;
+  align-items: center;
+  gap: 3rem;
+  flex-wrap: wrap;
+}
 
-  .card-icon {
-    font-size: 48px;
-    margin-bottom: 16px;
-  }
+.status-item {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 1px;
+  color: rgba(255,255,255,0.5);
+}
 
-  .card-title {
-    font-family: 'Syne', sans-serif;
-    font-size: 20px;
-    font-weight: 700;
-    margin-bottom: 12px;
-  }
+.status-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
 
-  .card-text {
-    font-size: 14px;
-    color: var(--muted);
-    line-height: 1.6;
-  }
+.dot-amber { background: #F59E0B; animation: pulse-dot 2s infinite; }
+.dot-green { background: #10B981; }
+.dot-blue  { background: #3B82F6; }
 
-  .conclusion {
-    font-size: 18px;
-    line-height: 1.7;
-    max-width: 900px;
-    margin: 48px auto;
-  }
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
 
-  .progress-bar {
-    position: fixed;
-    top: 0; left: 0;
-    height: 3px;
-    background: linear-gradient(90deg, var(--gold), var(--fire));
-    transition: width 0.4s ease;
-    z-index: 200;
-  }
+.status-item strong { color: rgba(255,255,255,0.85); }
 
-  /* Estilos del segundo código adaptados */
-  .token-grid {
-    display: flex;
-    gap: 20px;
-    margin: 30px 0;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-  .token-card {
-    flex: 1;
-    min-width: 300px;
-    padding: 25px;
-    border-radius: 15px;
-    color: white;
-    transition: transform 0.3s;
-  }
-  .card-cacao { background: #3e2723; border-bottom: 5px solid #795548; }
-  .card-rwa { background: #0d47a1; border-bottom: 5px solid #2196f3; }
+/* ─── MAIN LAYOUT ─── */
+.main {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 4rem 2rem 6rem;
+}
 
-  .success-box {
-    background: #e8f5e9;
-    padding: 25px;
-    border-radius: 12px;
-    border: 1px solid #c8e6c9;
-    margin-top: 20px;
-    color: #2e7d32;
-  }
-  .case-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 15px;
-    margin-top: 15px;
-  }
-  .case-item {
-    background: white;
-    padding: 15px;
-    border-radius: 8px;
-    border: 1px solid #ddd;
-    font-size: 13px;
-    color: #333;
-  }
+/* ─── SECTION HEADERS ─── */
+.section-label {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
 
-  .automation-flow {
-    background: #fff3e0;
-    padding: 30px;
-    border-radius: 15px;
-    border-top: 5px solid var(--accent);
-    margin-top: 30px;
-    color: #e65100;
-  }
-  .step-container {
-    display: flex;
-    justify-content: space-around;
-    text-align: center;
-    gap: 10px;
-    margin-top: 20px;
-    flex-wrap: wrap;
-  }
-  .step-box {
-    flex: 1;
-    min-width: 200px;
-    background: white;
-    padding: 15px;
-    border-radius: 10px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-    color: #333;
-  }
+.section-num {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  color: var(--muted);
+  letter-spacing: 2px;
+  border: 1px solid var(--border);
+  padding: 0.3rem 0.6rem;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
 
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-    font-size: 14px;
-  }
-  th, td {
-    border: 1px solid #ddd;
-    padding: 12px;
-    text-align: left;
-  }
-  th {
-    background: #f8f9fa;
-    color: var(--primary);
-  }
+.section-line {
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
 
-  @media (max-width: 768px) {
-    .slide { padding: 40px 20px; }
-    .token-grid, .case-grid, .step-container { flex-direction: column; }
-  }
+.section-title {
+  font-family: 'Fraunces', serif;
+  font-size: clamp(1.4rem, 3vw, 2rem);
+  font-weight: 600;
+  color: var(--green);
+  margin-bottom: 0.5rem;
+}
+
+.section-desc {
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1.7;
+  margin-bottom: 2rem;
+  max-width: 700px;
+}
+
+/* ─── ACUERDO MARCO BANNER ─── */
+.acuerdo-banner {
+  background: linear-gradient(135deg, var(--green), #1a3d24);
+  border-radius: 16px;
+  padding: 2.5rem 3rem;
+  color: white;
+  margin-bottom: 4rem;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 2rem;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.acuerdo-banner::before {
+  content: '◊';
+  position: absolute;
+  right: 5%;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 8rem;
+  color: rgba(255,255,255,0.04);
+  font-family: 'Fraunces', serif;
+}
+
+.acuerdo-title {
+  font-family: 'Fraunces', serif;
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin-bottom: 0.6rem;
+}
+
+.acuerdo-sub {
+  font-size: 0.9rem;
+  color: rgba(255,255,255,0.7);
+  line-height: 1.6;
+}
+
+.acuerdo-status {
+  background: rgba(212,175,55,0.15);
+  border: 1px solid rgba(212,175,55,0.5);
+  border-radius: 12px;
+  padding: 1.5rem 2rem;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.acuerdo-status-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 2px;
+  color: rgba(255,255,255,0.5);
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+
+.acuerdo-status-value {
+  font-family: 'Fraunces', serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--gold-light);
+}
+
+/* ─── TERMS TABLE ─── */
+.terms-section {
+  margin-bottom: 4rem;
+}
+
+.terms-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 20px rgba(0,0,0,0.06);
+}
+
+.terms-table thead tr {
+  background: var(--green);
+  color: white;
+}
+
+.terms-table th {
+  padding: 1rem 1.5rem;
+  text-align: left;
+  font-size: 0.75rem;
+  font-family: 'DM Mono', monospace;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.terms-table td {
+  padding: 1.1rem 1.5rem;
+  border-bottom: 1px solid var(--paper2);
+  font-size: 0.9rem;
+  vertical-align: top;
+}
+
+.terms-table tr:last-child td { border-bottom: none; }
+.terms-table tr:nth-child(even) td { background: var(--paper); }
+
+.terms-table tr:hover td { background: rgba(82,183,136,0.06); }
+
+.term-tag {
+  display: inline-block;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.7rem;
+  padding: 0.25rem 0.6rem;
+  border-radius: 4px;
+  font-weight: 500;
+  letter-spacing: 1px;
+}
+
+.tag-agreed { background: rgba(16,185,129,0.1); color: #059669; border: 1px solid rgba(16,185,129,0.3); }
+.tag-vesting { background: rgba(245,158,11,0.1); color: #D97706; border: 1px solid rgba(245,158,11,0.3); }
+.tag-sla { background: rgba(59,130,246,0.1); color: #2563EB; border: 1px solid rgba(59,130,246,0.3); }
+
+.value-highlight {
+  font-family: 'DM Mono', monospace;
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: var(--green);
+}
+
+/* ─── TECH STACK CARDS ─── */
+.tech-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 4rem;
+}
+
+.tech-card {
+  background: white;
+  border-radius: 16px;
+  padding: 2rem;
+  border: 1px solid var(--border);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.tech-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 4px;
+  height: 100%;
+  background: var(--green-light);
+  transition: width 0.3s ease;
+}
+
+.tech-card:hover { 
+  transform: translateY(-4px);
+  box-shadow: 0 16px 40px rgba(0,0,0,0.1);
+}
+
+.tech-card:hover::before { width: 6px; }
+
+.tech-card-num {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  color: var(--muted);
+  letter-spacing: 2px;
+  margin-bottom: 1rem;
+}
+
+.tech-card-title {
+  font-family: 'Fraunces', serif;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--green);
+  margin-bottom: 0.5rem;
+}
+
+.tech-card-sub {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.7rem;
+  color: var(--gold);
+  letter-spacing: 1px;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--paper2);
+}
+
+.tech-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.tech-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  font-size: 0.875rem;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.tech-list li::before {
+  content: '→';
+  color: var(--green-light);
+  font-weight: 700;
+  flex-shrink: 0;
+  margin-top: 0.05rem;
+}
+
+.tech-badge-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 1.2rem;
+}
+
+.tech-badge {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.6rem;
+  padding: 0.2rem 0.6rem;
+  background: var(--paper);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  color: var(--muted);
+  letter-spacing: 1px;
+}
+
+/* ─── VESTING TIMELINE ─── */
+.vesting-section { margin-bottom: 4rem; }
+
+.vesting-timeline {
+  position: relative;
+  padding-left: 3rem;
+}
+
+.vesting-timeline::before {
+  content: '';
+  position: absolute;
+  left: 0.75rem;
+  top: 0; bottom: 0;
+  width: 2px;
+  background: linear-gradient(to bottom, var(--green), var(--green-light), rgba(82,183,136,0.1));
+}
+
+.vesting-item {
+  position: relative;
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.75rem 2rem;
+  margin-bottom: 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.vesting-item:hover {
+  border-color: var(--green-light);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.07);
+}
+
+.vesting-dot {
+  position: absolute;
+  left: -2.4rem;
+  top: 1.75rem;
+  width: 18px; height: 18px;
+  background: var(--green);
+  border: 3px solid var(--paper);
+  border-radius: 50%;
+  box-shadow: 0 0 0 3px var(--green-light);
+}
+
+.vesting-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 0.75rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.vesting-hito {
+  font-family: 'Fraunces', serif;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--green);
+}
+
+.vesting-pct {
+  font-family: 'DM Mono', monospace;
+  font-size: 1.3rem;
+  font-weight: 500;
+  color: var(--gold);
+}
+
+.vesting-desc {
+  font-size: 0.875rem;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.vesting-total {
+  background: var(--green);
+  color: white;
+  border-radius: 12px;
+  padding: 1.5rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 2rem;
+}
+
+.vesting-total-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 2px;
+  opacity: 0.7;
+  text-transform: uppercase;
+}
+
+.vesting-total-value {
+  font-family: 'Fraunces', serif;
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--gold-light);
+}
+
+/* ─── SLA SECTION ─── */
+.sla-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.2rem;
+  margin-bottom: 4rem;
+}
+
+.sla-card {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.5rem;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.sla-card:hover {
+  border-color: var(--gold);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+}
+
+.sla-icon { font-size: 2rem; margin-bottom: 0.75rem; }
+
+.sla-value {
+  font-family: 'DM Mono', monospace;
+  font-size: 1.6rem;
+  font-weight: 500;
+  color: var(--green);
+  margin-bottom: 0.3rem;
+}
+
+.sla-label {
+  font-size: 0.8rem;
+  color: var(--muted);
+  line-height: 1.4;
+}
+
+/* ─── PORTABILITY SECTION ─── */
+.portability-box {
+  background: var(--ink);
+  color: white;
+  border-radius: 16px;
+  padding: 2.5rem 3rem;
+  margin-bottom: 4rem;
+}
+
+.portability-box h3 {
+  font-family: 'Fraunces', serif;
+  font-size: 1.5rem;
+  color: var(--gold-light);
+  margin-bottom: 1rem;
+}
+
+.portability-items {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.portability-item {
+  border-left: 2px solid rgba(212,175,55,0.3);
+  padding-left: 1.25rem;
+}
+
+.portability-item-title {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 2px;
+  color: var(--gold-light);
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+}
+
+.portability-item-desc {
+  font-size: 0.875rem;
+  color: rgba(255,255,255,0.65);
+  line-height: 1.6;
+}
+
+/* ─── NEXT STEPS ─── */
+.next-steps {
+  background: linear-gradient(135deg, var(--paper2), var(--paper));
+  border: 2px solid var(--border);
+  border-radius: 20px;
+  padding: 3rem;
+  margin-bottom: 4rem;
+}
+
+.next-steps-title {
+  font-family: 'Fraunces', serif;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--green);
+  margin-bottom: 1.5rem;
+}
+
+.steps-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.step-item {
+  display: grid;
+  grid-template-columns: 2.5rem 1fr;
+  gap: 1rem;
+  align-items: start;
+}
+
+.step-num {
+  width: 2.5rem; height: 2.5rem;
+  background: var(--green);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.8rem;
+  font-weight: 500;
+  flex-shrink: 0;
+}
+
+.step-content-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 0.25rem;
+}
+
+.step-content-desc {
+  font-size: 0.85rem;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+/* ─── QUOTE BLOCK ─── */
+.quote-block {
+  border-left: 4px solid var(--gold);
+  background: white;
+  padding: 2rem 2.5rem;
+  border-radius: 0 12px 12px 0;
+  margin: 3rem 0;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.05);
+}
+
+.quote-text {
+  font-family: 'Fraunces', serif;
+  font-size: 1.15rem;
+  font-style: italic;
+  color: var(--ink);
+  line-height: 1.7;
+  margin-bottom: 1rem;
+}
+
+.quote-attr {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 2px;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+
+/* ─── FOOTER ─── */
+.doc-footer {
+  background: var(--ink);
+  color: rgba(255,255,255,0.5);
+  padding: 2rem 4rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 1px;
+}
+
+.footer-brand {
+  font-family: 'Fraunces', serif;
+  font-size: 1rem;
+  color: var(--gold-light);
+  font-weight: 600;
+  letter-spacing: 0;
+}
+
+/* ─── PRINT STYLES ─── */
+@media print {
+  .status-bar, .doc-footer { display: none; }
+  .tech-card:hover { transform: none; box-shadow: none; }
+}
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 768px) {
+  .doc-header { grid-template-columns: 1fr; padding: 2rem; }
+  .header-right { text-align: left; }
+  .status-bar { padding: 1rem 1.5rem; gap: 1.5rem; }
+  .main { padding: 2rem 1rem 4rem; }
+  .acuerdo-banner { grid-template-columns: 1fr; }
+  .portability-box { padding: 1.5rem; }
+  .next-steps { padding: 2rem 1.5rem; }
+}
 </style>
 </head>
 <body>
 
-<div class="progress-bar" id="progressBar"></div>
-
-<nav class="nav-dots" id="navDots"></nav>
-
-<div class="slides">
-
-  <!-- SLIDE 1: PORTADA -->
-  <section class="slide" id="s1">
-    <div class="grid-bg"></div>
-    <div class="content-container">
-      <div class="badge">Neo Pisk Tech · Tokenomics Cacao RWA</div>
-      <h1 class="slide-title">Estructura de Doble Token<br>para Corporación AgroTec</h1>
-      <p class="slide-desc">Enfoque en Cacao Peruano y Tierras Ecozuzo – Blindaje Patrimonial + Captación Masiva</p>
+<!-- ─── DOCUMENT HEADER ─── -->
+<header class="doc-header">
+  <div class="header-left">
+    <div class="header-eyebrow">Documento Técnico Confidencial · Uso Interno</div>
+    <h1 class="header-title">Propuesta de Arquitectura RWA<br><span>Neo Pisk Tech × Agrotec Perú</span></h1>
+    <p class="header-subtitle">Especificaciones técnicas, condiciones del acuerdo y plan de implementación para la tokenización de activos reales agrícolas.</p>
+    <div class="version-badge">Versión 2.1 · Respuesta a Contraoferta Agrotec</div>
+  </div>
+  <div class="header-right">
+    <div class="doc-meta">
+      <div><strong>Dirigido a:</strong> Willy Toro — Dir. General, Agrotec Perú</div>
+      <div><strong>Preparado por:</strong> Ernesto Piskulich — CEO, Neo Pisk Tech</div>
+      <div><strong>Fecha:</strong> Febrero 2026</div>
+      <div><strong>Clasificación:</strong> Confidencial</div>
     </div>
-  </section>
+  </div>
+</header>
 
-  <!-- SLIDE 2: INTRO Y CONTEXTO -->
-  <section class="slide" id="s2">
-    <div class="content-container">
-      <div class="badge">Contexto 2025–2026</div>
-      <h2 class="slide-title">El cacao peruano en su momento histórico</h2>
-      <p class="slide-desc">
-        El sector cacaotero peruano está en un punto de inflexión histórico y estratégico. En 2025, Perú rompió récords: producción nacional estimada en <span class="highlight">~182,708–202,345 toneladas</span> (ciclo 2024–2025, +11% vs. anterior), exportaciones de cacao y derivados alcanzaron <span class="highlight">~US$ 1,454–1,547 millones</span> entre enero-noviembre (+22–30% vs. 2024), impulsadas por precios promedio de <span class="highlight">US$ 8.88/kg</span> (+12% vs. 2024). Esto consolidó a Perú como líder en cacao fino de aroma y segundo en industrialización regional (~40–45% procesado localmente), con fuerte demanda en UE, EE.UU. y Asia por calidad, sostenibilidad y trazabilidad.
-      </p>
-      <p class="slide-desc">
-        Pero 2026 trae ajustes inevitables: precios internacionales caen (cotizaciones ~US$ 5,800–6,476/tonelada o menos, con mínimos ~US$ 3,700–4,500 en febrero), por mayor oferta africana (Costa de Marfil, Ghana), normalización post-crisis 2024–2025 y riesgos agroclimáticos en selva central/norte (lluvias excesivas, moniliasis, escoba de bruja). En este contexto de volatilidad, la <span class="highlight">tokenización RWA de cacao y tierras cacaoteras/vivienda Ecozuzo</span> (tus ~100,000 m² en Pozuzo, Huánuco – zona emergente de cacao premium CCN-51 y potencial eco-vivienda sostenible) se vuelve esencial: protege el patrimonio real (titularidad SUNARP), genera liquidez inmediata vía mercados digitales y capta capital global sin depender solo de precios del commodity.
-      </p>
-    </div>
-  </section>
-
-  <!-- SLIDE 3: ESTRUCTURA DOBLE TOKEN -->
-  <section class="slide" id="s3">
-    <div class="content-container">
-      <div class="badge">La Solución</div>
-      <h2 class="slide-title">Proponemos la estructura de doble token</h2>
-      <p class="slide-desc">para blindar legalmente tus activos mientras captamos inversión masiva de inversores locales y globales:</p>
-
-      <div class="section-grid">
-        <div class="card">
-          <div class="card-icon">🔒</div>
-          <div class="card-title">1. Token Interno (Patrimonio y Tierra Cacaotera / Ecozuzo)</div>
-          <div class="card-text">
-            Naturaleza técnica: Token restringido (soulbound-like o ERC-721 con bloqueo parcial de transferencias públicas).<br><br>
-            Función principal: Representa tierras de cultivo de cacao y tierras destinadas a vivienda Ecozuzo. Se vende a inversores locales y globales como participación en el patrimonio real.<br><br>
-            Custodia segura: El 20% de la emisión total queda bajo custodia en Neo Pisk Tech mediante contrato inteligente. Neo Pisk solo puede vender o transferir esos tokens a los 6 meses de haber sido creado el contrato. Wallet multi-sig (tú + Neo Pisk Tech + auditor externo). No expuesto completamente a mercados abiertos → valor estable, inmune a caídas de precio del cacao 2026 (ej. -30–60% desde picos 2025).<br><br>
-            Seguridad técnica: Smart contract con pausa/emergencia y upgradeability (OpenZeppelin UUPS). Respaldado 100% por títulos físicos en SUNARP, producción tangible (cacao en grano fermentado/seco) y certificaciones sostenibles (Rainforest Alliance, Fairtrade).<br><br>
-            Smart Contract "Cajero Automático": Regla 95/5 automática: Al comprar (USDT/ETH/stablecoin), 95% neto a wallet AgroTec (capital para siembra/cosecha ante riesgos 2026), 5% fee tecnológico a Neo Pisk Tech. Auditoría recomendada (Certik/OpenZeppelin). Chain: Polygon/Base (bajos costos, alta velocidad, ideal Latam).<br><br>
-            Ventaja para AgroTec: Tus tierras y plantaciones en Pozuzo quedan protegidas como activo híbrido off-chain/on-chain, con venta controlada a inversores serios que aportan capital real al proyecto.
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="card-icon">🌿</div>
-          <div class="card-title">2. Token RWA (Cacao y Mercado Líquido) – "Público y Especulativo"</div>
-          <div class="card-text">
-            Naturaleza técnica: Token fungible ERC-20 (compatible con DEX en Polygon/Base, fees ~US$0.01–0.10/tx).<br><br>
-            Mecánica de valor: Precio por oferta/demanda pura (no yield fijo → evita SMV). Representa participación simbólica en ecosistema cacao: plusvalía tierras, producción futura, trazabilidad sostenible desde finca Pozuzo.<br><br>
-            Emisión sugerida (escalable a producción real): Total 20,000,000 tokens.<br>
-            • 60% preventa/venta pública (inversores buscan cacao premium peruano post-récord 2025).<br>
-            • 20% liquidez inicial (pool lockeado 12–24 meses).<br>
-            • 20% reserva técnica: en custodia en Neo Pisk Tech bajo contrato inteligente. Neo Pisk solo puede vender o transferir esos tokens a los 6 meses de haber sido creado el contrato (para VPS, APIs Groq, mejoras IA Karla).<br><br>
-            Integración con cacao real: Cada token vinculado a certificados digitales (kg cacao proyectado, hash de trazabilidad). Beneficios: acceso preferencial a cacao certificado, plusvalía por expansión sostenible en selva central.<br><br>
-            Smart Contract "Cajero Automático": Regla 95/5 automática: Al comprar (USDT/ETH/stablecoin), 95% neto a wallet AgroTec (capital para siembra/cosecha ante riesgos 2026), 5% fee tecnológico a Neo Pisk Tech. Auditoría recomendada (Certik/OpenZeppelin). Chain: Polygon/Base (bajos costos, alta velocidad, ideal Latam).
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- SLIDE 4: LEGAL Y TÉCNICO -->
-  <section class="slide" id="s4">
-    <div class="content-container">
-      <div class="badge">Aspectos Clave</div>
-      <h2 class="slide-title">Aspectos Legales y Registrales en Perú (2026)</h2>
-      <p class="slide-desc">
-        Marco: Zona gris (sin ley RWA específica). SMV supervisa promesas de rentabilidad → no ofrecemos dividendos/yield fijo.<br><br>
-        Estructura legal: Contrato de Asociación en Participación (Código Civil arts. 1401–1415) + Certificado Digital emitido por AgroTec (vinculado al token).<br>
-        • No registro individual SUNARP por token ~US$100 (inviable por costos notariales). Empresa mantiene titularidad registral total; inversor tiene derecho económico proporcional.<br>
-        • Trazabilidad: Hash blockchain + QR en certificados para auditoría física (visitas Pozuzo).<br><br>
-        Cumplimiento: KYC básico vía bot Karla, no oferta pública sin SMV, SUNAT (renta de capital posible → consultar contador especializado).
-      </p>
-
-      <h2 class="slide-title" style="margin: 48px 0 24px;">Infraestructura Técnica Completa (Neo Pisk Tech)</h2>
-      <div class="section-grid">
-        <div class="card">
-          <div class="card-icon">🖥️</div>
-          <div class="card-title">VPS central</div>
-          <div class="card-text">KVM Linux (vps3288730 – IP 69.169.109.120) → aloja bots Telegram/WhatsApp, IA Karla (Llama-3.3-70b), Google Sheet (ID: 1dOWxf_s74la4Ey2S3nmK1CSYDtDtQfZtySgjT4oa-wU) para leads, trazabilidad cacao y auditoría producción.</div>
-        </div>
-        <div class="card">
-          <div class="card-icon">🤖</div>
-          <div class="card-title">IA Karla</div>
-          <div class="card-text">Gestiona leads 24/7, explica tokenización simple ("compra participación en cacao real Pozuzo, respaldado por récord 2025"), deriva a visitas presenciales/búnker.</div>
-        </div>
-        <div class="card">
-          <div class="card-icon">🛡️</div>
-          <div class="card-title">Seguridad y Escalabilidad</div>
-          <div class="card-text">Encriptación end-to-end, backups diarios, multi-sig wallets, monitoring uptime. Duplicable para cooperativas cacaoteras o más hectáreas en Huánuco/Ucayali. Incluye la custodia inteligente del 20% de ambos tokens con lock de 6 meses.</div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- SLIDE 5: MODELOS DE ÉXITO Y ESTRUCTURA DUAL -->
-  <section class="slide" id="s5">
-    <div class="content-container">
-      <div class="badge">Modelos de Éxito Global</div>
-      <h2 class="slide-title">ESTRATEGIA DE TOKENIZACIÓN DUAL 2026</h2>
-      <p class="slide-desc">Willy, esta propuesta elimina el "ruido" legal y la carga operativa. Implementamos un modelo de <strong>Real World Assets (RWA)</strong> que ya es un éxito global, adaptado 100% a la legalidad peruana y a tus activos en SUNARP.</p>
-
-      <div class="success-box">
-        <h3 style="margin-top:0; color: #2e7d32;">🌍 Modelos de Éxito en el Mundo</h3>
-        <p style="font-size: 14px; color: #2e7d32;">No estamos inventando el modelo; lo estamos liderando en Perú basándonos en gigantes:</p>
-        <div class="case-grid">
-          <div class="case-item"><strong>Agrotoken (Arg/Bra):</strong> Líder en tokenización de granos (soja/maíz). Permite transaccionar cosechas como dinero digital.</div>
-          <div class="case-item"><strong>RealT (USA):</strong> Más de $100M invertidos en propiedades fraccionadas digitalmente con respaldo jurídico.</div>
-          <div class="case-item"><strong>EthicHub:</strong> Éxito financiando caficultores mediante capital global Web3 con riesgo compartido.</div>
-          <div class="case-item"><strong>Landshare:</strong> Convierte la tierra agrícola en un activo líquido y accesible para inversores de todo el mundo.</div>
-        </div>
-      </div>
-
-      <h2 class="slide-title" style="margin: 48px 0 24px;">Estructura Dual: Seguridad y Crecimiento</h2>
-      <div class="token-grid">
-        <div class="token-card card-cacao">
-          <h3 style="margin-top:0;">1. TOKEN AGRO-CACAO</h3>
-          <p style="font-size: 14px;"><strong>Uso:</strong> Financiamiento de Campaña (Capital de Trabajo).</p>
-          <ul style="font-size: 13px;">
-            <li>Respaldado por la <strong>Cosecha Real</strong>.</li>
-            <li>Renta fija tras la venta del producto.</li>
-            <li>Ideal para inversores que buscan seguridad y estabilidad.</li>
-          </ul>
-        </div>
-        <div class="token-card card-rwa">
-          <h3 style="margin-top:0;">2. TOKEN AGRO-RWA</h3>
-          <p style="font-size: 14px;"><strong>Uso:</strong> Expansión Patrimonial (Activos Fijos).</p>
-          <ul style="font-size: 13px;">
-            <li>Respaldado por la <strong>Partida Registral de SUNARP</strong>.</li>
-            <li>Gana valor por la plusvalía de la tierra y la marca.</li>
-            <li>Atrae capital global que busca activos "refugio".</li>
-          </ul>
-        </div>
-      </div>
-
-      <table>
-        <thead>
-          <tr>
-            <th>Característica</th>
-            <th>Token AGRO-CACAO (Interno)</th>
-            <th>Token AGRO-RWA (Patrimonial)</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><strong>Sustento</strong></td>
-            <td>Producción agrícola tangible.</td>
-            <td>Títulos de propiedad y activos fijos.</td>
-          </tr>
-          <tr>
-            <td><strong>Perfil Cliente</strong></td>
-            <td>Ahorrista que busca renta segura.</td>
-            <td>Inversor Web3 que busca valorización.</td>
-          </tr>
-          <tr>
-            <td><strong>Rol de AgroTec</strong></td>
-            <td>Garantiza la gestión del cultivo.</td>
-            <td>Respalda con su patrimonio legal.</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </section>
-
-  <!-- SLIDE 6: AUTOMATIZACIÓN Y GARANTÍA -->
-  <section class="slide" id="s6">
-    <div class="content-container">
-      <div class="badge">Sistema Automatizado</div>
-      <h2 class="slide-title">Sistema de Venta y Educación 24/7</h2>
-      <p class="slide-desc">Willy, tu equipo no necesita explicar tecnología. <strong>Neo Pisk Tech</strong> automatiza el aprendizaje del cliente:</p>
-
-      <div class="automation-flow">
-        <h3 style="margin-top:0; color: #e65100;">🚀 Sistema de Venta y Educación 24/7</h3>
-        <p style="font-size: 14px;">Willy, tu equipo no necesita explicar tecnología. <strong>Neo Pisk Tech</strong> automatiza el aprendizaje del cliente:</p>
-        <div class="step-container">
-          <div class="step-box">
-            <div style="font-size:24px;">🎥</div>
-            <strong>Video Tutorial</strong><br><small>Explica el beneficio y la seguridad en 2 min.</small>
-          </div>
-          <div class="step-box">
-            <div style="font-size:24px;">🤖</div>
-            <strong>Asistente IA</strong><br><small>Responde dudas técnicas y legales al instante.</small>
-          </div>
-          <div class="step-box">
-            <div style="font-size:24px;">💳</div>
-            <strong>Compra Directa</strong><br><small>Interfaz simple para adquirir tokens en segundos.</small>
-          </div>
-        </div>
-      </div>
-
-      <h2 class="slide-title" style="margin: 48px 0 24px;">Garantía y Transparencia</h2>
-      <div style="background: #f9f9f9; padding: 25px; border-radius: 12px; border: 1px solid #ddd; margin-top: 20px; color: #333;">
-        <p style="margin-top:0;"><strong>Respaldo Legal (Art. 440 LGS):</strong> El sistema opera bajo contratos de Asociación en Participación. No es captación bancaria, es inversión productiva en sociedad.</p>
-        <p><strong>Seguridad SUNARP:</strong> Los tokens están vinculados a la <strong>Partida N° [Ingresar Partida Aquí]</strong> de la Corporación AgroTec S.A.C.</p>
-        <p style="margin-bottom:0;"><strong>Compromiso Neo Pisk:</strong> Mi participación del 20% está bloqueada por <strong>Smart Contract (Vesting) por 6 meses</strong>. Solo gano si el proyecto es un éxito y el token sube.</p>
-      </div>
-
-      <div style="text-align: center; margin-top: 40px; color: #999; font-size: 11px;">
-        Desarrollado por Neo Pisk Tech para el crecimiento global de AgroTec. | 2026
-      </div>
-    </div>
-  </section>
-
-  <!-- SLIDE 7: PROYECCIÓN Y CONCLUSIÓN FINAL -->
-  <section class="slide" id="s7">
-    <div class="content-container">
-      <div class="badge">Futuro</div>
-      <h2 class="slide-title">Proyección de Crecimiento (2026–2028) – Enfoque Cacao y Ecozuzo</h2>
-      <p class="slide-desc">
-        Drivers:<br>
-        • Cacao peruano premium (demanda UE por sostenibilidad/trazabilidad blockchain post-récord 2025).<br>
-        • Escasez tokens + narrativa "cacao real Perú + vivienda sostenible Ecozuzo".<br>
-        • Hitos: cada tonelada certificada o hectárea nueva aumenta "prestigio" → precio token.<br>
-        • Reserva del 20% en custodia Neo Pisk (lock 6 meses vía smart contract) asegura estabilidad y uso técnico responsable.
-      </p>
-
-      <h2 class="slide-title" style="margin: 48px 0 24px;">Conclusión para ti, Willy</h2>
-      <p class="conclusion">
-        Con este doble token enfocado en cacao y tierras Ecozuzo (activo real fuerte pese a volatilidad 2026), <span class="highlight">no prometes nada fijo</span> (evitas SMV), <span class="highlight">ofreces participación especulativa en un commodity premium y desarrollo sostenible</span> que el mercado valora libremente. La gente compra hoy porque cree en el cacao peruano (calidad, sostenibilidad, plusvalía Pozuzo post-récord 2025) y en el potencial de vivienda eco en selva central. Tú capitalizas para expandir plantaciones y proyectos Ecozuzo ante riesgos climáticos/precios bajos, la empresa crece, y tus títulos SUNARP + producción cacao siguen como muro inquebrantable. El 20% de ambos tokens queda en custodia segura en Neo Pisk Tech bajo contrato inteligente, con liberación solo a los 6 meses de creación del contrato.
-      </p>
-
-      <p class="slide-desc" style="margin-top: 32px;">
-        ¿Quieres ajustar emisión por toneladas proyectadas (ej. vincular a 1 token = fracción de kg cacao o m² Ecozuzo), detalle código smart contract o demo bot explicando "Token Cacao Pozuzo"? Estoy listo para avanzar.
-      </p>
-    </div>
-  </section>
-
+<!-- ─── STATUS BAR ─── -->
+<div class="status-bar">
+  <div class="status-item"><div class="status-dot dot-amber"></div> <span>ACUERDO MARCO: <strong>En proceso de firma</strong></span></div>
+  <div class="status-item"><div class="status-dot dot-green"></div> <span>ACUERDOS VERBALES: <strong>Confirmados</strong></span></div>
+  <div class="status-item"><div class="status-dot dot-blue"></div> <span>INFRAESTRUCTURA: <strong>Lista para implementar</strong></span></div>
+  <div class="status-item"><div class="status-dot dot-amber"></div> <span>TOKENS AGRO: <strong>20M — Diseño finalizado</strong></span></div>
 </div>
 
-<script>
-  const slides = document.querySelectorAll('.slide');
-  const navDots = document.getElementById('navDots');
-  const progressBar = document.getElementById('progressBar');
+<!-- ─── MAIN CONTENT ─── -->
+<main class="main">
 
-  slides.forEach((_, i) => {
-    const dot = document.createElement('div');
-    dot.className = 'dot' + (i === 0 ? ' active' : '');
-    dot.addEventListener('click', () => {
-      slides[i].scrollIntoView({ behavior: 'smooth' });
-    });
-    navDots.appendChild(dot);
-  });
+  <!-- BANNER ACUERDO MARCO -->
+  <div class="acuerdo-banner">
+    <div>
+      <div class="acuerdo-title">Acuerdo Marco en Proceso de Firma</div>
+      <p class="acuerdo-sub">
+        Los acuerdos verbales entre Neo Pisk Tech y Corporación Agrotec Perú están consolidados. 
+        La formalización legal del contrato se encuentra en su etapa final. 
+        Este documento recoge las condiciones acordadas y las especificaciones técnicas 
+        que Neo Pisk implementará una vez firmado el instrumento legal.
+      </p>
+    </div>
+    <div class="acuerdo-status">
+      <div class="acuerdo-status-label">Estado legal</div>
+      <div class="acuerdo-status-value">En proceso<br>de firma</div>
+    </div>
+  </div>
 
-  window.addEventListener('scroll', () => {
-    const scrollY = window.scrollY;
-    const totalHeight = document.body.scrollHeight - window.innerHeight;
-    const progress = (scrollY / totalHeight) * 100;
-    progressBar.style.width = progress + '%';
+  <!-- ─── SECCIÓN 1: CONDICIONES ACORDADAS ─── -->
+  <div class="section-label">
+    <span class="section-num">01</span>
+    <div class="section-line"></div>
+  </div>
+  <h2 class="section-title">Condiciones Económicas Acordadas</h2>
+  <p class="section-desc">
+    Resumen de los términos aceptados por Neo Pisk Tech en respuesta a la contraoferta 
+    de Corporación Agrotec Perú (documento recibido Feb. 2026, firmado por Willy Toro, Director General).
+  </p>
 
-    const dots = document.querySelectorAll('.dot');
-    slides.forEach((slide, i) => {
-      const rect = slide.getBoundingClientRect();
-      if (rect.top <= window.innerHeight / 2 && rect.bottom >= window.innerHeight / 2) {
-        dots.forEach(d => d.classList.remove('active'));
-        dots[i].classList.add('active');
-      }
-    });
-  });
-</script>
+  <div class="terms-section">
+    <table class="terms-table">
+      <thead>
+        <tr>
+          <th>Concepto</th>
+          <th>Condición Acordada</th>
+          <th>Detalle Técnico</th>
+          <th>Estado</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Fee de Comercialización</strong></td>
+          <td><span class="value-highlight">4%</span> variable</td>
+          <td>Sobre el capital efectivamente colocado a través de la plataforma Neo Pisk. Incluye infraestructura, pasarela e IA de prospección.</td>
+          <td><span class="term-tag tag-agreed">✓ Aceptado</span></td>
+        </tr>
+        <tr>
+          <td><strong>Equity Tecnológico (Tokens)</strong></td>
+          <td><span class="value-highlight">5% máx.</span> de emisión total</td>
+          <td>Tokens AGRO-LAND y/o AGRO-RWA asignados a Neo Pisk bajo smart contract con vesting programado por hitos verificables.</td>
+          <td><span class="term-tag tag-vesting">Vesting por hitos</span></td>
+        </tr>
+        <tr>
+          <td><strong>Hito 1 — Plataforma en producción</strong></td>
+          <td><span class="value-highlight">1%</span> liberado</td>
+          <td>Al desplegar smart contracts auditados + dashboard de inversores + módulo de reporte en producción.</td>
+          <td><span class="term-tag tag-vesting">Hito técnico</span></td>
+        </tr>
+        <tr>
+          <td><strong>Hito 2 — Colocación progresiva</strong></td>
+          <td><span class="value-highlight">2%</span> proporcional</td>
+          <td>Liberación por tramos conforme se alcancen metas de USD tokenizados y vendidos (umbrales a definir en contrato).</td>
+          <td><span class="term-tag tag-vesting">Hito comercial</span></td>
+        </tr>
+        <tr>
+          <td><strong>Hito 3 — SLA 24 meses</strong></td>
+          <td><span class="value-highlight">2%</span> restante</td>
+          <td>Mantenimiento con uptime 99.9% y soporte técnico garantizado durante los primeros 24 meses de operación.</td>
+          <td><span class="term-tag tag-sla">SLA técnico</span></td>
+        </tr>
+        <tr>
+          <td><strong>Propiedad del código</strong></td>
+          <td>Agrotec / SPV</td>
+          <td>Repositorio con acceso administrativo de Agrotec. Infraestructura desplegable bajo cuentas de la corporación.</td>
+          <td><span class="term-tag tag-agreed">✓ Aceptado</span></td>
+        </tr>
+        <tr>
+          <td><strong>Portabilidad</strong></td>
+          <td>Cláusula garantizada</td>
+          <td>Al finalizar el acuerdo, Agrotec puede migrar código, contratos y front-end sin obligaciones adicionales.</td>
+          <td><span class="term-tag tag-agreed">✓ Aceptado</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ─── QUOTE ─── -->
+  <div class="quote-block">
+    <p class="quote-text">
+      "Mi trabajo no es solo crear el token, es crear el puente líquido. Transformamos un activo físico y estático 
+      en una herramienta financiera digital que cualquier persona en el mundo puede comprar en segundos. 
+      El 4% cubre no solo la programación, sino la inteligencia artificial que sale a buscar el dinero por nosotros."
+    </p>
+    <div class="quote-attr">— Ernesto Piskulich, CEO Neo Pisk Tech</div>
+  </div>
+
+  <!-- ─── SECCIÓN 2: ESPECIFICACIONES TÉCNICAS ─── -->
+  <div class="section-label">
+    <span class="section-num">02</span>
+    <div class="section-line"></div>
+  </div>
+  <h2 class="section-title">Arquitectura Técnica de Implementación</h2>
+  <p class="section-desc">
+    Esto es lo que Neo Pisk Tech entregará para justificar el 4% de fee y el 5% de equity. 
+    Cada módulo tiene entregables verificables y documentados.
+  </p>
+
+  <div class="tech-grid">
+
+    <div class="tech-card">
+      <div class="tech-card-num">MÓDULO 01</div>
+      <div class="tech-card-title">Smart Contracts</div>
+      <div class="tech-card-sub">ERC-20 / ERC-1400 · Polygon o BSC</div>
+      <ul class="tech-list">
+        <li>Contratos inteligentes para tokens AGRO-LAND (tierra) y AGRO-RWA (gestión agrícola), auditados técnicamente antes del despliegue.</li>
+        <li>Funciones de compliance KYC/AML integradas: solo inversores validados pueden operar.</li>
+        <li>Vesting programado on-chain: liberación automática de tokens de incentivo por hitos verificables en blockchain.</li>
+        <li>Mecanismo de distribución de royalties automatizado para holders.</li>
+      </ul>
+      <div class="tech-badge-row">
+        <span class="tech-badge">Solidity</span>
+        <span class="tech-badge">OpenZeppelin</span>
+        <span class="tech-badge">Polygon</span>
+        <span class="tech-badge">Hardhat</span>
+      </div>
+    </div>
+
+    <div class="tech-card">
+      <div class="tech-card-num">MÓDULO 02</div>
+      <div class="tech-card-title">Dashboard del Inversor</div>
+      <div class="tech-card-sub">Front-End Web3 · Panel de Transparencia</div>
+      <ul class="tech-list">
+        <li>Interfaz para que cada inversor vea su participación, rendimiento y estado del activo en tiempo real.</li>
+        <li>Conexión directa con blockchain para mostrar datos on-chain verificables (no editables).</li>
+        <li>Módulo de reporte automático de colocación y métricas de desempeño para Agrotec.</li>
+        <li>Panel administrativo exclusivo para Corporación Agrotec con control total del proyecto.</li>
+      </ul>
+      <div class="tech-badge-row">
+        <span class="tech-badge">React</span>
+        <span class="tech-badge">Web3.js</span>
+        <span class="tech-badge">Ethers.js</span>
+        <span class="tech-badge">Chart.js</span>
+      </div>
+    </div>
+
+    <div class="tech-card">
+      <div class="tech-card-num">MÓDULO 03</div>
+      <div class="tech-card-title">IA Karla — Prospección 24/7</div>
+      <div class="tech-card-sub">Embudo Inteligente · WhatsApp + Scraper</div>
+      <ul class="tech-list">
+        <li>Algoritmo de detección de intención: identifica inversores en comunidades RWA, Agrotech y Crypto a nivel global.</li>
+        <li>Karla-WhatsApp: IA que califica leads, explica el proyecto Agrotec y cierra consultas sin intervención manual.</li>
+        <li>Filtro de calidad: elimina registros inválidos y entrega base de datos 100% accionable para el equipo Agrotec.</li>
+        <li>Sincronización automática con Google Sheets en tiempo real para seguimiento de pipeline.</li>
+      </ul>
+      <div class="tech-badge-row">
+        <span class="tech-badge">Python</span>
+        <span class="tech-badge">WhatsApp API</span>
+        <span class="tech-badge">NLP</span>
+        <span class="tech-badge">Google Sheets</span>
+      </div>
+    </div>
+
+    <div class="tech-card">
+      <div class="tech-card-num">MÓDULO 04</div>
+      <div class="tech-card-title">Pasarela Multi-Currency</div>
+      <div class="tech-card-sub">USDT · USDC · PEN · USD</div>
+      <ul class="tech-list">
+        <li>Integración con pasarelas de pago cripto y fiat para facilitar la entrada de capital global sin fricción.</li>
+        <li>Conversión automática y registro on-chain de cada transacción para auditoría completa.</li>
+        <li>Cumplimiento regulatorio: proceso KYC integrado antes de permitir la compra de tokens.</li>
+        <li>Reportes de tesorería automáticos en tiempo real para la administración de Agrotec.</li>
+      </ul>
+      <div class="tech-badge-row">
+        <span class="tech-badge">USDT/USDC</span>
+        <span class="tech-badge">Stripe</span>
+        <span class="tech-badge">KYC/AML</span>
+        <span class="tech-badge">Webhooks</span>
+      </div>
+    </div>
+
+    <div class="tech-card">
+      <div class="tech-card-num">MÓDULO 05</div>
+      <div class="tech-card-title">Infraestructura & Seguridad</div>
+      <div class="tech-card-sub">Cloud · Backup · Uptime 99.9%</div>
+      <ul class="tech-list">
+        <li>Despliegue en cuentas de nube bajo control administrativo de Agrotec (AWS / GCP), no cuentas personales de Neo Pisk.</li>
+        <li>Sistema de backup automatizado y redundancia geográfica para garantizar continuidad operativa.</li>
+        <li>Monitoreo 24/7 con alertas automáticas y protocolo de respuesta ante incidentes en menos de 4 horas.</li>
+        <li>Documentación técnica completa entregada a Agrotec para portabilidad total.</li>
+      </ul>
+      <div class="tech-badge-row">
+        <span class="tech-badge">AWS</span>
+        <span class="tech-badge">Docker</span>
+        <span class="tech-badge">CI/CD</span>
+        <span class="tech-badge">SSL/TLS</span>
+      </div>
+    </div>
+
+    <div class="tech-card">
+      <div class="tech-card-num">MÓDULO 06</div>
+      <div class="tech-card-title">Repositorio & Entregables</div>
+      <div class="tech-card-sub">Propiedad Intelectual · Agrotec / SPV</div>
+      <ul class="tech-list">
+        <li>Repositorio GitHub privado con acceso administrativo de Agrotec desde el primer día de desarrollo.</li>
+        <li>Documentación técnica completa: arquitectura, guías de despliegue, manuales de usuario y de administrador.</li>
+        <li>Auditoría de código por tercero independiente antes de lanzamiento, con informe entregado a Agrotec.</li>
+        <li>Entrenamiento al equipo técnico de Agrotec para gestión autónoma de la plataforma.</li>
+      </ul>
+      <div class="tech-badge-row">
+        <span class="tech-badge">GitHub</span>
+        <span class="tech-badge">Notion Docs</span>
+        <span class="tech-badge">Auditoría</span>
+        <span class="tech-badge">Capacitación</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ─── SECCIÓN 3: VESTING TIMELINE ─── -->
+  <div class="section-label">
+    <span class="section-num">03</span>
+    <div class="section-line"></div>
+  </div>
+  <h2 class="section-title">Cronograma de Vesting por Hitos</h2>
+  <p class="section-desc">
+    El equity tecnológico del 5% se libera progresivamente conforme Neo Pisk cumple hitos 
+    verificables. Sin hito cumplido, no hay liberación. Esto protege a Agrotec y alinea incentivos.
+  </p>
+
+  <div class="vesting-section">
+    <div class="vesting-timeline">
+
+      <div class="vesting-item">
+        <div class="vesting-dot"></div>
+        <div class="vesting-header">
+          <div class="vesting-hito">Hito 1 — Plataforma en Producción</div>
+          <div class="vesting-pct">1% tokens</div>
+        </div>
+        <p class="vesting-desc">
+          Liberación al poner en producción: smart contracts desplegados y auditados, 
+          dashboard de inversores funcional y módulo de reporte operativo. 
+          Verificación técnica por auditor independiente acordado entre ambas partes.
+        </p>
+      </div>
+
+      <div class="vesting-item">
+        <div class="vesting-dot"></div>
+        <div class="vesting-header">
+          <div class="vesting-hito">Hito 2A — Primer Tramo de Colocación</div>
+          <div class="vesting-pct">0.67% tokens</div>
+        </div>
+        <p class="vesting-desc">
+          Liberación proporcional al alcanzar el primer umbral de USD tokenizados y vendidos a inversores. 
+          El monto exacto del umbral se define en el contrato. Verificable on-chain.
+        </p>
+      </div>
+
+      <div class="vesting-item">
+        <div class="vesting-dot"></div>
+        <div class="vesting-header">
+          <div class="vesting-hito">Hito 2B — Segundo Tramo de Colocación</div>
+          <div class="vesting-pct">0.67% tokens</div>
+        </div>
+        <p class="vesting-desc">
+          Segunda liberación al alcanzar el segundo umbral de colocación. 
+          Progresión continua que alinea el beneficio de Neo Pisk con el éxito comercial real del proyecto.
+        </p>
+      </div>
+
+      <div class="vesting-item">
+        <div class="vesting-dot"></div>
+        <div class="vesting-header">
+          <div class="vesting-hito">Hito 2C — Tercer Tramo de Colocación</div>
+          <div class="vesting-pct">0.66% tokens</div>
+        </div>
+        <p class="vesting-desc">
+          Liberación final del tramo comercial al superar el tercer umbral. 
+          Totaliza el 2% del equity comercial. A partir de aquí, el proyecto entra en fase de mantenimiento SLA.
+        </p>
+      </div>
+
+      <div class="vesting-item">
+        <div class="vesting-dot"></div>
+        <div class="vesting-header">
+          <div class="vesting-hito">Hito 3 — SLA 24 Meses Completado</div>
+          <div class="vesting-pct">2% tokens</div>
+        </div>
+        <p class="vesting-desc">
+          Liberación del tramo final al completar 24 meses de mantenimiento con uptime ≥ 99.9% 
+          y cumplimiento del SLA técnico acordado. Protege a Agrotec garantizando soporte de largo plazo.
+        </p>
+      </div>
+
+    </div>
+
+    <div class="vesting-total">
+      <div>
+        <div class="vesting-total-label">Total Equity Tecnológico Neo Pisk</div>
+        <div style="font-size: 0.85rem; color: rgba(255,255,255,0.6); margin-top: 0.25rem;">Sobre 20,000,000 tokens emitidos por activo</div>
+      </div>
+      <div class="vesting-total-value">5% máximo</div>
+    </div>
+  </div>
+
+  <!-- ─── SECCIÓN 4: SLA ─── -->
+  <div class="section-label">
+    <span class="section-num">04</span>
+    <div class="section-line"></div>
+  </div>
+  <h2 class="section-title">Compromisos de Nivel de Servicio (SLA)</h2>
+  <p class="section-desc">
+    Neo Pisk Tech asume estos compromisos operativos medibles durante los 24 meses posteriores al lanzamiento.
+  </p>
+
+  <div class="sla-grid">
+    <div class="sla-card">
+      <div class="sla-icon">⚡</div>
+      <div class="sla-value">99.9%</div>
+      <div class="sla-label">Uptime garantizado de la plataforma</div>
+    </div>
+    <div class="sla-card">
+      <div class="sla-icon">🔧</div>
+      <div class="sla-value">&lt; 4h</div>
+      <div class="sla-label">Tiempo de respuesta ante incidentes críticos</div>
+    </div>
+    <div class="sla-card">
+      <div class="sla-icon">🔒</div>
+      <div class="sla-value">100%</div>
+      <div class="sla-label">Código documentado y portable en todo momento</div>
+    </div>
+    <div class="sla-card">
+      <div class="sla-icon">📊</div>
+      <div class="sla-value">Mensual</div>
+      <div class="sla-label">Reporte de desempeño técnico entregado a Agrotec</div>
+    </div>
+    <div class="sla-card">
+      <div class="sla-icon">🛡️</div>
+      <div class="sla-value">24 meses</div>
+      <div class="sla-label">Período mínimo de soporte garantizado en contrato</div>
+    </div>
+    <div class="sla-card">
+      <div class="sla-icon">🔑</div>
+      <div class="sla-value">Día 1</div>
+      <div class="sla-label">Acceso administrativo de Agrotec al repositorio desde el inicio</div>
+    </div>
+  </div>
+
+  <!-- ─── SECCIÓN 5: PORTABILIDAD ─── -->
+  <div class="section-label">
+    <span class="section-num">05</span>
+    <div class="section-line"></div>
+  </div>
+  <h2 class="section-title">Cláusula de Portabilidad y Control</h2>
+
+  <div class="portability-box">
+    <h3>Agrotec conserva el control total en todo momento</h3>
+    <p style="color: rgba(255,255,255,0.65); font-size: 0.9rem; margin-top: 0.5rem; line-height: 1.7;">
+      Neo Pisk Tech acepta íntegramente las condiciones de propiedad intelectual y portabilidad propuestas por Agrotec. 
+      El siguiente esquema garantiza que la corporación nunca quede rehén de un proveedor tecnológico.
+    </p>
+    <div class="portability-items">
+      <div class="portability-item">
+        <div class="portability-item-title">Repositorio</div>
+        <div class="portability-item-desc">Código alojado en repositorio con acceso administrativo de Agrotec desde el Día 1. No exclusivamente bajo cuentas de Neo Pisk.</div>
+      </div>
+      <div class="portability-item">
+        <div class="portability-item-title">Infraestructura Cloud</div>
+        <div class="portability-item-desc">Desplegado en cuentas de nube (AWS/GCP) bajo control de Agrotec o del SPV del proyecto.</div>
+      </div>
+      <div class="portability-item">
+        <div class="portability-item-title">Smart Contracts</div>
+        <div class="portability-item-desc">Wallets y contratos desplegados bajo control de Agrotec. Neo Pisk no retiene llaves privadas del proyecto.</div>
+      </div>
+      <div class="portability-item">
+        <div class="portability-item-title">Documentación</div>
+        <div class="portability-item-desc">Arquitectura, guías y manuales entregados a Agrotec. Cualquier proveedor puede continuar el trabajo sin dependencia.</div>
+      </div>
+      <div class="portability-item">
+        <div class="portability-item-title">Terminación</div>
+        <div class="portability-item-desc">Al finalizar el acuerdo, Agrotec puede migrar o continuar operando sin obligaciones adicionales más allá de lo ya devengado.</div>
+      </div>
+      <div class="portability-item">
+        <div class="portability-item-title">Marca</div>
+        <div class="portability-item-desc">Cualquier uso de "Cacao Codo de Pozuzo" o marca Agrotec en materiales Neo Pisk requiere autorización escrita previa.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── SECCIÓN 6: PRÓXIMOS PASOS ─── -->
+  <div class="section-label">
+    <span class="section-num">06</span>
+    <div class="section-line"></div>
+  </div>
+  <h2 class="section-title">Próximos Pasos para Cerrar el Acuerdo</h2>
+  <p class="section-desc">
+    Neo Pisk Tech está listo para avanzar de inmediato. 
+    Proponemos el siguiente cronograma para cerrar el acuerdo marco y arrancar la implementación.
+  </p>
+
+  <div class="next-steps">
+    <div class="next-steps-title">Plan de Acción — Febrero / Marzo 2026</div>
+    <div class="steps-list">
+      <div class="step-item">
+        <div class="step-num">1</div>
+        <div>
+          <div class="step-content-title">Reunión de alineamiento técnico y legal</div>
+          <div class="step-content-desc">Afinar hitos técnicos, umbrales de colocación para vesting y cronograma de implementación. Presencia recomendada: CEO de ambas partes + asesor legal.</div>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">2</div>
+        <div>
+          <div class="step-content-title">Borrador del contrato marco</div>
+          <div class="step-content-desc">Neo Pisk entrega borrador técnico con especificaciones mínimas de plataforma, hitos de vesting detallados, métricas SLA y cláusulas de salida y portabilidad.</div>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">3</div>
+        <div>
+          <div class="step-content-title">Revisión legal por ambas partes</div>
+          <div class="step-content-desc">Cada parte revisa el borrador con su asesor legal. Neo Pisk se compromete a resolver observaciones en un plazo máximo de 5 días hábiles.</div>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">4</div>
+        <div>
+          <div class="step-content-title">Firma del acuerdo marco</div>
+          <div class="step-content-desc">Formalización del instrumento legal. A partir de la firma, Neo Pisk inicia el sprint de desarrollo del Módulo 01 (Smart Contracts) y Módulo 02 (Dashboard).</div>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">5</div>
+        <div>
+          <div class="step-content-title">Kick-off de implementación</div>
+          <div class="step-content-desc">Creación del repositorio compartido, configuración de cuentas cloud bajo control Agrotec y arranque del desarrollo. Primera entrega parcial en 30 días.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<!-- ─── FOOTER ─── -->
+<footer class="doc-footer">
+  <div>
+    <div class="footer-brand">Neo Pisk Tech</div>
+    <div style="margin-top: 0.3rem;">Ernesto Alejandro Piskulich Ceel · CEO Fundador</div>
+  </div>
+  <div style="text-align: center;">
+    Documento preparado en respuesta a la contraoferta de Corporación Agrotec Perú (Willy Toro, Feb. 2026)
+  </div>
+  <div style="text-align: right;">
+    <div>Confidencial · Solo para uso interno</div>
+    <div style="margin-top: 0.3rem;">© 2026 Neo Pisk Tech — Todos los derechos reservados</div>
+  </div>
+</footer>
+
 </body>
 </html>
