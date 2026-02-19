@@ -38,6 +38,8 @@
             background: var(--neopisk-white);
             color: var(--neopisk-navy);
             line-height: 1.6;
+        }
+        html {
             overflow-x: hidden;
         }
 
@@ -485,12 +487,13 @@
         /* FABs */
         .fab-container {
             position: fixed;
-            bottom: 1.5rem;
-            right: 0.75rem;
+            bottom: 20px;
+            right: 16px;
             display: flex;
             flex-direction: column;
-            gap: 0.75rem;
-            z-index: 9999;
+            gap: 12px;
+            z-index: 99999;
+            pointer-events: auto;
         }
 
         .fab {
@@ -502,27 +505,14 @@
             justify-content: center;
             color: white;
             font-size: 1.5rem;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
-            transition: transform 0.3s ease;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
             text-decoration: none;
-            flex-shrink: 0;
+            -webkit-transform: translateZ(0);
+            transform: translateZ(0);
         }
 
-        .fab:hover { transform: scale(1.1); }
         .fab-whatsapp { background: #25d366; }
         .fab-telegram { background: #0088cc; }
-
-        @media (max-width: 480px) {
-            .fab-container {
-                bottom: 1rem;
-                right: 0.5rem;
-            }
-            .fab {
-                width: 46px;
-                height: 46px;
-                font-size: 1.3rem;
-            }
-        }
 
         /* Video Modal */
         .video-modal {
