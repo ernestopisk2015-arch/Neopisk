@@ -635,13 +635,61 @@
             background-clip: text;
             font-weight: 900;
         }
-    </style>
+    
+        /* Language toggle */
+        .lang-en { display: none; }
+        .lang-es { display: inline; }
+        body.lang-en .lang-en { display: inline; }
+        body.lang-en .lang-es { display: none; }
+</style>
 </head>
 <body>
 
+    <!-- Language Bar -->
+    <div id="lang-bar" style="
+        background:#0B1A30;
+        padding:0.5rem 1.2rem;
+        display:flex;
+        justify-content:flex-end;
+        align-items:center;
+        gap:0.75rem;
+        border-bottom:1px solid rgba(212,175,55,0.2);
+        position:sticky;
+        top:0;
+        z-index:9998;
+    ">
+        <button onclick="setLang('es')" id="btn-es" title="Español" style="
+            background:none;
+            border:3px solid #D4AF37;
+            border-radius:20px;
+            padding:0;
+            cursor:pointer;
+            width:90px;height:36px;
+            overflow:hidden;
+            transition:all 0.2s ease;
+            box-shadow:0 0 10px rgba(212,175,55,0.5);
+        ">
+            <img src="https://flagcdn.com/w80/pe.png" style="width:100%;height:100%;object-fit:cover;display:block;">
+        </button>
+        <button onclick="setLang('en')" id="btn-en" title="English" style="
+            background:none;
+            border:3px solid rgba(255,255,255,0.2);
+            border-radius:20px;
+            padding:0;
+            cursor:pointer;
+            width:90px;height:36px;
+            overflow:hidden;
+            transition:all 0.2s ease;
+            opacity:0.5;
+        ">
+            <img src="https://flagcdn.com/w80/us.png" style="width:100%;height:100%;object-fit:cover;display:block;">
+        </button>
+    </div>
+
     <!-- Faith Banner -->
-    <div class="faith-banner">
-        "Todo lo puedo en Cristo que me fortalece" — Filipenses 4:13
+    <div class="faith-banner" id="faith-text">
+        <span class="lang-es">"Todo lo puedo en Cristo que me fortalece" — Filipenses 4:13</span>
+        <span class="lang-en">"I can do all things through Christ who strengthens me" — Philippians 4:13</span>
     </div>
 
     <!-- ═══════════════ HERO ═══════════════ -->
@@ -650,35 +698,38 @@
         <div class="hero-grid"></div>
         
         <div class="hero-content fade-in-up">
-            <div class="hero-badge">Próximo Lanzamiento · Tokenización de Activos Reales</div>
+            <div class="hero-badge" >
+            <span class="lang-es">Próximo Lanzamiento · Tokenización de Activos Reales</span>
+            <span class="lang-en">Upcoming Launch · Real Asset Tokenization</span>
+        </div>
             
             <h1 class="hero-title font-display">NEO PISK</h1>
-            <p class="hero-subtitle">
-                Finalizando acuerdos legales con Corporación Agrotec Perú.<br>
-                El primer token respaldado por 100 hectáreas productivas está por llegar.
+            <p class="hero-subtitle" >
+                <span class="lang-es">Finalizando acuerdos legales con Corporación Agrotec Perú.<br>El primer token respaldado por 100 hectáreas productivas está por llegar.</span>
+                <span class="lang-en">Finalizing legal agreements with Corporación Agrotec Perú.<br>The first token backed by 100 productive hectares is coming.</span>
             </p>
             
             <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: 2rem;">
-                <a href="#invertir" class="btn btn-primary">Invertir en $PISK</a>
-                <a href="https://docs.google.com/document/d/1FaaZDSKgsv_6CkeuQH1gfRxOpQ-Dlj5vy0Thm7-7tB8/edit?usp=sharing" target="_blank" class="btn btn-secondary">Ver Whitepaper</a>
+                <a href="#invertir" class="btn btn-primary"><span class="lang-es">Invertir en $PISK</span><span class="lang-en">Invest in $PISK</span></a>
+                <a href="https://docs.google.com/document/d/1FaaZDSKgsv_6CkeuQH1gfRxOpQ-Dlj5vy0Thm7-7tB8/edit?usp=sharing" target="_blank" class="btn btn-secondary"><span class="lang-es">Ver Whitepaper</span><span class="lang-en">View Whitepaper</span></a>
             </div>
 
             <div class="hero-stats">
                 <div class="stat-item">
-                    <span class="stat-value font-mono">EN CURSO</span>
-                    <span class="stat-label">Acuerdos legales con Agrotec</span>
+                    <span class="stat-value font-mono" ><span class="lang-es">EN CURSO</span><span class="lang-en">IN PROGRESS</span></span>
+                    <span class="stat-label" ><span class="lang-es">Acuerdos legales con Agrotec</span><span class="lang-en">Legal agreements with Agrotec</span></span>
                 </div>
                 <div class="stat-item">
                     <span class="stat-value font-mono">100 Ha</span>
-                    <span class="stat-label">Activo real a tokenizar</span>
+                    <span class="stat-label" ><span class="lang-es">Activo real a tokenizar</span><span class="lang-en">Real asset to tokenize</span></span>
                 </div>
                 <div class="stat-item">
                     <span class="stat-value font-mono">4% ventas</span>
-                    <span class="stat-label">Royalty proyectado al token</span>
+                    <span class="stat-label" ><span class="lang-es">Royalty proyectado al token</span><span class="lang-en">Projected royalty to token</span></span>
                 </div>
                 <div class="stat-item">
                     <span class="stat-value font-mono">$0.10</span>
-                    <span class="stat-label">Precio token $PISK</span>
+                    <span class="stat-label" ><span class="lang-es">Precio token $PISK</span><span class="lang-en">$PISK token price</span></span>
                 </div>
             </div>
         </div>
@@ -687,45 +738,45 @@
     <!-- ═══════════════ AGROTEC PARTNERSHIP ═══════════════ -->
     <section class="section">
         <div class="section-header">
-            <span class="section-badge">Próximo Lanzamiento</span>
-            <h2 class="section-title font-display">El Activo Que Respaldará <span class="agrotec-label">$PISK</span></h2>
-            <p class="section-description">
-                Neo Pisk se encuentra en la etapa final de acuerdos legales con <strong>Corporación Agrotec Perú</strong>. 
-                Los acuerdos verbales están avanzados y el contrato formal está por firmarse. 
-                Al concretarse, el 4% de las ventas de Agrotec se pagará en tokens $PISK, 
-                y el 50% de ese ingreso irá directo a liquidez del token.
+            <span class="section-badge" ><span class="lang-es">Próximo Lanzamiento</span><span class="lang-en">Upcoming Launch</span></span>
+            <h2 class="section-title font-display"><span class="lang-es">El Activo Que Respaldará</span><span class="lang-en">The Asset That Will Back</span> <span class="agrotec-label">$PISK</span></h2>
+            <p class="section-description" >
+                <span class="lang-es">Neo Pisk se encuentra en la etapa final de acuerdos legales con <strong>Corporación Agrotec Perú</strong>. Los acuerdos verbales están avanzados y el contrato formal está por firmarse. Al concretarse, el 4% de las ventas de Agrotec se pagará en tokens $PISK, y el 50% de ese ingreso irá directo a liquidez del token.</span>
+                <span class="lang-en">Neo Pisk is in the final stage of legal agreements with <strong>Corporación Agrotec Perú</strong>. Verbal agreements are consolidated and the formal contract is about to be signed. Once finalized, 4% of Agrotec's sales will be paid in $PISK tokens, and 50% of that income will go directly to token liquidity.</span>
             </p>
         </div>
 
         <!-- Flujo del modelo -->
         <div class="agrotec-banner">
-            <h3 style="text-align:center; font-size: 1.75rem; font-weight: 700; color: var(--neopisk-gold); margin-bottom: 0.5rem;">
-                ¿Cómo fluirá el valor al token $PISK?
+            <h3 style="text-align:center; font-size: 1.75rem; font-weight: 700; color: var(--neopisk-gold); margin-bottom: 0.5rem;" >
+                <span class="lang-es">¿Cómo fluirá el valor al token $PISK?</span>
+                <span class="lang-en">How will value flow to the $PISK token?</span>
             </h3>
-            <p style="text-align:center; color: rgba(255,255,255,0.7); font-size: 0.9rem; margin-bottom: 2rem;">
-                Modelo proyectado al concretarse los acuerdos legales en curso
+            <p style="text-align:center; color: rgba(255,255,255,0.7); font-size: 0.9rem; margin-bottom: 2rem;" >
+                <span class="lang-es">Modelo proyectado al concretarse los acuerdos legales en curso</span>
+                <span class="lang-en">Projected model upon finalization of ongoing legal agreements</span>
             </p>
             <div class="token-flow">
                 <div class="flow-box">
                     <div style="font-size: 2.5rem; margin-bottom: 0.75rem;">🌱</div>
-                    <div style="font-weight: 700; color: var(--neopisk-navy); font-size: 1rem;">Agrotec vende</div>
-                    <div style="color: var(--neopisk-slate); font-size: 0.875rem; margin-top: 0.5rem;">Cacao, tierra y productos de 100 Ha en Codo de Pozuzo</div>
+                    <div style="font-weight: 700; color: var(--neopisk-navy); font-size: 1rem;"><span class="lang-es">Agrotec vende</span><span class="lang-en">Agrotec sells</span></div>
+                    <div style="color: var(--neopisk-slate); font-size: 0.875rem; margin-top: 0.5rem;"><span class="lang-es">Cacao, tierra y productos de 100 Ha en Codo de Pozuzo</span><span class="lang-en">Cacao, land and products from 100 Ha in Codo de Pozuzo</span></div>
                 </div>
                 <div class="flow-arrow">→</div>
                 <div class="flow-box">
                     <div style="font-size: 2.5rem; margin-bottom: 0.75rem;">📄</div>
-                    <div style="font-weight: 700; color: var(--neopisk-navy); font-size: 1rem;">Royalty 4%</div>
-                    <div style="color: var(--neopisk-slate); font-size: 0.875rem; margin-top: 0.5rem;">Del total de ventas, pagado a Neo Pisk en tokens $PISK</div>
+                    <div style="font-weight: 700; color: var(--neopisk-navy); font-size: 1rem;"><span class="lang-es">Royalty 4%</span><span class="lang-en">4% Royalty</span></div>
+                    <div style="color: var(--neopisk-slate); font-size: 0.875rem; margin-top: 0.5rem;"><span class="lang-es">Del total de ventas, pagado a Neo Pisk en tokens $PISK</span><span class="lang-en">From total sales, paid to Neo Pisk in $PISK tokens</span></div>
                 </div>
                 <div class="flow-arrow">→</div>
                 <div class="flow-box">
                     <div style="font-size: 2.5rem; margin-bottom: 0.75rem;">💰</div>
-                    <div style="font-weight: 700; color: var(--neopisk-gold); font-size: 1rem;">50% a liquidez</div>
-                    <div style="color: var(--neopisk-slate); font-size: 0.875rem; margin-top: 0.5rem;">La mitad del royalty inyectado al pool — todos los holders ganan</div>
+                    <div style="font-weight: 700; color: var(--neopisk-gold); font-size: 1rem;"><span class="lang-es">50% a liquidez</span><span class="lang-en">50% to liquidity</span></div>
+                    <div style="color: var(--neopisk-slate); font-size: 0.875rem; margin-top: 0.5rem;"><span class="lang-es">La mitad del royalty inyectado al pool — todos los holders ganan</span><span class="lang-en">Half the royalty injected into the pool — all holders benefit</span></div>
                 </div>
             </div>
             <div style="text-align: center; margin-top: 1.5rem; color: rgba(255,255,255,0.7); font-size: 0.95rem;">
-                El otro 50% financia operaciones de Neo Pisk: tecnología, equipo y expansión de tokenización.
+                <span class="lang-es">El otro 50% financia operaciones de Neo Pisk: tecnología, equipo y expansión de tokenización.</span><span class="lang-en">The other 50% funds Neo Pisk operations: technology, team and tokenization expansion.</span>
             </div>
         </div>
 
@@ -769,27 +820,20 @@
     <section class="section" style="background: rgba(212, 175, 55, 0.03); max-width: 100%;">
         <div style="max-width: 1400px; margin: 0 auto; padding: 0 2rem;">
         <div class="section-header">
-            <span class="section-badge">Por qué Neo Pisk</span>
-            <h2 class="section-title font-display">Tokenización Real, Acuerdos en Curso</h2>
-            <p class="section-description">
-                Somos desarrolladores de tokenización. Nuestro modelo conecta activos productivos del Perú 
-                con inversores mediante blockchain. Los acuerdos con Agrotec están en etapa final 
-                y representan el primer hito de este ecosistema.
-            </p>
+            <span class="section-badge"><span class="lang-es">Por qué Neo Pisk</span><span class="lang-en">Why Neo Pisk</span></span>
+            <h2 class="section-title font-display"><span class="lang-es">Tokenización Real, Acuerdos en Curso</span><span class="lang-en">Real Tokenization, Agreements Underway</span></h2>
+            <p class="section-description"><span class="lang-es">Somos desarrolladores de tokenización. Nuestro modelo conecta activos productivos del Perú con inversores mediante blockchain. Los acuerdos con Agrotec están en etapa final y representan el primer hito de este ecosistema.</span><span class="lang-en">We are tokenization developers. Our model connects productive Peruvian assets with investors through blockchain. The Agrotec agreements are in their final stage and represent the first milestone of this ecosystem.</span></p>
         </div>
 
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
             <div class="card">
                 <div class="card-icon"><i class="fas fa-handshake"></i></div>
-                <h3 class="card-title font-display">Acuerdo Avanzado</h3>
-                <p class="card-description">
-                    Los acuerdos verbales con Corporación Agrotec Perú están consolidados. 
-                    La formalización legal está en su etapa final. El activo ya existe y produce hoy.
-                </p>
+                <h3 class="card-title font-display"><span class="lang-es">Acuerdo Avanzado</span><span class="lang-en">Advanced Agreement</span></h3>
+                <p class="card-description"><span class="lang-es">Los acuerdos verbales con Corporación Agrotec Perú están consolidados. La formalización legal está en su etapa final. El activo ya existe y produce hoy.</span><span class="lang-en">Verbal agreements with Corporación Agrotec Perú are consolidated. Legal formalization is in its final stage. The asset already exists and produces today.</span></p>
             </div>
             <div class="card">
                 <div class="card-icon"><i class="fas fa-cube"></i></div>
-                <h3 class="card-title font-display">Blockchain Transparente</h3>
+                <h3 class="card-title font-display"><span class="lang-es">Blockchain Transparente</span><span class="lang-en">Transparent Blockchain</span></h3>
                 <p class="card-description">
                     Cada pago de royalty, cada inyección de liquidez y cada operación de Buyback & Burn 
                     registrada en la cadena. Sin caja negra.
@@ -797,7 +841,7 @@
             </div>
             <div class="card">
                 <div class="card-icon"><i class="fas fa-chart-line"></i></div>
-                <h3 class="card-title font-display">Buyback & Burn</h3>
+                <h3 class="card-title font-display">Buyback &amp; Burn</h3>
                 <p class="card-description">
                     El 50% del royalty compra $PISK del mercado y los quema. 
                     Menor oferta + mayor demanda = precio sostenido en el tiempo.
@@ -805,7 +849,7 @@
             </div>
             <div class="card">
                 <div class="card-icon"><i class="fas fa-globe-americas"></i></div>
-                <h3 class="card-title font-display">Modelo Replicable</h3>
+                <h3 class="card-title font-display"><span class="lang-es">Modelo Replicable</span><span class="lang-en">Scalable Model</span></h3>
                 <p class="card-description">
                     Agrotec es el primer contrato. Neo Pisk tokenizará más activos reales peruanos: 
                     agricultura, inmobiliario y energías limpias bajo el mismo esquema.
@@ -818,8 +862,8 @@
     <!-- ═══════════════ INVERSIÓN / TOKENOMICS ═══════════════ -->
     <section id="invertir" class="section">
         <div class="section-header">
-            <span class="section-badge">Tokenomics</span>
-            <h2 class="section-title font-display">Únete como Socio Fundador</h2>
+            <span class="section-badge"><span class="lang-es">Tokenomics</span><span class="lang-en">Tokenomics</span></span>
+            <h2 class="section-title font-display"><span class="lang-es">Únete como Socio Fundador</span><span class="lang-en">Join as a Founding Partner</span></h2>
             <p class="section-description">
                 Token $PISK con respaldo proyectado por flujo de caja real proveniente del acuerdo en curso con Agrotec. 
                 Al concretarse los acuerdos legales, la política de Buyback & Burn será financiada directamente por el royalty del 4% sobre ventas.
@@ -917,11 +961,9 @@
     <section class="section" style="background: rgba(212, 175, 55, 0.03); max-width: 100%;">
         <div style="max-width: 1400px; margin: 0 auto; padding: 0 2rem;">
         <div class="section-header">
-            <span class="section-badge">Visión 2026</span>
-            <h2 class="section-title font-display">Roadmap Estratégico</h2>
-            <p class="section-description">
-                Plan de ejecución trimestral enfocado en tokenización, contratos y crecimiento del ecosistema $PISK.
-            </p>
+            <span class="section-badge"><span class="lang-es">Visión 2026</span><span class="lang-en">2026 Vision</span></span>
+            <h2 class="section-title font-display"><span class="lang-es">Roadmap Estratégico</span><span class="lang-en">Strategic Roadmap</span></h2>
+            <p class="section-description"><span class="lang-es">Plan de ejecución trimestral enfocado en tokenización, contratos y crecimiento del ecosistema $PISK.</span><span class="lang-en">Quarterly execution plan focused on tokenization, contracts and $PISK ecosystem growth.</span></p>
         </div>
 
         <div class="roadmap">
@@ -929,7 +971,7 @@
                 <div class="roadmap-dot"></div>
                 <div class="roadmap-content">
                     <div class="roadmap-quarter font-display">Q1 2026</div>
-                    <div class="roadmap-title">Firma del Acuerdo Legal con Agrotec</div>
+                    <div class="roadmap-title"><span class="lang-es">Firma del Acuerdo Legal con Agrotec</span><span class="lang-en">Signing of Legal Agreement with Agrotec</span></div>
                     <div class="roadmap-description">
                         • Formalización del contrato con Corporación Agrotec Perú<br>
                         • Estructuración legal del royalty del 4% sobre ventas<br>
@@ -943,7 +985,7 @@
                 <div class="roadmap-dot"></div>
                 <div class="roadmap-content">
                     <div class="roadmap-quarter font-display">Q2 2026</div>
-                    <div class="roadmap-title">Primer Buyback & Burn</div>
+                    <div class="roadmap-title"><span class="lang-es">Primer Buyback & Burn</span><span class="lang-en">First Buyback & Burn</span></div>
                     <div class="roadmap-description">
                         • Recepción del primer pago de royalty Agrotec<br>
                         • Primer evento de Buyback & Burn verificable<br>
@@ -957,7 +999,7 @@
                 <div class="roadmap-dot"></div>
                 <div class="roadmap-content">
                     <div class="roadmap-quarter font-display">Q3 2026</div>
-                    <div class="roadmap-title">Expansión del Portafolio</div>
+                    <div class="roadmap-title"><span class="lang-es">Expansión del Portafolio</span><span class="lang-en">Portfolio Expansion</span></div>
                     <div class="roadmap-description">
                         • Segundo contrato de tokenización firmado<br>
                         • Apertura de nuevas verticales: inmobiliario o energía<br>
@@ -971,7 +1013,7 @@
                 <div class="roadmap-dot"></div>
                 <div class="roadmap-content">
                     <div class="roadmap-quarter font-display">Q4 2026</div>
-                    <div class="roadmap-title">Consolidación y Auditoría</div>
+                    <div class="roadmap-title"><span class="lang-es">Consolidación y Auditoría</span><span class="lang-en">Consolidation & Audit</span></div>
                     <div class="roadmap-description">
                         • Auditoría financiera independiente del ecosistema<br>
                         • Reporte anual de impacto y retorno al holder<br>
@@ -987,8 +1029,8 @@
     <!-- ═══════════════ ALIADOS ═══════════════ -->
     <section class="section">
         <div class="section-header">
-            <span class="section-badge">Respaldo Estratégico</span>
-            <h2 class="section-title font-display">Alianzas que Dan Certeza</h2>
+            <span class="section-badge"><span class="lang-es">Respaldo Estratégico</span><span class="lang-en">Strategic Backing</span></span>
+            <h2 class="section-title font-display"><span class="lang-es">Alianzas que Dan Certeza</span><span class="lang-en">Alliances that Build Certainty</span></h2>
         </div>
 
         <!-- Agrotec -->
@@ -1044,8 +1086,8 @@
     <section class="section" style="background: rgba(212, 175, 55, 0.03); max-width: 100%;">
         <div style="max-width: 1400px; margin: 0 auto; padding: 0 2rem;">
         <div class="section-header">
-            <span class="section-badge">Liderazgo</span>
-            <h2 class="section-title font-display">Equipo Ejecutivo</h2>
+            <span class="section-badge"><span class="lang-es">Liderazgo</span><span class="lang-en">Leadership</span></span>
+            <h2 class="section-title font-display"><span class="lang-es">Equipo Ejecutivo</span><span class="lang-en">Executive Team</span></h2>
             <p class="section-description">
                 Experiencia comprobada en operaciones, tecnología y gestión financiera. 
                 Comprometidos con la transparencia y excelencia en cada contrato de tokenización.
@@ -1058,7 +1100,7 @@
                 <img src="asset/IMG_20260119_091506939.jpg" alt="Ernesto Piskulich" class="team-image">
                 <div class="team-info">
                     <div class="team-name font-display">Ernesto Piskulich</div>
-                    <div class="team-role">CEO & Fundador</div>
+                    <div class="team-role"><span class="lang-es">CEO & Fundador</span><span class="lang-en">CEO & Founder</span></div>
                     <div class="team-bio">
                         Estratega en adquisición de activos reales y arquitectura financiera blockchain. 
                         Visionario en la tokenización de activos productivos peruanos para inversores globales.
@@ -1074,7 +1116,7 @@
                 <img src="asset/Jefferson Avalos.jpg" alt="Jefferson Ávalos" class="team-image" style="object-position: center 20%;">
                 <div class="team-info">
                     <div class="team-name font-display">Jefferson Ávalos</div>
-                    <div class="team-role">Gerente de Operaciones</div>
+                    <div class="team-role"><span class="lang-es">Gerente de Operaciones</span><span class="lang-en">Operations Manager</span></div>
                     <div class="team-bio">
                         Líder en logística operativa y optimización de rendimientos. 
                         Responsable de la ejecución de contratos y seguimiento de activos tokenizados.
@@ -1090,7 +1132,7 @@
                 <img src="https://raw.githubusercontent.com/ernestopisk2015-arch/Neopisk/refs/heads/main/asset/Rosmey.png" alt="Rosmeri Cabanillas" class="team-image">
                 <div class="team-info">
                     <div class="team-name font-display">Rosmeri Cabanillas</div>
-                    <div class="team-role">Gerente de Relaciones Públicas</div>
+                    <div class="team-role"><span class="lang-es">Gerente de Relaciones Públicas</span><span class="lang-en">Public Relations Manager</span></div>
                     <div class="team-bio">
                         Especialista en comunicación estratégica y gestión de imagen corporativa. 
                         Construcción de alianzas institucionales clave para el ecosistema.
@@ -1107,22 +1149,18 @@
     <!-- ═══════════════ FINAL CTA ═══════════════ -->
     <section class="section" style="background: linear-gradient(135deg, var(--neopisk-navy), #1a2942); color: white; text-align: center; max-width: 100%;">
         <div style="max-width: 800px; margin: 0 auto; padding: 0 2rem;">
-            <h2 style="font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 700; margin-bottom: 1.5rem; color: white;" class="font-display">
-                ¿Listo para Ser Parte del Primer Lanzamiento?
+            <h2 style="font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 700; margin-bottom: 1.5rem; color: white;" class="font-display" >
+                <span class="lang-es">¿Listo para Ser Parte del Primer Lanzamiento?</span>
+                <span class="lang-en">Ready to Be Part of the First Launch?</span>
             </h2>
-            <p style="font-size: 1.25rem; color: rgba(255,255,255,0.8); margin-bottom: 3rem; line-height: 1.8;">
-                Los acuerdos con Corporación Agrotec Perú están en su etapa final. 
-                Únete a la preventa de $PISK ahora y posiciónate antes del anuncio oficial 
-                del primer lanzamiento de tokenización de activos reales en el Perú.
+            <p style="font-size: 1.25rem; color: rgba(255,255,255,0.8); margin-bottom: 3rem; line-height: 1.8;" >
+                <span class="lang-es">Los acuerdos con Corporación Agrotec Perú están en su etapa final. Únete a la preventa de $PISK ahora y posiciónate antes del anuncio oficial del primer lanzamiento de tokenización de activos reales en el Perú.</span>
+                <span class="lang-en">Agreements with Corporación Agrotec Perú are in their final stage. Join the $PISK presale now and position yourself before the official announcement of the first real asset tokenization launch in Peru.</span>
             </p>
             
             <div style="display: flex; gap: 1.5rem; justify-content: center; flex-wrap: wrap;">
-                <a href="https://neopisk.lat/invertir.html" target="_blank" class="btn btn-primary" style="font-size: 1rem; padding: 1.5rem 3rem;">
-                    Invertir en $PISK
-                </a>
-                <a href="https://wa.me/51948115030" target="_blank" class="btn btn-secondary" style="font-size: 1rem; padding: 1.5rem 3rem;">
-                    Agendar Llamada
-                </a>
+                <a href="https://neopisk.lat/invertir.html" target="_blank" class="btn btn-primary" style="font-size: 1rem; padding: 1.5rem 3rem;"><span class="lang-es">Invertir en $PISK</span><span class="lang-en">Invest in $PISK</span></a>
+                <a href="https://wa.me/51948115030" target="_blank" class="btn btn-secondary" style="font-size: 1rem; padding: 1.5rem 3rem;"><span class="lang-es">Agendar Llamada</span><span class="lang-en">Schedule a Call</span></a>
             </div>
 
             <div style="margin-top: 4rem; padding-top: 3rem; border-top: 1px solid rgba(255,255,255,0.1);">
@@ -1155,8 +1193,7 @@
                 NEO PISK
             </div>
             <p style="color: rgba(255,255,255,0.6); margin-bottom: 1.5rem;">
-                Real Asset Tokenization Platform
-            </p>
+                <span class="lang-es">Plataforma de Tokenización de Activos Reales</span><span class="lang-en">Real Asset Tokenization Platform</span></p>
             <p style="font-size: 0.875rem; color: rgba(255,255,255,0.5);">
                 Ernesto Alejandro Piskulich Ceel — CEO Fundador<br>
                 © 2026 Neo Pisk. Todos los derechos reservados.
@@ -1183,6 +1220,106 @@
     </div>
 
     <script>
+        // ─── TRANSLATIONS ───
+        const translations = {
+            es: {
+                faith: '"Todo lo puedo en Cristo que me fortalece" — Filipenses 4:13',
+                hero_badge: 'Real Asset Tokenization Platform',
+                hero_title: 'NEO PISK',
+                hero_sub: 'Finalizando acuerdos legales con Corporación Agrotec Perú.<br>El primer token respaldado por 100 hectáreas productivas está por llegar.',
+                hero_btn1: 'Invertir en $PISK',
+                hero_btn2: 'Ver Whitepaper',
+                stat1_val: 'EN CURSO',
+                stat1_lbl: 'Acuerdos legales con Agrotec',
+                stat2_lbl: 'Activo real a tokenizar',
+                stat3_lbl: 'Royalty proyectado al token',
+                stat4_lbl: 'Precio token $PISK',
+                s2_badge: 'Próximo Lanzamiento',
+                s2_title: 'El Activo Que Respaldará',
+                s2_desc: 'Neo Pisk se encuentra en la etapa final de acuerdos legales con <strong>Corporación Agrotec Perú</strong>. Los acuerdos verbales están avanzados y el contrato formal está por firmarse. Al concretarse, el 4% de las ventas de Agrotec se pagará en tokens $PISK, y el 50% de ese ingreso irá directo a liquidez del token.',
+                flow_title: '¿Cómo fluirá el valor al token $PISK?',
+                flow_sub: 'Modelo proyectado al concretarse los acuerdos legales en curso',
+                flow1_title: 'Agrotec vende',
+                flow1_desc: 'Cacao, tierra y productos de 100 Ha en Codo de Pozuzo',
+                flow2_title: 'Royalty 4%',
+                flow2_desc: 'Del total de ventas, pagado a Neo Pisk en tokens $PISK',
+                flow3_title: '50% a liquidez',
+                flow3_desc: 'La mitad del royalty inyectado al pool — todos los holders ganan',
+                flow_note: '<span class="lang-es">El otro 50% financia operaciones de Neo Pisk: tecnología, equipo y expansión de tokenización.</span><span class="lang-en">The other 50% funds Neo Pisk operations: technology, team and tokenization expansion.</span>',
+                s3_badge: 'Por qué Neo Pisk',
+                s3_title: 'Tokenización Real, Acuerdos en Curso',
+                s3_desc: 'Somos desarrolladores de tokenización. Nuestro modelo conecta activos productivos del Perú con inversores mediante blockchain. Los acuerdos con Agrotec están en etapa final y representan el primer hito de este ecosistema.',
+                s5_badge: 'Tokenomics',
+                s5_title: 'Únete como Socio Fundador',
+                s5_desc: 'Token $PISK con respaldo proyectado por flujo de caja real proveniente del acuerdo en curso con Agrotec. Al concretarse los acuerdos legales, la política de Buyback & Burn será financiada directamente por el royalty del 4% sobre ventas.',
+                cta_title: '¿Listo para Ser Parte del Primer Lanzamiento?',
+                cta_desc: 'Los acuerdos con Corporación Agrotec Perú están en su etapa final. Únete a la preventa de $PISK ahora y posiciónate antes del anuncio oficial del primer lanzamiento de tokenización de activos reales en el Perú.',
+                btn_invest: 'Invertir en $PISK',
+                btn_call: 'Agendar Llamada',
+            },
+            en: {
+                faith: '"I can do all things through Christ who strengthens me" — Philippians 4:13',
+                hero_badge: 'Real Asset Tokenization Platform',
+                hero_title: 'NEO PISK',
+                hero_sub: 'Finalizing legal agreements with Corporación Agrotec Perú.<br>The first token backed by 100 productive hectares is coming.',
+                hero_btn1: 'Invest in $PISK',
+                hero_btn2: 'View Whitepaper',
+                stat1_val: 'IN PROGRESS',
+                stat1_lbl: 'Legal agreements with Agrotec',
+                stat2_lbl: 'Real asset to tokenize',
+                stat3_lbl: 'Projected royalty to token',
+                stat4_lbl: '$PISK token price',
+                s2_badge: 'Upcoming Launch',
+                s2_title: 'The Asset That Will Back',
+                s2_desc: 'Neo Pisk is in the final stage of legal agreements with <strong>Corporación Agrotec Perú</strong>. Verbal agreements are consolidated and the formal contract is about to be signed. Once finalized, 4% of Agrotec's sales will be paid in $PISK tokens, and 50% of that income will go directly to token liquidity.',
+                flow_title: 'How will value flow to the $PISK token?',
+                flow_sub: 'Projected model upon finalization of ongoing legal agreements',
+                flow1_title: 'Agrotec sells',
+                flow1_desc: 'Cacao, land and products from 100 Ha in Codo de Pozuzo',
+                flow2_title: 'Royalty 4%',
+                flow2_desc: 'From total sales, paid to Neo Pisk in $PISK tokens',
+                flow3_title: '50% to liquidity',
+                flow3_desc: 'Half the royalty injected into the pool — all holders benefit',
+                flow_note: 'The other 50% funds Neo Pisk operations: technology, team and tokenization expansion.',
+                s3_badge: 'Why Neo Pisk',
+                s3_title: 'Real Tokenization, Agreements Underway',
+                s3_desc: 'We are tokenization developers. Our model connects productive Peruvian assets with investors through blockchain. The Agrotec agreements are in their final stage and represent the first milestone of this ecosystem.',
+                s5_badge: 'Tokenomics',
+                s5_title: 'Join as a Founding Partner',
+                s5_desc: '$PISK token with projected backing from real cash flow from the ongoing Agrotec agreement. Once legal agreements are finalized, the Buyback & Burn policy will be funded directly by the 4% royalty on sales.',
+                cta_title: 'Ready to Be Part of the First Launch?',
+                cta_desc: 'Agreements with Corporación Agrotec Perú are in their final stage. Join the $PISK presale now and position yourself before the official announcement of the first real asset tokenization launch in Peru.',
+                btn_invest: 'Invest in $PISK',
+                btn_call: 'Schedule a Call',
+            }
+        };
+
+                        let currentLang = 'es';
+
+        function setLang(lang) {
+            currentLang = lang;
+            const btnEs = document.getElementById('btn-es');
+            const btnEn = document.getElementById('btn-en');
+
+            if (lang === 'en') {
+                document.body.classList.add('lang-en');
+                btnEn.style.borderColor = '#D4AF37';
+                btnEn.style.opacity = '1';
+                btnEn.style.boxShadow = '0 0 10px rgba(212,175,55,0.5)';
+                btnEs.style.borderColor = 'rgba(255,255,255,0.2)';
+                btnEs.style.opacity = '0.5';
+                btnEs.style.boxShadow = 'none';
+            } else {
+                document.body.classList.remove('lang-en');
+                btnEs.style.borderColor = '#D4AF37';
+                btnEs.style.opacity = '1';
+                btnEs.style.boxShadow = '0 0 10px rgba(212,175,55,0.5)';
+                btnEn.style.borderColor = 'rgba(255,255,255,0.2)';
+                btnEn.style.opacity = '0.5';
+                btnEn.style.boxShadow = 'none';
+            }
+        }
+
         // Calculator
         function calcularPiskUSD() {
             const usd = document.getElementById('usdInput').value;
