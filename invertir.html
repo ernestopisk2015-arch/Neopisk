@@ -5,14 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Invertir en Neo Pisk - Token $PISK</title>
     <link rel="icon" type="image/jpeg" href="asset/IMG-20260126-WA0020.jpg">
-    
-    <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
-    
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.7.4/web3.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    
+
     <style>
         :root {
             --neopisk-navy: #0B1A30;
@@ -22,1628 +19,880 @@
             --neopisk-white: #FAFAFA;
             --neopisk-error: #E63946;
         }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--neopisk-white); color: var(--neopisk-navy); }
+        .font-display { font-family: 'Space Grotesk', sans-serif; }
+        .font-mono { font-family: 'IBM Plex Mono', monospace; }
 
-        * {
-            margin: 0;
+        /* ══════════════════════════════════════════
+           BARRA DE IDIOMA — igual al index.html
+        ══════════════════════════════════════════ */
+        #lang-bar {
+            background: #0B1A30;
+            padding: 0.5rem 1.2rem;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 0.75rem;
+            border-bottom: 1px solid rgba(212,175,55,0.2);
+            position: sticky;
+            top: 0;
+            z-index: 9998;
+        }
+        #lang-bar button {
+            background: none;
+            border-radius: 20px;
             padding: 0;
-            box-sizing: border-box;
+            cursor: pointer;
+            width: 90px;
+            height: 36px;
+            overflow: hidden;
+            transition: all 0.25s ease;
         }
+        #lang-bar button img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        #btn-es { border: 3px solid #D4AF37; box-shadow: 0 0 10px rgba(212,175,55,0.5); }
+        #btn-en { border: 3px solid rgba(255,255,255,0.2); opacity: 0.5; }
 
-        body {
-            font-family: 'Inter', sans-serif;
-            background: var(--neopisk-white);
-            color: var(--neopisk-navy);
-        }
-
-        .font-display {
-            font-family: 'Space Grotesk', sans-serif;
-        }
-
-        .font-mono {
-            font-family: 'IBM Plex Mono', monospace;
-        }
+        /* Visibilidad de idioma */
+        .lang-es { display: inline; }
+        .lang-en { display: none;   }
 
         /* Header */
-        .header {
-            background: var(--neopisk-navy);
-            padding: 1.5rem 2rem;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-        }
-
-        .header-content {
-            max-width: 1400px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--neopisk-gold);
-            text-decoration: none;
-        }
-
-        .back-link {
-            color: white;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-weight: 600;
-            transition: color 0.3s;
-        }
-
-        .back-link:hover {
-            color: var(--neopisk-gold);
-        }
+        .header { background: var(--neopisk-navy); padding: 1.5rem 2rem; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+        .header-content { max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 2rem; font-weight: 700; color: var(--neopisk-gold); text-decoration: none; }
+        .back-link { color: white; text-decoration: none; display: flex; align-items: center; gap: 0.5rem; font-weight: 600; transition: color 0.3s; }
+        .back-link:hover { color: var(--neopisk-gold); }
 
         /* Hero */
-        .hero {
-            background: linear-gradient(135deg, var(--neopisk-navy) 0%, #1a2942 100%);
-            color: white;
-            padding: 6rem 2rem;
-            text-align: center;
-            position: relative;
-            min-height: 500px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+        .hero { background: linear-gradient(135deg, var(--neopisk-navy) 0%, #1a2942 100%); color: white; padding: 6rem 2rem; text-align: center; position: relative; min-height: 500px; display: flex; align-items: center; justify-content: center; }
+        .hero::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(11,26,48,0.4); z-index: 0; }
+        .hero > div { position: relative; z-index: 1; }
+        .hero-title { font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 700; margin-bottom: 1rem; text-shadow: 0 4px 20px rgba(0,0,0,0.5); }
+        .hero-price { font-size: clamp(1.5rem, 4vw, 2.5rem); color: var(--neopisk-gold); margin-bottom: 0.5rem; text-shadow: 0 4px 20px rgba(0,0,0,0.5); }
+        .hero-badge { display: inline-block; padding: 0.5rem 1.5rem; background: rgba(0,217,163,0.2); border: 1px solid var(--neopisk-mint); border-radius: 50px; color: var(--neopisk-mint); font-size: 0.875rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
 
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(11, 26, 48, 0.4);
-            z-index: 0;
-        }
+        /* Calculadora */
+        .calculator-section { max-width: 800px; margin: -3rem auto 0; position: relative; z-index: 10; padding: 0 1rem; }
+        .calculator { background: white; border-radius: 20px; padding: 2.5rem; box-shadow: 0 20px 60px rgba(0,0,0,0.15); border: 2px solid var(--neopisk-gold); }
+        .calculator-input { width: 100%; padding: 1.5rem; font-size: 2rem; font-weight: 700; border: 3px solid var(--neopisk-gold); border-radius: 15px; text-align: center; outline: none; font-family: 'IBM Plex Mono', monospace; }
+        .calculator-result { margin-top: 2rem; padding: 2rem; background: linear-gradient(135deg, var(--neopisk-navy), #1a2942); border-radius: 15px; color: white; text-align: center; }
+        .result-value { font-size: 2.5rem; font-weight: 900; color: var(--neopisk-gold); font-family: 'IBM Plex Mono', monospace; }
 
-        .hero > div {
-            position: relative;
-            z-index: 1;
-        }
+        /* MetaMask priority */
+        .metamask-priority { max-width: 1000px; margin: 3rem auto; padding: 0 1rem; position: relative; z-index: 10; }
+        .metamask-card { background: linear-gradient(145deg, #1a1a1a, #0a0a0a); border: 3px solid var(--neopisk-gold); border-radius: 25px; padding: 3rem 2rem; box-shadow: 0 20px 60px rgba(212,175,55,0.4); text-align: center; position: relative; overflow: hidden; }
+        .metamask-card::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(212,175,55,0.1) 0%, transparent 70%); animation: pulse-bg 3s ease-in-out infinite; }
+        @keyframes pulse-bg { 0%,100%{opacity:.5} 50%{opacity:1} }
+        .metamask-logo-container { display: flex; justify-content: center; margin-bottom: 1.5rem; position: relative; z-index: 1; }
+        .metamask-logo { width: 100px; height: 100px; border-radius: 20px; box-shadow: 0 10px 30px rgba(246,133,27,0.4); border: 3px solid var(--neopisk-gold); transition: transform 0.3s; }
+        .metamask-logo:hover { transform: scale(1.05) rotate(5deg); }
+        .metamask-title { font-size: 2rem; font-weight: 700; color: var(--neopisk-gold); margin-bottom: 0.5rem; position: relative; z-index: 1; }
+        .metamask-subtitle { font-size: 1.125rem; color: #ccc; margin-bottom: 2rem; position: relative; z-index: 1; }
+        .metamask-buttons { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 2rem; position: relative; z-index: 1; }
+        .btn-metamask-primary { background: linear-gradient(135deg,#f6851b,#e2761b); color: white; padding: 1.5rem 2rem; border-radius: 15px; font-size: 1.25rem; font-weight: 700; border: none; cursor: pointer; transition: all 0.3s; display: flex; align-items: center; justify-content: center; gap: 1rem; text-decoration: none; box-shadow: 0 5px 20px rgba(246,133,27,0.3); }
+        .btn-metamask-primary:hover { transform: translateY(-5px); box-shadow: 0 15px 40px rgba(246,133,27,0.6); }
+        .btn-metamask-secondary { background: rgba(255,255,255,0.05); border: 2px solid #f6851b; color: #f6851b; padding: 1.25rem 2rem; border-radius: 15px; font-size: 1.125rem; font-weight: 600; cursor: pointer; transition: all 0.3s; display: flex; align-items: center; justify-content: center; gap: 0.75rem; }
+        .btn-metamask-secondary:hover { background: rgba(246,133,27,0.1); transform: translateY(-3px); }
+        .metamask-steps { margin-top: 2rem; padding-top: 2rem; border-top: 1px solid rgba(212,175,55,0.3); text-align: left; position: relative; z-index: 1; }
+        .metamask-step { background: rgba(255,255,255,0.05); padding: 1rem 1.5rem; border-radius: 10px; margin-bottom: 0.75rem; border-left: 4px solid var(--neopisk-gold); color: white; transition: all 0.3s; }
+        .metamask-step:hover { background: rgba(255,255,255,0.08); transform: translateX(5px); }
+        .metamask-step strong { color: var(--neopisk-gold); }
 
-        .hero-title {
-            font-size: clamp(2rem, 5vw, 3.5rem);
-            font-weight: 700;
-            margin-bottom: 1rem;
-            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-        }
+        /* Métodos de pago */
+        .payment-section { max-width: 1000px; margin: 4rem auto; padding: 0 1rem; }
+        .tabs { display: flex; gap: 1rem; margin-bottom: 2rem; border-bottom: 2px solid #e0e0e0; flex-wrap: wrap; }
+        .tab { padding: 1rem 2rem; background: transparent; border: none; font-size: 1.125rem; font-weight: 700; color: var(--neopisk-slate); cursor: pointer; border-bottom: 3px solid transparent; transition: all 0.3s; }
+        .tab.active { color: var(--neopisk-gold); border-bottom-color: var(--neopisk-gold); }
+        .tab:hover { color: var(--neopisk-gold); }
+        .tab-content { display: none; background: white; padding: 3rem; border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.1); }
+        .tab-content.active { display: block; animation: fadeIn 0.5s; }
+        @keyframes fadeIn { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+        .qr-container { max-width: 400px; margin: 2rem auto; text-align: center; }
+        .qr-image { width: 100%; border-radius: 15px; border: 3px solid var(--neopisk-gold); }
+        .copy-button { background: var(--neopisk-gold); color: var(--neopisk-navy); padding: 1rem 2rem; border: none; border-radius: 50px; font-weight: 700; font-size: 1rem; cursor: pointer; transition: all 0.3s; display: inline-flex; align-items: center; gap: 0.5rem; }
+        .copy-button:hover { transform: scale(1.05); box-shadow: 0 10px 30px rgba(212,175,55,0.4); }
+        .steps { list-style: none; counter-reset: step; }
+        .steps li { counter-increment: step; padding: 1.5rem; margin-bottom: 1rem; background: rgba(212,175,55,0.05); border-radius: 10px; position: relative; padding-left: 5rem; }
+        .steps li::before { content: counter(step); position: absolute; left: 1.5rem; top: 50%; transform: translateY(-50%); width: 40px; height: 40px; background: var(--neopisk-gold); color: var(--neopisk-navy); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 1.25rem; }
+        .whatsapp-button { background: #25d366; color: white; padding: 1.25rem 2.5rem; border-radius: 50px; text-decoration: none; font-weight: 700; display: inline-flex; align-items: center; gap: 0.75rem; font-size: 1.125rem; transition: all 0.3s; }
+        .whatsapp-button:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(37,211,102,0.4); }
 
-        .hero-price {
-            font-size: clamp(1.5rem, 4vw, 2.5rem);
-            color: var(--neopisk-gold);
-            margin-bottom: 0.5rem;
-            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-        }
-
-        .hero-badge {
-            display: inline-block;
-            padding: 0.5rem 1.5rem;
-            background: rgba(0, 217, 163, 0.2);
-            border: 1px solid var(--neopisk-mint);
-            border-radius: 50px;
-            color: var(--neopisk-mint);
-            font-size: 0.875rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        /* Calculator */
-        .calculator-section {
-            max-width: 800px;
-            margin: -3rem auto 0;
-            position: relative;
-            z-index: 10;
-            padding: 0 1rem;
-        }
-
-        .calculator {
-            background: white;
-            border-radius: 20px;
-            padding: 2.5rem;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
-            border: 2px solid var(--neopisk-gold);
-        }
-
-        .calculator-input {
-            width: 100%;
-            padding: 1.5rem;
-            font-size: 2rem;
-            font-weight: 700;
-            border: 3px solid var(--neopisk-gold);
-            border-radius: 15px;
-            text-align: center;
-            outline: none;
-            font-family: 'IBM Plex Mono', monospace;
-        }
-
-        .calculator-result {
-            margin-top: 2rem;
-            padding: 2rem;
-            background: linear-gradient(135deg, var(--neopisk-navy), #1a2942);
-            border-radius: 15px;
-            color: white;
-            text-align: center;
-        }
-
-        .result-value {
-            font-size: 2.5rem;
-            font-weight: 900;
-            color: var(--neopisk-gold);
-            font-family: 'IBM Plex Mono', monospace;
-        }
-
-        /* Payment Methods */
-        .payment-section {
-            max-width: 1000px;
-            margin: 4rem auto;
-            padding: 0 1rem;
-        }
-
-        .tabs {
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 2rem;
-            border-bottom: 2px solid #e0e0e0;
-            flex-wrap: wrap;
-        }
-
-        .tab {
-            padding: 1rem 2rem;
-            background: transparent;
-            border: none;
-            font-size: 1.125rem;
-            font-weight: 700;
-            color: var(--neopisk-slate);
-            cursor: pointer;
-            border-bottom: 3px solid transparent;
-            transition: all 0.3s;
-        }
-
-        .tab.active {
-            color: var(--neopisk-gold);
-            border-bottom-color: var(--neopisk-gold);
-        }
-
-        .tab:hover {
-            color: var(--neopisk-gold);
-        }
-
-        .tab-content {
-            display: none;
-            background: white;
-            padding: 3rem;
-            border-radius: 20px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-        }
-
-        .tab-content.active {
-            display: block;
-            animation: fadeIn 0.5s;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .qr-container {
-            max-width: 400px;
-            margin: 2rem auto;
-            text-align: center;
-        }
-
-        .qr-image {
-            width: 100%;
-            border-radius: 15px;
-            border: 3px solid var(--neopisk-gold);
-        }
-
-        .copy-button {
-            background: var(--neopisk-gold);
-            color: var(--neopisk-navy);
-            padding: 1rem 2rem;
-            border: none;
-            border-radius: 50px;
-            font-weight: 700;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .copy-button:hover {
-            transform: scale(1.05);
-            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.4);
-        }
-
-        .copy-button.copied {
-            background: var(--neopisk-mint);
-        }
-
-        .steps {
-            list-style: none;
-            counter-reset: step;
-        }
-
-        .steps li {
-            counter-increment: step;
-            padding: 1.5rem;
-            margin-bottom: 1rem;
-            background: rgba(212, 175, 55, 0.05);
-            border-radius: 10px;
-            position: relative;
-            padding-left: 5rem;
-        }
-
-        .steps li::before {
-            content: counter(step);
-            position: absolute;
-            left: 1.5rem;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 40px;
-            height: 40px;
-            background: var(--neopisk-gold);
-            color: var(--neopisk-navy);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 900;
-            font-size: 1.25rem;
-        }
-
-        .whatsapp-button {
-            background: #25d366;
-            color: white;
-            padding: 1.25rem 2.5rem;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: 700;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.75rem;
-            font-size: 1.125rem;
-            transition: all 0.3s;
-        }
-
-        .whatsapp-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 30px rgba(37, 211, 102, 0.4);
-        }
-
-        /* Process */
-        .process {
-            background: linear-gradient(135deg, var(--neopisk-navy), #1a2942);
-            color: white;
-            padding: 4rem 2rem;
-            margin-top: 4rem;
-        }
-
-        .process-grid {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-            margin-top: 3rem;
-        }
-
-        .process-card {
-            text-align: center;
-            padding: 2rem;
-        }
-
-        .process-icon {
-            width: 80px;
-            height: 80px;
-            background: var(--neopisk-gold);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 1.5rem;
-            font-size: 2rem;
-            color: var(--neopisk-navy);
-        }
+        /* Proceso */
+        .process { background: linear-gradient(135deg, var(--neopisk-navy), #1a2942); color: white; padding: 4rem 2rem; margin-top: 4rem; }
+        .process-grid { max-width: 1200px; margin: 3rem auto 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; }
+        .process-card { text-align: center; padding: 2rem; }
+        .process-icon { width: 80px; height: 80px; background: var(--neopisk-gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; font-size: 2rem; color: var(--neopisk-navy); }
 
         /* Footer */
-        .footer {
-            background: var(--neopisk-navy);
-            color: white;
-            padding: 2rem;
-            text-align: center;
-        }
+        .footer { background: var(--neopisk-navy); color: white; padding: 2rem; text-align: center; }
 
-        /* Mobile */
-        @media (max-width: 768px) {
-            .tabs {
-                justify-content: center;
-            }
-            
-            .tab {
-                padding: 0.75rem 1.5rem;
-                font-size: 1rem;
-            }
-            
-            .tab-content {
-                padding: 2rem 1.5rem;
-            }
-        }
+        /* Karla widget flotante */
+        .karla-widget { position: fixed; bottom: 2rem; right: 2rem; z-index: 9999; }
+        .karla-bubble { width: 70px; height: 70px; border-radius: 50%; background: linear-gradient(135deg,#D4AF37,#f4d03f); box-shadow: 0 8px 30px rgba(212,175,55,0.5); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.3s; border: 3px solid white; position: relative; animation: pulse-karla 2s infinite; }
+        @keyframes pulse-karla { 0%,100%{transform:scale(1);box-shadow:0 8px 30px rgba(212,175,55,0.5)} 50%{transform:scale(1.05);box-shadow:0 12px 40px rgba(212,175,55,0.7)} }
+        .karla-bubble:hover { transform: scale(1.1); }
+        .karla-avatar { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
+        .karla-online { position: absolute; bottom: 5px; right: 5px; width: 18px; height: 18px; background: #00d359; border-radius: 50%; border: 3px solid white; }
+        .karla-option-btn { background: var(--neopisk-gold); color: var(--neopisk-navy); border: none; padding: 1rem; border-radius: 10px; font-weight: 600; cursor: pointer; transition: all 0.3s; text-align: left; display: flex; align-items: center; gap: 0.5rem; }
+        .karla-option-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 20px rgba(212,175,55,0.3); }
 
-        /* Karla Chat Widget */
-        .karla-widget {
-            position: fixed;
-            bottom: 2rem;
-            right: 2rem;
-            z-index: 9999;
-        }
-
-        .karla-bubble {
-            width: 70px;
-            height: 70px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #D4AF37, #f4d03f);
-            box-shadow: 0 8px 30px rgba(212, 175, 55, 0.5);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-            border: 3px solid white;
-            position: relative;
-            animation: pulse-karla 2s infinite;
-        }
-
-        @keyframes pulse-karla {
-            0%, 100% { transform: scale(1); box-shadow: 0 8px 30px rgba(212, 175, 55, 0.5); }
-            50% { transform: scale(1.05); box-shadow: 0 12px 40px rgba(212, 175, 55, 0.7); }
-        }
-
-        .karla-bubble:hover {
-            transform: scale(1.1);
-        }
-
-        .karla-avatar {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            object-fit: cover;
-        }
-
-        .karla-online {
-            position: absolute;
-            bottom: 5px;
-            right: 5px;
-            width: 18px;
-            height: 18px;
-            background: #00d359;
-            border-radius: 50%;
-            border: 3px solid white;
-        }
-
-        .karla-tooltip {
-            position: absolute;
-            right: 80px;
-            bottom: 20px;
-            background: white;
-            padding: 1rem 1.5rem;
-            border-radius: 15px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-            white-space: nowrap;
-            font-weight: 600;
-            color: var(--neopisk-navy);
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s;
-        }
-
-        .karla-tooltip.show {
-            opacity: 1;
-        }
-
-        .karla-tooltip::after {
-            content: '';
-            position: absolute;
-            right: -10px;
-            top: 50%;
-            transform: translateY(-50%);
-            border: 10px solid transparent;
-            border-left-color: white;
-        }
-
-        .karla-chat-box {
-            position: fixed;
-            bottom: 110px;
-            right: 2rem;
-            width: 380px;
-            max-height: 600px;
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            display: none;
-            flex-direction: column;
-            z-index: 9998;
-            animation: slideUp 0.3s ease-out;
-        }
-
-        .karla-chat-box.active {
-            display: flex;
-        }
-
-        .karla-chat-header {
-            background: linear-gradient(135deg, var(--neopisk-navy), #1a2942);
-            padding: 1.5rem;
-            border-radius: 20px 20px 0 0;
-            color: white;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .karla-chat-avatar {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            border: 3px solid var(--neopisk-gold);
-        }
-
-        .karla-chat-info h3 {
-            margin: 0;
-            font-size: 1.125rem;
-            font-weight: 700;
-        }
-
-        .karla-chat-info p {
-            margin: 0;
-            font-size: 0.75rem;
-            opacity: 0.8;
-        }
-
-        .karla-close {
-            margin-left: auto;
-            background: rgba(255,255,255,0.1);
-            border: none;
-            color: white;
-            width: 35px;
-            height: 35px;
-            border-radius: 50%;
-            cursor: pointer;
-            font-size: 1.25rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .karla-chat-body {
-            padding: 2rem;
-            background: #f8f9fa;
-            flex: 1;
-            overflow-y: auto;
-        }
-
-        .karla-message {
-            background: white;
-            padding: 1.5rem;
-            border-radius: 15px;
-            margin-bottom: 1rem;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            line-height: 1.6;
-        }
-
-        .karla-options {
-            display: grid;
-            gap: 0.75rem;
-            margin-top: 1rem;
-        }
-
-    <!-- Language Switcher -->
-    <div class="language-switcher">
-        <button class="lang-btn active" onclick="cambiarIdioma('es')" data-lang="es">
-            <img src="https://flagcdn.com/w40/es.png" alt="Español" class="flag-icon-small">
-            ES
-        </button>
-        <button class="lang-btn" onclick="cambiarIdioma('en')" data-lang="en">
-            <img src="https://flagcdn.com/w40/us.png" alt="English" class="flag-icon-small">
-            EN
-        </button>
-    </div>
-
-    <!-- MetaMask Priority Section -->
-    <section class="metamask-priority">
-        <div class="metamask-card">
-            <div class="lang-content active" id="metamask-es">
-                <div class="metamask-logo-container">
-                    <img src="asset/metamasklogo.jpg" alt="MetaMask" class="metamask-logo">
-                </div>
-                <h2 class="metamask-title font-display">🦊 Conecta con MetaMask</h2>
-                <p class="metamask-subtitle">Opción preferida para socios fundadores - Compra directa con criptomonedas</p>
-                <div class="metamask-buttons">
-                    <a href="https://neopisk.lat/founder.html" target="_blank" class="btn-metamask-primary">
-                        <img src="asset/metamasklogo.jpg" style="width: 30px; height: 30px; border-radius: 50%;" alt="MetaMask">
-                        Abrir Portal MetaMask
-                    </a>
-                    <button class="btn-metamask-secondary" onclick="copiarURLMetaMask()">
-                        <i class="fas fa-copy"></i> Copiar URL para MetaMask
-                    </button>
-                </div>
-                <div class="metamask-steps">
-                    <div class="metamask-step"><strong>1.</strong> Conecta tu wallet MetaMask (Polygon Network)</div>
-                    <div class="metamask-step"><strong>2.</strong> Autoriza USDT para la compra</div>
-                    <div class="metamask-step"><strong>3.</strong> Confirma y recibe tus tokens $PISK instantáneamente</div>
-                    <div style="text-align: center; margin-top: 1.5rem; padding: 1rem; background: rgba(0, 217, 163, 0.1); border-radius: 10px;">
-                        <small style="color: #00D9A3; font-weight: 600;">✅ Sin intermediarios • Transacción directa en blockchain • Recepción instantánea</small>
-                    </div>
-                </div>
-            </div>
-            <div class="lang-content" id="metamask-en">
-                <div class="metamask-logo-container">
-                    <img src="asset/metamasklogo.jpg" alt="MetaMask" class="metamask-logo">
-                </div>
-                <h2 class="metamask-title font-display">🦊 Connect with MetaMask</h2>
-                <p class="metamask-subtitle">Preferred option for founding partners - Direct purchase with cryptocurrencies</p>
-                <div class="metamask-buttons">
-                    <a href="https://neopisk.lat/founder.html" target="_blank" class="btn-metamask-primary">
-                        <img src="asset/metamasklogo.jpg" style="width: 30px; height: 30px; border-radius: 50%;" alt="MetaMask">
-                        Open MetaMask Portal
-                    </a>
-                    <button class="btn-metamask-secondary" onclick="copiarURLMetaMask()">
-                        <i class="fas fa-copy"></i> Copy URL for MetaMask
-                    </button>
-                </div>
-                <div class="metamask-steps">
-                    <div class="metamask-step"><strong>1.</strong> Connect your MetaMask wallet (Polygon Network)</div>
-                    <div class="metamask-step"><strong>2.</strong> Approve USDT for purchase</div>
-                    <div class="metamask-step"><strong>3.</strong> Confirm and receive your $PISK tokens instantly</div>
-                    <div style="text-align: center; margin-top: 1.5rem; padding: 1rem; background: rgba(0, 217, 163, 0.1); border-radius: 10px;">
-                        <small style="color: #00D9A3; font-weight: 600;">✅ No intermediaries • Direct blockchain transaction • Instant reception</small>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <div style="max-width: 1000px; margin: 3rem auto; text-align: center; padding: 0 1rem;">
-        <div style="display: flex; align-items: center; gap: 1rem; opacity: 0.5;">
-            <div style="flex: 1; height: 1px; background: linear-gradient(to right, transparent, var(--neopisk-gold), transparent);"></div>
-            <span id="divider-text" style="font-size: 0.875rem; color: var(--neopisk-slate); text-transform: uppercase; letter-spacing: 2px;">O elige otro método</span>
-            <div style="flex: 1; height: 1px; background: linear-gradient(to right, transparent, var(--neopisk-gold), transparent);"></div>
-        </div>
-    </div>
-
-        .karla-option-btn {
-            background: var(--neopisk-gold);
-            color: var(--neopisk-navy);
-            border: none;
-            padding: 1rem;
-            border-radius: 10px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            text-align: left;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .karla-option-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(212, 175, 55, 0.3);
-        }
-
-        .telegram-link {
-            background: #0088cc;
-            color: white;
-            padding: 1.25rem;
-            border-radius: 10px;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.75rem;
-            font-weight: 700;
-            transition: all 0.3s;
-        }
-
-        .telegram-link:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(0, 136, 204, 0.3);
-        }
+        @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+        a[href="metamask.html"]:hover { transform: translateY(-5px); box-shadow: 0 15px 50px rgba(212,175,55,0.5); }
 
         @media (max-width: 768px) {
-            .karla-widget {
-                right: 1rem;
-                bottom: 1rem;
-            }
-
-            .karla-chat-box {
-                right: 1rem;
-                left: 1rem;
-                width: auto;
-                bottom: 90px;
-            }
-
-            .karla-tooltip {
-                display: none;
-            }
-        }
-
-        /* Language Switcher */
-        .language-switcher {
-            position: fixed;
-            top: 1rem;
-            right: 1rem;
-            display: flex;
-            gap: 0.5rem;
-            z-index: 1000;
-            background: rgba(11, 26, 48, 0.95);
-            padding: 0.5rem;
-            border-radius: 15px;
-            border: 2px solid var(--neopisk-gold);
-            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
-        }
-
-        .lang-btn {
-            background: rgba(255, 255, 255, 0.1);
-            border: 2px solid transparent;
-            padding: 0.5rem 1rem;
-            border-radius: 10px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            transition: all 0.3s;
-            color: white;
-            font-weight: 600;
-            font-size: 0.875rem;
-        }
-
-        .lang-btn:hover {
-            background: rgba(212, 175, 55, 0.2);
-            border-color: var(--neopisk-gold);
-            transform: translateY(-2px);
-        }
-
-        .lang-btn.active {
-            background: var(--neopisk-gold);
-            color: var(--neopisk-navy);
-            border-color: var(--neopisk-gold);
-        }
-
-        .flag-icon-small {
-            width: 24px;
-            height: 16px;
-            border-radius: 3px;
-            border: 1px solid rgba(255,255,255,0.2);
-        }
-
-        .metamask-priority {
-            max-width: 1000px;
-            margin: -2rem auto 3rem;
-            padding: 0 1rem;
-            position: relative;
-            z-index: 10;
-        }
-
-        .metamask-card {
-            background: linear-gradient(145deg, #1a1a1a, #0a0a0a);
-            border: 3px solid var(--neopisk-gold);
-            border-radius: 25px;
-            padding: 3rem 2rem;
-            box-shadow: 0 20px 60px rgba(212, 175, 55, 0.4);
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .metamask-card::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(212, 175, 55, 0.1) 0%, transparent 70%);
-            animation: pulse-bg 3s ease-in-out infinite;
-</head>
-<body>
-
-        @keyframes pulse-bg {
-            0%, 100% { opacity: 0.5; }
-            50% { opacity: 1; }
-        }
-
-        .metamask-logo-container {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 1.5rem;
-            position: relative;
-            z-index: 1;
-        }
-
-        .metamask-logo {
-            width: 100px;
-            height: 100px;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(246, 133, 27, 0.4);
-            border: 3px solid var(--neopisk-gold);
-            transition: transform 0.3s;
-        }
-
-        .metamask-logo:hover {
-            transform: scale(1.05) rotate(5deg);
-        }
-
-        .metamask-title {
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--neopisk-gold);
-            margin-bottom: 0.5rem;
-            position: relative;
-            z-index: 1;
-        }
-
-        .metamask-subtitle {
-            font-size: 1.125rem;
-            color: #ccc;
-            margin-bottom: 2rem;
-            position: relative;
-            z-index: 1;
-        }
-
-        .metamask-buttons {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 1.5rem;
-            margin-top: 2rem;
-            position: relative;
-            z-index: 1;
-        }
-
-        .btn-metamask-primary {
-            background: linear-gradient(135deg, #f6851b, #e2761b);
-            color: white;
-            padding: 1.5rem 2rem;
-            border-radius: 15px;
-            font-size: 1.25rem;
-            font-weight: 700;
-            border: none;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 1rem;
-            text-decoration: none;
-            box-shadow: 0 5px 20px rgba(246, 133, 27, 0.3);
-        }
-
-        .btn-metamask-primary:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 40px rgba(246, 133, 27, 0.6);
-        }
-
-        .btn-metamask-secondary {
-            background: rgba(255, 255, 255, 0.05);
-            border: 2px solid #f6851b;
-            color: #f6851b;
-            padding: 1.25rem 2rem;
-            border-radius: 15px;
-            font-size: 1.125rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.75rem;
-            text-decoration: none;
-        }
-
-        .btn-metamask-secondary:hover {
-            background: rgba(246, 133, 27, 0.1);
-            transform: translateY(-3px);
-        }
-
-        .metamask-steps {
-            margin-top: 2rem;
-            padding-top: 2rem;
-            border-top: 1px solid rgba(212, 175, 55, 0.3);
-            text-align: left;
-            position: relative;
-            z-index: 1;
-        }
-
-        .metamask-step {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 1rem 1.5rem;
-            border-radius: 10px;
-            margin-bottom: 0.75rem;
-            border-left: 4px solid var(--neopisk-gold);
-            color: white;
-            transition: all 0.3s;
-        }
-
-        .metamask-step:hover {
-            background: rgba(255, 255, 255, 0.08);
-            transform: translateX(5px);
-        }
-
-        .metamask-step strong {
-            color: var(--neopisk-gold);
-        }
-
-        .lang-content {
-            display: none;
-        }
-
-        .lang-content.active {
-            display: block;
-        }
-
-        @media (max-width: 768px) {
-            .language-switcher {
-                top: 0.5rem;
-                right: 0.5rem;
-                padding: 0.4rem;
-            }
-            .lang-btn {
-                padding: 0.4rem 0.8rem;
-                font-size: 0.75rem;
-            }
-            .flag-icon-small {
-            }
-            .metamask-card {
-                padding: 2rem 1.5rem;
-            }
-            .metamask-title {
-                font-size: 1.5rem;
-            }
-            .metamask-subtitle {
-                font-size: 1rem;
-            }
-            .metamask-buttons {
-                grid-template-columns: 1fr;
-            }
-            .btn-metamask-primary {
-                font-size: 1.125rem;
-                padding: 1.25rem;
-            }
+            .tabs { justify-content: center; }
+            .tab { padding: 0.75rem 1.5rem; font-size: 1rem; }
+            .tab-content { padding: 2rem 1.5rem; }
+            .karla-widget { right: 1rem; bottom: 1rem; }
+            .metamask-card { padding: 2rem 1.5rem; }
+            .metamask-title { font-size: 1.5rem; }
+            .metamask-buttons { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
-    <!-- Header -->
-    <header class="header">
-        <div class="header-content">
-            <a href="index.html" class="logo font-display">NEO PISK</a>
-            <a href="index.html" class="back-link">
-                <i class="fas fa-arrow-left"></i> Volver al inicio
-            </a>
-        </div>
-    </header>
 
-    <!-- Hero -->
-    <section class="hero" style="background: linear-gradient(rgba(11, 26, 48, 0.85), rgba(26, 41, 66, 0.85)), url('asset/alsvin.webp'); background-size: cover; background-position: center; background-attachment: fixed;">
-        <div style="max-width: 1000px; margin: 0 auto; text-align: center;">
-            <h1 class="hero-title font-display">Conviértete en Socio Fundador</h1>
-            <div class="hero-price font-display">$0.10 USD por token</div>
-            <span class="hero-badge">Fase 2 - Solo 15% vendido</span>
-            <p style="margin-top: 2rem; font-size: 1.125rem; opacity: 0.9;">
-                Fase 1 SOLD OUT - Los primeros inversores ganaron 10x
-            </p>
-        </div>
-    </section>
+<!-- ══════════════════════════════════════════════
+     BARRA DE IDIOMA — BOTONES BANDERA
+══════════════════════════════════════════════ -->
+<div id="lang-bar">
+    <button id="btn-es" onclick="setLang('es')" title="Español">
+        <img src="https://flagcdn.com/w80/pe.png" alt="Español">
+    </button>
+    <button id="btn-en" onclick="setLang('en')" title="English">
+        <img src="https://flagcdn.com/w80/us.png" alt="English">
+    </button>
+</div>
 
-    <!-- Calculator -->
-    <section class="calculator-section">
-        <div class="calculator">
-            <h2 style="text-align: center; font-size: 1.75rem; font-weight: 700; color: var(--neopisk-navy); margin-bottom: 2rem;">
-                Calcula tu Inversión
-            </h2>
-            
-            <input type="number" 
-                   id="usdInput" 
-                   class="calculator-input" 
-                   placeholder="Ingresa monto en USD"
-                   oninput="calcularInversion()">
-            
-            <div class="calculator-result">
-                <div style="font-size: 0.875rem; opacity: 0.8; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 1px;">
-                    Recibirás:
-                </div>
-                <div class="result-value">
-                    <span id="tokensResult">0</span> $PISK
-                </div>
-                <div style="margin-top: 1rem; font-size: 0.95rem; opacity: 0.8;">
-                    Aprox. <span id="penResult">S/ 0</span> PEN
-                </div>
-            </div>
-        </div>
-    </section>
+<!-- Header -->
+<header class="header">
+    <div class="header-content">
+        <a href="index.html" class="logo font-display">NEO PISK</a>
+        <a href="index.html" class="back-link">
+            <i class="fas fa-arrow-left"></i>
+            <span class="lang-es">Volver al inicio</span>
+            <span class="lang-en">Back to home</span>
+        </a>
+    </div>
+</header>
 
-    <!-- Payment Methods -->
-    <!-- Payment Methods -->
-    <section class="payment-section">
-        <h2 style="text-align: center; font-size: 2.5rem; font-weight: 700; color: var(--neopisk-navy); margin-bottom: 3rem;" class="font-display">
-            Elige tu Método de Pago
+<!-- Hero -->
+<section class="hero" style="background: linear-gradient(rgba(11,26,48,0.85),rgba(26,41,66,0.85)), url('asset/alsvin.webp'); background-size:cover; background-position:center; background-attachment:fixed;">
+    <div style="max-width:1000px; margin:0 auto; text-align:center;">
+        <h1 class="hero-title font-display">
+            <span class="lang-es">Conviértete en Socio Fundador</span>
+            <span class="lang-en">Become a Founding Partner</span>
+        </h1>
+        <div class="hero-price font-display">
+            $0.10 USD
+            <span class="lang-es">por token</span>
+            <span class="lang-en">per token</span>
+        </div>
+        <span class="hero-badge">
+            <span class="lang-es">Fase 2 - Solo 15% vendido</span>
+            <span class="lang-en">Phase 2 - Only 15% sold</span>
+        </span>
+        <p style="margin-top:2rem; font-size:1.125rem; opacity:0.9;">
+            <span class="lang-es">Fase 1 SOLD OUT - Los primeros inversores ganaron 10x</span>
+            <span class="lang-en">Phase 1 SOLD OUT - Early investors made 10x</span>
+        </p>
+    </div>
+</section>
+
+<!-- Calculadora -->
+<section class="calculator-section">
+    <div class="calculator">
+        <h2 style="text-align:center; font-size:1.75rem; font-weight:700; color:var(--neopisk-navy); margin-bottom:2rem;">
+            <span class="lang-es">Calcula tu Inversión</span>
+            <span class="lang-en">Calculate Your Investment</span>
         </h2>
-
-        <div class="tabs">
-            <button class="tab active" onclick="cambiarTab(0)">
-                <i class="fas fa-bolt"></i> Pago Automático
-            </button>
-            <button class="tab" onclick="cambiarTab(1)">
-                <i class="fas fa-mobile-alt"></i> Yape
-            </button>
-            <button class="tab" onclick="cambiarTab(2)">
-                <i class="fas fa-wallet"></i> LemonCash
-            </button>
-            <button class="tab" onclick="cambiarTab(3)">
-                <i class="fas fa-university"></i> Banco
-            </button>
-            <button class="tab" onclick="cambiarTab(4)">
-                <i class="fas fa-wallet"></i> USDT Polygon
-            </button>
-        </div>
-
-        <!-- TAB 0: METAMASK AUTOMÁTICO -->
-        <div class="tab-content active" id="tab0">
-            <div style="text-align: center;">
-                <h3 style="font-size: 2rem; color: var(--neopisk-navy); margin-bottom: 1rem; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
-                    <span style="font-size: 2.5rem;">🦊</span> Pago Automático con MetaMask
-                </h3>
-                <p style="color: var(--neopisk-slate); margin-bottom: 2rem; font-size: 1.125rem;">
-                    Compra directa con USDT en Polygon Network - Proceso automático
-                </p>
+        <input type="number" id="usdInput" class="calculator-input" oninput="calcularInversion()">
+        <div class="calculator-result">
+            <div style="font-size:0.875rem; opacity:0.8; margin-bottom:0.5rem; text-transform:uppercase; letter-spacing:1px;">
+                <span class="lang-es">Recibirás:</span>
+                <span class="lang-en">You will receive:</span>
             </div>
+            <div class="result-value"><span id="tokensResult">0</span> $PISK</div>
+            <div style="margin-top:1rem; font-size:0.95rem; opacity:0.8;">
+                <span class="lang-es">Aprox.</span><span class="lang-en">Approx.</span>
+                <span id="penResult">S/ 0</span> PEN
+            </div>
+        </div>
+    </div>
+</section>
 
-            <!-- Panel de compra Web3 -->
-            <div style="max-width: 600px; margin: 0 auto; background: linear-gradient(145deg, #1a1a1a, #0a0a0a); border: 3px solid var(--neopisk-gold); border-radius: 25px; padding: 2.5rem; box-shadow: 0 20px 60px rgba(212, 175, 55, 0.4);">
-                
-                <!-- BOTÓN ÚNICO A METAMASK.HTML -->
-                <a href="metamask.html" style="display: block; text-decoration: none; position: relative; overflow: hidden; border-radius: 20px; border: 3px solid var(--neopisk-gold); margin-bottom: 1.5rem; box-shadow: 0 10px 40px rgba(212, 175, 55, 0.3); transition: all 0.3s;">
-                    <!-- Imagen de fondo -->
-                    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: url('https://raw.githubusercontent.com/ernestopisk2015-arch/Neopisk/refs/heads/main/asset/metamask.jpg'); background-size: cover; background-position: center; z-index: 0;"></div>
-                    
-                    <!-- Overlay -->
-                    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, rgba(11, 26, 48, 0.88), rgba(26, 41, 66, 0.90)); z-index: 1;"></div>
-                    
-                    <!-- Contenido -->
-                    <div style="position: relative; z-index: 2; padding: 2.5rem 2rem; text-align: center;">
-                        <!-- Icono -->
-                        <div style="width: 70px; height: 70px; background: var(--neopisk-gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; font-size: 2rem; box-shadow: 0 5px 20px rgba(212, 175, 55, 0.4); animation: float 3s ease-in-out infinite;">
-                            🦊
-                        </div>
-                        
-                        <!-- Título -->
-                        <h3 style="color: var(--neopisk-gold); font-size: 1.75rem; font-weight: 900; margin-bottom: 0.75rem; font-family: 'Space Grotesk', sans-serif;">
-                            Inversión Automática con MetaMask
-                        </h3>
-                        
-                        <!-- Subtítulo -->
-                        <p style="color: white; font-size: 1.05rem; margin-bottom: 1.25rem; opacity: 0.95;">
-                            Compra directa con USDT en Polygon Network
-                        </p>
-                        
-                        <!-- Badge -->
-                        <span style="display: inline-block; background: rgba(0, 217, 163, 0.2); border: 1px solid var(--neopisk-mint); color: var(--neopisk-mint); padding: 0.5rem 1.5rem; border-radius: 50px; font-size: 0.85rem; font-weight: 700; text-transform: uppercase;">
-                            Proceso 100% Automático
-                        </span>
-                    </div>
+<!-- MetaMask Priority -->
+<section class="metamask-priority">
+    <div class="metamask-card">
+        <!-- ESPAÑOL -->
+        <div id="metamask-es">
+            <div class="metamask-logo-container">
+                <img src="asset/metamasklogo.jpg" alt="MetaMask" class="metamask-logo">
+            </div>
+            <h2 class="metamask-title font-display">🦊 Conecta con MetaMask</h2>
+            <p class="metamask-subtitle">Opción preferida para socios fundadores - Compra directa con criptomonedas</p>
+            <div class="metamask-buttons">
+                <a href="https://neopisk.lat/founder.html" target="_blank" class="btn-metamask-primary">
+                    <img src="asset/metamasklogo.jpg" style="width:30px;height:30px;border-radius:50%;" alt="MetaMask">
+                    Abrir Portal MetaMask
                 </a>
-                
-                <style>
-                    @keyframes float {
-                        0%, 100% { transform: translateY(0); }
-                        50% { transform: translateY(-10px); }
-                    }
-                    
-                    a[href="metamask.html"]:hover {
-                        transform: translateY(-5px);
-                        box-shadow: 0 15px 50px rgba(212, 175, 55, 0.5);
-                    }
-                </style>
-
-                <!-- Status -->
-                <div id="status" style="font-size: 0.875rem; margin-top: 1.5rem; color: #d4af37; font-weight: bold; text-align: center; min-height: 20px;">
-                    👆 Haz clic para abrir el portal de MetaMask
-                </div>
-            </div>
-
-            <!-- Instrucciones bilingües -->
-            <div style="max-width: 900px; margin: 2rem auto; display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
-                <div style="background: var(--neopisk-navy); padding: 2rem; border-radius: 15px; border: 1px solid #333;">
-                    <img src="https://flagcdn.com/w40/es.png" alt="Español" style="width: 45px; height: 30px; border-radius: 5px; border: 2px solid var(--neopisk-gold); margin-bottom: 1rem;">
-                    <h4 style="color: var(--neopisk-gold); margin: 0 0 1rem 0; font-size: 1.125rem;">INSTRUCCIONES</h4>
-                    <ol style="color: white; font-size: 0.875rem; line-height: 1.8; padding-left: 1.25rem;">
-                        <li>Conecta tu MetaMask</li>
-                        <li>Autoriza USDT para la compra</li>
-                        <li>Confirma tu adquisición</li>
-                        <li><b>Móvil:</b> Abre en navegador MetaMask</li>
-                    </ol>
-                </div>
-                <div style="background: var(--neopisk-navy); padding: 2rem; border-radius: 15px; border: 1px solid #333;">
-                    <img src="https://flagcdn.com/w40/us.png" alt="English" style="width: 45px; height: 30px; border-radius: 5px; border: 2px solid var(--neopisk-gold); margin-bottom: 1rem;">
-                    <h4 style="color: var(--neopisk-gold); margin: 0 0 1rem 0; font-size: 1.125rem;">INSTRUCTIONS</h4>
-                    <ol style="color: white; font-size: 0.875rem; line-height: 1.8; padding-left: 1.25rem;">
-                        <li>Connect your MetaMask wallet</li>
-                        <li>Approve USDT for purchase</li>
-                        <li>Confirm your acquisition</li>
-                        <li><b>Mobile:</b> Open in MetaMask browser</li>
-                    </ol>
-                </div>
-            </div>
-        </div>
-
-        <!-- TAB 1: YAPE -->
-        <div class="tab-content" id="tab1">
-            <div style="text-align: center;">
-                <h3 style="font-size: 2rem; color: var(--neopisk-navy); margin-bottom: 1rem; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
-                    <span style="font-size: 2.5rem;">💜</span> Pago con Yape
-                </h3>
-                <p style="color: var(--neopisk-slate); margin-bottom: 2rem; font-size: 1.125rem;">
-                    Método más rápido y usado en Perú
-                </p>
-            </div>
-
-            <div class="qr-container">
-                <img src="asset/Yape.png" alt="QR Yape Neo Pisk" class="qr-image">
-                <p style="margin-top: 1rem; font-weight: 600; color: var(--neopisk-navy);">
-                    Ernesto Alejandro Piskulich Ceel
-                </p>
-            </div>
-
-            <ul class="steps">
-                <li>Escanea el QR con tu app Yape</li>
-                <li>Confirma el monto en soles (según calculadora)</li>
-                <li>Envíanos el comprobante al WhatsApp</li>
-                <li>Recibes tus tokens $PISK en 24-48h</li>
-            </ul>
-
-            <div style="text-align: center; margin-top: 2rem;">
-                <a href="https://wa.me/5194811503?text=Hola,%20acabo%20de%20hacer%20un%20pago%20por%20Yape%20para%20comprar%20tokens%20$PISK" 
-                   target="_blank" 
-                   class="whatsapp-button">
-                    <i class="fab fa-whatsapp" style="font-size: 1.5rem;"></i>
-                    Enviar Comprobante
-                </a>
-            </div>
-        </div>
-
-        <!-- LEMONCASH -->
-        <div class="tab-content" id="tab2">
-            <div style="text-align: center;">
-        <!-- TAB 2: LEMONCASH -->
-                    <span style="font-size: 2.5rem;">⚡</span> Pago con LemonCash
-                </h3>
-                <p style="color: var(--neopisk-slate); margin-bottom: 2rem; font-size: 1.125rem;">
-                    Sin comisiones bancarias - Internacional
-                </p>
-            </div>
-
-            <div style="max-width: 600px; margin: 2rem auto; text-align: center; background: rgba(212, 175, 55, 0.1); padding: 2rem; border-radius: 15px;">
-                <div style="font-size: 0.875rem; color: var(--neopisk-slate); margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 1px;">
-                    Tag de destino:
-                </div>
-                <div style="font-size: 3rem; font-weight: 900; color: var(--neopisk-navy); margin-bottom: 1.5rem; font-family: 'IBM Plex Mono', monospace;" id="lemonTag">
-                    $neopisk
-                </div>
-                <button class="copy-button" onclick="copiarTag()">
-                    <i class="fas fa-copy"></i>
-                    <span id="copyText">Copiar Tag</span>
+                <button class="btn-metamask-secondary" onclick="copiarURLMetaMask()">
+                    <i class="fas fa-copy"></i> Copiar URL para MetaMask
                 </button>
             </div>
-
-            <ul class="steps">
-                <li>Abre tu app LemonCash</li>
-                <li>Envía USD, USDC o USDT al tag <strong>$neopisk</strong></li>
-                <li>Incluye tu email en la nota del pago</li>
-                <li>Envíanos confirmación al WhatsApp con tu email</li>
-                <li>Recibes tus tokens $PISK en 24-48h</li>
-            </ul>
-
-            <div style="background: rgba(0, 217, 163, 0.1); padding: 1.5rem; border-radius: 10px; border-left: 4px solid var(--neopisk-mint); margin-top: 2rem;">
-                <strong style="color: var(--neopisk-mint);">💡 Compatible con:</strong>
-                <div style="margin-top: 0.5rem; color: var(--neopisk-slate);">
-                    USD • USDC • USDT • DAI
+            <div class="metamask-steps">
+                <div class="metamask-step"><strong>1.</strong> Conecta tu wallet MetaMask (Polygon Network)</div>
+                <div class="metamask-step"><strong>2.</strong> Autoriza USDT para la compra</div>
+                <div class="metamask-step"><strong>3.</strong> Confirma y recibe tus tokens $PISK instantáneamente</div>
+                <div style="text-align:center;margin-top:1.5rem;padding:1rem;background:rgba(0,217,163,0.1);border-radius:10px;">
+                    <small style="color:#00D9A3;font-weight:600;">✅ Sin intermediarios • Transacción directa en blockchain • Recepción instantánea</small>
                 </div>
-            </div>
-
-            <div style="text-align: center; margin-top: 2rem;">
-                <a href="https://wa.me/5194811503?text=Hola,%20acabo%20de%20enviar%20cripto%20por%20LemonCash%20al%20tag%20$neopisk" 
-                   target="_blank" 
-                   class="whatsapp-button">
-                    <i class="fab fa-whatsapp" style="font-size: 1.5rem;"></i>
-                    Confirmar Envío
-                </a>
             </div>
         </div>
-
-        <!-- BANCO -->
-        <div class="tab-content" id="tab3">
-            <div style="text-align: center;">
-                <h3 style="font-size: 2rem; color: var(--neopisk-navy); margin-bottom: 1rem; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
-                    <span style="font-size: 2.5rem;">🏦</span> Transferencia Bancaria
-                </h3>
-                <p style="color: var(--neopisk-slate); margin-bottom: 2rem; font-size: 1.125rem;">
-                    Recomendado para inversiones de $500+ USD
-                </p>
+        <!-- ENGLISH -->
+        <div id="metamask-en" style="display:none;">
+            <div class="metamask-logo-container">
+                <img src="asset/metamasklogo.jpg" alt="MetaMask" class="metamask-logo">
             </div>
-
-            <div style="max-width: 600px; margin: 2rem auto; background: rgba(212, 175, 55, 0.1); padding: 2.5rem; border-radius: 15px;">
-                <div style="margin-bottom: 1.5rem;">
-                    <div style="font-size: 0.75rem; color: var(--neopisk-slate); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.5rem;">Banco:</div>
-                    <div style="font-size: 1.5rem; font-weight: 700; color: var(--neopisk-navy);">DALE BANK</div>
-                </div>
-                
-                <div style="margin-bottom: 1.5rem;">
-                    <div style="font-size: 0.75rem; color: var(--neopisk-slate); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.5rem;">Titular:</div>
-                    <div style="font-size: 1.125rem; font-weight: 600; color: var(--neopisk-navy);">Ernesto Alejandro Piskulich Ceel</div>
-                </div>
-                
-                <div style="margin-bottom: 1.5rem;">
-                    <div style="font-size: 0.75rem; color: var(--neopisk-slate); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.5rem;">Número de Cuenta:</div>
-                    <div style="font-size: 1.25rem; font-weight: 700; color: var(--neopisk-navy); font-family: 'IBM Plex Mono', monospace;">
-                        [SOLICITAR POR WHATSAPP]
-                    </div>
-                </div>
-                
-                <div>
-                    <div style="font-size: 0.75rem; color: var(--neopisk-slate); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.5rem;">CCI:</div>
-                    <div style="font-size: 1.25rem; font-weight: 700; color: var(--neopisk-navy); font-family: 'IBM Plex Mono', monospace;">
-                        [SOLICITAR POR WHATSAPP]
-                    </div>
-                </div>
-            </div>
-
-            <ul class="steps">
-                <li>Solicita los datos completos de la cuenta por WhatsApp</li>
-                <li>Realiza la transferencia bancaria</li>
-                <li>IMPORTANTE: Incluye tu email en el concepto/motivo</li>
-                <li>Envíanos el comprobante al WhatsApp</li>
-                <li>Recibes tus tokens $PISK en 24-48h hábiles</li>
-            </ul>
-
-            <div style="background: rgba(230, 57, 70, 0.1); padding: 1.5rem; border-radius: 10px; border-left: 4px solid var(--neopisk-error); margin-top: 2rem;">
-                <strong style="color: var(--neopisk-error);">⚠️ Importante:</strong>
-                <div style="margin-top: 0.5rem; color: var(--neopisk-slate);">
-                    Por seguridad, los datos bancarios completos se proporcionan solo a inversores verificados. Contáctanos por WhatsApp.
-                </div>
-            </div>
-
-            <div style="text-align: center; margin-top: 2rem;">
-                <a href="https://wa.me/5194811503?text=Hola,%20quiero%20invertir%20en%20Neo%20Pisk%20por%20transferencia%20bancaria.%20¿Me%20pueden%20proporcionar%20los%20datos%20de%20la%20cuenta?" 
-                   target="_blank" 
-                   class="whatsapp-button">
-                    <i class="fab fa-whatsapp" style="font-size: 1.5rem;"></i>
-                    Solicitar Datos Bancarios
+            <h2 class="metamask-title font-display">🦊 Connect with MetaMask</h2>
+            <p class="metamask-subtitle">Preferred option for founding partners - Direct purchase with cryptocurrencies</p>
+            <div class="metamask-buttons">
+                <a href="https://neopisk.lat/founder.html" target="_blank" class="btn-metamask-primary">
+                    <img src="asset/metamasklogo.jpg" style="width:30px;height:30px;border-radius:50%;" alt="MetaMask">
+                    Open MetaMask Portal
                 </a>
+                <button class="btn-metamask-secondary" onclick="copiarURLMetaMask()">
+                    <i class="fas fa-copy"></i> Copy URL for MetaMask
+                </button>
+            </div>
+            <div class="metamask-steps">
+                <div class="metamask-step"><strong>1.</strong> Connect your MetaMask wallet (Polygon Network)</div>
+                <div class="metamask-step"><strong>2.</strong> Approve USDT for purchase</div>
+                <div class="metamask-step"><strong>3.</strong> Confirm and receive your $PISK tokens instantly</div>
+                <div style="text-align:center;margin-top:1.5rem;padding:1rem;background:rgba(0,217,163,0.1);border-radius:10px;">
+                    <small style="color:#00D9A3;font-weight:600;">✅ No intermediaries • Direct blockchain transaction • Instant reception</small>
+                </div>
             </div>
         </div>
+    </div>
+</section>
 
-        <!-- USDT Polygon -->
-        <div class="tab-content" id="tab4">
-            <div style="text-align: center;">
-                <h3 style="font-size: 2rem; color: var(--neopisk-navy); margin-bottom: 1rem; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
-                    <span style="font-size: 2.5rem;">💰</span> Transferencia USDT Polygon
-                </h3>
-                <p style="color: var(--neopisk-slate); margin-bottom: 2rem; font-size: 1.125rem;">
-                    Envía USDT directo desde cualquier wallet o exchange
-                </p>
-            </div>
+<!-- Divisor -->
+<div style="max-width:1000px;margin:0 auto 2rem;text-align:center;padding:0 1rem;">
+    <div style="display:flex;align-items:center;gap:1rem;opacity:0.5;">
+        <div style="flex:1;height:1px;background:linear-gradient(to right,transparent,var(--neopisk-gold),transparent);"></div>
+        <span id="divider-text" style="font-size:0.875rem;color:var(--neopisk-slate);text-transform:uppercase;letter-spacing:2px;">
+            <span class="lang-es">O elige otro método</span>
+            <span class="lang-en">Or choose another method</span>
+        </span>
+        <div style="flex:1;height:1px;background:linear-gradient(to right,transparent,var(--neopisk-gold),transparent);"></div>
+    </div>
+</div>
 
-            <div style="max-width: 700px; margin: 2rem auto; background: linear-gradient(145deg, #f8f9fa, #ffffff); padding: 2.5rem; border-radius: 20px; border: 3px solid var(--neopisk-gold); box-shadow: 0 10px 40px rgba(0,0,0,0.1);">
-                <h4 style="font-size: 1.5rem; font-weight: 700; color: var(--neopisk-navy); margin-bottom: 1.5rem; text-align: center;">
-                    📍 Dirección de Recepción
-                </h4>
-                
-                <!-- Dirección USDT -->
-                <div style="background: #000; padding: 1.5rem; border-radius: 15px; margin-bottom: 1.5rem; border: 2px solid var(--neopisk-gold);">
-                    <p style="color: var(--neopisk-gold); font-size: 0.875rem; margin-bottom: 0.5rem; text-align: center; font-weight: 600;">
-                        DIRECCIÓN USDT (RED POLYGON)
-                    </p>
-                    <p style="color: white; font-size: 1.125rem; font-family: 'IBM Plex Mono', monospace; text-align: center; word-break: break-all; margin-bottom: 1rem;">
-                        0x4739888625C8397101d9b3aeDe4633600FB91F47
-                    </p>
-                    <button onclick="copiarDireccionUSDT()" class="copy-button" style="width: 100%; padding: 1rem; background: var(--neopisk-gold); color: var(--neopisk-navy); border: none; border-radius: 10px; font-weight: 700; cursor: pointer; transition: all 0.3s;">
-                        <i class="fas fa-copy"></i> <span id="copyAddressText">Copiar Dirección</span>
-                    </button>
-                </div>
+<!-- Métodos de Pago -->
+<section class="payment-section">
+    <h2 style="text-align:center;font-size:2.5rem;font-weight:700;color:var(--neopisk-navy);margin-bottom:3rem;" class="font-display">
+        <span class="lang-es">Elige tu Método de Pago</span>
+        <span class="lang-en">Choose Your Payment Method</span>
+    </h2>
 
-                <!-- Advertencia RED -->
-                <div style="background: rgba(230, 57, 70, 0.1); padding: 1.5rem; border-radius: 10px; border-left: 4px solid var(--neopisk-error); margin-bottom: 1.5rem;">
-                    <strong style="color: var(--neopisk-error); font-size: 1.125rem;">⚠️ IMPORTANTE:</strong>
-                    <p style="margin-top: 0.5rem; color: var(--neopisk-slate); font-weight: 600;">
-                        Solo envía USDT en <strong style="color: var(--neopisk-error);">RED POLYGON</strong>. 
-                        Otras redes (Ethereum, BSC, TRC20) resultarán en pérdida de fondos.
-                    </p>
-                </div>
+    <div class="tabs">
+        <button class="tab active" onclick="cambiarTab(0)">
+            <i class="fas fa-bolt"></i>
+            <span class="lang-es"> Pago Automático</span>
+            <span class="lang-en"> Auto Payment</span>
+        </button>
+        <button class="tab" onclick="cambiarTab(1)">
+            <i class="fas fa-mobile-alt"></i> Yape
+        </button>
+        <button class="tab" onclick="cambiarTab(2)">
+            <i class="fas fa-wallet"></i> LemonCash
+        </button>
+        <button class="tab" onclick="cambiarTab(3)">
+            <i class="fas fa-university"></i>
+            <span class="lang-es"> Banco</span>
+            <span class="lang-en"> Bank</span>
+        </button>
+        <button class="tab" onclick="cambiarTab(4)">
+            <i class="fas fa-coins"></i> USDT Polygon
+        </button>
+    </div>
 
-                <!-- Instrucciones -->
-                <ul class="steps">
-                    <li>
-                        <strong>Copia la dirección de arriba</strong><br>
-                        <span style="font-size: 0.95rem; color: var(--neopisk-slate);">
-                            Click en "Copiar Dirección" o copia manualmente.
-                        </span>
-                    </li>
-                    <li>
-                        <strong>Envía USDT en RED POLYGON</strong><br>
-                        <span style="font-size: 0.95rem; color: var(--neopisk-slate);">
-                            Desde Binance, Kraken, MetaMask, Trust Wallet, etc. Verifica que sea RED POLYGON.
-                        </span>
-                    </li>
-                    <li>
-                        <strong>Envía comprobante a Karla en WhatsApp</strong><br>
-                        <span style="font-size: 0.95rem; color: var(--neopisk-slate);">
-                            Captura de pantalla del TxHash + tu email para recibir tokens.
-                        </span>
-                    </li>
-                    <li>
-                        <strong>Recibes tokens $PISK en 24-48h</strong><br>
-                        <span style="font-size: 0.95rem; color: var(--neopisk-slate);">
-                            Una vez verificada la transacción, enviamos tokens a tu wallet.
-                        </span>
-                    </li>
-                </ul>
-
-                <!-- Ventajas -->
-                <div style="background: rgba(0, 217, 163, 0.1); padding: 1.5rem; border-radius: 10px; border-left: 4px solid var(--neopisk-mint); margin-top: 2rem;">
-                    <strong style="color: var(--neopisk-mint);">✅ Ventajas:</strong>
-                    <div style="margin-top: 0.5rem; color: var(--neopisk-slate);">
-                        • Sin intermediarios - Envío directo<br>
-                        • Funciona desde cualquier país<br>
-                        • Sin límites de monto<br>
-                        • Comisiones bajas de Polygon
-                    </div>
-                </div>
-            </div>
-
-            <!-- Botón WhatsApp -->
-            <div style="text-align: center; margin-top: 2rem;">
-                <a href="https://wa.me/5194811503?text=Hola%20Karla,%20acabo%20de%20enviar%20USDT%20en%20Polygon.%20Aquí%20está%20mi%20comprobante:" 
-                   target="_blank"
-                   class="whatsapp-button">
-                    <i class="fab fa-whatsapp" style="font-size: 1.5rem;"></i>
-                    Enviar Comprobante a Karla
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Process -->
-    <section class="process">
-        <div style="max-width: 1200px; margin: 0 auto; text-align: center;">
-            <h2 style="font-size: 2.5rem; font-weight: 700; margin-bottom: 1rem;" class="font-display">
-                Proceso de Confirmación
-            </h2>
-            <p style="font-size: 1.125rem; opacity: 0.9; max-width: 700px; margin: 0 auto;">
-                Simple y seguro. Recibirás tus tokens en 24-48 horas.
+    <!-- TAB 0: METAMASK AUTOMÁTICO -->
+    <div class="tab-content active" id="tab0">
+        <div style="text-align:center;">
+            <h3 style="font-size:2rem;color:var(--neopisk-navy);margin-bottom:1rem;display:flex;align-items:center;justify-content:center;gap:0.5rem;">
+                <span style="font-size:2.5rem;">🦊</span>
+                <span class="lang-es">Pago Automático con MetaMask</span>
+                <span class="lang-en">Automatic Payment with MetaMask</span>
+            </h3>
+            <p style="color:var(--neopisk-slate);margin-bottom:2rem;font-size:1.125rem;">
+                <span class="lang-es">Compra directa con USDT en Polygon Network - Proceso automático</span>
+                <span class="lang-en">Direct purchase with USDT on Polygon Network - Automatic process</span>
             </p>
-
-            <div class="process-grid">
-                <div class="process-card">
-                    <div class="process-icon">
-                        <i class="fas fa-money-bill-wave"></i>
-                    </div>
-                    <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 0.5rem;">1. Realizar Pago</h3>
-                    <p style="opacity: 0.8;">Elige tu método y completa la transferencia</p>
+        </div>
+        <div style="max-width:600px;margin:0 auto;background:linear-gradient(145deg,#1a1a1a,#0a0a0a);border:3px solid var(--neopisk-gold);border-radius:25px;padding:2.5rem;box-shadow:0 20px 60px rgba(212,175,55,0.4);">
+            <a href="metamask.html" style="display:block;text-decoration:none;position:relative;overflow:hidden;border-radius:20px;border:3px solid var(--neopisk-gold);margin-bottom:1.5rem;box-shadow:0 10px 40px rgba(212,175,55,0.3);transition:all 0.3s;">
+                <div style="position:absolute;top:0;left:0;width:100%;height:100%;background:url('https://raw.githubusercontent.com/ernestopisk2015-arch/Neopisk/refs/heads/main/asset/metamask.jpg');background-size:cover;background-position:center;z-index:0;"></div>
+                <div style="position:absolute;top:0;left:0;width:100%;height:100%;background:linear-gradient(135deg,rgba(11,26,48,0.88),rgba(26,41,66,0.90));z-index:1;"></div>
+                <div style="position:relative;z-index:2;padding:2.5rem 2rem;text-align:center;">
+                    <div style="width:70px;height:70px;background:var(--neopisk-gold);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 1.5rem;font-size:2rem;animation:float 3s ease-in-out infinite;">🦊</div>
+                    <h3 style="color:var(--neopisk-gold);font-size:1.75rem;font-weight:900;margin-bottom:0.75rem;font-family:'Space Grotesk',sans-serif;">
+                        <span class="lang-es">Inversión Automática con MetaMask</span>
+                        <span class="lang-en">Automatic Investment with MetaMask</span>
+                    </h3>
+                    <p style="color:white;font-size:1.05rem;margin-bottom:1.25rem;opacity:0.95;">
+                        <span class="lang-es">Compra directa con USDT en Polygon Network</span>
+                        <span class="lang-en">Direct purchase with USDT on Polygon Network</span>
+                    </p>
+                    <span style="display:inline-block;background:rgba(0,217,163,0.2);border:1px solid var(--neopisk-mint);color:var(--neopisk-mint);padding:0.5rem 1.5rem;border-radius:50px;font-size:0.85rem;font-weight:700;text-transform:uppercase;">
+                        <span class="lang-es">Proceso 100% Automático</span>
+                        <span class="lang-en">100% Automatic Process</span>
+                    </span>
                 </div>
+            </a>
+            <div id="status" style="font-size:0.875rem;margin-top:1.5rem;color:#d4af37;font-weight:bold;text-align:center;min-height:20px;">
+                <span class="lang-es">👆 Haz clic para abrir el portal de MetaMask</span>
+                <span class="lang-en">👆 Click to open the MetaMask portal</span>
+            </div>
+        </div>
+        <!-- Instrucciones bilingues siempre visibles -->
+        <div style="max-width:900px;margin:2rem auto;display:grid;grid-template-columns:1fr 1fr;gap:2rem;">
+            <div style="background:var(--neopisk-navy);padding:2rem;border-radius:15px;border:1px solid #333;">
+                <img src="https://flagcdn.com/w40/pe.png" alt="ES" style="width:45px;height:30px;border-radius:5px;border:2px solid var(--neopisk-gold);margin-bottom:1rem;">
+                <h4 style="color:var(--neopisk-gold);margin:0 0 1rem;font-size:1.125rem;">INSTRUCCIONES</h4>
+                <ol style="color:white;font-size:0.875rem;line-height:1.8;padding-left:1.25rem;">
+                    <li>Conecta tu MetaMask</li>
+                    <li>Autoriza USDT para la compra</li>
+                    <li>Confirma tu adquisición</li>
+                    <li><b>Móvil:</b> Abre en navegador MetaMask</li>
+                </ol>
+            </div>
+            <div style="background:var(--neopisk-navy);padding:2rem;border-radius:15px;border:1px solid #333;">
+                <img src="https://flagcdn.com/w40/us.png" alt="EN" style="width:45px;height:30px;border-radius:5px;border:2px solid var(--neopisk-gold);margin-bottom:1rem;">
+                <h4 style="color:var(--neopisk-gold);margin:0 0 1rem;font-size:1.125rem;">INSTRUCTIONS</h4>
+                <ol style="color:white;font-size:0.875rem;line-height:1.8;padding-left:1.25rem;">
+                    <li>Connect your MetaMask wallet</li>
+                    <li>Approve USDT for purchase</li>
+                    <li>Confirm your acquisition</li>
+                    <li><b>Mobile:</b> Open in MetaMask browser</li>
+                </ol>
+            </div>
+        </div>
+    </div>
 
-                <div class="process-card">
-                    <div class="process-icon">
-                        <i class="fab fa-whatsapp"></i>
-                    </div>
-                    <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 0.5rem;">2. Enviar Comprobante</h3>
-                    <p style="opacity: 0.8;">Mándanos el voucher por WhatsApp</p>
+    <!-- TAB 1: YAPE -->
+    <div class="tab-content" id="tab1">
+        <div style="text-align:center;">
+            <h3 style="font-size:2rem;color:var(--neopisk-navy);margin-bottom:1rem;display:flex;align-items:center;justify-content:center;gap:0.5rem;">
+                <span style="font-size:2.5rem;">💜</span>
+                <span class="lang-es">Pago con Yape</span>
+                <span class="lang-en">Pay with Yape</span>
+            </h3>
+            <p style="color:var(--neopisk-slate);margin-bottom:2rem;font-size:1.125rem;">
+                <span class="lang-es">Método más rápido y usado en Perú</span>
+                <span class="lang-en">Fastest and most popular method in Peru</span>
+            </p>
+        </div>
+        <div class="qr-container">
+            <img src="asset/Yape.png" alt="QR Yape Neo Pisk" class="qr-image">
+            <p style="margin-top:1rem;font-weight:600;color:var(--neopisk-navy);">Ernesto Alejandro Piskulich Ceel</p>
+        </div>
+        <ul class="steps">
+            <li><span class="lang-es">Escanea el QR con tu app Yape</span><span class="lang-en">Scan the QR with your Yape app</span></li>
+            <li><span class="lang-es">Confirma el monto en soles (según calculadora)</span><span class="lang-en">Confirm the amount in soles (use the calculator)</span></li>
+            <li><span class="lang-es">Envíanos el comprobante al WhatsApp</span><span class="lang-en">Send us the receipt via WhatsApp</span></li>
+            <li><span class="lang-es">Recibes tus tokens $PISK en 24-48h</span><span class="lang-en">Receive your $PISK tokens within 24-48h</span></li>
+        </ul>
+        <div style="text-align:center;margin-top:2rem;">
+            <a href="https://wa.me/51948115030?text=Hola,%20acabo%20de%20hacer%20un%20pago%20por%20Yape%20para%20comprar%20tokens%20$PISK" target="_blank" class="whatsapp-button">
+                <i class="fab fa-whatsapp" style="font-size:1.5rem;"></i>
+                <span class="lang-es">Enviar Comprobante</span>
+                <span class="lang-en">Send Receipt</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- TAB 2: LEMONCASH -->
+    <div class="tab-content" id="tab2">
+        <div style="text-align:center;">
+            <h3 style="font-size:2rem;color:var(--neopisk-navy);margin-bottom:1rem;display:flex;align-items:center;justify-content:center;gap:0.5rem;">
+                <span style="font-size:2.5rem;">⚡</span>
+                <span class="lang-es">Pago con LemonCash</span>
+                <span class="lang-en">Pay with LemonCash</span>
+            </h3>
+            <p style="color:var(--neopisk-slate);margin-bottom:2rem;font-size:1.125rem;">
+                <span class="lang-es">Sin comisiones bancarias - Internacional</span>
+                <span class="lang-en">No bank fees - International</span>
+            </p>
+        </div>
+        <div style="max-width:600px;margin:2rem auto;text-align:center;background:rgba(212,175,55,0.1);padding:2rem;border-radius:15px;">
+            <div style="font-size:0.875rem;color:var(--neopisk-slate);margin-bottom:0.5rem;text-transform:uppercase;letter-spacing:1px;">
+                <span class="lang-es">Tag de destino:</span>
+                <span class="lang-en">Destination tag:</span>
+            </div>
+            <div style="font-size:3rem;font-weight:900;color:var(--neopisk-navy);margin-bottom:1.5rem;font-family:'IBM Plex Mono',monospace;">$neopisk</div>
+            <button class="copy-button" onclick="copiarTag()">
+                <i class="fas fa-copy"></i>
+                <span class="lang-es">Copiar Tag</span>
+                <span class="lang-en">Copy Tag</span>
+            </button>
+        </div>
+        <ul class="steps">
+            <li><span class="lang-es">Abre tu app LemonCash</span><span class="lang-en">Open your LemonCash app</span></li>
+            <li><span class="lang-es">Envía USD, USDC o USDT al tag <strong>$neopisk</strong></span><span class="lang-en">Send USD, USDC or USDT to tag <strong>$neopisk</strong></span></li>
+            <li><span class="lang-es">Incluye tu email en la nota del pago</span><span class="lang-en">Include your email in the payment note</span></li>
+            <li><span class="lang-es">Envíanos confirmación al WhatsApp con tu email</span><span class="lang-en">Send confirmation to WhatsApp with your email</span></li>
+            <li><span class="lang-es">Recibes tus tokens $PISK en 24-48h</span><span class="lang-en">Receive your $PISK tokens within 24-48h</span></li>
+        </ul>
+        <div style="background:rgba(0,217,163,0.1);padding:1.5rem;border-radius:10px;border-left:4px solid var(--neopisk-mint);margin-top:2rem;">
+            <strong style="color:var(--neopisk-mint);">💡 <span class="lang-es">Compatible con:</span><span class="lang-en">Compatible with:</span></strong>
+            <div style="margin-top:0.5rem;color:var(--neopisk-slate);">USD • USDC • USDT • DAI</div>
+        </div>
+        <div style="text-align:center;margin-top:2rem;">
+            <a href="https://wa.me/51948115030?text=Hola,%20acabo%20de%20enviar%20cripto%20por%20LemonCash%20al%20tag%20$neopisk" target="_blank" class="whatsapp-button">
+                <i class="fab fa-whatsapp" style="font-size:1.5rem;"></i>
+                <span class="lang-es">Confirmar Envío</span>
+                <span class="lang-en">Confirm Transfer</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- TAB 3: BANCO -->
+    <div class="tab-content" id="tab3">
+        <div style="text-align:center;">
+            <h3 style="font-size:2rem;color:var(--neopisk-navy);margin-bottom:1rem;display:flex;align-items:center;justify-content:center;gap:0.5rem;">
+                <span style="font-size:2.5rem;">🏦</span>
+                <span class="lang-es">Transferencia Bancaria</span>
+                <span class="lang-en">Bank Transfer</span>
+            </h3>
+            <p style="color:var(--neopisk-slate);margin-bottom:2rem;font-size:1.125rem;">
+                <span class="lang-es">Recomendado para inversiones de $500+ USD</span>
+                <span class="lang-en">Recommended for investments of $500+ USD</span>
+            </p>
+        </div>
+        <div style="max-width:600px;margin:2rem auto;background:rgba(212,175,55,0.1);padding:2.5rem;border-radius:15px;">
+            <div style="margin-bottom:1.5rem;">
+                <div style="font-size:0.75rem;color:var(--neopisk-slate);text-transform:uppercase;letter-spacing:1px;margin-bottom:0.5rem;">
+                    <span class="lang-es">Banco:</span><span class="lang-en">Bank:</span>
                 </div>
-
-                <div class="process-card">
-                    <div class="process-icon">
-                        <i class="fas fa-check-circle"></i>
-                    </div>
-                    <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 0.5rem;">3. Verificación</h3>
-                    <p style="opacity: 0.8;">Verificamos tu pago (1-2 horas)</p>
+                <div style="font-size:1.5rem;font-weight:700;color:var(--neopisk-navy);">DALE BANK</div>
+            </div>
+            <div style="margin-bottom:1.5rem;">
+                <div style="font-size:0.75rem;color:var(--neopisk-slate);text-transform:uppercase;letter-spacing:1px;margin-bottom:0.5rem;">
+                    <span class="lang-es">Titular:</span><span class="lang-en">Account Holder:</span>
                 </div>
-
-                <div class="process-card">
-                    <div class="process-icon">
-                        <i class="fas fa-coins"></i>
-                    </div>
-                    <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 0.5rem;">4. Recibir Tokens</h3>
-                    <p style="opacity: 0.8;">Tokens enviados a tu wallet (24-48h)</p>
+                <div style="font-size:1.125rem;font-weight:600;color:var(--neopisk-navy);">Ernesto Alejandro Piskulich Ceel</div>
+            </div>
+            <div style="margin-bottom:1.5rem;">
+                <div style="font-size:0.75rem;color:var(--neopisk-slate);text-transform:uppercase;letter-spacing:1px;margin-bottom:0.5rem;">
+                    <span class="lang-es">Número de Cuenta:</span><span class="lang-en">Account Number:</span>
+                </div>
+                <div style="font-size:1.125rem;font-weight:700;color:var(--neopisk-navy);font-family:'IBM Plex Mono',monospace;">
+                    <span class="lang-es">[SOLICITAR POR WHATSAPP]</span>
+                    <span class="lang-en">[REQUEST VIA WHATSAPP]</span>
                 </div>
             </div>
         </div>
-    </section>
+        <ul class="steps">
+            <li><span class="lang-es">Solicita los datos completos por WhatsApp</span><span class="lang-en">Request full account details via WhatsApp</span></li>
+            <li><span class="lang-es">Realiza la transferencia bancaria</span><span class="lang-en">Complete the bank transfer</span></li>
+            <li><span class="lang-es">IMPORTANTE: Incluye tu email en el concepto</span><span class="lang-en">IMPORTANT: Include your email in the reference</span></li>
+            <li><span class="lang-es">Envíanos el comprobante al WhatsApp</span><span class="lang-en">Send us the receipt via WhatsApp</span></li>
+            <li><span class="lang-es">Recibes tus tokens $PISK en 24-48h hábiles</span><span class="lang-en">Receive your $PISK tokens within 24-48 business hours</span></li>
+        </ul>
+        <div style="background:rgba(230,57,70,0.1);padding:1.5rem;border-radius:10px;border-left:4px solid var(--neopisk-error);margin-top:2rem;">
+            <strong style="color:var(--neopisk-error);">⚠️ <span class="lang-es">Importante:</span><span class="lang-en">Important:</span></strong>
+            <div style="margin-top:0.5rem;color:var(--neopisk-slate);">
+                <span class="lang-es">Por seguridad, los datos bancarios se proporcionan solo a inversores verificados.</span>
+                <span class="lang-en">For security, bank details are provided only to verified investors.</span>
+            </div>
+        </div>
+        <div style="text-align:center;margin-top:2rem;">
+            <a href="https://wa.me/51948115030?text=Hola,%20quiero%20invertir%20en%20Neo%20Pisk%20por%20transferencia%20bancaria" target="_blank" class="whatsapp-button">
+                <i class="fab fa-whatsapp" style="font-size:1.5rem;"></i>
+                <span class="lang-es">Solicitar Datos Bancarios</span>
+                <span class="lang-en">Request Bank Details</span>
+            </a>
+        </div>
+    </div>
 
-    <!-- Karla Asistente Section -->
-    <section style="background: white; padding: 4rem 2rem; margin-top: 4rem;">
-        <div style="max-width: 1000px; margin: 0 auto;">
-            <div style="text-align: center; margin-bottom: 3rem;">
-                <h2 style="font-size: 2.5rem; font-weight: 700; color: var(--neopisk-navy); margin-bottom: 1rem;" class="font-display">
-                    💬 ¿Tienes dudas? Habla con Karla
-                </h2>
-                <p style="font-size: 1.125rem; color: var(--neopisk-slate);">
-                    Tu asistente personal para invertir en Neo Pisk
+    <!-- TAB 4: USDT POLYGON -->
+    <div class="tab-content" id="tab4">
+        <div style="text-align:center;">
+            <h3 style="font-size:2rem;color:var(--neopisk-navy);margin-bottom:1rem;display:flex;align-items:center;justify-content:center;gap:0.5rem;">
+                <span style="font-size:2.5rem;">💰</span>
+                <span class="lang-es">Transferencia USDT Polygon</span>
+                <span class="lang-en">USDT Polygon Transfer</span>
+            </h3>
+            <p style="color:var(--neopisk-slate);margin-bottom:2rem;font-size:1.125rem;">
+                <span class="lang-es">Envía USDT directo desde cualquier wallet o exchange</span>
+                <span class="lang-en">Send USDT directly from any wallet or exchange</span>
+            </p>
+        </div>
+        <div style="max-width:700px;margin:2rem auto;background:linear-gradient(145deg,#f8f9fa,#ffffff);padding:2.5rem;border-radius:20px;border:3px solid var(--neopisk-gold);box-shadow:0 10px 40px rgba(0,0,0,0.1);">
+            <h4 style="font-size:1.5rem;font-weight:700;color:var(--neopisk-navy);margin-bottom:1.5rem;text-align:center;">
+                📍 <span class="lang-es">Dirección de Recepción</span><span class="lang-en">Receiving Address</span>
+            </h4>
+            <div style="background:#000;padding:1.5rem;border-radius:15px;margin-bottom:1.5rem;border:2px solid var(--neopisk-gold);">
+                <p style="color:var(--neopisk-gold);font-size:0.875rem;margin-bottom:0.5rem;text-align:center;font-weight:600;">
+                    <span class="lang-es">DIRECCIÓN USDT (RED POLYGON)</span>
+                    <span class="lang-en">USDT ADDRESS (POLYGON NETWORK)</span>
+                </p>
+                <p style="color:white;font-size:1.125rem;font-family:'IBM Plex Mono',monospace;text-align:center;word-break:break-all;margin-bottom:1rem;">
+                    0x4739888625C8397101d9b3aeDe4633600FB91F47
+                </p>
+                <button onclick="copiarDireccionUSDT()" style="width:100%;padding:1rem;background:var(--neopisk-gold);color:var(--neopisk-navy);border:none;border-radius:10px;font-weight:700;cursor:pointer;transition:all 0.3s;display:flex;align-items:center;justify-content:center;gap:0.5rem;">
+                    <i class="fas fa-copy"></i>
+                    <span id="copyAddressText">
+                        <span class="lang-es">Copiar Dirección</span>
+                        <span class="lang-en">Copy Address</span>
+                    </span>
+                </button>
+            </div>
+            <div style="background:rgba(230,57,70,0.1);padding:1.5rem;border-radius:10px;border-left:4px solid var(--neopisk-error);margin-bottom:1.5rem;">
+                <strong style="color:var(--neopisk-error);font-size:1.125rem;">⚠️ <span class="lang-es">IMPORTANTE:</span><span class="lang-en">IMPORTANT:</span></strong>
+                <p style="margin-top:0.5rem;color:var(--neopisk-slate);font-weight:600;">
+                    <span class="lang-es">Solo envía USDT en <strong style="color:var(--neopisk-error);">RED POLYGON</strong>. Otras redes resultarán en pérdida de fondos.</span>
+                    <span class="lang-en">Only send USDT on <strong style="color:var(--neopisk-error);">POLYGON NETWORK</strong>. Other networks will result in loss of funds.</span>
                 </p>
             </div>
-
-            <div style="background: linear-gradient(135deg, var(--neopisk-navy), #1a2942); border-radius: 25px; padding: 3rem; box-shadow: 0 20px 60px rgba(0,0,0,0.2);">
-                <!-- Header con foto de Karla -->
-                <div style="display: flex; align-items: center; gap: 1.5rem; margin-bottom: 2rem; padding-bottom: 2rem; border-bottom: 1px solid rgba(255,255,255,0.1);">
-                    <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&h=400&fit=crop" 
-                         alt="Karla" 
-                         style="width: 80px; height: 80px; border-radius: 50%; border: 3px solid var(--neopisk-gold); box-shadow: 0 5px 20px rgba(212, 175, 55, 0.3);">
-                    <div>
-                        <h3 style="color: white; margin: 0; font-size: 1.5rem; font-weight: 700;">Karla</h3>
-                        <p style="color: rgba(255,255,255,0.7); margin: 0.25rem 0 0 0; font-size: 0.95rem;">
-                            <span style="display: inline-block; width: 8px; height: 8px; background: #00d359; border-radius: 50%; margin-right: 0.5rem;"></span>
-                            Asistente Neo Pisk • En línea
-                        </p>
-                    </div>
-                </div>
-
-                <!-- Mensaje de bienvenida -->
-                <div style="background: rgba(255,255,255,0.05); padding: 2rem; border-radius: 15px; margin-bottom: 2rem; border-left: 4px solid var(--neopisk-gold);">
-                    <strong style="color: white; font-size: 1.125rem;">¡Hola! 👋 Soy Karla</strong>
-                    <p style="margin: 0.75rem 0 0 0; color: rgba(255,255,255,0.8); line-height: 1.6;">
-                        Tu asistente personal para invertir en Neo Pisk. ¿En qué puedo ayudarte?
-                    </p>
-                </div>
-
-                <!-- Opciones de preguntas -->
-                <div id="karlaQuestionsArea" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
-                    <button class="karla-option-btn" onclick="askKarla('precio')" style="background: var(--neopisk-gold); color: var(--neopisk-navy); border: none; padding: 1.25rem; border-radius: 12px; font-weight: 600; cursor: pointer; transition: all 0.3s; text-align: left; display: flex; align-items: center; gap: 0.75rem; font-size: 0.95rem;">
-                        <i class="fas fa-dollar-sign" style="font-size: 1.25rem;"></i> 
-                        <span>¿Cuál es el precio del token?</span>
-                    </button>
-                    <button class="karla-option-btn" onclick="askKarla('como')" style="background: var(--neopisk-gold); color: var(--neopisk-navy); border: none; padding: 1.25rem; border-radius: 12px; font-weight: 600; cursor: pointer; transition: all 0.3s; text-align: left; display: flex; align-items: center; gap: 0.75rem; font-size: 0.95rem;">
-                        <i class="fas fa-question-circle" style="font-size: 1.25rem;"></i>
-                        <span>¿Cómo funciona la inversión?</span>
-                    </button>
-                    <button class="karla-option-btn" onclick="askKarla('metamax')" style="background: var(--neopisk-gold); color: var(--neopisk-navy); border: none; padding: 1.25rem; border-radius: 12px; font-weight: 600; cursor: pointer; transition: all 0.3s; text-align: left; display: flex; align-items: center; gap: 0.75rem; font-size: 0.95rem;">
-                        <i class="fas fa-store" style="font-size: 1.25rem;"></i>
-                        <span>¿Qué es la transferencia USDT?</span>
-                    </button>
-                </div>
-
-                <!-- Área de respuestas -->
-                <div id="karlaAnswerArea"></div>
-
-                <!-- Link a Telegram -->
-                <div style="text-align: center; margin-top: 2rem; padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.1);">
-                    <p style="font-size: 0.95rem; color: rgba(255,255,255,0.7); margin-bottom: 1rem;">
-                        Para una conversación completa y personalizada:
-                    </p>
-                    <a href="https://t.me/NeoPisk_bot" target="_blank" style="background: #0088cc; color: white; padding: 1.25rem 2.5rem; border-radius: 50px; text-decoration: none; display: inline-flex; align-items: center; gap: 0.75rem; font-weight: 700; font-size: 1.125rem; transition: all 0.3s; box-shadow: 0 5px 20px rgba(0, 136, 204, 0.3);">
-                        <i class="fab fa-telegram" style="font-size: 1.5rem;"></i>
-                        Chatear en Telegram
-                    </a>
+            <ul class="steps">
+                <li>
+                    <strong><span class="lang-es">Copia la dirección de arriba</span><span class="lang-en">Copy the address above</span></strong>
+                </li>
+                <li>
+                    <strong><span class="lang-es">Envía USDT en RED POLYGON</span><span class="lang-en">Send USDT on POLYGON NETWORK</span></strong><br>
+                    <span style="font-size:0.95rem;color:var(--neopisk-slate);">
+                        <span class="lang-es">Desde Binance, Kraken, MetaMask, Trust Wallet, etc.</span>
+                        <span class="lang-en">From Binance, Kraken, MetaMask, Trust Wallet, etc.</span>
+                    </span>
+                </li>
+                <li>
+                    <strong><span class="lang-es">Envía comprobante a Karla en WhatsApp</span><span class="lang-en">Send receipt to Karla via WhatsApp</span></strong><br>
+                    <span style="font-size:0.95rem;color:var(--neopisk-slate);">
+                        <span class="lang-es">TxHash + tu email para recibir tokens</span>
+                        <span class="lang-en">TxHash + your email to receive tokens</span>
+                    </span>
+                </li>
+                <li>
+                    <strong><span class="lang-es">Recibes tokens $PISK en 24-48h</span><span class="lang-en">Receive $PISK tokens within 24-48h</span></strong>
+                </li>
+            </ul>
+            <div style="background:rgba(0,217,163,0.1);padding:1.5rem;border-radius:10px;border-left:4px solid var(--neopisk-mint);margin-top:2rem;">
+                <strong style="color:var(--neopisk-mint);">✅ <span class="lang-es">Ventajas:</span><span class="lang-en">Advantages:</span></strong>
+                <div style="margin-top:0.5rem;color:var(--neopisk-slate);">
+                    <span class="lang-es">• Sin intermediarios • Funciona desde cualquier país • Sin límites de monto • Comisiones bajas de Polygon</span>
+                    <span class="lang-en">• No intermediaries • Works from any country • No amount limits • Low Polygon fees</span>
                 </div>
             </div>
         </div>
-    </section>
+        <div style="text-align:center;margin-top:2rem;">
+            <a href="https://wa.me/51948115030?text=Hola%20Karla,%20acabo%20de%20enviar%20USDT%20en%20Polygon.%20Aquí%20está%20mi%20comprobante:" target="_blank" class="whatsapp-button">
+                <i class="fab fa-whatsapp" style="font-size:1.5rem;"></i>
+                <span class="lang-es">Enviar Comprobante a Karla</span>
+                <span class="lang-en">Send Receipt to Karla</span>
+            </a>
+        </div>
+    </div>
+</section>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <p style="margin-bottom: 1rem;">&copy; 2026 Neo Pisk - Todos los derechos reservados</p>
-        <p style="opacity: 0.7; font-size: 0.875rem;">
-            ¿Necesitas ayuda? <a href="https://wa.me/5194811503" style="color: var(--neopisk-gold); text-decoration: none;">Contacta con nosotros</a>
+<!-- Proceso de Confirmación -->
+<section class="process">
+    <div style="max-width:1200px;margin:0 auto;text-align:center;">
+        <h2 style="font-size:2.5rem;font-weight:700;margin-bottom:1rem;" class="font-display">
+            <span class="lang-es">Proceso de Confirmación</span>
+            <span class="lang-en">Confirmation Process</span>
+        </h2>
+        <p style="font-size:1.125rem;opacity:0.9;max-width:700px;margin:0 auto;">
+            <span class="lang-es">Simple y seguro. Recibirás tus tokens en 24-48 horas.</span>
+            <span class="lang-en">Simple and secure. You will receive your tokens within 24-48 hours.</span>
         </p>
-    </footer>
+        <div class="process-grid">
+            <div class="process-card">
+                <div class="process-icon"><i class="fas fa-money-bill-wave"></i></div>
+                <h3 style="font-size:1.25rem;font-weight:700;margin-bottom:0.5rem;">
+                    1. <span class="lang-es">Realizar Pago</span><span class="lang-en">Make Payment</span>
+                </h3>
+                <p style="opacity:0.8;">
+                    <span class="lang-es">Elige tu método y completa la transferencia</span>
+                    <span class="lang-en">Choose your method and complete the transfer</span>
+                </p>
+            </div>
+            <div class="process-card">
+                <div class="process-icon"><i class="fab fa-whatsapp"></i></div>
+                <h3 style="font-size:1.25rem;font-weight:700;margin-bottom:0.5rem;">
+                    2. <span class="lang-es">Enviar Comprobante</span><span class="lang-en">Send Receipt</span>
+                </h3>
+                <p style="opacity:0.8;">
+                    <span class="lang-es">Mándanos el voucher por WhatsApp</span>
+                    <span class="lang-en">Send us the voucher via WhatsApp</span>
+                </p>
+            </div>
+            <div class="process-card">
+                <div class="process-icon"><i class="fas fa-check-circle"></i></div>
+                <h3 style="font-size:1.25rem;font-weight:700;margin-bottom:0.5rem;">
+                    3. <span class="lang-es">Verificación</span><span class="lang-en">Verification</span>
+                </h3>
+                <p style="opacity:0.8;">
+                    <span class="lang-es">Verificamos tu pago (1-2 horas)</span>
+                    <span class="lang-en">We verify your payment (1-2 hours)</span>
+                </p>
+            </div>
+            <div class="process-card">
+                <div class="process-icon"><i class="fas fa-coins"></i></div>
+                <h3 style="font-size:1.25rem;font-weight:700;margin-bottom:0.5rem;">
+                    4. <span class="lang-es">Recibir Tokens</span><span class="lang-en">Receive Tokens</span>
+                </h3>
+                <p style="opacity:0.8;">
+                    <span class="lang-es">Tokens enviados a tu wallet (24-48h)</span>
+                    <span class="lang-en">Tokens sent to your wallet (24-48h)</span>
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
 
+<!-- Sección Karla -->
+<section style="background:white;padding:4rem 2rem;margin-top:4rem;">
+    <div style="max-width:1000px;margin:0 auto;">
+        <div style="text-align:center;margin-bottom:3rem;">
+            <h2 style="font-size:2.5rem;font-weight:700;color:var(--neopisk-navy);margin-bottom:1rem;" class="font-display">
+                💬 <span class="lang-es">¿Tienes dudas? Habla con Karla</span><span class="lang-en">Have questions? Talk to Karla</span>
+            </h2>
+            <p style="font-size:1.125rem;color:var(--neopisk-slate);">
+                <span class="lang-es">Tu asistente personal para invertir en Neo Pisk</span>
+                <span class="lang-en">Your personal assistant for investing in Neo Pisk</span>
+            </p>
+        </div>
+        <div style="background:linear-gradient(135deg,var(--neopisk-navy),#1a2942);border-radius:25px;padding:3rem;box-shadow:0 20px 60px rgba(0,0,0,0.2);">
+            <div style="display:flex;align-items:center;gap:1.5rem;margin-bottom:2rem;padding-bottom:2rem;border-bottom:1px solid rgba(255,255,255,0.1);">
+                <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&h=400&fit=crop" alt="Karla" style="width:80px;height:80px;border-radius:50%;border:3px solid var(--neopisk-gold);box-shadow:0 5px 20px rgba(212,175,55,0.3);">
+                <div>
+                    <h3 style="color:white;margin:0;font-size:1.5rem;font-weight:700;">Karla</h3>
+                    <p style="color:rgba(255,255,255,0.7);margin:0.25rem 0 0;font-size:0.95rem;">
+                        <span style="display:inline-block;width:8px;height:8px;background:#00d359;border-radius:50%;margin-right:0.5rem;"></span>
+                        <span class="lang-es">Asistente Neo Pisk • En línea</span>
+                        <span class="lang-en">Neo Pisk Assistant • Online</span>
+                    </p>
+                </div>
+            </div>
+            <div style="background:rgba(255,255,255,0.05);padding:2rem;border-radius:15px;margin-bottom:2rem;border-left:4px solid var(--neopisk-gold);">
+                <strong style="color:white;font-size:1.125rem;">
+                    <span class="lang-es">¡Hola! 👋 Soy Karla</span>
+                    <span class="lang-en">Hi! 👋 I'm Karla</span>
+                </strong>
+                <p style="margin:0.75rem 0 0;color:rgba(255,255,255,0.8);line-height:1.6;">
+                    <span class="lang-es">Tu asistente personal para invertir en Neo Pisk. ¿En qué puedo ayudarte?</span>
+                    <span class="lang-en">Your personal assistant for investing in Neo Pisk. How can I help you?</span>
+                </p>
+            </div>
+            <div id="karlaQuestionsArea" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1rem;margin-bottom:2rem;">
+                <button class="karla-option-btn" onclick="askKarla('precio')">
+                    <i class="fas fa-dollar-sign" style="font-size:1.25rem;"></i>
+                    <span class="lang-es">¿Cuál es el precio del token?</span>
+                    <span class="lang-en">What is the token price?</span>
+                </button>
+                <button class="karla-option-btn" onclick="askKarla('como')">
+                    <i class="fas fa-question-circle" style="font-size:1.25rem;"></i>
+                    <span class="lang-es">¿Cómo funciona la inversión?</span>
+                    <span class="lang-en">How does the investment work?</span>
+                </button>
+                <button class="karla-option-btn" onclick="askKarla('metamax')">
+                    <i class="fas fa-coins" style="font-size:1.25rem;"></i>
+                    <span class="lang-es">¿Qué es la transferencia USDT?</span>
+                    <span class="lang-en">What is the USDT transfer?</span>
+                </button>
+            </div>
+            <div id="karlaAnswerArea"></div>
+            <div style="text-align:center;margin-top:2rem;padding-top:2rem;border-top:1px solid rgba(255,255,255,0.1);">
+                <p style="font-size:0.95rem;color:rgba(255,255,255,0.7);margin-bottom:1rem;">
+                    <span class="lang-es">Para una conversación completa y personalizada:</span>
+                    <span class="lang-en">For a full personalized conversation:</span>
+                </p>
+                <a href="https://t.me/NeoPisk_bot" target="_blank" style="background:#0088cc;color:white;padding:1.25rem 2.5rem;border-radius:50px;text-decoration:none;display:inline-flex;align-items:center;gap:0.75rem;font-weight:700;font-size:1.125rem;transition:all 0.3s;box-shadow:0 5px 20px rgba(0,136,204,0.3);">
+                    <i class="fab fa-telegram" style="font-size:1.5rem;"></i>
+                    <span class="lang-es">Chatear en Telegram</span>
+                    <span class="lang-en">Chat on Telegram</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+    <p style="margin-bottom:1rem;">© 2026 Neo Pisk — <span class="lang-es">Todos los derechos reservados</span><span class="lang-en">All rights reserved</span></p>
+    <p style="opacity:0.7;font-size:0.875rem;">
+        <span class="lang-es">¿Necesitas ayuda?</span><span class="lang-en">Need help?</span>
+        <a href="https://wa.me/51948115030" style="color:var(--neopisk-gold);text-decoration:none;">
+            <span class="lang-es"> Contáctanos</span><span class="lang-en"> Contact us</span>
+        </a>
+    </p>
+</footer>
 
 <script>
-// ========== FUNCIONES WEB3 ==========
-const contractAddr = "0x07Fc7AC9D681Cdd3D100c68f6f5646970CC7fF60"; 
-const usdtAddr = "0xc2132D05D31c914a87C6611C10748AEb04B58e8F"; 
-const piskAddr = "0x9d5B2A73d16dAF61712BA8527d94F6997a0E6323";
+/* ════════════════════════════════════════════
+   SISTEMA DE IDIOMA — mismo mecanismo que index.html
+════════════════════════════════════════════ */
+function setLang(lang) {
+    const btnEs = document.getElementById('btn-es');
+    const btnEn = document.getElementById('btn-en');
+
+    // Spans de idioma — usar 'inline' explícito (no '' que revierte al CSS none)
+    document.querySelectorAll('.lang-es').forEach(function(el) {
+        el.style.display = (lang === 'es') ? 'inline' : 'none';
+    });
+    document.querySelectorAll('.lang-en').forEach(function(el) {
+        el.style.display = (lang === 'en') ? 'inline' : 'none';
+    });
+
+    // Bloque MetaMask (usa divs completos)
+    document.getElementById('metamask-es').style.display = (lang === 'es') ? 'block' : 'none';
+    document.getElementById('metamask-en').style.display = (lang === 'en') ? 'block' : 'none';
+
+    // Estilos botones bandera
+    if (lang === 'en') {
+        btnEn.style.borderColor = '#D4AF37';
+        btnEn.style.opacity = '1';
+        btnEn.style.boxShadow = '0 0 10px rgba(212,175,55,0.5)';
+        btnEs.style.borderColor = 'rgba(255,255,255,0.2)';
+        btnEs.style.opacity = '0.5';
+        btnEs.style.boxShadow = 'none';
+    } else {
+        btnEs.style.borderColor = '#D4AF37';
+        btnEs.style.opacity = '1';
+        btnEs.style.boxShadow = '0 0 10px rgba(212,175,55,0.5)';
+        btnEn.style.borderColor = 'rgba(255,255,255,0.2)';
+        btnEn.style.opacity = '0.5';
+        btnEn.style.boxShadow = 'none';
+    }
+
+    // Placeholder del input
+    const input = document.getElementById('usdInput');
+    if (input) input.placeholder = (lang === 'es') ? 'Ingresa monto en USD' : 'Enter amount in USD';
+
+    localStorage.setItem('neopisk-lang', lang);
+}
+
+// Cargar idioma guardado al iniciar
+window.addEventListener('DOMContentLoaded', function() {
+    const saved = localStorage.getItem('neopisk-lang') || 'es';
+    setLang(saved);
+});
+
+/* ════════════════════════════════════════════
+   WEB3 — funciones de contrato
+════════════════════════════════════════════ */
+const contractAddr = "0x07Fc7AC9D681Cdd3D100c68f6f5646970CC7fF60";
+const usdtAddr    = "0xc2132D05D31c914a87C6611C10748AEb04B58e8F";
+const piskAddr    = "0x9d5B2A73d16dAF61712BA8527d94F6997a0E6323";
 
 const minABI = [
-    { "constant": false, "inputs": [{ "name": "_spender", "type": "address" }, { "name": "_value", "type": "uint256" }], "name": "approve", "outputs": [{ "name": "", "type": "bool" }], "type": "function" },
-    { "constant": true, "inputs": [{ "name": "_owner", "type": "address" }], "name": "balanceOf", "outputs": [{ "name": "balance", "type": "uint256" }], "type": "function" },
-    { "constant": true, "inputs": [{ "name": "_owner", "type": "address" }, { "name": "_spender", "type": "address" }], "name": "allowance", "outputs": [{ "name": "", "type": "uint256" }], "type": "function" }
+    { "constant": false, "inputs": [{"name":"_spender","type":"address"},{"name":"_value","type":"uint256"}], "name":"approve", "outputs":[{"name":"","type":"bool"}], "type":"function" },
+    { "constant": true, "inputs": [{"name":"_owner","type":"address"}], "name":"balanceOf", "outputs":[{"name":"balance","type":"uint256"}], "type":"function" },
+    { "constant": true, "inputs": [{"name":"_owner","type":"address"},{"name":"_spender","type":"address"}], "name":"allowance", "outputs":[{"name":"","type":"uint256"}], "type":"function" }
 ];
-
-const buyABI = [{ "inputs": [{ "name": "_amountUSDT", "type": "uint256" }], "name": "buyWithUSDT", "outputs": [], "stateMutability": "nonpayable", "type": "function" }];
+const buyABI = [{ "inputs":[{"name":"_amountUSDT","type":"uint256"}], "name":"buyWithUSDT", "outputs":[], "stateMutability":"nonpayable", "type":"function" }];
 
 async function getSafeGasPrice(web3) {
-    const gasPrice = await web3.eth.getGasPrice();
-    return Math.floor(parseInt(gasPrice) * 1.5).toString();
+    const gp = await web3.eth.getGasPrice();
+    return Math.floor(parseInt(gp) * 1.5).toString();
 }
 
 async function verMiSaldo() {
-    if (!window.ethereum) {
-        alert("❌ MetaMask no detectado. Instala MetaMask para continuar.");
-        return;
-    }
+    if (!window.ethereum) { alert("❌ MetaMask no detectado."); return; }
     try {
         const web3 = new Web3(window.ethereum);
         const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
-        if (!accounts || accounts.length === 0) {
-            alert("❌ No se pudo conectar a MetaMask");
-            return;
-        }
+        if (!accounts.length) { alert("❌ No se pudo conectar a MetaMask"); return; }
         const chainId = await web3.eth.getChainId();
-        if (chainId !== 137) {
-            alert("⚠️ Por favor cambia a Polygon Network en MetaMask");
-            return;
-        }
+        if (chainId !== 137) { alert("⚠️ Cambia a Polygon Network en MetaMask"); return; }
         const pisk = new web3.eth.Contract(minABI, piskAddr);
         const bal = await pisk.methods.balanceOf(accounts[0]).call();
         const normal = parseFloat(web3.utils.fromWei(bal, 'ether')).toFixed(2);
-        document.getElementById("saldoDisplay").innerText = normal + " $PISK";
-        document.getElementById("status").innerText = "✅ Conectado: " + accounts[0].substring(0,8) + "...";
-    } catch (error) {
-        console.error("Error al conectar:", error);
-        if (error.code === 4001) {
-            document.getElementById("status").innerText = "❌ Conexión rechazada por el usuario";
-        } else {
-            document.getElementById("status").innerText = "❌ Error al conectar - Intenta nuevamente";
-        }
+        document.getElementById("status").innerText = "✅ Saldo: " + normal + " $PISK | " + accounts[0].substring(0,8) + "...";
+    } catch(e) {
+        document.getElementById("status").innerText = e.code === 4001 ? "❌ Rechazado" : "❌ Error al conectar";
     }
 }
 
-async function approveUSDT() {
-    const val = document.getElementById("inputUSDT").value;
-    if(!val || val <= 0) return alert("⚠️ Ingresa un monto válido");
-    try {
-        const web3 = new Web3(window.ethereum);
-        const accounts = await web3.eth.getAccounts();
-        if(accounts.length === 0) {
-            alert("⚠️ Conecta tu billetera primero usando el botón 'CONECTAR BILLETERA'");
-            return;
-        }
-        const usdt = new web3.eth.Contract(minABI, usdtAddr);
-        const montoFinal = (parseFloat(val) * 1000000).toFixed(0);
-        const gasPrice = await getSafeGasPrice(web3);
-        document.getElementById("status").innerText = "⏳ Verificando permisos...";
-        const allowance = await usdt.methods.allowance(accounts[0], contractAddr).call();
-        if (parseInt(allowance) > 0) {
-            document.getElementById("status").innerText = "⏳ Reseteando permiso anterior...";
-            await usdt.methods.approve(contractAddr, "0").send({ from: accounts[0], gasPrice: gasPrice });
-        }
-        document.getElementById("status").innerText = "⏳ Autorizando " + val + " USDT...";
-        await usdt.methods.approve(contractAddr, montoFinal).send({ from: accounts[0], gasPrice: gasPrice });
-        document.getElementById("status").innerText = "✅ Autorizado correctamente. Ahora procede al paso 2.";
-    } catch (e) { 
-        console.error("Error en approve:", e);
-        if (e.code === 4001) {
-            document.getElementById("status").innerText = "❌ Transacción rechazada";
-        } else {
-            document.getElementById("status").innerText = "❌ Error en Autorización - Revisa tu red";
-        }
-    }
-}
-
-async function buyPisk() {
-    const val = document.getElementById("inputUSDT").value;
-    if(!val) return alert("⚠️ Autoriza primero el monto en el paso 1");
-    try {
-        const web3 = new Web3(window.ethereum);
-        const accounts = await web3.eth.getAccounts();
-        if(accounts.length === 0) {
-            alert("⚠️ Conecta tu billetera primero");
-            return;
-        }
-        const neo = new web3.eth.Contract(buyABI, contractAddr);
-        const montoFinal = (parseFloat(val) * 1000000).toFixed(0);
-        const gasPrice = await getSafeGasPrice(web3);
-        document.getElementById("status").innerText = "🚀 Confirmando compra en blockchain...";
-        await neo.methods.buyWithUSDT(montoFinal).send({ from: accounts[0], gas: 250000, gasPrice: gasPrice });
-        document.getElementById("status").innerText = "🎉 ¡COMPRA EXITOSA! Actualizando saldo...";
-        setTimeout(() => { verMiSaldo(); }, 3000);
-    } catch (e) { 
-        console.error("Error en compra:", e);
-        if (e.code === 4001) {
-            document.getElementById("status").innerText = "❌ Compra cancelada";
-        } else {
-            document.getElementById("status").innerText = "❌ Error en la compra - Verifica tu saldo USDT";
-        }
-    }
-}
-
-// ========== CALCULADORA ==========
+/* ════════════════════════════════════════════
+   CALCULADORA
+════════════════════════════════════════════ */
 function calcularInversion() {
     const usd = parseFloat(document.getElementById('usdInput').value) || 0;
-    const precioToken = 0.10;
-    const tipoCambio = 3.80;
-    const tokens = usd / precioToken;
-    const pen = usd * tipoCambio;
-    document.getElementById('tokensResult').textContent = tokens.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
-    document.getElementById('penResult').textContent = 'S/ ' + pen.toLocaleString('es-PE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    const tokens = usd / 0.10;
+    const pen    = usd * 3.80;
+    document.getElementById('tokensResult').textContent = tokens.toLocaleString('en-US', {minimumFractionDigits:0, maximumFractionDigits:0});
+    document.getElementById('penResult').textContent    = 'S/ ' + pen.toLocaleString('es-PE', {minimumFractionDigits:2, maximumFractionDigits:2});
 }
 
-// ========== TABS ==========
+/* ════════════════════════════════════════════
+   TABS
+════════════════════════════════════════════ */
 function cambiarTab(index) {
-    console.log("Cambiando a tab:", index);
-    document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
-    document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
     document.querySelectorAll('.tab')[index].classList.add('active');
     document.getElementById('tab' + index).classList.add('active');
 }
 
-// ========== OTRAS FUNCIONES ==========
+/* ════════════════════════════════════════════
+   COPIAR
+════════════════════════════════════════════ */
 function copiarTag() {
-    const tag = '$neopisk';
-    navigator.clipboard.writeText(tag).then(() => {
-        alert('✅ Tag copiado: ' + tag);
-    });
+    navigator.clipboard.writeText('$neopisk').then(() => alert('✅ Tag copiado: $neopisk'));
 }
 
-function askKarla(topic) {
-    const answerArea = document.getElementById('karlaAnswerArea');
-    let response = '';
-    switch(topic) {
-        case 'precio':
-            response = '<div style="background: rgba(255,255,255,0.08); padding: 2rem; border-radius: 15px; border-left: 4px solid var(--neopisk-gold);"><strong style="color: white; font-size: 1.25rem;">💎 Precio del Token $PISK</strong><p style="margin: 1rem 0 0 0; color: rgba(255,255,255,0.85); line-height: 1.8;"><strong style="color: var(--neopisk-gold);">Precio actual: $0.10 USD</strong><br><br>• Fase 1: SOLD OUT (precio $0.01)<br>• Fase 2: 15% vendido (precio $0.10)<br><br>Los primeros inversores ganaron 10x 📈</p></div>';
-            break;
-        case 'como':
-            response = '<div style="background: rgba(255,255,255,0.08); padding: 2rem; border-radius: 15px; border-left: 4px solid var(--neopisk-mint);"><strong style="color: white; font-size: 1.25rem;">🚀 Cómo Funciona</strong><p style="margin: 1rem 0 0 0; color: rgba(255,255,255,0.85); line-height: 1.8;">1️⃣ Calculas tu inversión<br>2️⃣ Eliges método de pago<br>3️⃣ Realizas el pago<br>4️⃣ Envías comprobante<br>5️⃣ Recibes tokens en 24-48h ✅</p><button onclick="document.querySelector(\'.tabs\').scrollIntoView({behavior: \'smooth\'});" style="margin-top: 1.5rem; padding: 1rem 2rem; background: var(--neopisk-mint); color: var(--neopisk-navy); border: none; border-radius: 10px; font-weight: 600; cursor: pointer; width: 100%;">Ver Métodos de Pago ↑</button></div>';
-            break;
-        case 'metodos':
-            response = '<div style="background: rgba(255,255,255,0.08); padding: 2rem; border-radius: 15px; border-left: 4px solid var(--neopisk-gold);"><strong style="color: white; font-size: 1.25rem;">💳 Métodos de Pago</strong><p style="margin: 1rem 0 0 0; color: rgba(255,255,255,0.85); line-height: 1.8;">⚡ <strong style="color: #00d2ff;">Pago Automático</strong> - Con MetaMask (USDT)<br>💜 <strong>Yape</strong> - Escanea QR<br>⚡ <strong>LemonCash</strong> - Tag: $neopisk<br>🏦 <strong>Banco</strong> - Transferencia<br>💰 <strong>MetaMax</strong> - Efectivo en agentes</p><button onclick="document.querySelector(\'.tabs\').scrollIntoView({behavior: \'smooth\'});" style="margin-top: 1.5rem; padding: 1rem 2rem; background: var(--neopisk-gold); color: var(--neopisk-navy); border: none; border-radius: 10px; font-weight: 600; cursor: pointer; width: 100%;">Ver Métodos Arriba ↑</button></div>';
-            break;
-        case 'metamax':
-            response = '<div style="background: rgba(255,255,255,0.08); padding: 2rem; border-radius: 15px; border-left: 4px solid var(--neopisk-mint);"><strong style="color: white; font-size: 1.25rem;">💰 Transferencia USDT Polygon</strong><p style="margin: 1rem 0 0 0; color: rgba(255,255,255,0.85); line-height: 1.8;">Envía USDT directamente desde cualquier wallet o exchange:<br><br>✅ Red: <strong style="color: #00d2ff;">POLYGON</strong> (no usar otras redes)<br>✅ Dirección: 0x4739...1F47<br>✅ Sin intermediarios<br>✅ Funciona desde cualquier país<br><br><strong style="color: var(--neopisk-mint);">Paso 1:</strong> Envía USDT a la dirección<br><strong style="color: var(--neopisk-mint);">Paso 2:</strong> Envía comprobante a Karla en WhatsApp</p><button onclick="cambiarTab(4); document.querySelector(\'.payment-section\').scrollIntoView({behavior: \'smooth\'});" style="margin-top: 1.5rem; padding: 1rem 2rem; background: var(--neopisk-mint); color: var(--neopisk-navy); border: none; border-radius: 10px; font-weight: 600; cursor: pointer; width: 100%;">Ver Dirección Completa ↑</button></div>';
-            break;
-    }
-    answerArea.innerHTML = response;
-}
-
-// Función para copiar dirección USDT
 function copiarDireccionUSDT() {
-    const direccion = '0x4739888625C8397101d9b3aeDe4633600FB91F47';
-    navigator.clipboard.writeText(direccion).then(() => {
-        const button = document.getElementById('copyAddressText');
-        button.textContent = '¡Copiado!';
-        setTimeout(() => {
-            button.textContent = 'Copiar Dirección';
-        }, 2000);
+    const dir = '0x4739888625C8397101d9b3aeDe4633600FB91F47';
+    navigator.clipboard.writeText(dir).then(() => {
+        const el = document.getElementById('copyAddressText');
+        const orig = el.innerHTML;
+        el.innerHTML = '¡Copiado! / Copied!';
+        setTimeout(() => { el.innerHTML = orig; }, 2000);
     }).catch(() => {
-        // Fallback para navegadores antiguos
-        const input = document.createElement('input');
-        input.value = direccion;
-        document.body.appendChild(input);
-        input.select();
-        document.execCommand('copy');
-        document.body.removeChild(input);
-        alert('✅ Dirección copiada: ' + direccion);
+        const inp = document.createElement('input');
+        inp.value = dir; document.body.appendChild(inp); inp.select();
+        document.execCommand('copy'); document.body.removeChild(inp);
+        alert('✅ Dirección copiada');
     });
-}
-
-function cambiarIdioma(lang) {
-    document.querySelectorAll('.lang-btn').forEach(btn => {
-        btn.classList.remove('active');
-        if (btn.dataset.lang === lang) btn.classList.add('active');
-    });
-    document.querySelectorAll('.lang-content').forEach(content => content.classList.remove('active'));
-    document.getElementById('metamask-' + lang).classList.add('active');
-    const dividerText = document.getElementById('divider-text');
-    dividerText.textContent = lang === 'en' ? 'Or choose another method' : 'O elige otro método';
 }
 
 function copiarURLMetaMask() {
-    const url = 'https://neopisk.lat/founder.html';
-    navigator.clipboard.writeText(url).then(() => {
-        alert('✅ URL copiada');
-    });
+    navigator.clipboard.writeText('https://neopisk.lat/founder.html').then(() => alert('✅ URL copiada'));
 }
 
-console.log("✅ JavaScript cargado correctamente");
+/* ════════════════════════════════════════════
+   KARLA — respuestas según idioma activo
+════════════════════════════════════════════ */
+function askKarla(topic) {
+    const lang = localStorage.getItem('neopisk-lang') || 'es';
+    const resp = {
+        precio: {
+            es: '<div style="background:rgba(255,255,255,0.08);padding:2rem;border-radius:15px;border-left:4px solid var(--neopisk-gold);"><strong style="color:white;font-size:1.25rem;">💎 Precio del Token $PISK</strong><p style="margin:1rem 0 0;color:rgba(255,255,255,0.85);line-height:1.8;"><strong style="color:var(--neopisk-gold);">Precio actual: $0.10 USD</strong><br><br>• Fase 1: SOLD OUT ($0.01)<br>• Fase 2: 15% vendido ($0.10)<br><br>Los primeros inversores ganaron 10x 📈</p></div>',
+            en: '<div style="background:rgba(255,255,255,0.08);padding:2rem;border-radius:15px;border-left:4px solid var(--neopisk-gold);"><strong style="color:white;font-size:1.25rem;">💎 $PISK Token Price</strong><p style="margin:1rem 0 0;color:rgba(255,255,255,0.85);line-height:1.8;"><strong style="color:var(--neopisk-gold);">Current price: $0.10 USD</strong><br><br>• Phase 1: SOLD OUT ($0.01)<br>• Phase 2: 15% sold ($0.10)<br><br>Early investors made 10x 📈</p></div>'
+        },
+        como: {
+            es: '<div style="background:rgba(255,255,255,0.08);padding:2rem;border-radius:15px;border-left:4px solid var(--neopisk-mint);"><strong style="color:white;font-size:1.25rem;">🚀 Cómo Funciona</strong><p style="margin:1rem 0 0;color:rgba(255,255,255,0.85);line-height:1.8;">1️⃣ Calculas tu inversión arriba<br>2️⃣ Eliges método de pago<br>3️⃣ Realizas el pago<br>4️⃣ Envías comprobante por WhatsApp<br>5️⃣ Recibes tokens en 24-48h ✅</p></div>',
+            en: '<div style="background:rgba(255,255,255,0.08);padding:2rem;border-radius:15px;border-left:4px solid var(--neopisk-mint);"><strong style="color:white;font-size:1.25rem;">🚀 How It Works</strong><p style="margin:1rem 0 0;color:rgba(255,255,255,0.85);line-height:1.8;">1️⃣ Calculate your investment above<br>2️⃣ Choose payment method<br>3️⃣ Make the payment<br>4️⃣ Send receipt via WhatsApp<br>5️⃣ Receive tokens in 24-48h ✅</p></div>'
+        },
+        metamax: {
+            es: '<div style="background:rgba(255,255,255,0.08);padding:2rem;border-radius:15px;border-left:4px solid var(--neopisk-mint);"><strong style="color:white;font-size:1.25rem;">💰 Transferencia USDT Polygon</strong><p style="margin:1rem 0 0;color:rgba(255,255,255,0.85);line-height:1.8;">Envía USDT desde cualquier wallet:<br><br>✅ Red: <strong style="color:#00d2ff;">POLYGON</strong><br>✅ Sin intermediarios<br>✅ Desde cualquier país</p><button onclick="cambiarTab(4);document.querySelector(\'.payment-section\').scrollIntoView({behavior:\'smooth\'});" style="margin-top:1.5rem;padding:1rem 2rem;background:var(--neopisk-mint);color:var(--neopisk-navy);border:none;border-radius:10px;font-weight:600;cursor:pointer;width:100%;">Ver Dirección Completa ↑</button></div>',
+            en: '<div style="background:rgba(255,255,255,0.08);padding:2rem;border-radius:15px;border-left:4px solid var(--neopisk-mint);"><strong style="color:white;font-size:1.25rem;">💰 USDT Polygon Transfer</strong><p style="margin:1rem 0 0;color:rgba(255,255,255,0.85);line-height:1.8;">Send USDT from any wallet:<br><br>✅ Network: <strong style="color:#00d2ff;">POLYGON</strong><br>✅ No intermediaries<br>✅ From any country</p><button onclick="cambiarTab(4);document.querySelector(\'.payment-section\').scrollIntoView({behavior:\'smooth\'});" style="margin-top:1.5rem;padding:1rem 2rem;background:var(--neopisk-mint);color:var(--neopisk-navy);border:none;border-radius:10px;font-weight:600;cursor:pointer;width:100%;">View Full Address ↑</button></div>'
+        }
+    };
+    document.getElementById('karlaAnswerArea').innerHTML = resp[topic][lang] || resp[topic]['es'];
+}
+
+console.log('✅ Neo Pisk invertir.html — sistema bilingüe cargado');
 </script>
 </body>
 </html>
-   
