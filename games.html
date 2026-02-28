@@ -1,0 +1,1083 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>$PISK Games</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@500;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --gold:#D4A017;--gold2:#F0C040;--gold3:#FFF3B0;
+  --dark:#07090C;--dark2:#0D1117;--dark3:#131A24;--dark4:#1A2030;
+  --border:rgba(212,160,23,0.2);--text:#E8EDF5;--muted:#5A6A7A;
+  --green:#00E676;--red:#FF3D3D;--blue:#1A6EFF;--purple:#9C27B0;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;user-select:none;}
+body{background:var(--dark);color:var(--text);font-family:'Rajdhani',sans-serif;min-height:100vh;overflow-x:hidden;padding-bottom:20px;}
+
+/* ── HEADER ── */
+.hdr{background:linear-gradient(180deg,#0D1117,transparent);padding:16px;position:sticky;top:0;z-index:50;display:flex;align-items:center;gap:12px;}
+.back-btn{background:rgba(212,160,23,0.1);border:1px solid var(--border);color:var(--gold);padding:6px 12px;font-family:'Bebas Neue';font-size:14px;letter-spacing:2px;cursor:pointer;}
+.hdr-title{font-family:'Bebas Neue';font-size:22px;letter-spacing:3px;color:var(--gold);}
+.pts-badge{margin-left:auto;background:rgba(212,160,23,0.1);border:1px solid var(--border);padding:6px 14px;text-align:center;}
+.pts-num{font-family:'Bebas Neue';font-size:22px;color:var(--gold2);line-height:1;}
+.pts-lbl{font-size:9px;letter-spacing:2px;color:var(--muted);}
+
+/* ── GAME GRID ── */
+.game-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:0 12px 12px;}
+.game-card{background:var(--dark2);border:1px solid var(--border);padding:16px 12px;cursor:pointer;transition:all 0.2s;position:relative;overflow:hidden;text-align:center;}
+.game-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(212,160,23,0.05),transparent);opacity:0;transition:opacity 0.2s;}
+.game-card:active::before{opacity:1;}
+.game-card.locked{opacity:0.5;cursor:default;}
+.game-card.locked::after{content:'🔒';position:absolute;top:8px;right:8px;font-size:14px;}
+.game-icon{font-size:36px;display:block;margin-bottom:8px;}
+.game-name{font-family:'Bebas Neue';font-size:16px;letter-spacing:2px;color:var(--gold);margin-bottom:4px;}
+.game-desc{font-size:11px;color:var(--muted);line-height:1.4;}
+.game-reward{margin-top:8px;font-family:'Bebas Neue';font-size:14px;color:var(--gold2);}
+.cooldown{font-size:10px;color:var(--red);margin-top:4px;font-family:'JetBrains Mono';}
+
+/* ── MODAL ── */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,0.95);z-index:100;display:none;flex-direction:column;}
+.overlay.show{display:flex;}
+.game-header{padding:12px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;flex-shrink:0;}
+.game-header .title{font-family:'Bebas Neue';font-size:20px;letter-spacing:2px;color:var(--gold);flex:1;}
+.close-btn{background:rgba(255,61,61,0.15);border:1px solid var(--red);color:var(--red);padding:6px 14px;font-family:'Bebas Neue';font-size:13px;cursor:pointer;}
+.score-bar{padding:8px 16px;background:var(--dark2);border-bottom:1px solid var(--border);display:flex;gap:16px;flex-shrink:0;}
+.score-item{text-align:center;}
+.score-val{font-family:'Bebas Neue';font-size:20px;color:var(--gold2);}
+.score-lbl{font-size:9px;letter-spacing:2px;color:var(--muted);}
+.game-area{flex:1;display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative;}
+
+/* ── TAP GAME ── */
+#tapCoin{width:150px;height:150px;border-radius:50%;background:radial-gradient(circle at 35% 35%,var(--gold2),var(--gold),#5A3800);border:4px solid var(--gold);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:transform 0.05s, left 0.4s ease, top 0.4s ease;box-shadow:0 0 40px rgba(212,160,23,0.4),inset 0 -8px 20px rgba(0,0,0,0.3);position:absolute;}
+#tapCoin:active{transform:scale(0.92);}
+#tapCoin .coin-text{font-family:'Bebas Neue';font-size:48px;color:var(--dark);text-shadow:0 2px 4px rgba(0,0,0,0.3);}
+.tap-hint{position:absolute;bottom:20px;font-size:12px;color:var(--muted);letter-spacing:3px;font-family:'Bebas Neue';}
+.float-pts{position:absolute;font-family:'Bebas Neue';font-size:24px;color:var(--gold2);pointer-events:none;animation:floatUp 0.8s ease forwards;}
+@keyframes floatUp{0%{opacity:1;transform:translateY(0) scale(1)}100%{opacity:0;transform:translateY(-80px) scale(0.5)}}
+.energy-bar{position:absolute;bottom:50px;left:16px;right:16px;}
+.energy-bg{height:8px;background:var(--dark4);border-radius:4px;overflow:hidden;}
+.energy-fill{height:100%;background:linear-gradient(90deg,var(--green),var(--gold));border-radius:4px;transition:width 0.1s;}
+.energy-lbl{font-size:10px;color:var(--muted);letter-spacing:2px;margin-bottom:4px;font-family:'JetBrains Mono';}
+
+/* ── TRIVIA GAME ── */
+.trivia-wrap{padding:16px;width:100%;max-width:400px;}
+.trivia-q{font-size:17px;font-weight:700;margin-bottom:20px;line-height:1.4;text-align:center;min-height:60px;}
+.trivia-opts{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.trivia-opt{background:var(--dark3);border:2px solid var(--border);padding:14px 10px;font-size:14px;font-weight:600;cursor:pointer;transition:all 0.2s;text-align:center;line-height:1.3;}
+.trivia-opt:active{transform:scale(0.97);}
+.trivia-opt.correct{background:rgba(0,230,118,0.15);border-color:var(--green);color:var(--green);}
+.trivia-opt.wrong{background:rgba(255,61,61,0.15);border-color:var(--red);color:var(--red);}
+.trivia-progress{display:flex;gap:4px;margin-bottom:16px;justify-content:center;}
+.trivia-dot{width:28px;height:4px;background:var(--dark4);border-radius:2px;transition:background 0.3s;}
+.trivia-dot.done{background:var(--gold);}
+.trivia-dot.correct{background:var(--green);}
+.trivia-dot.wrong{background:var(--red);}
+.trivia-feedback{text-align:center;padding:12px;font-size:14px;margin-top:8px;min-height:40px;}
+
+/* ── RULETA ── */
+.ruleta-wrap{display:flex;flex-direction:column;align-items:center;gap:20px;padding:16px;}
+#ruletaCanvas{border-radius:50%;box-shadow:0 0 40px rgba(212,160,23,0.3);}
+.spin-btn{background:linear-gradient(135deg,var(--gold),#8B6914);color:var(--dark);border:none;padding:14px 40px;font-family:'Bebas Neue';font-size:22px;letter-spacing:3px;cursor:pointer;transition:all 0.2s;}
+.spin-btn:disabled{opacity:0.5;cursor:default;}
+.ruleta-result{font-family:'Bebas Neue';font-size:28px;color:var(--gold2);text-align:center;min-height:40px;}
+
+/* ── PUZZLE ── */
+.puzzle-wrap{padding:12px;width:100%;max-width:360px;}
+.puzzle-grid{display:grid;gap:3px;margin:0 auto 16px;}
+.puzzle-cell{aspect-ratio:1;background:var(--dark3);border:1px solid var(--border);cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue';font-size:18px;transition:all 0.15s;position:relative;overflow:hidden;}
+.puzzle-cell.filled{background:var(--gold);border-color:var(--gold2);color:var(--dark);}
+.puzzle-cell.correct{background:var(--green);border-color:var(--green);}
+.puzzle-hint{font-size:12px;color:var(--muted);text-align:center;margin-bottom:8px;}
+.puzzle-preview{text-align:center;margin-bottom:12px;}
+.puzzle-preview span{font-family:'Bebas Neue';font-size:11px;letter-spacing:3px;color:var(--muted);}
+
+/* ── TETRIS ── */
+#tetrisCanvas{border:1px solid var(--border);display:block;margin:0 auto;}
+.tetris-controls{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;padding:8px 16px;flex-shrink:0;}
+.tetris-btn{background:var(--dark3);border:1px solid var(--border);color:var(--text);padding:14px;font-size:20px;cursor:pointer;text-align:center;transition:all 0.15s;}
+.tetris-btn:active{background:var(--dark4);transform:scale(0.95);}
+.tetris-lines-info{font-family:'Bebas Neue';font-size:13px;letter-spacing:2px;color:var(--muted);text-align:center;padding:4px;}
+
+/* ── RESULT SCREEN ── */
+.result-screen{position:absolute;inset:0;background:rgba(7,9,12,0.96);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;z-index:10;}
+.result-icon{font-size:64px;animation:pop 0.4s ease;}
+@keyframes pop{0%{transform:scale(0)}80%{transform:scale(1.2)}100%{transform:scale(1)}}
+.result-title{font-family:'Bebas Neue';font-size:36px;letter-spacing:4px;color:var(--gold);}
+.result-pts{font-family:'Bebas Neue';font-size:56px;color:var(--gold2);line-height:1;}
+.result-sub{font-size:13px;color:var(--muted);letter-spacing:2px;}
+.result-btn{background:linear-gradient(135deg,var(--gold),#8B6914);color:var(--dark);border:none;padding:14px 36px;font-family:'Bebas Neue';font-size:20px;letter-spacing:3px;cursor:pointer;margin-top:8px;}
+
+/* ── GATE VIRAL ── */
+.gate-screen{position:fixed;inset:0;background:rgba(7,9,12,0.97);z-index:500;display:none;flex-direction:column;align-items:center;justify-content:center;padding:24px;text-align:center;}
+.gate-screen.show{display:flex;}
+.gate-icon{font-size:64px;margin-bottom:16px;}
+.gate-title{font-family:'Bebas Neue';font-size:32px;letter-spacing:4px;color:var(--gold);margin-bottom:8px;}
+.gate-desc{font-size:15px;color:var(--muted);line-height:1.6;margin-bottom:24px;max-width:300px;}
+.gate-progress{width:100%;max-width:300px;margin-bottom:20px;}
+.gate-prog-label{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);letter-spacing:2px;margin-bottom:6px;}
+.gate-prog-bg{height:8px;background:var(--dark4);border-radius:4px;overflow:hidden;}
+.gate-prog-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--green));border-radius:4px;transition:width 0.5s;}
+.gate-persons{display:flex;gap:8px;justify-content:center;margin-bottom:24px;}
+.gate-person{width:48px;height:48px;border-radius:50%;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:22px;transition:all 0.3s;}
+.gate-person.done{border-color:var(--green);background:rgba(0,230,118,0.1);}
+.gate-person.pending{border-color:var(--border);opacity:0.4;}
+.gate-links{display:flex;flex-direction:column;gap:8px;width:100%;max-width:300px;margin-bottom:16px;}
+.gate-link{display:flex;align-items:center;gap:10px;padding:12px 16px;border:1px solid var(--border);text-decoration:none;color:var(--text);background:var(--dark2);}
+.gate-link .gl-icon{font-size:22px;}
+.gate-link .gl-text{font-size:14px;font-weight:600;text-align:left;}
+.gate-link .gl-sub{font-size:10px;color:var(--muted);}
+.gate-days{font-family:'Bebas Neue';font-size:14px;letter-spacing:3px;color:var(--muted);margin-top:8px;}
+.free-badge{background:rgba(0,230,118,0.1);border:1px solid var(--green);color:var(--green);padding:6px 16px;font-family:'Bebas Neue';font-size:13px;letter-spacing:2px;margin-bottom:16px;}
+
+/* ── TOAST ── */
+.toast{position:fixed;top:16px;left:50%;transform:translateX(-50%) translateY(-80px);background:var(--dark3);border:1px solid var(--gold);padding:10px 18px;font-size:14px;font-weight:600;transition:transform 0.3s;z-index:300;white-space:nowrap;}
+.toast.show{transform:translateX(-50%) translateY(0);}
+
+/* ── CANJES ── */
+.canje-section{padding:0 12px 16px;}
+.canje-card{background:var(--dark2);border:1px solid var(--border);padding:16px;display:flex;align-items:center;gap:12px;}
+.canje-info{flex:1;}
+.canje-rate{font-family:'Bebas Neue';font-size:20px;color:var(--gold);}
+.canje-sub{font-size:11px;color:var(--muted);}
+.canje-btn{background:linear-gradient(135deg,var(--gold),#8B6914);color:var(--dark);border:none;padding:10px 20px;font-family:'Bebas Neue';font-size:16px;letter-spacing:2px;cursor:pointer;}
+.canje-btn:disabled{opacity:0.4;cursor:default;}
+.pts-total{font-family:'Bebas Neue';font-size:28px;color:var(--gold2);}
+</style>
+</head>
+<body>
+
+<div class="toast" id="toast"></div>
+
+<!-- HEADER -->
+<div class="hdr">
+  <button class="back-btn" onclick="goBack()">← VOLVER</button>
+  <div class="hdr-title">🎮 MINI JUEGOS</div>
+  <div class="pts-badge">
+    <div class="pts-num" id="totalPts">0</div>
+    <div class="pts-lbl">PUNTOS</div>
+  </div>
+</div>
+
+<!-- CANJE -->
+<div class="canje-section">
+  <div class="canje-card">
+    <div class="canje-info">
+      <div class="canje-rate">1,000 PTS = 1 $PISK</div>
+      <div class="canje-sub">Tienes: <span id="ptsDisplay" class="pts-total">0</span> puntos</div>
+    </div>
+    <button class="canje-btn" id="canjeBtn" onclick="canjear()" disabled>CANJEAR</button>
+  </div>
+</div>
+
+<!-- GAME GRID -->
+<div class="game-grid">
+  <div class="game-card" id="card-tap" onclick="openGame('tap')">
+    <span class="game-icon">🪙</span>
+    <div class="game-name">TAP COIN</div>
+    <div class="game-desc">Toca la moneda 60 seg. Cada tap = 1 punto</div>
+    <div class="game-reward">⚡ Hasta 200 PTS</div>
+    <div class="cooldown" id="cd-tap"></div>
+  </div>
+  <div class="game-card" id="card-trivia" onclick="openGame('trivia')">
+    <span class="game-icon">🧠</span>
+    <div class="game-name">TRIVIA $PISK</div>
+    <div class="game-desc">4 preguntas sobre Neo Pisk. 25 pts por acierto</div>
+    <div class="game-reward">🏆 Hasta 100 PTS</div>
+    <div class="cooldown" id="cd-trivia"></div>
+  </div>
+  <div class="game-card" id="card-ruleta" onclick="openGame('ruleta')">
+    <span class="game-icon">🎰</span>
+    <div class="game-name">RULETA</div>
+    <div class="game-desc">Gira la rueda y gana puntos aleatorios</div>
+    <div class="game-reward">🎲 Hasta 300 PTS</div>
+    <div class="cooldown" id="cd-ruleta"></div>
+  </div>
+  <div class="game-card" id="card-puzzle" onclick="openGame('puzzle')">
+    <span class="game-icon">🔵</span>
+    <div class="game-name">PUZZLE</div>
+    <div class="game-desc">Reconstruye el logo de Neo Pisk</div>
+    <div class="game-reward">🧩 100 PTS al completar</div>
+    <div class="cooldown" id="cd-puzzle"></div>
+  </div>
+  <div class="game-card" id="card-tetris" onclick="openGame('tetris')" style="grid-column:1/-1;">
+    <span class="game-icon">🎮</span>
+    <div class="game-name">TETRIS PISK</div>
+    <div class="game-desc">Completa 6 líneas y gana 500 puntos. ¡Buena suerte!</div>
+    <div class="game-reward">💎 500 PTS al completar</div>
+    <div class="cooldown" id="cd-tetris"></div>
+  </div>
+  <div class="game-card" id="card-changan" onclick="openGame('changan')" style="grid-column:1/-1;">
+    <span class="game-icon">🚗</span>
+    <div class="game-name">ROMPECABEZAS CHANGAN</div>
+    <div class="game-desc">Arma la foto del Changan Alsvin eléctrico en modo 4×4</div>
+    <div class="game-reward">🧩 10 PTS al completar</div>
+    <div class="cooldown" id="cd-changan"></div>
+  </div>
+</div>
+
+<!-- ── GAME OVERLAYS ── -->
+
+<!-- TAP -->
+<div class="overlay" id="ov-tap">
+  <div class="game-header">
+    <div class="title">🪙 TAP COIN</div>
+    <div class="score-item"><div class="score-val" id="tapScore">0</div><div class="score-lbl">PUNTOS</div></div>
+    <div class="score-item"><div class="score-val" id="tapTimer">60</div><div class="score-lbl">SEG</div></div>
+    <button class="close-btn" onclick="closeGame('tap')">✕</button>
+  </div>
+  <div class="game-area" id="tapArea">
+    <div id="tapCoin" onclick="doTap(event)" ontouchstart="doTap(event)"><span class="coin-text">$</span></div>
+    <div class="energy-bar">
+      <div class="energy-lbl">ENERGÍA</div>
+      <div class="energy-bg"><div class="energy-fill" id="energyFill" style="width:100%"></div></div>
+    </div>
+    <div class="tap-hint">TOCA LA MONEDA</div>
+  </div>
+</div>
+
+<!-- TRIVIA -->
+<div class="overlay" id="ov-trivia">
+  <div class="game-header">
+    <div class="title">🧠 TRIVIA $PISK</div>
+    <div class="score-item"><div class="score-val" id="triviaScore">0</div><div class="score-lbl">PUNTOS</div></div>
+    <div class="score-item"><div class="score-val" id="triviaQ">1/10</div><div class="score-lbl">PREGUNTA</div></div>
+    <button class="close-btn" onclick="closeGame('trivia')">✕</button>
+  </div>
+  <div class="score-bar" id="triviaDots"></div>
+  <div class="game-area">
+    <div class="trivia-wrap">
+      <div class="trivia-q" id="triviaQuestion"></div>
+      <div class="trivia-opts" id="triviaOpts"></div>
+      <div class="trivia-feedback" id="triviaFeedback"></div>
+    </div>
+  </div>
+</div>
+
+<!-- RULETA -->
+<div class="overlay" id="ov-ruleta">
+  <div class="game-header">
+    <div class="title">🎰 RULETA PISK</div>
+    <button class="close-btn" onclick="closeGame('ruleta')">✕</button>
+  </div>
+  <div class="game-area">
+    <div class="ruleta-wrap">
+      <div style="position:relative">
+        <canvas id="ruletaCanvas" width="280" height="280"></canvas>
+        <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;font-family:'Bebas Neue';font-size:14px;color:var(--dark);background:var(--gold);padding:6px 10px;border-radius:50%;width:50px;height:50px;display:flex;align-items:center;justify-content:center;">$PISK</div>
+        <div style="position:absolute;top:-12px;left:50%;transform:translateX(-50%);font-size:24px;">▼</div>
+      </div>
+      <div class="ruleta-result" id="ruletaResult">¡Gira la ruleta!</div>
+      <button class="spin-btn" id="spinBtn" onclick="girarRuleta()">🎰 GIRAR</button>
+    </div>
+  </div>
+</div>
+
+<!-- PUZZLE -->
+<div class="overlay" id="ov-puzzle">
+  <div class="game-header">
+    <div class="title">🔵 PUZZLE NEO PISK</div>
+    <div class="score-item"><div class="score-val" id="puzzleScore">0</div><div class="score-lbl">PUNTOS</div></div>
+    <div class="score-item"><div class="score-val" id="puzzleTimer">90</div><div class="score-lbl">SEG</div></div>
+    <button class="close-btn" onclick="closeGame('puzzle')">✕</button>
+  </div>
+  <div class="game-area">
+    <div class="puzzle-wrap">
+      <div class="puzzle-hint">Toca las piezas en el orden correcto para completar el logo</div>
+      <div class="puzzle-preview"><span>PATRÓN OBJETIVO</span></div>
+      <div id="puzzleTarget" style="display:grid;gap:3px;margin:0 auto 12px;width:fit-content;"></div>
+      <div id="puzzleGrid" class="puzzle-grid"></div>
+    </div>
+  </div>
+</div>
+
+<!-- TETRIS -->
+<div class="overlay" id="ov-tetris">
+  <div class="game-header">
+    <div class="title">🎮 TETRIS PISK</div>
+    <div class="score-item"><div class="score-val" id="tetrisLines">0/6</div><div class="score-lbl">LÍNEAS</div></div>
+    <div class="score-item"><div class="score-val" id="tetrisLevel">1</div><div class="score-lbl">NIVEL</div></div>
+    <button class="close-btn" onclick="closeGame('tetris')">✕</button>
+  </div>
+  <div class="tetris-lines-info">Completa 6 líneas para ganar 500 puntos 💎</div>
+  <div class="game-area" style="flex-direction:column;gap:8px;padding:8px 0;">
+    <canvas id="tetrisCanvas"></canvas>
+  </div>
+  <div class="tetris-controls">
+    <button class="tetris-btn" onclick="tetrisMove(-1)">◀</button>
+    <button class="tetris-btn" onclick="tetrisRotate()">🔄</button>
+    <button class="tetris-btn" onclick="tetrisMove(1)">▶</button>
+    <button class="tetris-btn" style="grid-column:1/-1" onclick="tetrisDrop()">⬇ BAJAR</button>
+  </div>
+</div>
+
+<!-- ── GATE VIRAL ── -->
+<div class="gate-screen" id="gateScreen">
+  <div class="gate-icon">🔒</div>
+  <div class="gate-title">ACCESO BLOQUEADO</div>
+  <div class="gate-desc">Para seguir jugando necesitas traer <strong style="color:var(--gold)">3 personas nuevas</strong> que le escriban "Hola" a Karla directamente en:<br><br>
+  ✈️ <strong style="color:var(--gold)">@NeoPisk_bot</strong> en Telegram<br>
+  💬 <strong style="color:var(--gold)">WhatsApp 51948115030</strong></div>
+
+  <div class="gate-progress">
+    <div class="gate-prog-label">
+      <span>PERSONAS TRAÍDAS</span>
+      <span id="gateCount">0/3</span>
+    </div>
+    <div class="gate-prog-bg"><div class="gate-prog-fill" id="gateProgFill" style="width:0%"></div></div>
+  </div>
+
+  <div class="gate-persons">
+    <div class="gate-person pending" id="gp0">👤</div>
+    <div class="gate-person pending" id="gp1">👤</div>
+    <div class="gate-person pending" id="gp2">👤</div>
+  </div>
+
+  <div class="gate-links">
+    <a class="gate-link" href="https://t.me/NeoPisk_bot" target="_blank">
+      <span class="gl-icon">✈️</span>
+      <div><div class="gl-text">Karla en Telegram</div><div class="gl-sub">t.me/NeoPisk_bot → enviar "Hola"</div></div>
+    </a>
+    <a class="gate-link" href="https://wa.me/51948115030?text=Hola" target="_blank">
+      <span class="gl-icon">💬</span>
+      <div><div class="gl-text">Karla en WhatsApp</div><div class="gl-sub">51948115030 → enviar "Hola"</div></div>
+    </a>
+  </div>
+
+  <button style="background:linear-gradient(135deg,var(--gold),#8B6914);color:var(--dark);border:none;padding:12px 32px;font-family:'Bebas Neue';font-size:18px;letter-spacing:3px;cursor:pointer;width:100%;max-width:300px;" onclick="compartirInvitacion()">📤 COMPARTIR MI LINK</button>
+
+  <div class="gate-days" id="gateDaysLeft"></div>
+</div>
+
+<script>
+const tg = window.Telegram?.WebApp;
+const API = 'https://neopisk.lat/airdrop-api';
+const POINTS_PER_PISK = 1000;
+
+// ── STATE ─────────────────────────────────────────────
+const state = {
+  userId: null, totalPts: 0,
+  cooldowns: { tap:0, trivia:0, ruleta:0, puzzle:0, tetris:0 }
+};
+
+// ── INIT ──────────────────────────────────────────────
+window.addEventListener('load', () => {
+  if (tg) { tg.ready(); tg.expand(); tg.setHeaderColor('#07090C'); tg.setBackgroundColor('#07090C'); }
+  const uid = tg?.initDataUnsafe?.user?.id || localStorage.getItem('pisk_uid') || 'demo';
+  state.userId = String(uid);
+  loadState();
+  updateCooldowns();
+  setInterval(updateCooldowns, 1000);
+});
+
+function loadState() {
+  const saved = localStorage.getItem('pisk_games_' + state.userId);
+  if (saved) {
+    const d = JSON.parse(saved);
+    state.totalPts       = d.totalPts || 0;
+    state.cooldowns      = d.cooldowns || {};
+    state.firstPlay      = d.firstPlay || null;
+    state.gateRefs       = d.gateRefs || 0;
+    state.gateLastUnlock = d.gateLastUnlock || null;
+    state.gateCycles     = d.gateCycles || 0;
+  }
+  updatePtsUI();
+  syncGateRefs();
+  updateGateBanner();
+}
+
+function updateGateBanner() {
+  // Mostrar días gratis restantes en el header si aplica
+  if (!state.firstPlay) return;
+  const daysSince = (Date.now() - state.firstPlay) / (1000*60*60*24);
+  if (daysSince < FREE_DAYS) {
+    const daysLeft = Math.ceil(FREE_DAYS - daysSince);
+    const badge = document.getElementById('totalPts');
+    if (badge) {
+      const parent = badge.closest('.pts-badge');
+      if (parent && !parent.querySelector('.free-badge-mini')) {
+        const mini = document.createElement('div');
+        mini.className = 'free-badge-mini';
+        mini.style.cssText = 'font-size:9px;color:var(--green);letter-spacing:1px;';
+        mini.textContent = \`🎁 \${daysLeft}d GRATIS\`;
+        parent.appendChild(mini);
+      }
+    }
+  }
+}
+
+function saveState() {
+  localStorage.setItem('pisk_games_' + state.userId, JSON.stringify({
+    totalPts: state.totalPts, cooldowns: state.cooldowns,
+    firstPlay: state.firstPlay, gateRefs: state.gateRefs,
+    gateLastUnlock: state.gateLastUnlock, gateCycles: state.gateCycles
+  }));
+}
+
+function addPoints(pts) {
+  state.totalPts += pts;
+  updatePtsUI();
+  saveState();
+  // Sync con API
+  fetch(`${API}/add-points`, { method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ userId: state.userId, points: pts }) }).catch(()=>{});
+}
+
+function updatePtsUI() {
+  document.getElementById('totalPts').textContent  = state.totalPts.toLocaleString();
+  document.getElementById('ptsDisplay').textContent = state.totalPts.toLocaleString();
+  document.getElementById('canjeBtn').disabled = state.totalPts < POINTS_PER_PISK;
+}
+
+const CD_24H = 24 * 60 * 60 * 1000;
+
+function isLocked(game) {
+  const cd = state.cooldowns[game];
+  return cd && (Date.now() - cd) < CD_24H;
+}
+
+function setCooldown(game) {
+  state.cooldowns[game] = Date.now();
+  saveState();
+}
+
+function updateCooldowns() {
+  ['tap','trivia','ruleta','puzzle','tetris','changan'].forEach(g => {
+    const el = document.getElementById('cd-' + g);
+    const card = document.getElementById('card-' + g);
+    if (!el) return;
+    if (isLocked(g)) {
+      const remaining = CD_24H - (Date.now() - state.cooldowns[g]);
+      const h = Math.floor(remaining / 3600000);
+      const m = Math.floor((remaining % 3600000) / 60000);
+      el.textContent = `⏰ ${h}h ${m}m`;
+      card.classList.add('locked');
+    } else {
+      el.textContent = '✅ DISPONIBLE';
+      card.classList.remove('locked');
+    }
+  });
+}
+
+function openGame(game) {
+  if (isLocked(game)) { toast('⏰ Disponible en 24 horas'); return; }
+
+  // Registrar primer juego
+  if (!state.firstPlay) {
+    state.firstPlay = Date.now();
+    saveState();
+    // Mostrar badge días gratis
+    toast('🎉 ¡3 días gratis desbloqueados!');
+  }
+
+  // Verificar gate viral
+  if (checkGate()) { showGate(); return; }
+
+  document.getElementById('ov-' + game).classList.add('show');
+  if (game === 'tap')    initTap();
+  if (game === 'trivia') initTrivia();
+  if (game === 'ruleta') initRuleta();
+  if (game === 'puzzle') initPuzzle();
+  if (game === 'tetris') initTetris();
+  if (game === 'changan') initChangan();
+}
+
+function closeGame(game) {
+  document.getElementById('ov-' + game).classList.remove('show');
+  clearTimeout(window['timer_' + game]);
+  clearInterval(window['interval_' + game]);
+  if (game === 'tap') { clearInterval(window.coinMoveInterval); const c=document.getElementById('tapCoin'); if(c){c.style.position='';c.style.left='';c.style.top='';} }
+  if (game === 'tetris' && window.tetrisLoop) { clearInterval(window.tetrisLoop); window.tetrisLoop = null; }
+}
+
+function showResult(game, pts, icon = '🏆') {
+  const ov = document.getElementById('ov-' + game);
+  const existing = ov.querySelector('.result-screen');
+  if (existing) existing.remove();
+
+  const div = document.createElement('div');
+  div.className = 'result-screen';
+  div.innerHTML = `
+    <div class="result-icon">${icon}</div>
+    <div class="result-title">¡GANASTE!</div>
+    <div class="result-pts">+${pts}</div>
+    <div class="result-sub">PUNTOS GANADOS</div>
+    <button class="result-btn" onclick="finishGame('${game}', ${pts})">COBRAR Y SALIR</button>
+  `;
+  ov.appendChild(div);
+  if (tg) tg.HapticFeedback?.notificationOccurred('success');
+}
+
+function finishGame(game, pts) {
+  addPoints(pts);
+  setCooldown(game);
+  updateCooldowns();
+  closeGame(game);
+  toast(`🎉 +${pts} puntos ganados!`);
+}
+
+// ── TAP GAME ─────────────────────────────────────────
+let tapScore = 0, tapEnergy = 200, tapRunning = false;
+
+function initTap() {
+  tapScore = 0; tapEnergy = 200; tapRunning = true;
+  document.getElementById('tapScore').textContent = 0;
+  document.getElementById('tapTimer').textContent = 60;
+  document.getElementById('energyFill').style.width = '100%';
+
+  // Mover moneda cada 1.2 segundos
+  moveCoin();
+  window.coinMoveInterval = setInterval(moveCoin, 1200);
+
+  let timeLeft = 60;
+  window.interval_tap = setInterval(() => {
+    timeLeft--;
+    document.getElementById('tapTimer').textContent = timeLeft;
+    tapEnergy = Math.min(200, tapEnergy + 2);
+    document.getElementById('energyFill').style.width = (tapEnergy / 200 * 100) + '%';
+    if (timeLeft <= 0) {
+      clearInterval(window.interval_tap);
+      clearInterval(window.coinMoveInterval);
+      tapRunning = false;
+      showResult('tap', tapScore, '🪙');
+    }
+  }, 1000);
+}
+
+function moveCoin() {
+  const coin = document.getElementById('tapCoin');
+  const area = document.getElementById('tapArea');
+  if (!coin || !area) return;
+  const aW = area.clientWidth, aH = area.clientHeight;
+  const cW = coin.offsetWidth || 180, cH = coin.offsetHeight || 180;
+  const margin = 20;
+  const x = margin + Math.random() * (aW - cW - margin*2);
+  const y = margin + Math.random() * (aH - cH - margin*2 - 80);
+  coin.style.position = 'absolute';
+  coin.style.left = x + 'px';
+  coin.style.top  = y + 'px';
+  coin.style.transition = 'left 0.4s ease, top 0.4s ease';
+}
+
+function doTap(e) {
+  if (!tapRunning || tapEnergy <= 0) return;
+  tapEnergy = Math.max(0, tapEnergy - 1);
+  tapScore++;
+  document.getElementById('tapScore').textContent = tapScore;
+  document.getElementById('energyFill').style.width = (tapEnergy / 200 * 100) + '%';
+
+  // Escapa después de cada tap
+  setTimeout(moveCoin, 150);
+
+  // Float animation
+  const coin = document.getElementById('tapCoin');
+  const rect  = coin.getBoundingClientRect();
+  const area  = document.getElementById('tapArea');
+  const aRect = area.getBoundingClientRect();
+  const span  = document.createElement('span');
+  span.className = 'float-pts';
+  span.textContent = '+1';
+  span.style.cssText = `left:${rect.left - aRect.left + rect.width/2}px;top:${rect.top - aRect.top}px;`;
+  area.appendChild(span);
+  setTimeout(() => span.remove(), 800);
+
+  if (tg) tg.HapticFeedback?.impactOccurred('light');
+}
+
+// ── TRIVIA GAME ───────────────────────────────────────
+const TRIVIA_POOL = [
+  { q:'¿Cuál es el precio de preventa del token $PISK?', opts:['$0.05 USD','$0.10 USD','$0.25 USD','$1.00 USD'], a:1 },
+  { q:'¿Qué tipo de vehículos usa Neo Pisk en su flota?', opts:['Gasolina','Híbridos','Eléctricos','Diésel'], a:2 },
+  { q:'¿En qué red se puede comprar $PISK con USDT?', opts:['Ethereum','Polygon','Bitcoin','Solana'], a:1 },
+  { q:'¿Cuántos tokens $PISK equivalen 1,000 puntos de juego?', opts:['10 $PISK','5 $PISK','1 $PISK','0.1 $PISK'], a:2 },
+  { q:'¿Qué marca de autos eléctricos usa Neo Pisk?', opts:['Tesla','BYD/Changan','Rivian','Nio'], a:1 },
+  { q:'¿Cuál es la comisión de referido directo (Nivel 1)?', opts:['5%','7%','10%','15%'], a:2 },
+  { q:'¿Qué plataformas de ride-sharing usa Neo Pisk?', opts:['Uber y Cabify','Yango e InDriver','Todas las anteriores','Solo Uber'], a:2 },
+  { q:'¿Qué mecanismo usa $PISK para aumentar su valor?', opts:['Minería','Buyback & Burn','Staking solo','Inflación'], a:1 },
+  { q:'¿Cuál es el símbolo del token de Neo Pisk?', opts:['$NEO','$PISK','$NPTK','$ELEC'], a:1 },
+  { q:'¿Qué servicio ofrece Neo Pisk además de tokens?', opts:['Minería de Bitcoin','Robótica e IA','Turismo espacial','NFT de arte'], a:1 },
+];
+// Seleccionar 4 aleatorias cada partida
+let TRIVIA_QS = [];
+
+let triviaIdx = 0, triviaScore = 0, triviaAnswered = false;
+
+function initTrivia() {
+  triviaIdx = 0; triviaScore = 0; triviaAnswered = false;
+  document.getElementById('triviaScore').textContent = 0;
+  // Elegir 4 preguntas aleatorias del pool
+  const shuffled = [...TRIVIA_POOL].sort(() => Math.random() - 0.5);
+  TRIVIA_QS = shuffled.slice(0, 4);
+  renderTriviaQ();
+}
+
+function renderTriviaQ() {
+  const q = TRIVIA_QS[triviaIdx];
+  document.getElementById('triviaQ').textContent = `${triviaIdx+1}/4`;
+  document.getElementById('triviaQuestion').textContent = q.q;
+  document.getElementById('triviaFeedback').textContent = '';
+
+  const dots = document.getElementById('triviaDots');
+  dots.innerHTML = TRIVIA_QS.map((_,i) => `<div class="trivia-dot${i<triviaIdx?' done':''}" id="dot-${i}"></div>`).join('');
+
+  document.getElementById('triviaOpts').innerHTML = q.opts.map((opt,i) =>
+    `<div class="trivia-opt" onclick="answerTrivia(${i})">${opt}</div>`
+  ).join('');
+  triviaAnswered = false;
+}
+
+function answerTrivia(idx) {
+  if (triviaAnswered) return;
+  triviaAnswered = true;
+  const q = TRIVIA_QS[triviaIdx];
+  const opts = document.querySelectorAll('.trivia-opt');
+  opts.forEach(o => o.style.pointerEvents = 'none');
+
+  if (idx === q.a) {
+    opts[idx].classList.add('correct');
+    triviaScore += 25;
+    document.getElementById('triviaScore').textContent = triviaScore;
+    document.getElementById('triviaFeedback').innerHTML = `<span style="color:var(--green)">✅ ¡Correcto! +25 puntos</span>`;
+    document.getElementById('dot-' + triviaIdx).classList.add('correct');
+    if (tg) tg.HapticFeedback?.notificationOccurred('success');
+  } else {
+    opts[idx].classList.add('wrong');
+    opts[q.a].classList.add('correct');
+    document.getElementById('triviaFeedback').innerHTML = `<span style="color:var(--red)">❌ Incorrecto</span>`;
+    document.getElementById('dot-' + triviaIdx).classList.add('wrong');
+  }
+
+  setTimeout(() => {
+    triviaIdx++;
+    if (triviaIdx < TRIVIA_QS.length) {
+      renderTriviaQ();
+    } else {
+      showResult('trivia', triviaScore, '🧠');
+    }
+  }, 1200);
+}
+
+// ── RULETA ───────────────────────────────────────────
+const RULETA_OPTS = [
+  { label:'10 PTS',  pts:10,  color:'#1A2030' },
+  { label:'50 PTS',  pts:50,  color:'#D4A017' },
+  { label:'25 PTS',  pts:25,  color:'#1A3020' },
+  { label:'100 PTS', pts:100, color:'#1A1A40' },
+  { label:'75 PTS',  pts:75,  color:'#2A1A00' },
+  { label:'200 PTS', pts:200, color:'#FF3D3D' },
+  { label:'150 PTS', pts:150, color:'#0A2A20' },
+  { label:'300 PTS', pts:300, color:'#D4A017' },
+  { label:'30 PTS',  pts:30,  color:'#1A2030' },
+  { label:'5 PTS',   pts:5,   color:'#2A1020' },
+];
+
+let ruletaAngle = 0, ruletaSpinning = false;
+
+function initRuleta() {
+  ruletaSpinning = false;
+  document.getElementById('spinBtn').disabled = false;
+  document.getElementById('ruletaResult').textContent = '¡Gira la ruleta!';
+  drawRuleta(0);
+}
+
+function drawRuleta(angle) {
+  const canvas = document.getElementById('ruletaCanvas');
+  const ctx    = canvas.getContext('2d');
+  const cx = canvas.width/2, cy = canvas.height/2, r = cx - 10;
+  const arc = (2 * Math.PI) / RULETA_OPTS.length;
+
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  RULETA_OPTS.forEach((opt, i) => {
+    const startAngle = angle + i * arc;
+    const endAngle   = startAngle + arc;
+    ctx.beginPath();
+    ctx.moveTo(cx, cy);
+    ctx.arc(cx, cy, r, startAngle, endAngle);
+    ctx.fillStyle = opt.color;
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(212,160,23,0.3)';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+
+    ctx.save();
+    ctx.translate(cx, cy);
+    ctx.rotate(startAngle + arc/2);
+    ctx.fillStyle = '#E8EDF5';
+    ctx.font = 'bold 12px Rajdhani';
+    ctx.textAlign = 'right';
+    ctx.fillText(opt.label, r - 12, 4);
+    ctx.restore();
+  });
+
+  // Borde
+  ctx.beginPath();
+  ctx.arc(cx, cy, r, 0, 2*Math.PI);
+  ctx.strokeStyle = 'rgba(212,160,23,0.5)';
+  ctx.lineWidth = 3;
+  ctx.stroke();
+}
+
+function girarRuleta() {
+  if (ruletaSpinning) return;
+  ruletaSpinning = true;
+  document.getElementById('spinBtn').disabled = true;
+  document.getElementById('ruletaResult').textContent = '...';
+
+  const extra    = Math.random() * 360;
+  const spins    = 5 + Math.floor(Math.random() * 3);
+  const total    = spins * 360 + extra;
+  const duration = 4000;
+  const start    = performance.now();
+  const startAngle = ruletaAngle;
+
+  function animate(now) {
+    const elapsed = now - start;
+    const progress = Math.min(elapsed / duration, 1);
+    const ease = 1 - Math.pow(1 - progress, 3);
+    ruletaAngle = startAngle + (total * Math.PI / 180) * ease;
+    drawRuleta(ruletaAngle);
+    if (progress < 1) { requestAnimationFrame(animate); return; }
+
+    // Calcular resultado
+    const arc = (2 * Math.PI) / RULETA_OPTS.length;
+    const norm = ((ruletaAngle % (2*Math.PI)) + 2*Math.PI) % (2*Math.PI);
+    const idx  = Math.floor(((2*Math.PI - norm) / arc) % RULETA_OPTS.length);
+    const winner = RULETA_OPTS[idx];
+    document.getElementById('ruletaResult').innerHTML = `<span style="color:var(--gold2)">🎉 ${winner.label}</span>`;
+    setTimeout(() => showResult('ruleta', winner.pts, '🎰'), 800);
+  }
+  requestAnimationFrame(animate);
+}
+
+// ── PUZZLE ────────────────────────────────────────────
+// Logo simplificado como patrón en grid 4x4
+const LOGO_PATTERN = [
+  0,1,1,0,
+  1,1,1,1,
+  0,1,1,0,
+  0,0,1,0,
+];
+
+let puzzleGrid = [], puzzleTimer = 90, puzzleInterval = null;
+
+function initPuzzle() {
+  puzzleGrid = LOGO_PATTERN.map(() => false);
+  puzzleTimer = 90;
+  document.getElementById('puzzleScore').textContent = 0;
+  document.getElementById('puzzleTimer').textContent = 90;
+
+  // Render target
+  const tgt = document.getElementById('puzzleTarget');
+  tgt.style.gridTemplateColumns = 'repeat(4, 24px)';
+  tgt.innerHTML = LOGO_PATTERN.map(v =>
+    `<div style="width:24px;height:24px;background:${v?'var(--gold)':'var(--dark4)'};border:1px solid var(--border)"></div>`
+  ).join('');
+
+  // Render grid (mixed order)
+  const grid = document.getElementById('puzzleGrid');
+  grid.style.gridTemplateColumns = 'repeat(4, 1fr)';
+  grid.style.width = '240px';
+  grid.innerHTML = LOGO_PATTERN.map((v,i) =>
+    `<div class="puzzle-cell" id="pc-${i}" data-idx="${i}" onclick="togglePuzzle(${i})">${v?'●':''}</div>`
+  ).join('');
+
+  puzzleInterval = setInterval(() => {
+    puzzleTimer--;
+    document.getElementById('puzzleTimer').textContent = puzzleTimer;
+    if (puzzleTimer <= 0) { clearInterval(puzzleInterval); checkPuzzle(true); }
+  }, 1000);
+}
+
+function togglePuzzle(idx) {
+  if (LOGO_PATTERN[idx] === 0) return;
+  const cell = document.getElementById('pc-' + idx);
+  puzzleGrid[idx] = !puzzleGrid[idx];
+  cell.classList.toggle('filled', puzzleGrid[idx]);
+  if (tg) tg.HapticFeedback?.impactOccurred('light');
+  checkPuzzle(false);
+}
+
+function checkPuzzle(force) {
+  const correct = LOGO_PATTERN.every((v,i) => v === 0 || puzzleGrid[i] === true);
+  const partial = puzzleGrid.filter((v,i) => LOGO_PATTERN[i] && v).length;
+  document.getElementById('puzzleScore').textContent = correct ? 100 : partial * 6;
+  if (correct) {
+    clearInterval(puzzleInterval);
+    LOGO_PATTERN.forEach((v,i) => { if(v) document.getElementById('pc-'+i).classList.add('correct'); });
+    setTimeout(() => showResult('puzzle', 100, '🔵'), 500);
+  } else if (force) {
+    clearInterval(puzzleInterval);
+    setTimeout(() => showResult('puzzle', partial * 6, '🔵'), 300);
+  }
+}
+
+// ── TETRIS ────────────────────────────────────────────
+const COLS = 10, ROWS = 20, BLOCK = 24;
+const PIECES = [
+  [[1,1,1,1]],                         // I
+  [[1,1],[1,1]],                        // O
+  [[0,1,0],[1,1,1]],                    // T
+  [[1,0,0],[1,1,1]],                    // L
+  [[0,0,1],[1,1,1]],                    // J
+  [[0,1,1],[1,1,0]],                    // S
+  [[1,1,0],[0,1,1]],                    // Z
+];
+const COLORS = ['#00E5FF','#FFD600','#AA00FF','#FF6D00','#1A6EFF','#00E676','#FF3D3D'];
+
+let board, curPiece, curX, curY, curColor, tetrisLineCount = 0, tetrisGameOver = false;
+
+function initTetris() {
+  const canvas = document.getElementById('tetrisCanvas');
+  canvas.width  = COLS * BLOCK;
+  canvas.height = ROWS * BLOCK;
+  board = Array.from({length:ROWS}, () => Array(COLS).fill(null));
+  tetrisLineCount = 0; tetrisGameOver = false;
+  document.getElementById('tetrisLines').textContent = '0/6';
+  document.getElementById('tetrisLevel').textContent = '1';
+  spawnPiece();
+  if (window.tetrisLoop) clearInterval(window.tetrisLoop);
+  window.tetrisLoop = setInterval(tetrisTick, 600);
+  drawTetris();
+}
+
+function spawnPiece() {
+  const idx = Math.floor(Math.random() * PIECES.length);
+  curPiece = PIECES[idx];
+  curColor = COLORS[idx];
+  curX = Math.floor((COLS - curPiece[0].length) / 2);
+  curY = 0;
+  if (!canPlace(curX, curY, curPiece)) { tetrisGameOver = true; endTetris(); }
+}
+
+function canPlace(x, y, piece) {
+  return piece.every((row, dy) =>
+    row.every((val, dx) => {
+      if (!val) return true;
+      const nx = x+dx, ny = y+dy;
+      return nx>=0 && nx<COLS && ny>=0 && ny<ROWS && !board[ny][nx];
+    })
+  );
+}
+
+function place() {
+  curPiece.forEach((row,dy) => row.forEach((val,dx) => { if(val) board[curY+dy][curX+dx]=curColor; }));
+  // Check lines
+  let cleared = 0;
+  for (let r = ROWS-1; r >= 0; r--) {
+    if (board[r].every(c=>c)) {
+      board.splice(r,1); board.unshift(Array(COLS).fill(null));
+      cleared++; r++;
+    }
+  }
+  if (cleared > 0) {
+    tetrisLineCount += cleared;
+    document.getElementById('tetrisLines').textContent = `${tetrisLineCount}/6`;
+    if (tg) tg.HapticFeedback?.notificationOccurred('success');
+    if (tetrisLineCount >= 6) { clearInterval(window.tetrisLoop); window.tetrisLoop=null; showResult('tetris',500,'💎'); return; }
+  }
+  spawnPiece();
+}
+
+function tetrisTick() {
+  if (tetrisGameOver) return;
+  if (canPlace(curX, curY+1, curPiece)) { curY++; }
+  else { place(); }
+  drawTetris();
+}
+
+function tetrisMove(dir) {
+  if (tetrisGameOver) return;
+  if (canPlace(curX+dir, curY, curPiece)) { curX+=dir; drawTetris(); }
+}
+
+function tetrisRotate() {
+  if (tetrisGameOver) return;
+  const rot = curPiece[0].map((_,i) => curPiece.map(row=>row[i]).reverse());
+  if (canPlace(curX, curY, rot)) { curPiece=rot; drawTetris(); }
+}
+
+function tetrisDrop() {
+  if (tetrisGameOver) return;
+  while (canPlace(curX, curY+1, curPiece)) curY++;
+  place(); drawTetris();
+}
+
+function drawTetris() {
+  const canvas = document.getElementById('tetrisCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  ctx.fillStyle = '#07090C';
+  ctx.fillRect(0,0,canvas.width,canvas.height);
+
+  // Grid lines
+  ctx.strokeStyle = 'rgba(212,160,23,0.06)';
+  ctx.lineWidth = 0.5;
+  for(let c=0;c<COLS;c++){ctx.beginPath();ctx.moveTo(c*BLOCK,0);ctx.lineTo(c*BLOCK,ROWS*BLOCK);ctx.stroke();}
+  for(let r=0;r<ROWS;r++){ctx.beginPath();ctx.moveTo(0,r*BLOCK);ctx.lineTo(COLS*BLOCK,r*BLOCK);ctx.stroke();}
+
+  // Board
+  board.forEach((row,r) => row.forEach((col,c) => {
+    if (col) { ctx.fillStyle=col; ctx.fillRect(c*BLOCK+1,r*BLOCK+1,BLOCK-2,BLOCK-2); }
+  }));
+
+  // Current piece
+  if (curPiece) {
+    curPiece.forEach((row,dy) => row.forEach((val,dx) => {
+      if (val) {
+        ctx.fillStyle = curColor;
+        ctx.fillRect((curX+dx)*BLOCK+1,(curY+dy)*BLOCK+1,BLOCK-2,BLOCK-2);
+        ctx.strokeStyle = 'rgba(255,255,255,0.3)';
+        ctx.lineWidth = 1;
+        ctx.strokeRect((curX+dx)*BLOCK+1,(curY+dy)*BLOCK+1,BLOCK-2,BLOCK-2);
+      }
+    }));
+  }
+}
+
+function endTetris() {
+  clearInterval(window.tetrisLoop); window.tetrisLoop=null;
+  const pts = Math.min(tetrisLineCount * 80, 480);
+  if (tetrisLineCount === 0) { toast('💀 Game Over — sin puntos'); closeGame('tetris'); return; }
+  showResult('tetris', pts, tetrisLineCount>=6?'💎':'🎮');
+}
+
+// ── CANJE ─────────────────────────────────────────────
+async function canjear() {
+  const piskToEarn = Math.floor(state.totalPts / POINTS_PER_PISK);
+  if (piskToEarn < 1) { toast('⚠️ Necesitas 1,000 puntos mínimo'); return; }
+  const ptsUsados = piskToEarn * POINTS_PER_PISK;
+
+  try {
+    const r = await fetch(`${API}/canjear-puntos`, {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ userId:state.userId, puntos:ptsUsados, pisk:piskToEarn })
+    });
+    const d = await r.json();
+    if (d.ok) {
+      state.totalPts -= ptsUsados;
+      updatePtsUI(); saveState();
+      toast(`🎉 ¡Canjeaste ${piskToEarn} $PISK!`);
+    } else { toast('❌ Error al canjear'); }
+  } catch(e) {
+    // Demo mode
+    state.totalPts -= ptsUsados;
+    updatePtsUI(); saveState();
+    toast(`🎉 ¡${piskToEarn} $PISK agregados a tu balance!`);
+  }
+}
+
+// ── UTILS ─────────────────────────────────────────────
+function goBack() { window.location.href = 'app.html'; }
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// ── ROMPECABEZAS CHANGAN ─────────────────────────────
+const CHANGAN_IMG = 'https://res.cloudinary.com/dfmqybaac/image/upload/v1772308696/alsvin-web-1700x830-exterior-5_dz0dkv.jpg';
+const CHANGAN_SIZE = 4;
+let changanPieces = [], changanSelected = null, changanMoves = 0, changanSolved = false;
+let changanTimerVal = 120, changanTimerInt = null;
+
+function initChangan() {
+  changanMoves = 0; changanSolved = false; changanSelected = null;
+  document.getElementById('changanMoves').textContent = 0;
+  changanTimerVal = 120;
+  document.getElementById('changanTimer').textContent = 120;
+  clearInterval(changanTimerInt);
+
+  // Create shuffled order
+  const total = CHANGAN_SIZE * CHANGAN_SIZE;
+  changanPieces = Array.from({length: total}, (_, i) => i);
+  // Shuffle
+  for (let i = total - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [changanPieces[i], changanPieces[j]] = [changanPieces[j], changanPieces[i]];
+  }
+
+  renderChangan();
+
+  changanTimerInt = setInterval(() => {
+    changanTimerVal--;
+    document.getElementById('changanTimer').textContent = changanTimerVal;
+    if (changanTimerVal <= 0) {
+      clearInterval(changanTimerInt);
+      if (!changanSolved) { toast('⏰ Tiempo agotado'); closeGame('changan'); }
+    }
+  }, 1000);
+}
+
+function renderChangan() {
+  const board = document.getElementById('changanBoard');
+  const total = CHANGAN_SIZE * CHANGAN_SIZE;
+  const pieceW = 100 / CHANGAN_SIZE;
+  const pieceH = 100 / CHANGAN_SIZE;
+
+  board.innerHTML = changanPieces.map((orig, pos) => {
+    const origCol = orig % CHANGAN_SIZE;
+    const origRow = Math.floor(orig / CHANGAN_SIZE);
+    const bgX = -(origCol * 100);
+    const bgY = -(origRow * 100);
+    const isSelected = changanSelected === pos;
+    const isCorrect = orig === pos;
+    return `<div 
+      onclick="selectChangan(${pos})"
+      style="
+        aspect-ratio:1;
+        background-image: url('${CHANGAN_IMG}');
+        background-size: ${CHANGAN_SIZE * 100}% ${CHANGAN_SIZE * 100}%;
+        background-position: ${bgX}% ${bgY}%;
+        border: 2px solid ${isSelected ? 'var(--gold)' : isCorrect ? 'rgba(0,230,118,0.4)' : 'rgba(212,160,23,0.15)'};
+        cursor: pointer;
+        transition: all 0.15s;
+        box-shadow: ${isSelected ? '0 0 12px rgba(212,160,23,0.6)' : 'none'};
+        transform: ${isSelected ? 'scale(1.04)' : 'scale(1)'};
+        position: relative;
+      ">
+      ${isCorrect ? '<div style="position:absolute;inset:0;border:1px solid rgba(0,230,118,0.3);pointer-events:none;"></div>' : ''}
+    </div>`;
+  }).join('');
+}
+
+function selectChangan(pos) {
+  if (changanSolved) return;
+  if (tg) tg.HapticFeedback?.impactOccurred('light');
+
+  if (changanSelected === null) {
+    changanSelected = pos;
+    renderChangan();
+  } else if (changanSelected === pos) {
+    changanSelected = null;
+    renderChangan();
+  } else {
+    // Swap
+    [changanPieces[changanSelected], changanPieces[pos]] = [changanPieces[pos], changanPieces[changanSelected]];
+    changanMoves++;
+    document.getElementById('changanMoves').textContent = changanMoves;
+    changanSelected = null;
+    renderChangan();
+
+    // Check solved
+    if (changanPieces.every((v, i) => v === i)) {
+      changanSolved = true;
+      clearInterval(changanTimerInt);
+      setTimeout(() => showResult('changan', 10, '🚗'), 500);
+    }
+  }
+}
+
+// ── INIT CHANGAN ON OPEN ─────────────────────────────
+
+// Swipe para tetris
+let touchStartX = 0;
+document.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; });
+document.addEventListener('touchend', e => {
+  if (!document.getElementById('ov-tetris').classList.contains('show')) return;
+  const dx = e.changedTouches[0].clientX - touchStartX;
+  if (Math.abs(dx) > 30) tetrisMove(dx > 0 ? 1 : -1);
+});
+</script>
+</body>
+</html>
