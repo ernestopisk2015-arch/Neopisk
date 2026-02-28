@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>$PISK Airdrop</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #D4A017; --gold2: #F0C040; --gold3: #FFF3B0;
+    --dark: #07090C; --dark2: #0D1117; --dark3: #131A24;
+    --border: rgba(212,160,23,0.2);
+    --text: #E8EDF5; --muted: #5A6A7A;
+    --green: #00E676; --red: #FF3D3D; --blue: #1A6EFF;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  body { background:var(--dark); color:var(--text); font-family:'Rajdhani',sans-serif; min-height:100vh; overflow-x:hidden; padding-bottom:80px; }
+
+  /* HEADER */
+  .header { background:linear-gradient(180deg,#0D1117 0%,transparent 100%); padding:16px 16px 0; position:sticky; top:0; z-index:50; }
+  .user-bar { display:flex; align-items:center; gap:10px; margin-bottom:16px; }
+  .avatar { width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--gold),#5A3800);display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--dark);border:2px solid var(--gold);flex-shrink:0; }
+  .user-name { font-size:15px; font-weight:700; }
+  .user-code { font-size:10px; color:var(--muted); letter-spacing:2px; }
+  .lang-select { margin-left:auto; background:rgba(212,160,23,0.1); border:1px solid var(--border); color:var(--gold); padding:4px 8px; font-size:12px; font-family:'Rajdhani',sans-serif; outline:none; }
+
+  /* BALANCE */
+  .balance-card { margin:0 12px 16px; background:linear-gradient(135deg,#0D1117,#131A24,#1A2030); border:1px solid var(--border); padding:20px 16px; position:relative; overflow:hidden; }
+  .balance-card::before { content:'$PISK'; position:absolute; right:-10px; top:-10px; font-family:'Bebas Neue',sans-serif; font-size:70px; color:rgba(212,160,23,0.04); pointer-events:none; }
+  .bal-label { font-size:10px; letter-spacing:4px; color:var(--muted); }
+  .bal-amount { font-family:'Bebas Neue',sans-serif; font-size:52px; line-height:1; background:linear-gradient(135deg,var(--gold),var(--gold2),var(--gold3)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+  .bal-usd { font-size:13px; color:var(--muted); margin-bottom:12px; }
+  .bal-row { display:flex; gap:16px; padding-top:12px; border-top:1px solid var(--border); }
+  .bal-item .val { font-family:'Bebas Neue',sans-serif; font-size:20px; color:var(--green); }
+  .bal-item .lbl { font-size:9px; letter-spacing:2px; color:var(--muted); }
+
+  /* TABS */
+  .tabs { display:flex; gap:1px; padding:0 12px; margin-bottom:12px; background:var(--border); }
+  .tab { flex:1; padding:10px 4px; text-align:center; font-family:'Bebas Neue',sans-serif; font-size:13px; letter-spacing:1px; color:var(--muted); background:var(--dark2); cursor:pointer; border:none; transition:all 0.2s; }
+  .tab.active { background:var(--dark3); color:var(--gold); border-bottom:2px solid var(--gold); }
+
+  /* CONTENT */
+  .tab-content { padding:0 12px; display:none; }
+  .tab-content.active { display:block; }
+  .sec-title { font-family:'Bebas Neue',sans-serif; font-size:12px; letter-spacing:4px; color:var(--muted); margin-bottom:10px; padding-left:2px; }
+
+  /* MISSION CARD */
+  .mission-card { background:var(--dark2); border:1px solid var(--border); padding:14px 12px; margin-bottom:8px; display:flex; align-items:center; gap:12px; cursor:pointer; transition:all 0.2s; position:relative; overflow:hidden; }
+  .mission-card::before { content:''; position:absolute; left:0; top:0; bottom:0; width:3px; background:var(--gold); transform:scaleY(0); transition:transform 0.2s; }
+  .mission-card:active::before { transform:scaleY(1); }
+  .mission-card.done { opacity:0.5; cursor:default; }
+  .mission-card.done::before { background:var(--green); transform:scaleY(1); }
+  .m-icon { font-size:26px; flex-shrink:0; }
+  .m-info { flex:1; }
+  .m-name { font-size:15px; font-weight:700; line-height:1.2; }
+  .m-desc { font-size:11px; color:var(--muted); margin-top:2px; }
+  .m-reward { text-align:right; flex-shrink:0; }
+  .m-pts { font-family:'Bebas Neue',sans-serif; font-size:20px; color:var(--gold2); line-height:1; }
+  .m-lbl { font-size:9px; color:var(--muted); letter-spacing:1px; }
+  .m-check { width:22px;height:22px;border-radius:50%;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:12px; }
+  .m-check.done { background:var(--green); border-color:var(--green); color:var(--dark); }
+
+  /* MODAL */
+  .modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.85); z-index:200; display:none; align-items:flex-end; }
+  .modal-overlay.show { display:flex; }
+  .modal { background:var(--dark2); border-top:1px solid var(--border); width:100%; padding:20px 16px 36px; border-radius:18px 18px 0 0; animation:slideUp 0.3s ease; max-height:88vh; overflow-y:auto; }
+  @keyframes slideUp { from{transform:translateY(100%)} to{transform:translateY(0)} }
+  .modal-handle { width:36px;height:4px;background:var(--border);margin:0 auto 16px;border-radius:2px; }
+  .modal-title { font-family:'Bebas Neue',sans-serif; font-size:26px; letter-spacing:2px; color:var(--gold); margin-bottom:8px; }
+  .modal-desc { font-size:14px; color:var(--muted); line-height:1.6; margin-bottom:16px; }
+  .modal-reward { background:rgba(212,160,23,0.08); border:1px solid var(--border); padding:12px 14px; margin-bottom:16px; display:flex; align-items:center; gap:10px; }
+  .modal-pts { font-family:'Bebas Neue',sans-serif; font-size:34px; color:var(--gold2); }
+  .modal-pts-sub { font-size:11px; color:var(--muted); letter-spacing:2px; }
+  .m-input { width:100%; background:var(--dark3); border:1px solid var(--border); color:var(--text); padding:12px 12px; font-family:'Rajdhani',sans-serif; font-size:15px; outline:none; margin-bottom:10px; transition:border-color 0.2s; }
+  .m-input:focus { border-color:var(--gold); }
+  .btn-full { width:100%; padding:15px; font-family:'Bebas Neue',sans-serif; font-size:19px; letter-spacing:3px; border:none; cursor:pointer; transition:all 0.2s; display:flex; align-items:center; justify-content:center; gap:8px; }
+  .btn-gold { background:linear-gradient(135deg,var(--gold),#8B6914); color:var(--dark); }
+  .btn-gold:active { transform:scale(0.98); }
+  .btn-ghost { background:none; border:1px solid var(--border); color:var(--muted); margin-top:8px; }
+  .social-row { display:flex; align-items:center; gap:10px; padding:10px; background:var(--dark3); border:1px solid var(--border); margin-bottom:6px; text-decoration:none; color:var(--text); }
+  .social-row .si { font-size:22px; }
+  .social-row .sn { font-size:14px; font-weight:600; }
+  .social-row .su { font-size:10px; color:var(--muted); }
+
+  /* RANKING */
+  .rank-item { display:flex; align-items:center; gap:10px; padding:10px 0; border-bottom:1px solid rgba(255,255,255,0.04); }
+  .rank-n { font-family:'Bebas Neue',sans-serif; font-size:22px; width:28px; text-align:center; flex-shrink:0; }
+  .rk1{color:#FFD700} .rk2{color:#C0C0C0} .rk3{color:#CD7F32} .rkn{color:var(--muted)}
+  .rank-av { width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--gold),#2A1A00);display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:14px;color:var(--dark);flex-shrink:0; }
+  .rank-info { flex:1; }
+  .rank-name { font-weight:700; font-size:14px; }
+  .rank-sub { font-size:10px; color:var(--muted); }
+  .rank-pisk { font-family:'Bebas Neue',sans-serif; font-size:18px; color:var(--gold2); }
+
+  /* REFERIDOS */
+  .ref-box { background:var(--dark3); border:1px solid var(--border); padding:16px; text-align:center; margin-bottom:12px; }
+  .ref-code { font-family:'Bebas Neue',sans-serif; font-size:34px; color:var(--gold2); letter-spacing:4px; }
+  .ref-code-lbl { font-size:10px; letter-spacing:3px; color:var(--muted); margin-bottom:6px; }
+  .ref-levels { display:grid; grid-template-columns:repeat(3,1fr); gap:6px; margin-bottom:12px; }
+  .ref-lv { background:var(--dark3); border:1px solid var(--border); padding:12px 8px; text-align:center; }
+  .ref-lv .pct { font-family:'Bebas Neue',sans-serif; font-size:26px; color:var(--gold2); }
+  .ref-lv .lbl { font-size:9px; letter-spacing:2px; color:var(--muted); }
+  .ref-stats { display:grid; grid-template-columns:1fr 1fr; gap:6px; }
+  .ref-st { background:var(--dark3); border:1px solid var(--border); padding:12px; text-align:center; }
+  .ref-st .val { font-family:'Bebas Neue',sans-serif; font-size:26px; color:var(--green); }
+  .ref-st .lbl { font-size:9px; letter-spacing:2px; color:var(--muted); }
+
+  /* TOAST */
+  .toast { position:fixed; top:16px; left:50%; transform:translateX(-50%) translateY(-80px); background:var(--dark3); border:1px solid var(--gold); padding:10px 18px; font-size:14px; font-weight:600; transition:transform 0.3s; z-index:300; white-space:nowrap; box-shadow:0 4px 20px rgba(212,160,23,0.3); }
+  .toast.show { transform:translateX(-50%) translateY(0); }
+
+  /* SPINNER */
+  .spinner { width:36px;height:36px;border:3px solid var(--border);border-top-color:var(--gold);border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 12px; }
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .loading { text-align:center; padding:40px 20px; color:var(--muted); }
+</style>
+</head>
+<body>
+
+<div class="toast" id="toast"></div>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="user-bar">
+    <div class="avatar" id="userAvatar">?</div>
+    <div>
+      <div class="user-name" id="userName">Cargando...</div>
+      <div class="user-code" id="userCode">CÓDIGO: —</div>
+    </div>
+    <select class="lang-select" id="langSelect" onchange="cambiarIdioma(this.value)">
+      <option value="es">🇪🇸 ES</option>
+      <option value="en">🇺🇸 EN</option>
+      <option value="pt">🇧🇷 PT</option>
+    </select>
+  </div>
+
+  <div class="balance-card">
+    <div class="bal-label">BALANCE TOTAL</div>
+    <div class="bal-amount" id="balAmt">0</div>
+    <div style="font-family:'Bebas Neue';font-size:16px;color:var(--gold);margin-top:-4px;">$PISK</div>
+    <div class="bal-usd" id="balUsd">≈ $0.00 USD</div>
+    <div class="bal-row">
+      <div class="bal-item"><div class="val" id="balUsdt">$0.00</div><div class="lbl">USDT PENDIENTE</div></div>
+      <div class="bal-item"><div class="val" id="balRefs">0</div><div class="lbl">REFERIDOS</div></div>
+      <div class="bal-item"><div class="val" id="balMis">0/9</div><div class="lbl">MISIONES</div></div>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" onclick="showTab('misiones',this)">🎯 MISIONES</button>
+    <button class="tab" onclick="showTab('ranking',this)">🏆 TOP</button>
+    <button class="tab" onclick="showTab('referidos',this)">🤝 REFS</button>
+    <button class="tab" onclick="window.location.href='games.html'">🎮 JUEGOS</button>
+  </div>
+</div>
+
+<!-- MISIONES -->
+<div class="tab-content active" id="tab-misiones">
+  <div id="misLoad" class="loading"><div class="spinner"></div>Cargando...</div>
+  <div id="misList" style="display:none"></div>
+</div>
+
+<!-- RANKING -->
+<div class="tab-content" id="tab-ranking">
+  <div class="sec-title">TOP HOLDERS $PISK</div>
+  <div id="rankList"><div class="loading"><div class="spinner"></div>Cargando...</div></div>
+</div>
+
+<!-- REFERIDOS -->
+<div class="tab-content" id="tab-referidos">
+  <div class="ref-box">
+    <div class="ref-code-lbl">TU CÓDIGO DE REFERIDO</div>
+    <div class="ref-code" id="refCode">—</div>
+    <button class="btn-full btn-gold" style="margin-top:12px" onclick="compartir()">📤 COMPARTIR</button>
+  </div>
+  <div class="sec-title">COMISIONES</div>
+  <div class="ref-levels">
+    <div class="ref-lv"><div class="pct">10%</div><div class="lbl">NIVEL 1<br>DIRECTO</div></div>
+    <div class="ref-lv"><div class="pct">3%</div><div class="lbl">NIVEL 2</div></div>
+    <div class="ref-lv"><div class="pct">1%</div><div class="lbl">NIVEL 3</div></div>
+  </div>
+  <div style="font-size:11px;color:var(--muted);text-align:center;margin-bottom:12px">50% USDT + 50% $PISK por cada inversión</div>
+  <div class="sec-title">MIS STATS</div>
+  <div class="ref-stats">
+    <div class="ref-st"><div class="val" id="refTotal">0</div><div class="lbl">REFERIDOS</div></div>
+    <div class="ref-st"><div class="val" id="refUsdt">$0</div><div class="lbl">USDT GANADO</div></div>
+  </div>
+  <div class="sec-title" style="margin-top:12px">BONOS</div>
+  <div id="bonosGrid"></div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+  <div class="modal" id="modal">
+    <div class="modal-handle"></div>
+    <div id="modalContent"></div>
+  </div>
+</div>
+
+<script>
+const API = 'https://neopisk.lat/airdrop-api';
+const TP  = 0.10;
+const tg  = window.Telegram?.WebApp;
+let user  = null;
+let lang  = 'es';
+
+const TX = {
+  es: {
+    sec: 'MISIONES DISPONIBLES',
+    done: '✓', claim: 'RECLAMAR', cancel: 'CANCELAR', send: 'ENVIAR',
+    share_txt: '🚀 ¡Únete al Airdrop $PISK!\nGana tokens + USDT reales.\n🔗 https://neopisk.lat/app.html\n🔑 Mi código: ',
+    m: [
+      {id:'registro',  icon:'📝', n:'Registro Completo',    d:'Completa tu perfil y recibe tokens',            r:5,   a:'form'},
+      {id:'viral',     icon:'🦠', n:'Misión Viral 5x5',     d:'Invita 5 amigos a Karla por WS o Telegram',     r:20,  a:'viral'},
+      {id:'redes',     icon:'📱', n:'Seguir Redes',         d:'Sigue TikTok, X, Telegram y YouTube',           r:10,  a:'redes'},
+      {id:'voucher',   icon:'💰', n:'Voucher Inversión',    d:'Compra $PISK y sube tu comprobante',            r:250, a:'upload'},
+      {id:'influencer',icon:'🎬', n:'Misión Influencer',    d:'Publica video en TikTok/Reels sobre $PISK',     r:40,  a:'link'},
+      {id:'comunidad', icon:'👥', n:'Unirse Comunidad',     d:'Únete al grupo oficial de Telegram',            r:10,  a:'comunidad'},
+      {id:'wallet',    icon:'💳', n:'Registrar Wallet',     d:'Registra tu wallet USDT (BEP20/TRC20)',         r:5,   a:'wallet'},
+      {id:'humanidad', icon:'🤖', n:'Prueba Humanidad',     d:'Demuestra que no eres un bot',                  r:5,   a:'captcha'},
+      {id:'diario',    icon:'🔥', n:'Fidelidad Diaria',     d:'Reclama +1 $PISK cada 24 horas',               r:1,   a:'diario'},
+    ]
+  },
+  en: {
+    sec:'AVAILABLE MISSIONS', done:'✓', claim:'CLAIM', cancel:'CANCEL', send:'SEND',
+    share_txt:'🚀 Join the $PISK Airdrop!\nEarn tokens + real USDT.\n🔗 https://neopisk.lat/app.html\n🔑 My code: ',
+    m:[
+      {id:'registro',  icon:'📝', n:'Full Registration',   d:'Complete your profile and earn tokens',         r:5,   a:'form'},
+      {id:'viral',     icon:'🦠', n:'Viral 5x5 Mission',   d:'Invite 5 friends to Karla on WS or Telegram',   r:20,  a:'viral'},
+      {id:'redes',     icon:'📱', n:'Follow Social Media', d:'Follow TikTok, X, Telegram and YouTube',        r:10,  a:'redes'},
+      {id:'voucher',   icon:'💰', n:'Investment Voucher',  d:'Buy $PISK and upload your receipt',             r:250, a:'upload'},
+      {id:'influencer',icon:'🎬', n:'Influencer Mission',  d:'Post a TikTok/Reels video about $PISK',         r:40,  a:'link'},
+      {id:'comunidad', icon:'👥', n:'Join Community',      d:'Join the official Telegram group',              r:10,  a:'comunidad'},
+      {id:'wallet',    icon:'💳', n:'Register Wallet',     d:'Register your USDT wallet (BEP20/TRC20)',       r:5,   a:'wallet'},
+      {id:'humanidad', icon:'🤖', n:'Humanity Proof',      d:'Prove you are not a bot',                       r:5,   a:'captcha'},
+      {id:'diario',    icon:'🔥', n:'Daily Loyalty',       d:'Claim +1 $PISK every 24 hours',                r:1,   a:'diario'},
+    ]
+  },
+  pt: {
+    sec:'MISSÕES DISPONÍVEIS', done:'✓', claim:'RESGATAR', cancel:'CANCELAR', send:'ENVIAR',
+    share_txt:'🚀 Junte-se ao Airdrop $PISK!\nGanhe tokens + USDT reais.\n🔗 https://neopisk.lat/app.html\n🔑 Meu código: ',
+    m:[
+      {id:'registro',  icon:'📝', n:'Registro Completo',   d:'Complete seu perfil e ganhe tokens',            r:5,   a:'form'},
+      {id:'viral',     icon:'🦠', n:'Missão Viral 5x5',    d:'Convide 5 amigos para Karla no WS ou Telegram', r:20,  a:'viral'},
+      {id:'redes',     icon:'📱', n:'Seguir Redes',        d:'Siga TikTok, X, Telegram e YouTube',            r:10,  a:'redes'},
+      {id:'voucher',   icon:'💰', n:'Comprovante',         d:'Compre $PISK e envie seu comprovante',          r:250, a:'upload'},
+      {id:'influencer',icon:'🎬', n:'Missão Influencer',   d:'Publique vídeo no TikTok/Reels sobre $PISK',    r:40,  a:'link'},
+      {id:'comunidad', icon:'👥', n:'Entrar Comunidade',   d:'Entre no grupo oficial do Telegram',            r:10,  a:'comunidad'},
+      {id:'wallet',    icon:'💳', n:'Registrar Carteira',  d:'Registre sua carteira USDT (BEP20/TRC20)',      r:5,   a:'wallet'},
+      {id:'humanidade',icon:'🤖', n:'Prova Humanidade',    d:'Prove que você não é um bot',                   r:5,   a:'captcha'},
+      {id:'diario',    icon:'🔥', n:'Fidelidade Diária',   d:'Resgate +1 $PISK a cada 24 horas',             r:1,   a:'diario'},
+    ]
+  }
+};
+
+// ── INIT ─────────────────────────────────────────────
+window.addEventListener('load', async () => {
+  if (tg) { tg.ready(); tg.expand(); tg.setHeaderColor('#07090C'); tg.setBackgroundColor('#07090C'); }
+  const tgUser = tg?.initDataUnsafe?.user;
+  const uid    = tgUser?.id || 'demo_' + Math.random().toString(36).slice(2,8);
+  const nombre = tgUser?.first_name || 'Amigo';
+  document.getElementById('userAvatar').textContent = nombre.charAt(0).toUpperCase();
+  document.getElementById('userName').textContent   = nombre;
+  await cargarUsuario(uid, nombre);
+  renderMisiones();
+  cargarRanking();
+});
+
+async function cargarUsuario(uid, nombre) {
+  try {
+    const r = await fetch(`${API}/usuario?id=${uid}&nombre=${encodeURIComponent(nombre)}`);
+    user = await r.json();
+  } catch(e) {
+    user = { id: uid, nombre, idioma:'es', pisk_balance:0, usdt_pendiente:0,
+             codigo_ref:'PISK'+String(uid).slice(-6), mis_referidos:[], misiones:{} };
+  }
+  lang = user.idioma || 'es';
+  document.getElementById('langSelect').value = lang;
+  updateUI();
+}
+
+function updateUI() {
+  if (!user) return;
+  document.getElementById('balAmt').textContent  = user.pisk_balance || 0;
+  document.getElementById('balUsd').textContent  = `≈ $${((user.pisk_balance||0)*TP).toFixed(2)} USD`;
+  document.getElementById('balUsdt').textContent = `$${(user.usdt_pendiente||0).toFixed(2)}`;
+  document.getElementById('balRefs').textContent = (user.mis_referidos||[]).length;
+  const done = Object.values(user.misiones||{}).filter(Boolean).length;
+  document.getElementById('balMis').textContent  = `${done}/9`;
+  document.getElementById('refCode').textContent = user.codigo_ref || '—';
+  document.getElementById('refTotal').textContent= (user.mis_referidos||[]).length;
+  document.getElementById('refUsdt').textContent = `$${(user.usdt_pendiente||0).toFixed(2)}`;
+  document.getElementById('userCode').textContent= 'CÓDIGO: ' + (user.codigo_ref||'—');
+  const refs = (user.mis_referidos||[]).length;
+  document.getElementById('bonosGrid').innerHTML = [{n:5,u:5},{n:10,u:15},{n:25,u:50},{n:50,u:100}].map(b=>`
+    <div style="display:flex;align-items:center;gap:10px;padding:10px;background:var(--dark3);border:1px solid ${refs>=b.n?'var(--green)':'var(--border)'};margin-bottom:6px;">
+      <span>${refs>=b.n?'✅':'🔒'}</span>
+      <div style="flex:1"><strong>${b.n} referidos</strong><br><span style="font-size:10px;color:var(--muted)">+$${b.u} USDT</span></div>
+      <span style="font-family:'Bebas Neue';font-size:18px;color:${refs>=b.n?'var(--green)':'var(--muted)'}">$${b.u}</span>
+    </div>`).join('');
+}
+
+function renderMisiones() {
+  const t = TX[lang];
+  document.getElementById('misLoad').style.display = 'none';
+  const el = document.getElementById('misList');
+  el.style.display = 'block';
+  el.innerHTML = `<div class="sec-title">${t.sec}</div>` + t.m.map(m => {
+    const done = user?.misiones?.[m.id];
+    return `<div class="mission-card${done?' done':''}" onclick="${done?'':('openM(\''+m.id+'\')')}">
+      <div class="m-icon">${m.icon}</div>
+      <div class="m-info"><div class="m-name">${m.n}</div><div class="m-desc">${m.d}</div></div>
+      <div class="m-reward"><div class="m-pts">+${m.r}</div><div class="m-lbl">$PISK</div></div>
+      <div class="m-check${done?' done':''}">${done?'✓':''}</div>
+    </div>`;
+  }).join('');
+}
+
+async function cargarRanking() {
+  try {
+    const r = await fetch(`${API}/ranking`);
+    const d = await r.json();
+    document.getElementById('rankList').innerHTML = (d.top||[]).map((u,i)=>`
+      <div class="rank-item">
+        <div class="rank-n ${i<3?'rk'+(i+1):'rkn'}">${i+1}</div>
+        <div class="rank-av">${u.nombre.charAt(0)}</div>
+        <div class="rank-info"><div class="rank-name">${u.nombre}</div><div class="rank-sub">${u.refs} refs</div></div>
+        <div class="rank-pisk">${u.pisk}</div>
+      </div>`).join('') || '<div style="color:var(--muted);text-align:center;padding:20px">Sin datos aún</div>';
+  } catch(e) {}
+}
+
+function openM(id) {
+  const t = TX[lang];
+  const m = t.m.find(x=>x.id===id); if(!m) return;
+  let html = `<div class="modal-title">${m.icon} ${m.n}</div>
+  <div class="modal-reward"><div><div class="modal-pts">+${m.r} $PISK</div><div class="modal-pts-sub">≈ $${(m.r*TP).toFixed(2)} USD</div></div></div>`;
+
+  if(m.a==='form') html+=`<input class="m-input" id="iNombre" placeholder="Nombre completo"><input class="m-input" id="iPais" placeholder="País"><button class="btn-full btn-gold" onclick="doMision('registro')">${t.claim}</button>`;
+  else if(m.a==='viral') html+=`<div class="modal-desc">Invita 5 amigos. Deben saludar a Karla con tu código en WhatsApp o Telegram.</div>
+    <a class="social-row" href="https://wa.me/51948115030" target="_blank"><span class="si">💬</span><div><div class="sn">WhatsApp</div><div class="su">wa.me/51948115030</div></div></a>
+    <a class="social-row" href="https://t.me/NeoPisk_bot" target="_blank"><span class="si">✈️</span><div><div class="sn">Telegram</div><div class="su">t.me/NeoPisk_bot</div></div></a>
+    <button class="btn-full btn-gold" onclick="doMision('viral')">${t.claim} (${(user?.mis_referidos||[]).length}/5)</button>`;
+  else if(m.a==='redes') html+=`<div class="modal-desc">Sigue todas las redes para recibir tu recompensa.</div>
+    <a class="social-row" href="https://www.tiktok.com/@ernestopiskulich" target="_blank"><span class="si">🎵</span><div><div class="sn">TikTok</div></div></a>
+    <a class="social-row" href="https://x.com/EPiskulich50437" target="_blank"><span class="si">🐦</span><div><div class="sn">Twitter / X</div></div></a>
+    <a class="social-row" href="https://t.me/NeoPisk_bot" target="_blank"><span class="si">✈️</span><div><div class="sn">Telegram</div></div></a>
+    <a class="social-row" href="https://youtube.com/@neopisk" target="_blank"><span class="si">▶️</span><div><div class="sn">YouTube</div></div></a>
+    <button class="btn-full btn-gold" onclick="doMision('redes')">${t.claim}</button>`;
+  else if(m.a==='upload') html+=`<div class="modal-desc">Compra tokens $PISK y sube tu comprobante. El admin aprueba en pocas horas.</div>
+    <div style="padding:10px;background:var(--dark3);border:1px solid var(--border);font-size:12px;margin-bottom:10px">💳 Yape: 51948115030<br>🌐 <a href="https://neopisk.lat/invertir.html" style="color:var(--gold)">neopisk.lat/invertir.html</a></div>
+    <input type="file" id="vFile" accept="image/*" style="display:none" onchange="subirVoucher()">
+    <button class="btn-full btn-gold" onclick="document.getElementById('vFile').click()">📷 SUBIR COMPROBANTE</button>`;
+  else if(m.a==='link') html+=`<input class="m-input" id="iVideo" placeholder="https://tiktok.com/..."><button class="btn-full btn-gold" onclick="enviarVideo()">${t.send}</button>`;
+  else if(m.a==='comunidad') html+=`<div class="modal-desc">Únete al grupo oficial y confirma.</div>
+    <a class="social-row" href="https://t.me/NeoPisk_bot" target="_blank"><span class="si">✈️</span><div><div class="sn">Abrir Telegram</div></div></a>
+    <button class="btn-full btn-gold" onclick="doMision('comunidad')">${t.claim}</button>`;
+  else if(m.a==='wallet') html+=`<input class="m-input" id="iWallet" placeholder="0x... o TRC20..."><button class="btn-full btn-gold" onclick="guardarWallet()">${t.claim}</button>`;
+  else if(m.a==='captcha') html+=`<div style="font-size:22px;text-align:center;padding:14px;background:var(--dark3);margin-bottom:10px">¿Cuánto es <strong>7 × 8</strong>?</div><input class="m-input" id="iCaptcha" type="number" placeholder="Respuesta"><button class="btn-full btn-gold" onclick="checkCaptcha()">${t.claim}</button>`;
+  else if(m.a==='diario') html+=`<div class="modal-desc">Reclama tu recompensa diaria. Vuelve mañana para reclamar de nuevo.</div><button class="btn-full btn-gold" onclick="doMision('diario')">${t.claim} +1 $PISK</button>`;
+
+  html += `<button class="btn-full btn-ghost" onclick="closeModal()">${t.cancel}</button>`;
+  document.getElementById('modalContent').innerHTML = html;
+  document.getElementById('modalOverlay').classList.add('show');
+}
+
+async function doMision(id) {
+  const body = { userId: user.id, mision: id };
+  if(id==='registro') { body.nombre=document.getElementById('iNombre')?.value; body.pais=document.getElementById('iPais')?.value; if(!body.nombre||!body.pais){toast('⚠️ Completa los campos');return;} }
+  if(id==='wallet')   { body.wallet=document.getElementById('iWallet')?.value; }
+  try {
+    const r = await fetch(`${API}/mision`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+    const d = await r.json();
+    if(d.ok){ user=d.usuario; closeModal(); updateUI(); renderMisiones(); toast(`🎉 +${d.tokens} $PISK!`); tg?.HapticFeedback?.notificationOccurred('success'); }
+    else toast('❌ '+(d.error||'Error'));
+  } catch(e){ toast('❌ Error de conexión'); }
+}
+
+function checkCaptcha(){ parseInt(document.getElementById('iCaptcha')?.value)===56 ? doMision('humanidad') : toast('❌ Incorrecto'); }
+async function guardarWallet(){ const w=document.getElementById('iWallet')?.value?.trim(); if(!w||w.length<20){toast('⚠️ Wallet inválida');return;} doMision('wallet'); }
+async function enviarVideo(){ const l=document.getElementById('iVideo')?.value?.trim(); if(!l||!l.startsWith('http')){toast('⚠️ Link inválido');return;} try{await fetch(`${API}/video-link`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({userId:user.id,link:l})});closeModal();toast('✅ Enviado al admin');}catch(e){toast('❌ Error');} }
+async function subirVoucher(){ const f=document.getElementById('vFile').files[0]; if(!f)return; const fd=new FormData(); fd.append('voucher',f); fd.append('userId',user.id); try{await fetch(`${API}/voucher`,{method:'POST',body:fd});closeModal();toast('✅ Comprobante enviado');}catch(e){toast('❌ Error');} }
+
+function compartir(){ const t=TX[lang]; const txt=t.share_txt+user.codigo_ref; if(tg?.switchInlineQuery)tg.switchInlineQuery(txt); else if(navigator.share)navigator.share({text:txt}); else{navigator.clipboard?.writeText(txt);toast('📋 Copiado!');} }
+function showTab(tab,btn){ document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active')); document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active')); document.getElementById('tab-'+tab).classList.add('active'); btn.classList.add('active'); if(tab==='ranking')cargarRanking(); }
+function closeModal(e){ if(e&&e.target!==document.getElementById('modalOverlay'))return; document.getElementById('modalOverlay').classList.remove('show'); }
+function cambiarIdioma(l){ lang=l; if(user)user.idioma=l; renderMisiones(); updateUI(); }
+function toast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),3000); }
+</script>
+</body>
+</html>
