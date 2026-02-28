@@ -110,7 +110,26 @@
   .toast { position:fixed; top:16px; left:50%; transform:translateX(-50%) translateY(-80px); background:var(--dark3); border:1px solid var(--gold); padding:10px 18px; font-size:14px; font-weight:600; transition:transform 0.3s; z-index:300; white-space:nowrap; box-shadow:0 4px 20px rgba(212,160,23,0.3); }
   .toast.show { transform:translateX(-50%) translateY(0); }
 
-  /* SPINNER */
+  /* GAME OVERLAYS */
+.overlay{position:fixed;inset:0;background:#07090C;z-index:200;display:none;flex-direction:column;}
+.overlay.show{display:flex;}
+.game-header{padding:12px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;flex-shrink:0;}
+.game-header .title{font-family:'Bebas Neue';font-size:18px;letter-spacing:2px;color:var(--gold);flex:1;}
+.close-btn{background:rgba(255,61,61,0.15);border:1px solid var(--red,#FF3D3D);color:var(--red,#FF3D3D);padding:6px 14px;font-family:'Bebas Neue';font-size:13px;cursor:pointer;}
+.score-item{text-align:center;}
+.score-val{font-family:'Bebas Neue';font-size:20px;color:var(--gold2);}
+.score-lbl{font-size:9px;letter-spacing:2px;color:var(--muted);}
+.game-area{flex:1;display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative;}
+.trivia-opt{background:var(--dark3);border:2px solid var(--border);padding:14px 10px;font-size:14px;font-weight:600;cursor:pointer;transition:all 0.2s;text-align:center;line-height:1.3;}
+.trivia-opt.correct{background:rgba(0,230,118,0.15);border-color:var(--green);color:var(--green);}
+.trivia-opt.wrong{background:rgba(255,61,61,0.15);border-color:var(--red,#FF3D3D);color:var(--red,#FF3D3D);}
+.float-pts{position:absolute;font-family:'Bebas Neue';font-size:24px;color:var(--gold2);pointer-events:none;animation:floatUp 0.8s ease forwards;}
+@keyframes floatUp{0%{opacity:1;transform:translateY(0) scale(1)}100%{opacity:0;transform:translateY(-80px) scale(0.5)}}
+.puzzle-cell{aspect-ratio:1;background:var(--dark3);border:1px solid var(--border);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.15s;}
+.puzzle-cell.filled{background:var(--gold);border-color:var(--gold2);}
+.puzzle-cell.correct{background:var(--green);border-color:var(--green);}
+
+/* SPINNER */
   .spinner { width:36px;height:36px;border:3px solid var(--border);border-top-color:var(--gold);border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 12px; }
   @keyframes spin{to{transform:rotate(360deg)}}
   .loading { text-align:center; padding:40px 20px; color:var(--muted); }
@@ -151,7 +170,7 @@
     <button class="tab active" onclick="showTab('misiones',this)">🎯 MISIONES</button>
     <button class="tab" onclick="showTab('ranking',this)">🏆 TOP</button>
     <button class="tab" onclick="showTab('referidos',this)">🤝 REFS</button>
-    <button class="tab" onclick="window.location.href='games.html'">🎮 JUEGOS</button>
+    <button class="tab" onclick="showTab('juegos',this)">🎮 JUEGOS</button>
   </div>
 </div>
 
@@ -188,6 +207,153 @@
   </div>
   <div class="sec-title" style="margin-top:12px">BONOS</div>
   <div id="bonosGrid"></div>
+</div>
+
+<!-- JUEGOS -->
+<div class="tab-content" id="tab-juegos">
+  <div style="background:rgba(212,160,23,0.08);border:1px solid rgba(212,160,23,0.2);padding:14px 16px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;">
+    <div>
+      <div style="font-size:11px;letter-spacing:3px;color:var(--muted)">1,000 PTS = 1 $PISK</div>
+      <div style="font-family:'Bebas Neue';font-size:13px;color:var(--muted)">Tienes: <span id="gPtsDisplay" style="color:var(--gold2)">0</span> puntos</div>
+    </div>
+    <button onclick="canjearPuntos()" id="gCanjeBtn" style="background:linear-gradient(135deg,var(--gold),#8B6914);color:var(--dark);border:none;padding:10px 20px;font-family:'Bebas Neue';font-size:16px;letter-spacing:2px;cursor:pointer;" disabled>CANJEAR</button>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+    <div class="mission-card" id="gc-tap" onclick="abrirJuego('tap')">
+      <div class="m-icon">🪙</div>
+      <div class="m-info"><div class="m-name">TAP COIN</div><div class="m-desc">Persigue la moneda 60 seg</div></div>
+      <div class="m-reward"><div class="m-pts">200</div><div class="m-lbl">PTS</div></div>
+      <div class="m-check" id="gcd-tap"></div>
+    </div>
+    <div class="mission-card" id="gc-trivia" onclick="abrirJuego('trivia')">
+      <div class="m-icon">🧠</div>
+      <div class="m-info"><div class="m-name">TRIVIA</div><div class="m-desc">4 preguntas $PISK</div></div>
+      <div class="m-reward"><div class="m-pts">100</div><div class="m-lbl">PTS</div></div>
+      <div class="m-check" id="gcd-trivia"></div>
+    </div>
+    <div class="mission-card" id="gc-ruleta" onclick="abrirJuego('ruleta')">
+      <div class="m-icon">🎰</div>
+      <div class="m-info"><div class="m-name">RULETA</div><div class="m-desc">Gira y gana puntos</div></div>
+      <div class="m-reward"><div class="m-pts">300</div><div class="m-lbl">PTS</div></div>
+      <div class="m-check" id="gcd-ruleta"></div>
+    </div>
+    <div class="mission-card" id="gc-changan" onclick="abrirJuego('changan')">
+      <div class="m-icon">🚗</div>
+      <div class="m-info"><div class="m-name">CHANGAN</div><div class="m-desc">Rompecabezas 4x4</div></div>
+      <div class="m-reward"><div class="m-pts">10</div><div class="m-lbl">PTS</div></div>
+      <div class="m-check" id="gcd-changan"></div>
+    </div>
+    <div class="mission-card" id="gc-tetris" onclick="abrirJuego('tetris')" style="grid-column:1/-1;">
+      <div class="m-icon">🎮</div>
+      <div class="m-info"><div class="m-name">TETRIS PISK</div><div class="m-desc">Completa 6 líneas → 500 pts</div></div>
+      <div class="m-reward"><div class="m-pts">500</div><div class="m-lbl">PTS</div></div>
+      <div class="m-check" id="gcd-tetris"></div>
+    </div>
+  </div>
+</div>
+
+<!-- GAME OVERLAYS (inline) -->
+
+<!-- TAP -->
+<div class="overlay" id="gov-tap">
+  <div class="game-header">
+    <div class="title">🪙 TAP COIN</div>
+    <div class="score-item"><div class="score-val" id="tapScore">0</div><div class="score-lbl">PTS</div></div>
+    <div class="score-item"><div class="score-val" id="tapTimer">60</div><div class="score-lbl">SEG</div></div>
+    <button class="close-btn" onclick="cerrarJuego('tap')">✕</button>
+  </div>
+  <div class="game-area" id="tapArea" style="position:relative;overflow:hidden;">
+    <div id="tapCoin" onclick="doTap(event)" ontouchstart="doTap(event)" style="width:150px;height:150px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#F0C040,#D4A017,#5A3800);border:4px solid #D4A017;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 0 40px rgba(212,160,23,0.4);position:absolute;transition:left 0.4s ease,top 0.4s ease;">
+      <span style="font-family:'Bebas Neue';font-size:48px;color:#07090C;">$</span>
+    </div>
+    <div style="position:absolute;bottom:50px;left:16px;right:16px;">
+      <div style="font-size:10px;color:var(--muted);letter-spacing:2px;margin-bottom:4px;">ENERGÍA</div>
+      <div style="height:8px;background:var(--dark4,#1A2030);border-radius:4px;overflow:hidden;">
+        <div id="energyFill" style="height:100%;width:100%;background:linear-gradient(90deg,var(--green),var(--gold));border-radius:4px;transition:width 0.1s;"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TRIVIA -->
+<div class="overlay" id="gov-trivia">
+  <div class="game-header">
+    <div class="title">🧠 TRIVIA $PISK</div>
+    <div class="score-item"><div class="score-val" id="triviaScore">0</div><div class="score-lbl">PTS</div></div>
+    <div class="score-item"><div class="score-val" id="triviaQ">1/4</div><div class="score-lbl">PREG</div></div>
+    <button class="close-btn" onclick="cerrarJuego('trivia')">✕</button>
+  </div>
+  <div class="score-bar" id="triviaDots" style="padding:8px 16px;background:var(--dark2);border-bottom:1px solid var(--border);display:flex;gap:4px;flex-shrink:0;"></div>
+  <div class="game-area">
+    <div style="padding:16px;width:100%;max-width:400px;">
+      <div id="triviaQuestion" style="font-size:17px;font-weight:700;margin-bottom:20px;line-height:1.4;text-align:center;min-height:60px;"></div>
+      <div id="triviaOpts" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;"></div>
+      <div id="triviaFeedback" style="text-align:center;padding:12px;font-size:14px;margin-top:8px;min-height:40px;"></div>
+    </div>
+  </div>
+</div>
+
+<!-- RULETA -->
+<div class="overlay" id="gov-ruleta">
+  <div class="game-header">
+    <div class="title">🎰 RULETA PISK</div>
+    <button class="close-btn" onclick="cerrarJuego('ruleta')">✕</button>
+  </div>
+  <div class="game-area">
+    <div style="display:flex;flex-direction:column;align-items:center;gap:20px;padding:16px;">
+      <div style="position:relative;">
+        <canvas id="ruletaCanvas" width="260" height="260" style="border-radius:50%;box-shadow:0 0 40px rgba(212,160,23,0.3);"></canvas>
+        <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:'Bebas Neue';font-size:13px;color:var(--dark);background:var(--gold);padding:6px 8px;border-radius:50%;width:46px;height:46px;display:flex;align-items:center;justify-content:center;pointer-events:none;">$PISK</div>
+        <div style="position:absolute;top:-12px;left:50%;transform:translateX(-50%);font-size:22px;">▼</div>
+      </div>
+      <div id="ruletaResult" style="font-family:'Bebas Neue';font-size:28px;color:var(--gold2);text-align:center;min-height:40px;">¡Gira la ruleta!</div>
+      <button id="spinBtn" onclick="girarRuleta()" style="background:linear-gradient(135deg,var(--gold),#8B6914);color:var(--dark);border:none;padding:14px 40px;font-family:'Bebas Neue';font-size:22px;letter-spacing:3px;cursor:pointer;">🎰 GIRAR</button>
+    </div>
+  </div>
+</div>
+
+<!-- CHANGAN PUZZLE -->
+<div class="overlay" id="gov-changan">
+  <div class="game-header">
+    <div class="title">🚗 CHANGAN</div>
+    <div class="score-item"><div class="score-val" id="changanMoves">0</div><div class="score-lbl">MOV</div></div>
+    <div class="score-item"><div class="score-val" id="changanTimer">120</div><div class="score-lbl">SEG</div></div>
+    <button class="close-btn" onclick="cerrarJuego('changan')">✕</button>
+  </div>
+  <div class="game-area" style="flex-direction:column;gap:12px;padding:12px;">
+    <div id="changanBoard" style="display:grid;grid-template-columns:repeat(4,1fr);gap:3px;width:100%;max-width:340px;margin:0 auto;"></div>
+    <div style="text-align:center;font-size:10px;color:var(--muted);letter-spacing:2px;">TOCA DOS PIEZAS PARA INTERCAMBIARLAS</div>
+    <button onclick="initChangan()" style="background:rgba(212,160,23,0.1);border:1px solid var(--border);color:var(--gold);padding:8px 20px;font-family:'Bebas Neue';font-size:14px;letter-spacing:2px;cursor:pointer;">↻ MEZCLAR</button>
+  </div>
+</div>
+
+<!-- TETRIS -->
+<div class="overlay" id="gov-tetris">
+  <div class="game-header">
+    <div class="title">🎮 TETRIS PISK</div>
+    <div class="score-item"><div class="score-val" id="tetrisLines">0/6</div><div class="score-lbl">LÍNEAS</div></div>
+    <button class="close-btn" onclick="cerrarJuego('tetris')">✕</button>
+  </div>
+  <div style="font-family:'Bebas Neue';font-size:12px;letter-spacing:2px;color:var(--muted);text-align:center;padding:4px;flex-shrink:0;">Completa 6 líneas → 500 pts 💎</div>
+  <div class="game-area" style="flex-direction:column;gap:8px;padding:8px 0;">
+    <canvas id="tetrisCanvas"></canvas>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;padding:8px 16px;flex-shrink:0;">
+    <button onclick="tetrisMove(-1)" style="background:var(--dark3);border:1px solid var(--border);color:var(--text);padding:14px;font-size:20px;cursor:pointer;">◀</button>
+    <button onclick="tetrisRotate()" style="background:var(--dark3);border:1px solid var(--border);color:var(--text);padding:14px;font-size:20px;cursor:pointer;">🔄</button>
+    <button onclick="tetrisMove(1)" style="background:var(--dark3);border:1px solid var(--border);color:var(--text);padding:14px;font-size:20px;cursor:pointer;">▶</button>
+    <button onclick="tetrisDrop()" style="grid-column:1/-1;background:var(--dark3);border:1px solid var(--border);color:var(--text);padding:14px;font-size:16px;cursor:pointer;">⬇ BAJAR</button>
+  </div>
+</div>
+
+<!-- RESULT SCREEN -->
+<div id="gameResult" style="display:none;position:fixed;inset:0;background:rgba(7,9,12,0.96);z-index:400;flex-direction:column;align-items:center;justify-content:center;gap:16px;">
+  <div id="grIcon" style="font-size:64px;"></div>
+  <div style="font-family:'Bebas Neue';font-size:36px;letter-spacing:4px;color:var(--gold);">¡GANASTE!</div>
+  <div id="grPts" style="font-family:'Bebas Neue';font-size:56px;color:var(--gold2);line-height:1;"></div>
+  <div style="font-size:13px;color:var(--muted);letter-spacing:2px;">PUNTOS GANADOS</div>
+  <button id="grBtn" style="background:linear-gradient(135deg,var(--gold),#8B6914);color:var(--dark);border:none;padding:14px 36px;font-family:'Bebas Neue';font-size:20px;letter-spacing:3px;cursor:pointer;margin-top:8px;">COBRAR Y SALIR</button>
 </div>
 
 <!-- MODAL -->
@@ -387,6 +553,303 @@ function showTab(tab,btn){ document.querySelectorAll('.tab-content').forEach(t=>
 function closeModal(e){ if(e&&e.target!==document.getElementById('modalOverlay'))return; document.getElementById('modalOverlay').classList.remove('show'); }
 function cambiarIdioma(l){ lang=l; if(user)user.idioma=l; renderMisiones(); updateUI(); }
 function toast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),3000); }
+function showToast(msg){ toast(msg); }
+
+// ── GAME STATE ────────────────────────────────────────
+const gState = { pts:0, cooldowns:{}, firstPlay:null };
+const CD_24H = 24*60*60*1000;
+const PPK = 1000; // points per pisk
+
+function loadGameState() {
+  const uid = user?.id || 'demo';
+  try {
+    const s = localStorage.getItem('pg_'+uid);
+    if (s) Object.assign(gState, JSON.parse(s));
+  } catch(e){}
+  updateGameUI();
+  updateGameCooldowns();
+}
+
+function saveGameState() {
+  const uid = user?.id || 'demo';
+  try { localStorage.setItem('pg_'+uid, JSON.stringify(gState)); } catch(e){}
+}
+
+function addGamePts(pts) {
+  gState.pts += pts; saveGameState(); updateGameUI();
+}
+
+function updateGameUI() {
+  const el = document.getElementById('gPtsDisplay');
+  const btn = document.getElementById('gCanjeBtn');
+  if(el) el.textContent = gState.pts.toLocaleString();
+  if(btn) btn.disabled = gState.pts < PPK;
+}
+
+function updateGameCooldowns() {
+  ['tap','trivia','ruleta','changan','tetris'].forEach(g => {
+    const el = document.getElementById('gcd-'+g);
+    const card = document.getElementById('gc-'+g);
+    if(!el||!card) return;
+    const cd = gState.cooldowns[g];
+    if(cd && (Date.now()-cd) < CD_24H) {
+      const rem = CD_24H-(Date.now()-cd);
+      const h=Math.floor(rem/3600000), m=Math.floor((rem%3600000)/60000);
+      el.textContent='⏰'; el.style.color='#FF3D3D';
+      card.style.opacity='0.5'; card.style.cursor='default';
+    } else {
+      el.textContent='✅'; el.style.color='var(--green)';
+      card.style.opacity='1'; card.style.cursor='pointer';
+    }
+  });
+}
+
+function isGameLocked(g) {
+  const cd = gState.cooldowns[g];
+  return cd && (Date.now()-cd) < CD_24H;
+}
+
+function abrirJuego(g) {
+  if(isGameLocked(g)){ toast('⏰ Disponible en 24 horas'); return; }
+  if(!gState.firstPlay){ gState.firstPlay=Date.now(); saveGameState(); }
+  const ov = document.getElementById('gov-'+g);
+  if(!ov){ toast('❌ Juego no encontrado: '+g); return; }
+  ov.classList.add('show');
+  if(g==='tap')     { tapRunning=false; clearInterval(window.coinMoveInt); clearInterval(window['gi_tap']); initTap(); }
+  if(g==='trivia')  initTrivia();
+  if(g==='ruleta')  initRuleta();
+  if(g==='changan') initChangan();
+  if(g==='tetris')  initTetris();
+}
+
+function cerrarJuego(g) {
+  const ov = document.getElementById('gov-'+g);
+  if(ov) ov.classList.remove('show');
+  clearInterval(window['gi_'+g]);
+  if(g==='tap'){ clearInterval(window.coinMoveInt); tapRunning=false; }
+  if(g==='tetris'&&window.tetrisLoop){ clearInterval(window.tetrisLoop); window.tetrisLoop=null; }
+  document.getElementById('gameResult').style.display='none';
+}
+
+function showGameResult(g, pts, icon) {
+  cerrarJuego(g);
+  const rd = document.getElementById('gameResult');
+  document.getElementById('grIcon').textContent = icon||'🏆';
+  document.getElementById('grPts').textContent = '+'+pts;
+  document.getElementById('grBtn').onclick = () => {
+    addGamePts(pts);
+    gState.cooldowns[g] = Date.now();
+    saveGameState(); updateGameCooldowns();
+    rd.style.display='none';
+    toast('🎉 +'+pts+' puntos!');
+    if(tg) tg.HapticFeedback?.notificationOccurred('success');
+  };
+  rd.style.display='flex';
+}
+
+function canjearPuntos() {
+  const pisk = Math.floor(gState.pts/PPK);
+  if(pisk<1) return;
+  gState.pts -= pisk*PPK; saveGameState(); updateGameUI();
+  if(user){ user.pisk_balance=(user.pisk_balance||0)+pisk; updateUI(); }
+  fetch(API+'/canjear-puntos',{method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({userId:user?.id,puntos:pisk*PPK,pisk})}).catch(()=>{});
+  toast('🎉 ¡+'+pisk+' $PISK canjeados!');
+}
+
+// ── TAP ───────────────────────────────────────────────
+let tapScore=0, tapEnergy=200, tapRunning=false;
+
+function initTap() {
+  tapScore=0; tapEnergy=200; tapRunning=true;
+  document.getElementById('tapScore').textContent=0;
+  document.getElementById('tapTimer').textContent=60;
+  document.getElementById('energyFill').style.width='100%';
+  moveTapCoin(); window.coinMoveInt=setInterval(moveTapCoin,1200);
+  let t=60;
+  window['gi_tap']=setInterval(()=>{
+    t--; document.getElementById('tapTimer').textContent=t;
+    tapEnergy=Math.min(200,tapEnergy+2);
+    document.getElementById('energyFill').style.width=(tapEnergy/200*100)+'%';
+    if(t<=0){ clearInterval(window['gi_tap']); clearInterval(window.coinMoveInt); tapRunning=false; showGameResult('tap',tapScore,'🪙'); }
+  },1000);
+}
+
+function moveTapCoin() {
+  const coin=document.getElementById('tapCoin');
+  const area=document.getElementById('tapArea');
+  if(!coin||!area) return;
+  const aW=area.clientWidth, aH=area.clientHeight, m=20;
+  coin.style.left = m+Math.random()*(aW-150-m*2)+'px';
+  coin.style.top  = m+Math.random()*(aH-150-m*2-80)+'px';
+}
+
+function doTap(e) {
+  e.stopPropagation();
+  if(!tapRunning||tapEnergy<=0) return;
+  tapEnergy=Math.max(0,tapEnergy-1); tapScore++;
+  document.getElementById('tapScore').textContent=tapScore;
+  document.getElementById('energyFill').style.width=(tapEnergy/200*100)+'%';
+  setTimeout(moveTapCoin,150);
+  const coin=document.getElementById('tapCoin');
+  const area=document.getElementById('tapArea');
+  const cr=coin.getBoundingClientRect(), ar=area.getBoundingClientRect();
+  const sp=document.createElement('span');
+  sp.style.cssText='position:absolute;font-family:Bebas Neue,sans-serif;font-size:24px;color:#F0C040;pointer-events:none;animation:floatUp 0.8s ease forwards;left:'+(cr.left-ar.left+cr.width/2)+'px;top:'+(cr.top-ar.top)+'px;';
+  sp.textContent='+1'; area.appendChild(sp); setTimeout(()=>sp.remove(),800);
+  if(tg) tg.HapticFeedback?.impactOccurred('light');
+}
+
+// ── TRIVIA ────────────────────────────────────────────
+const TPOOL=[
+  {q:'¿Precio de preventa del token $PISK?',opts:['$0.05','$0.10','$0.25','$1.00'],a:1},
+  {q:'¿Qué vehículos usa Neo Pisk en su flota?',opts:['Gasolina','Híbridos','Eléctricos','Diésel'],a:2},
+  {q:'¿En qué red se compra $PISK con USDT?',opts:['Ethereum','Polygon','Bitcoin','Solana'],a:1},
+  {q:'¿1,000 puntos equivalen a cuántos $PISK?',opts:['10 $PISK','5 $PISK','1 $PISK','0.1 $PISK'],a:2},
+  {q:'¿Qué marca de auto usa Neo Pisk?',opts:['Tesla','BYD/Changan','Rivian','Nio'],a:1},
+  {q:'¿Comisión de referido Nivel 1?',opts:['5%','7%','10%','15%'],a:2},
+  {q:'¿Plataformas ride-sharing de Neo Pisk?',opts:['Uber y Cabify','Yango e InDriver','Solo Uber','Ninguna'],a:1},
+  {q:'¿Mecanismo que sube el valor de $PISK?',opts:['Minería','Buyback & Burn','Solo staking','Inflación'],a:1},
+  {q:'¿Símbolo del token de Neo Pisk?',opts:['$NEO','$PISK','$NPTK','$ELEC'],a:1},
+  {q:'¿Qué ofrece Neo Pisk además de tokens?',opts:['Minería BTC','Robótica e IA','Turismo','NFT arte'],a:1},
+];
+let TQS=[], tIdx=0, tScore=0, tAnswered=false;
+
+function initTrivia() {
+  tIdx=0; tScore=0; tAnswered=false;
+  TQS=[...TPOOL].sort(()=>Math.random()-0.5).slice(0,4);
+  document.getElementById('triviaScore').textContent=0;
+  renderTQ();
+}
+
+function renderTQ() {
+  const q=TQS[tIdx];
+  document.getElementById('triviaQ').textContent=(tIdx+1)+'/4';
+  document.getElementById('triviaQuestion').textContent=q.q;
+  document.getElementById('triviaFeedback').textContent='';
+  document.getElementById('triviaDots').innerHTML=TQS.map((_,i)=>`<div style="flex:1;height:4px;background:${i<tIdx?'var(--gold)':'var(--border)'};border-radius:2px;margin:0 2px;"></div>`).join('');
+  document.getElementById('triviaOpts').innerHTML=q.opts.map((o,i)=>`<div class="trivia-opt" onclick="answerT(${i})" style="background:var(--dark3);border:2px solid var(--border);padding:14px 10px;font-size:14px;font-weight:600;cursor:pointer;text-align:center;">${o}</div>`).join('');
+  tAnswered=false;
+}
+
+function answerT(idx) {
+  if(tAnswered) return; tAnswered=true;
+  const q=TQS[tIdx];
+  document.querySelectorAll('#gov-trivia .trivia-opt').forEach(o=>o.style.pointerEvents='none');
+  const opts=document.querySelectorAll('#gov-trivia .trivia-opt');
+  if(idx===q.a){
+    opts[idx].style.background='rgba(0,230,118,0.15)'; opts[idx].style.borderColor='var(--green)'; opts[idx].style.color='var(--green)';
+    tScore+=25; document.getElementById('triviaScore').textContent=tScore;
+    document.getElementById('triviaFeedback').innerHTML='<span style="color:var(--green)">✅ ¡Correcto! +25 pts</span>';
+  } else {
+    opts[idx].style.background='rgba(255,61,61,0.15)'; opts[idx].style.borderColor='#FF3D3D'; opts[idx].style.color='#FF3D3D';
+    opts[q.a].style.background='rgba(0,230,118,0.15)'; opts[q.a].style.borderColor='var(--green)'; opts[q.a].style.color='var(--green)';
+    document.getElementById('triviaFeedback').innerHTML='<span style="color:#FF3D3D">❌ Incorrecto</span>';
+  }
+  setTimeout(()=>{ tIdx++; if(tIdx<TQS.length) renderTQ(); else showGameResult('trivia',tScore,'🧠'); },1200);
+}
+
+// ── RULETA ────────────────────────────────────────────
+const ROPTS=[{l:'10',p:10,c:'#1A2030'},{l:'50',p:50,c:'#5A3800'},{l:'25',p:25,c:'#1A3020'},
+  {l:'100',p:100,c:'#1A1A40'},{l:'75',p:75,c:'#2A1A00'},{l:'200',p:200,c:'#5A0000'},
+  {l:'150',p:150,c:'#0A2A20'},{l:'300',p:300,c:'#3A2800'},{l:'30',p:30,c:'#1A2030'},{l:'5',p:5,c:'#2A1020'}];
+let rAngle=0, rSpinning=false;
+
+function initRuleta(){ rSpinning=false; const sb=document.getElementById('spinBtn'); if(sb)sb.disabled=false; const rr=document.getElementById('ruletaResult'); if(rr)rr.textContent='¡Gira!'; drawR(0); }
+
+function drawR(angle) {
+  const cv=document.getElementById('ruletaCanvas'); if(!cv) return;
+  const ctx=cv.getContext('2d'),cx=cv.width/2,cy=cv.height/2,r=cx-10,arc=(2*Math.PI)/ROPTS.length;
+  ctx.clearRect(0,0,cv.width,cv.height);
+  ROPTS.forEach((o,i)=>{ const s=angle+i*arc,e=s+arc; ctx.beginPath(); ctx.moveTo(cx,cy); ctx.arc(cx,cy,r,s,e); ctx.fillStyle=o.c; ctx.fill(); ctx.strokeStyle='rgba(212,160,23,0.3)'; ctx.lineWidth=1; ctx.stroke(); ctx.save(); ctx.translate(cx,cy); ctx.rotate(s+arc/2); ctx.fillStyle='#E8EDF5'; ctx.font='bold 11px sans-serif'; ctx.textAlign='right'; ctx.fillText(o.l+' PTS',r-8,4); ctx.restore(); });
+  ctx.beginPath(); ctx.arc(cx,cy,r,0,2*Math.PI); ctx.strokeStyle='rgba(212,160,23,0.5)'; ctx.lineWidth=3; ctx.stroke();
+}
+
+function girarRuleta() {
+  if(rSpinning) return; rSpinning=true;
+  const sb=document.getElementById('spinBtn'); if(sb) sb.disabled=true;
+  const rr=document.getElementById('ruletaResult'); if(rr) rr.textContent='...';
+  const extra=Math.random()*360, total=(5+Math.floor(Math.random()*3))*360+extra, dur=4000, start=performance.now(), sa=rAngle;
+  function anim(now) {
+    const p=Math.min((now-start)/dur,1), ease=1-Math.pow(1-p,3);
+    rAngle=sa+(total*Math.PI/180)*ease; drawR(rAngle);
+    if(p<1){ requestAnimationFrame(anim); return; }
+    const arc=(2*Math.PI)/ROPTS.length, norm=((rAngle%(2*Math.PI))+2*Math.PI)%(2*Math.PI), idx=Math.floor(((2*Math.PI-norm)/arc)%ROPTS.length), winner=ROPTS[idx];
+    if(rr) rr.innerHTML='<span style="color:#F0C040">🎉 '+winner.l+' PTS</span>';
+    setTimeout(()=>showGameResult('ruleta',winner.p,'🎰'),800);
+  }
+  requestAnimationFrame(anim);
+}
+
+// ── CHANGAN ───────────────────────────────────────────
+const CIMG='https://res.cloudinary.com/dfmqybaac/image/upload/v1772308696/alsvin-web-1700x830-exterior-5_dz0dkv.jpg';
+let cPieces=[], cSel=null, cMoves=0, cSolved=false;
+
+function initChangan() {
+  cMoves=0; cSolved=false; cSel=null;
+  document.getElementById('changanMoves').textContent=0;
+  document.getElementById('changanTimer').textContent=120;
+  clearInterval(window['gi_changan']);
+  cPieces=Array.from({length:16},(_,i)=>i);
+  for(let i=15;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [cPieces[i],cPieces[j]]=[cPieces[j],cPieces[i]]; }
+  renderChangan();
+  let t=120;
+  window['gi_changan']=setInterval(()=>{ t--; document.getElementById('changanTimer').textContent=t; if(t<=0){ clearInterval(window['gi_changan']); if(!cSolved) showGameResult('changan',0,'😅'); } },1000);
+}
+
+function renderChangan() {
+  const b=document.getElementById('changanBoard'); if(!b) return;
+  b.innerHTML=cPieces.map((orig,pos)=>{
+    const oc=orig%4, or=Math.floor(orig/4), sel=cSel===pos, cor=orig===pos;
+    return `<div onclick="selChangan(${pos})" style="aspect-ratio:1;background-image:url('${CIMG}');background-size:400% 400%;background-position:${-oc*100}% ${-or*100}%;border:2px solid ${sel?'#D4A017':cor?'rgba(0,230,118,0.5)':'rgba(212,160,23,0.15)'};cursor:pointer;transform:${sel?'scale(1.05)':'scale(1)'};transition:all 0.15s;"></div>`;
+  }).join('');
+}
+
+function selChangan(pos) {
+  if(cSolved) return;
+  if(tg) tg.HapticFeedback?.impactOccurred('light');
+  if(cSel===null){ cSel=pos; renderChangan(); }
+  else if(cSel===pos){ cSel=null; renderChangan(); }
+  else {
+    [cPieces[cSel],cPieces[pos]]=[cPieces[pos],cPieces[cSel]];
+    cMoves++; document.getElementById('changanMoves').textContent=cMoves;
+    cSel=null; renderChangan();
+    if(cPieces.every((v,i)=>v===i)){ cSolved=true; clearInterval(window['gi_changan']); setTimeout(()=>showGameResult('changan',10,'🚗'),400); }
+  }
+}
+
+// ── TETRIS ────────────────────────────────────────────
+const TCOLS=10,TROWS=20,TB=22;
+const TPIECES=[[[1,1,1,1]],[[1,1],[1,1]],[[0,1,0],[1,1,1]],[[1,0,0],[1,1,1]],[[0,0,1],[1,1,1]],[[0,1,1],[1,1,0]],[[1,1,0],[0,1,1]]];
+const TCLRS=['#00E5FF','#FFD600','#AA00FF','#FF6D00','#1A6EFF','#00E676','#FF3D3D'];
+let tBoard,tCur,tX,tY,tColor,tLines=0,tOver=false;
+
+function initTetris() {
+  const cv=document.getElementById('tetrisCanvas'); if(!cv) return;
+  cv.width=TCOLS*TB; cv.height=TROWS*TB;
+  tBoard=Array.from({length:TROWS},()=>Array(TCOLS).fill(null));
+  tLines=0; tOver=false;
+  document.getElementById('tetrisLines').textContent='0/6';
+  tSpawn(); if(window.tetrisLoop) clearInterval(window.tetrisLoop);
+  window.tetrisLoop=setInterval(tTick,600); drawTetris();
+}
+function tSpawn(){ const i=Math.floor(Math.random()*TPIECES.length); tCur=TPIECES[i]; tColor=TCLRS[i]; tX=Math.floor((TCOLS-tCur[0].length)/2); tY=0; if(!tCan(tX,tY,tCur)){ tOver=true; tEnd(); } }
+function tCan(x,y,p){ return p.every((row,dy)=>row.every((v,dx)=>{ if(!v) return true; const nx=x+dx,ny=y+dy; return nx>=0&&nx<TCOLS&&ny>=0&&ny<TROWS&&!tBoard[ny][nx]; })); }
+function tPlace(){ tCur.forEach((row,dy)=>row.forEach((v,dx)=>{ if(v) tBoard[tY+dy][tX+dx]=tColor; })); let cl=0; for(let r=TROWS-1;r>=0;r--){ if(tBoard[r].every(c=>c)){ tBoard.splice(r,1); tBoard.unshift(Array(TCOLS).fill(null)); cl++; r++; } } if(cl>0){ tLines+=cl; document.getElementById('tetrisLines').textContent=tLines+'/6'; if(tLines>=6){ clearInterval(window.tetrisLoop); window.tetrisLoop=null; showGameResult('tetris',500,'💎'); return; } } tSpawn(); }
+function tTick(){ if(tOver) return; if(tCan(tX,tY+1,tCur)) tY++; else tPlace(); drawTetris(); }
+function tetrisMove(d){ if(tOver) return; if(tCan(tX+d,tY,tCur)){ tX+=d; drawTetris(); } }
+function tetrisRotate(){ if(tOver) return; const r=tCur[0].map((_,i)=>tCur.map(row=>row[i]).reverse()); if(tCan(tX,tY,r)){ tCur=r; drawTetris(); } }
+function tetrisDrop(){ if(tOver) return; while(tCan(tX,tY+1,tCur)) tY++; tPlace(); drawTetris(); }
+function tEnd(){ clearInterval(window.tetrisLoop); window.tetrisLoop=null; if(tLines===0){ toast('💀 Game Over'); cerrarJuego('tetris'); return; } showGameResult('tetris',Math.min(tLines*80,480),tLines>=6?'💎':'🎮'); }
+function drawTetris(){
+  const cv=document.getElementById('tetrisCanvas'); if(!cv) return;
+  const ctx=cv.getContext('2d'); ctx.fillStyle='#07090C'; ctx.fillRect(0,0,cv.width,cv.height);
+  tBoard.forEach((row,r)=>row.forEach((col,c)=>{ if(col){ ctx.fillStyle=col; ctx.fillRect(c*TB+1,r*TB+1,TB-2,TB-2); } }));
+  if(tCur) tCur.forEach((row,dy)=>row.forEach((v,dx)=>{ if(v){ ctx.fillStyle=tColor; ctx.fillRect((tX+dx)*TB+1,(tY+dy)*TB+1,TB-2,TB-2); } }));
+}
+
+// Init games after user loads
+setTimeout(()=>{ loadGameState(); },2000);
 </script>
 </body>
 </html>
