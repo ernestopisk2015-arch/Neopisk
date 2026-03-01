@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Comprar $PISK</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--gold:#D4A017;--gold2:#F0C040;--dark:#07090C;--dark2:#0D1117;--dark3:#131A24;--border:rgba(212,160,23,0.2);--text:#E8EDF5;--muted:#5A6A7A;--green:#00E676;--red:#FF3D3D;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--dark);color:var(--text);font-family:'Rajdhani',sans-serif;min-height:100vh;padding:16px;}
+.logo{font-family:'Bebas Neue';font-size:32px;background:linear-gradient(135deg,var(--gold),var(--gold2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-align:center;margin-bottom:4px;}
+.subtitle{text-align:center;font-size:11px;letter-spacing:3px;color:var(--muted);margin-bottom:20px;}
+.card{background:var(--dark2);border:1px solid var(--border);padding:16px;margin-bottom:12px;}
+.card-title{font-family:'Bebas Neue';font-size:14px;letter-spacing:3px;color:var(--gold);margin-bottom:12px;}
+.price-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
+.price-lbl{font-size:12px;color:var(--muted);}
+.price-val{font-family:'Bebas Neue';font-size:20px;color:var(--gold2);}
+
+.input-group{margin-bottom:12px;}
+.input-lbl{font-size:11px;letter-spacing:2px;color:var(--muted);margin-bottom:4px;}
+.input-field{width:100%;background:var(--dark3);border:1px solid var(--border);color:var(--text);padding:12px;font-family:'Rajdhani',sans-serif;font-size:16px;outline:none;transition:border-color 0.2s;}
+.input-field:focus{border-color:var(--gold);}
+.input-helper{font-size:11px;color:var(--muted);margin-top:4px;}
+
+.receive-box{background:rgba(212,160,23,0.06);border:1px solid var(--border);padding:12px;text-align:center;margin-bottom:16px;}
+.receive-amount{font-family:'Bebas Neue';font-size:40px;color:var(--gold2);line-height:1;}
+.receive-lbl{font-size:11px;letter-spacing:3px;color:var(--muted);}
+
+.btn{width:100%;padding:16px;font-family:'Bebas Neue';font-size:20px;letter-spacing:3px;border:none;cursor:pointer;transition:all 0.2s;margin-bottom:8px;}
+.btn-gold{background:linear-gradient(135deg,var(--gold),#8B6914);color:var(--dark);}
+.btn-outline{background:none;border:1px solid var(--border);color:var(--muted);font-size:14px;}
+.btn:disabled{opacity:0.4;cursor:not-allowed;}
+.btn:active{transform:scale(0.98);}
+
+.steps{margin-bottom:16px;}
+.step{display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);}
+.step:last-child{border:none;}
+.step-num{width:24px;height:24px;border-radius:50%;background:rgba(212,160,23,0.15);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue';font-size:14px;color:var(--gold);flex-shrink:0;}
+.step-text{font-size:13px;color:var(--text);line-height:1.4;}
+.step-text strong{color:var(--gold2);}
+
+.ref-badge{background:rgba(0,230,118,0.1);border:1px solid rgba(0,230,118,0.2);padding:8px 12px;text-align:center;margin-bottom:12px;font-size:12px;color:var(--green);}
+
+.status{padding:12px;text-align:center;font-size:13px;margin-bottom:12px;display:none;}
+.status.show{display:block;}
+.status.loading{background:rgba(212,160,23,0.1);border:1px solid var(--border);color:var(--gold2);}
+.status.success{background:rgba(0,230,118,0.1);border:1px solid rgba(0,230,118,0.3);color:var(--green);}
+.status.error{background:rgba(255,61,61,0.1);border:1px solid rgba(255,61,61,0.3);color:var(--red);}
+
+.contract-info{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);word-break:break-all;background:var(--dark3);padding:8px;border:1px solid var(--border);}
+.copy-btn{background:none;border:none;color:var(--gold);font-size:11px;cursor:pointer;padding:4px 8px;letter-spacing:1px;font-family:'Bebas Neue';}
+</style>
+</head>
+<body>
+
+<div class="logo">COMPRAR $PISK</div>
+<div class="subtitle">RED POLYGON · USDT</div>
+
+<!-- Ref badge -->
+<div class="ref-badge" id="refBadge" style="display:none">
+  🤝 Referido por: <strong id="refNombre">—</strong> · Código: <strong id="refCodigo">—</strong>
+</div>
+
+<!-- Precio actual -->
+<div class="card">
+  <div class="card-title">PRECIO ACTUAL</div>
+  <div class="price-row">
+    <span class="price-lbl">1 $PISK =</span>
+    <span class="price-val">$0.10 USD</span>
+  </div>
+  <div class="price-row">
+    <span class="price-lbl">1 USDT =</span>
+    <span class="price-val">10 $PISK</span>
+  </div>
+  <div class="price-row">
+    <span class="price-lbl">Stock disponible:</span>
+    <span class="price-val" id="stockDisplay">...</span>
+  </div>
+</div>
+
+<!-- Calculadora -->
+<div class="card">
+  <div class="card-title">CALCULADORA</div>
+  <div class="input-group">
+    <div class="input-lbl">CANTIDAD USDT A INVERTIR</div>
+    <input class="input-field" type="number" id="usdtInput" placeholder="ej: 10" min="1" step="any" oninput="calcular()">
+    <div class="input-helper">Mínimo 1 USDT · Red Polygon</div>
+  </div>
+  <div class="receive-box">
+    <div class="receive-amount" id="piskOutput">0</div>
+    <div class="receive-lbl">$PISK RECIBIRÁS</div>
+  </div>
+  <button class="btn btn-gold" id="buyBtn" onclick="comprarConMetamask()" disabled>
+    🦊 CONECTAR Y COMPRAR
+  </button>
+  <button class="btn btn-outline" onclick="mostrarHash()">
+    ¿Ya compraste? Envía tu hash TX
+  </button>
+</div>
+
+<!-- Hash manual -->
+<div id="hashSection" style="display:none">
+  <div class="card">
+    <div class="card-title">REGISTRAR COMPRA MANUAL</div>
+    <div class="input-group">
+      <div class="input-lbl">HASH DE TRANSACCIÓN</div>
+      <input class="input-field" type="text" id="txHashInput" placeholder="0x...">
+      <div class="input-helper">Pega el hash de tu tx de Polygon</div>
+    </div>
+    <button class="btn btn-gold" onclick="registrarHashManual()">✅ VERIFICAR Y REGISTRAR</button>
+  </div>
+</div>
+
+<!-- Status -->
+<div class="status" id="statusBox"></div>
+
+<!-- Pasos -->
+<div class="card">
+  <div class="card-title">CÓMO COMPRAR</div>
+  <div class="steps">
+    <div class="step"><div class="step-num">1</div><div class="step-text">Necesitas <strong>USDT en red Polygon</strong> en tu MetaMask</div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-text">Ingresa la cantidad y toca <strong>CONECTAR Y COMPRAR</strong></div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-text">MetaMask pedirá <strong>dos confirmaciones</strong>: aprobar USDT y luego comprar</div></div>
+    <div class="step"><div class="step-num">4</div><div class="step-text">Los <strong>$PISK</strong> llegan a tu wallet automáticamente</div></div>
+    <div class="step"><div class="step-num">5</div><div class="step-text">Tu <strong>comisión de referido</strong> se procesa en 24h</div></div>
+  </div>
+</div>
+
+<!-- Contrato -->
+<div class="card">
+  <div class="card-title">CONTRATO VERIFICADO</div>
+  <div class="contract-info" id="contractAddr">0x07Fc7AC9D681Cdd3D100c68f6f5646970CC7fF60</div>
+  <div style="display:flex;gap:8px;margin-top:8px;">
+    <button class="copy-btn" onclick="copiar('0x07Fc7AC9D681Cdd3D100c68f6f5646970CC7fF60')">COPIAR</button>
+    <button class="copy-btn" onclick="abrirPolygonscan()">VER EN POLYGON</button>
+  </div>
+</div>
+
+<script>
+const tg = window.Telegram?.WebApp;
+if (tg) { tg.ready(); tg.expand(); }
+
+// Parámetros de URL
+const params = new URLSearchParams(window.location.search);
+const UID    = params.get('uid') || '';
+const REF    = params.get('ref') || '';
+
+// Contrato y tokens
+const CONTRACT_ADDR = '0x07Fc7AC9D681Cdd3D100c68f6f5646970CC7fF60';
+const USDT_ADDR     = '0xc2132D05D31c914a87C6611C10748AEb04B58e8F';
+const PISK_ADDR     = '0x9d5B2A73d16dAF61712BA8527d94F6997a0E6323';
+const POLYGON_ID    = '0x89'; // 137 en hex
+const TOKENS_PER_USDT = 10;
+
+// ABI mínimo para buyWithUSDT y approve
+const CONTRACT_ABI = [
+  { inputs:[{name:'_amountUSDT',type:'uint256'}], name:'buyWithUSDT', outputs:[], stateMutability:'nonpayable', type:'function' },
+  { inputs:[], name:'verStockPISK', outputs:[{name:'',type:'uint256'}], stateMutability:'view', type:'function' }
+];
+const ERC20_ABI = [
+  { inputs:[{name:'spender',type:'address'},{name:'amount',type:'uint256'}], name:'approve', outputs:[{name:'',type:'bool'}], stateMutability:'nonpayable', type:'function' }
+];
+
+let web3, account;
+
+// Mostrar referidor
+if (REF) {
+  document.getElementById('refBadge').style.display = 'block';
+  document.getElementById('refCodigo').textContent = REF;
+}
+
+// Cargar stock
+async function cargarStock() {
+  try {
+    // Llamada read-only via Polygon RPC público
+    const rpc = 'https://polygon-rpc.com';
+    // verStockPISK() = keccak256("verStockPISK()") primeros 4 bytes = 0x9aa0d460
+    const body = {
+      jsonrpc: '2.0', method: 'eth_call',
+      params: [{ to: CONTRACT_ADDR, data: '0x9aa0d460' }, 'latest'], id: 1
+    };
+    const r = await fetch(rpc, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(body) });
+    const d = await r.json();
+    if (d.result) {
+      const stock = parseInt(d.result, 16);
+      document.getElementById('stockDisplay').textContent = stock.toLocaleString() + ' $PISK';
+    }
+  } catch(e) {
+    document.getElementById('stockDisplay').textContent = 'Ver en PolygonScan';
+  }
+}
+cargarStock();
+
+function calcular() {
+  const usdt = parseFloat(document.getElementById('usdtInput').value) || 0;
+  const pisk = usdt * TOKENS_PER_USDT;
+  document.getElementById('piskOutput').textContent = pisk.toLocaleString();
+  document.getElementById('buyBtn').disabled = usdt < 1;
+  if (usdt >= 1) document.getElementById('buyBtn').textContent = `🦊 COMPRAR ${pisk} $PISK`;
+  else document.getElementById('buyBtn').textContent = '🦊 CONECTAR Y COMPRAR';
+}
+
+function mostrarStatus(msg, tipo) {
+  const el = document.getElementById('statusBox');
+  el.textContent = msg; el.className = 'status show ' + tipo;
+}
+
+function ocultarStatus() {
+  document.getElementById('statusBox').className = 'status';
+}
+
+async function comprarConMetamask() {
+  const usdtAmount = parseFloat(document.getElementById('usdtInput').value);
+  if (!usdtAmount || usdtAmount < 1) return;
+
+  // Verificar MetaMask
+  if (!window.ethereum) {
+    mostrarStatus('❌ MetaMask no detectado. Abre esta página en el navegador de MetaMask.', 'error');
+    return;
+  }
+
+  mostrarStatus('🔌 Conectando MetaMask...', 'loading');
+
+  try {
+    // Solicitar cuenta
+    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+    account = accounts[0];
+
+    // Verificar red Polygon
+    const chainId = await window.ethereum.request({ method: 'eth_chainId' });
+    if (chainId !== POLYGON_ID) {
+      mostrarStatus('⚠️ Cambiando a red Polygon...', 'loading');
+      try {
+        await window.ethereum.request({
+          method: 'wallet_switchEthereumChain',
+          params: [{ chainId: POLYGON_ID }]
+        });
+      } catch(switchErr) {
+        // Si no tiene Polygon, agregarlo
+        await window.ethereum.request({
+          method: 'wallet_addEthereumChain',
+          params: [{
+            chainId: POLYGON_ID,
+            chainName: 'Polygon Mainnet',
+            nativeCurrency: { name: 'POL', symbol: 'POL', decimals: 18 },
+            rpcUrls: ['https://polygon-rpc.com'],
+            blockExplorerUrls: ['https://polygonscan.com']
+          }]
+        });
+      }
+    }
+
+    // PASO 1: Aprobar USDT
+    mostrarStatus('📋 Paso 1/2: Aprueba el gasto de USDT en MetaMask...', 'loading');
+    const usdtWei = BigInt(Math.round(usdtAmount * 1e6)).toString(16).padStart(64, '0');
+
+    // approve(spender, amount) = 0x095ea7b3
+    const approveData = '0x095ea7b3' +
+      CONTRACT_ADDR.slice(2).toLowerCase().padStart(64, '0') +
+      usdtWei;
+
+    const approveTx = await window.ethereum.request({
+      method: 'eth_sendTransaction',
+      params: [{ from: account, to: USDT_ADDR, data: approveData }]
+    });
+
+    mostrarStatus('⏳ Esperando confirmación de aprobación...', 'loading');
+    await esperarTx(approveTx);
+
+    // PASO 2: Comprar
+    mostrarStatus('🛒 Paso 2/2: Confirma la compra en MetaMask...', 'loading');
+
+    // buyWithUSDT(uint256) = 0xa7c60160
+    const buyData = '0xa7c60160' + usdtWei;
+
+    const buyTx = await window.ethereum.request({
+      method: 'eth_sendTransaction',
+      params: [{ from: account, to: CONTRACT_ADDR, data: buyData }]
+    });
+
+    mostrarStatus('⏳ Procesando compra en la blockchain...', 'loading');
+    await esperarTx(buyTx);
+
+    // Registrar en el bot
+    if (UID) {
+      fetch('http://69.169.109.120/airdrop-api/registrar-compra', {
+        method: 'POST',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({ uid: UID, txHash: buyTx, nombre: tg?.initDataUnsafe?.user?.first_name || 'Usuario' })
+      }).catch(() => {});
+    }
+
+    mostrarStatus(`✅ ¡Compra exitosa! Recibiste ${usdtAmount * TOKENS_PER_USDT} $PISK\nTX: ${buyTx.slice(0,20)}...`, 'success');
+    if (tg) tg.HapticFeedback?.notificationOccurred('success');
+
+    // Actualizar stock
+    setTimeout(cargarStock, 5000);
+
+  } catch(e) {
+    if (e.code === 4001) {
+      mostrarStatus('⚠️ Transacción cancelada por el usuario', 'error');
+    } else {
+      mostrarStatus('❌ Error: ' + (e.message || 'Intenta de nuevo'), 'error');
+    }
+  }
+}
+
+async function esperarTx(txHash, maxWait = 60000) {
+  const start = Date.now();
+  while (Date.now() - start < maxWait) {
+    const r = await window.ethereum.request({
+      method: 'eth_getTransactionReceipt',
+      params: [txHash]
+    });
+    if (r && r.status) return r;
+    await new Promise(res => setTimeout(res, 3000));
+  }
+}
+
+function mostrarHash() {
+  const sec = document.getElementById('hashSection');
+  sec.style.display = sec.style.display === 'none' ? 'block' : 'none';
+}
+
+async function registrarHashManual() {
+  const hash = document.getElementById('txHashInput').value.trim();
+  if (!/^0x[a-fA-F0-9]{64}$/.test(hash)) {
+    mostrarStatus('❌ Hash inválido. Debe ser 0x + 64 caracteres hexadecimales', 'error');
+    return;
+  }
+  mostrarStatus('🔍 Verificando transacción...', 'loading');
+  try {
+    const r = await fetch('http://69.169.109.120/airdrop-api/registrar-compra', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ uid: UID, txHash: hash, nombre: tg?.initDataUnsafe?.user?.first_name || 'Usuario' })
+    });
+    const d = await r.json();
+    mostrarStatus('✅ Transacción enviada para verificación. Recibirás confirmación en el bot.', 'success');
+  } catch(e) {
+    mostrarStatus('⚠️ Sin conexión con el servidor. Envía el hash directamente al bot de Telegram.', 'error');
+  }
+}
+
+function copiar(text) {
+  navigator.clipboard?.writeText(text).then(() => {
+    mostrarStatus('📋 Copiado al portapapeles', 'loading');
+    setTimeout(ocultarStatus, 2000);
+  });
+}
+
+function abrirPolygonscan() {
+  const url = `https://polygonscan.com/address/${CONTRACT_ADDR}`;
+  if (tg?.openLink) tg.openLink(url);
+  else window.open(url, '_blank');
+}
+</script>
+</body>
+</html>
