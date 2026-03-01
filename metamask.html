@@ -242,8 +242,9 @@ body::after{
       <polygon fill="#F6851B" stroke="#F6851B" points="174.6,164.6 177.9,106.9 193.1,65.8 125.6,65.8 140.6,106.9 144.1,164.6 145.3,182.8 145.4,227.6 173.1,227.6 173.3,182.8"/>
     </svg>
     <div class="modal-title">ABRIR EN METAMASK</div>
-    <p class="modal-desc">Para conectar tu billetera, abre esta página dentro del <strong>navegador de MetaMask</strong></p>
+    <p class="modal-desc">Abre esta página dentro del <strong>navegador de MetaMask</strong> para conectar tu billetera</p>
     <button class="btn-modal-open" onclick="abrirEnMetaMask()">🦊 ABRIR EN METAMASK</button>
+    <button class="btn-modal-open" onclick="copiarURLModal()" style="background:var(--dark3);border:1px solid var(--border);color:var(--gold2);margin-top:8px;">📋 COPIAR URL Y ABRIR MANUAL</button>
     <button class="btn-modal-cancel" onclick="cerrarModalMetaMask()">CANCELAR</button>
   </div>
 </div>
@@ -414,13 +415,15 @@ function estaDentroDeMetaMask() {
   return typeof window.ethereum !== 'undefined' &&
     (window.ethereum.isMetaMask || window.ethereum.providers?.some(p => p.isMetaMask));
 }
-function mostrarModalMetaMask() { document.getElementById('metamaskModal').style.display = 'flex'; }
+function mostrarModalMetaMask() {
+  const urlClean = window.location.href.replace(/^https?:\/\//, '');
+  document.getElementById('mmDeepLink').href = 'https://metamask.app.link/dapp/' + urlClean;
+  document.getElementById('metamaskModal').style.display = 'flex';
+}
 function cerrarModalMetaMask()  { document.getElementById('metamaskModal').style.display = 'none'; }
 
 function abrirEnMetaMask() {
-  const url = window.location.href.replace(/^https?:\/\//, '');
-  window.location.href = `https://metamask.app.link/dapp/${url}`;
-  setTimeout(cerrarModalMetaMask, 1000);
+  // No hace nada — el link es directo en el <a>
 }
 
 function copiarURL() {
@@ -455,15 +458,17 @@ async function detectarProvider() {
 // ── CONECTAR WALLET ──────────────────────────────────────
 async function conectarWallet() {
   setStatus('Conectando...', 'wait');
-  if (esMobil() && !estaDentroDeMetaMask()) {
+
+  // En móvil SIEMPRE mostrar opciones de MetaMask primero
+  if (!estaDentroDeMetaMask()) {
     mostrarModalMetaMask();
-    setStatus('Abre en navegador MetaMask', 'wait');
+    setStatus('Selecciona cómo conectar', 'wait');
     return;
   }
   const ok = await detectarProvider();
   if (!ok) {
-    setStatus('MetaMask no detectado', 'err');
-    alert("❌ Instala MetaMask desde metamask.io");
+    mostrarModalMetaMask();
+    setStatus('Abre en navegador MetaMask', 'wait');
     return;
   }
   try {
