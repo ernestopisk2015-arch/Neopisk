@@ -1,3 +1,66 @@
+// ── SISTEMA DE BONOS ──────────────────────────────────────────────────────
+const BONOS = [
+  { refs: 5,  ventas_min: 100,  bono_usdt: 5,   bono_pisk: 50,   nivel: '🥉 BRONCE'  },
+  { refs: 10, ventas_min: 250,  bono_usdt: 15,  bono_pisk: 150,  nivel: '🥈 PLATA'   },
+  { refs: 25, ventas_min: 600,  bono_usdt: 50,  bono_pisk: 500,  nivel: '🥇 ORO'     },
+  { refs: 50, ventas_min: 1000, bono_usdt: 100, bono_pisk: 1000, nivel: '💎 DIAMANTE' }
+];
+
+function calcularBono(user) {
+  const refs_inv = (user.mis_referidos||[]).filter(id => db.usuarios[id]?.compras_usdt > 0);
+  const volumen  = refs_inv.reduce((s,id) => s+(db.usuarios[id]?.compras_usdt||0), 0);
+  const total    = (user.mis_referidos||[]).length;
+  let alcanzado = null;
+  let proximo   = null;
+  for (const b of BONOS) {
+    if (total >= b.refs && volumen >= b.ventas_min) alcanzado = b;
+    else if (!proximo) proximo = b;
+  }
+  return { alcanzado, proximo, refs_inv: refs_inv.length, volumen, total };
+}
+
+function textoBonos(user) {
+  const { alcanzado, proximo, refs_inv, volumen, total } = calcularBono(user);
+  let txt = `🏆 *SISTEMA DE BONOS NEO PISK*\n\n`;
+  txt += `📊 *Tu progreso:*\n`;
+  txt += `👥 Referidos totales: *${total}*\n`;
+  txt += `💰 Referidos inversores: *${refs_inv}*\n`;
+  txt += `💵 Volumen grupal: *$${volumen.toFixed(2)} USDT*\n\n`;
+  txt += `━━━━━━━━━━━━━━━━━━━━\n`;
+  txt += `💎 *TABLA DE BONOS*\n`;
+  txt += `━━━━━━━━━━━━━━━━━━━━\n\n`;
+  for (const b of BONOS) {
+    const ok = total >= b.refs && volumen >= b.ventas_min;
+    txt += `${ok?'✅':'🔒'} *${b.nivel}*\n`;
+    txt += `   👥 ${b.refs} referidos ${total>=b.refs?'✅':'(tienes '+total+')'}\n`;
+    txt += `   💵 $${b.ventas_min} en ventas ${volumen>=b.ventas_min?'✅':'(llevas $'+volumen.toFixed(0)+')'}\n`;
+    txt += `   🎁 *$${b.bono_usdt} USDT + ${b.bono_pisk} $PISK*\n\n`;
+  }
+  txt += `━━━━━━━━━━━━━━━━━━━━\n\n`;
+  if (proximo) {
+    const rf = Math.max(0, proximo.refs-total);
+    const vf = Math.max(0, proximo.ventas_min-volumen);
+    const pr = Math.min(100, Math.round(total/proximo.refs*100));
+    const pv = Math.min(100, Math.round(volumen/proximo.ventas_min*100));
+    const br = '█'.repeat(Math.floor(pr/10))+'░'.repeat(10-Math.floor(pr/10));
+    const bv = '█'.repeat(Math.floor(pv/10))+'░'.repeat(10-Math.floor(pv/10));
+    txt += `🎯 *PRÓXIMO: ${proximo.nivel}*\n\n`;
+    txt += `👥 ${br} ${pr}% — faltan *${rf}* personas\n`;
+    txt += `💵 ${bv} ${pv}% — faltan *$${vf.toFixed(0)} USDT*\n\n`;
+    txt += `🏆 Premio: *$${proximo.bono_usdt} USDT + ${proximo.bono_pisk} $PISK*\n\n`;
+  } else {
+    txt += `🎉 *¡Eres promotor DIAMANTE!* 💎\n\n`;
+  }
+  txt += `━━━━━━━━━━━━━━━━━━━━\n`;
+  txt += `📌 *Reglas:*\n`;
+  txt += `• Solo referidos *humanos verificados*\n`;
+  txt += `• Volumen = suma de *compras de tu grupo*\n`;
+  txt += `• Bono se paga al cumplir *ambas metas*\n`;
+  txt += `• Pago: *50% USDT + 50% $PISK* a tu wallet\n`;
+  txt += `• Fraude = pérdida de todas las comisiones`;
+  return txt;
+}
+
 /**
  * Neo Pisk Airdrop Bot v2
  * - Sistema de referidos completo
@@ -127,6 +190,7 @@ bot.onText(/\/start(.*)/, (msg, match) => {
           { text: '💰 COMPRAR $PISK', callback_data: 'comprar' },
           { text: '👥 MIS REFERIDOS', callback_data: 'mis_referidos' }
         ],
+        [{ text: '🏆 MIS BONOS Y PROGRESO', callback_data: 'bonos' }],
         [
           { text: '💼 MI WALLET', callback_data: 'mi_wallet' },
           { text: '📊 MI BALANCE', callback_data: 'balance' }
@@ -271,6 +335,18 @@ bot.on('callback_query', async (q) => {
     bot.sendMessage(userId, `Envía tu nueva dirección wallet (0x...):`, { parse_mode: 'Markdown' });
     db.usuarios[userId]._esperando = 'wallet';
     saveDB();
+  }
+
+  // BONOS
+  if (data === 'bonos') {
+    const txt = textoBonos(user);
+    bot.sendMessage(userId, txt, {
+      parse_mode: 'Markdown',
+      reply_markup: { inline_keyboard: [
+        [{ text: '📤 COMPARTIR Y GANAR', callback_data: 'compartir' }],
+        [{ text: '◀ VOLVER', callback_data: 'menu' }]
+      ]}
+    });
   }
 
   // MENU
