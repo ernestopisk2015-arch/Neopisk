@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Neo Pisk Guild — Join the Global RWA Movement</title>
+<meta name="description" content="Earn real tokens backed by electric vehicles in Latin America. Join the Neo Pisk Guild on Discord.">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --gold:#D4A017;--gold2:#F0C040;--gold3:#FFF3B0;
+  --dark:#07090C;--dark2:#0D1117;--dark3:#111820;--dark4:#1A2030;
+  --border:rgba(212,160,23,0.15);--border2:rgba(212,160,23,0.06);
+  --text:#E8EDF5;--muted:#7A8A9A;--muted2:#3A4A5A;
+  --green:#00E676;--discord:#5865F2;--telegram:#229ED9;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--dark);color:var(--text);
+  font-family:'Barlow Condensed',sans-serif;
+  min-height:100vh;overflow-x:hidden;
+}
+
+/* ── NOISE TEXTURE ── */
+body::before{
+  content:'';position:fixed;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events:none;z-index:0;opacity:0.4;
+}
+
+/* ── LANG TOGGLE ── */
+.lang-bar{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  background:rgba(7,9,12,0.9);backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:10px 24px;
+}
+.lang-logo{font-family:'Bebas Neue';font-size:22px;color:var(--gold2);letter-spacing:3px;}
+.lang-btns{display:flex;gap:4px;}
+.lang-btn{
+  background:none;border:1px solid var(--border);color:var(--muted);
+  padding:4px 12px;font-family:'Bebas Neue';font-size:13px;letter-spacing:2px;
+  cursor:pointer;transition:all 0.2s;
+}
+.lang-btn.active{background:var(--gold);color:var(--dark);border-color:var(--gold);}
+
+/* ── HERO ── */
+.hero{
+  position:relative;min-height:100vh;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:100px 24px 60px;text-align:center;overflow:hidden;
+}
+
+/* Grid background */
+.hero::after{
+  content:'';position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(212,160,23,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(212,160,23,0.04) 1px, transparent 1px);
+  background-size:60px 60px;
+  mask-image:radial-gradient(ellipse 80% 60% at 50% 50%, black, transparent);
+}
+
+/* Glow orb */
+.hero-glow{
+  position:absolute;top:20%;left:50%;transform:translateX(-50%);
+  width:600px;height:600px;
+  background:radial-gradient(circle, rgba(212,160,23,0.08) 0%, transparent 70%);
+  pointer-events:none;
+}
+
+.hero-eyebrow{
+  font-family:'JetBrains Mono';font-size:11px;letter-spacing:4px;
+  color:var(--gold);text-transform:uppercase;margin-bottom:16px;
+  border:1px solid var(--border);padding:6px 16px;display:inline-block;
+  animation:fadeUp 0.6s ease both;
+}
+.hero-title{
+  font-family:'Bebas Neue';font-size:clamp(52px,12vw,110px);
+  line-height:0.9;letter-spacing:2px;
+  background:linear-gradient(180deg,#FFF3B0 0%,var(--gold2) 40%,var(--gold) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  margin-bottom:8px;
+  animation:fadeUp 0.6s 0.1s ease both;
+}
+.hero-title span{display:block;}
+.hero-subtitle{
+  font-size:clamp(18px,3vw,26px);font-weight:600;letter-spacing:3px;
+  color:var(--muted);text-transform:uppercase;margin-bottom:24px;
+  animation:fadeUp 0.6s 0.2s ease both;
+}
+.hero-desc{
+  font-size:18px;color:var(--text);max-width:560px;line-height:1.6;
+  margin-bottom:40px;font-weight:400;
+  animation:fadeUp 0.6s 0.3s ease both;
+}
+.hero-desc strong{color:var(--gold2);}
+
+.hero-btns{
+  display:flex;flex-direction:column;gap:12px;width:100%;max-width:380px;
+  animation:fadeUp 0.6s 0.4s ease both;
+}
+.btn-discord{
+  display:flex;align-items:center;justify-content:center;gap:12px;
+  background:var(--discord);color:#fff;
+  padding:18px 32px;font-family:'Bebas Neue';font-size:24px;letter-spacing:3px;
+  border:none;cursor:pointer;text-decoration:none;
+  transition:all 0.2s;box-shadow:0 0 40px rgba(88,101,242,0.3);
+}
+.btn-discord:hover{background:#4752C4;transform:translateY(-2px);box-shadow:0 8px 40px rgba(88,101,242,0.5);}
+.btn-discord svg{width:28px;height:28px;fill:#fff;flex-shrink:0;}
+
+.btn-telegram{
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  background:none;border:1px solid var(--border);color:var(--muted);
+  padding:14px 32px;font-family:'Bebas Neue';font-size:18px;letter-spacing:3px;
+  cursor:pointer;text-decoration:none;transition:all 0.2s;
+}
+.btn-telegram:hover{border-color:var(--telegram);color:var(--telegram);}
+
+.hero-proof{
+  margin-top:48px;display:flex;gap:32px;flex-wrap:wrap;justify-content:center;
+  animation:fadeUp 0.6s 0.5s ease both;
+}
+.proof-item{text-align:center;}
+.proof-num{font-family:'Bebas Neue';font-size:36px;color:var(--gold2);}
+.proof-lbl{font-size:11px;letter-spacing:3px;color:var(--muted);text-transform:uppercase;}
+
+/* ── SECTION BASE ── */
+section{position:relative;z-index:1;padding:80px 24px;}
+.section-inner{max-width:960px;margin:0 auto;}
+.section-tag{
+  font-family:'JetBrains Mono';font-size:10px;letter-spacing:4px;color:var(--gold);
+  text-transform:uppercase;margin-bottom:12px;
+}
+.section-title{
+  font-family:'Bebas Neue';font-size:clamp(36px,6vw,64px);letter-spacing:2px;
+  line-height:1;margin-bottom:16px;
+}
+.section-title em{color:var(--gold2);font-style:normal;}
+.section-body{font-size:17px;color:var(--muted);line-height:1.7;max-width:600px;}
+
+/* ── HOW IT WORKS ── */
+.steps-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1px;margin-top:48px;background:var(--border);}
+.step-card{
+  background:var(--dark2);padding:32px 24px;position:relative;overflow:hidden;
+  transition:background 0.2s;
+}
+.step-card:hover{background:var(--dark3);}
+.step-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--gold),transparent);
+  opacity:0;transition:opacity 0.2s;
+}
+.step-card:hover::before{opacity:1;}
+.step-n{
+  font-family:'Bebas Neue';font-size:64px;color:var(--border2);
+  position:absolute;top:8px;right:16px;line-height:1;
+  background:linear-gradient(180deg,rgba(212,160,23,0.15),transparent);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.step-icon{font-size:32px;margin-bottom:12px;}
+.step-title{font-family:'Bebas Neue';font-size:20px;letter-spacing:2px;color:var(--gold2);margin-bottom:8px;}
+.step-desc{font-size:15px;color:var(--muted);line-height:1.5;}
+.step-badge{
+  display:inline-block;margin-top:10px;
+  background:rgba(212,160,23,0.1);border:1px solid var(--border);
+  padding:3px 10px;font-family:'JetBrains Mono';font-size:11px;color:var(--gold);
+}
+
+/* ── BONOS ── */
+.bonos-wrap{margin-top:48px;}
+.bono-row{
+  display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:16px;
+  padding:20px 24px;border:1px solid var(--border);margin-bottom:8px;
+  background:var(--dark2);position:relative;overflow:hidden;
+  transition:all 0.2s;cursor:default;
+}
+.bono-row:hover{border-color:var(--gold);background:var(--dark3);}
+.bono-row::after{
+  content:'';position:absolute;left:0;top:0;bottom:0;width:3px;
+  background:var(--gold);transform:scaleY(0);transform-origin:bottom;
+  transition:transform 0.3s;
+}
+.bono-row:hover::after{transform:scaleY(1);}
+.bono-nivel{font-family:'Bebas Neue';font-size:28px;min-width:100px;}
+.bono-reqs{font-size:14px;color:var(--muted);line-height:1.6;}
+.bono-reqs strong{color:var(--text);}
+.bono-prize{text-align:right;}
+.bono-usdt{font-family:'Bebas Neue';font-size:32px;color:var(--gold2);}
+.bono-pisk{font-size:12px;color:var(--muted);font-family:'JetBrains Mono';}
+.bono-locked{
+  position:absolute;top:8px;right:8px;
+  font-size:10px;letter-spacing:2px;color:var(--muted2);font-family:'Bebas Neue';
+}
+
+/* ── RULES ── */
+.rules-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin-top:40px;}
+.rule-card{
+  background:var(--dark2);border:1px solid var(--border);padding:24px;
+}
+.rule-icon{font-size:28px;margin-bottom:12px;}
+.rule-title{font-family:'Bebas Neue';font-size:18px;letter-spacing:2px;color:var(--gold2);margin-bottom:8px;}
+.rule-desc{font-size:14px;color:var(--muted);line-height:1.6;}
+
+/* ── CTA FINAL ── */
+.cta-section{
+  background:linear-gradient(135deg,var(--dark2) 0%,rgba(212,160,23,0.03) 100%);
+  border-top:1px solid var(--border);border-bottom:1px solid var(--border);
+  text-align:center;padding:100px 24px;
+}
+.cta-title{
+  font-family:'Bebas Neue';font-size:clamp(40px,8vw,80px);letter-spacing:3px;
+  background:linear-gradient(135deg,var(--gold3),var(--gold));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  margin-bottom:16px;
+}
+.cta-sub{font-size:18px;color:var(--muted);margin-bottom:40px;max-width:500px;margin-left:auto;margin-right:auto;}
+.cta-btn{
+  display:inline-flex;align-items:center;gap:14px;
+  background:var(--discord);color:#fff;
+  padding:22px 48px;font-family:'Bebas Neue';font-size:28px;letter-spacing:4px;
+  border:none;cursor:pointer;text-decoration:none;
+  box-shadow:0 0 60px rgba(88,101,242,0.4);transition:all 0.2s;
+}
+.cta-btn:hover{background:#4752C4;transform:translateY(-3px);box-shadow:0 12px 60px rgba(88,101,242,0.6);}
+.cta-btn svg{width:32px;height:32px;fill:#fff;}
+.cta-note{margin-top:20px;font-size:12px;color:var(--muted2);letter-spacing:2px;font-family:'JetBrains Mono';}
+
+/* ── FOOTER ── */
+footer{padding:32px 24px;text-align:center;border-top:1px solid var(--border);}
+footer p{font-size:12px;color:var(--muted2);font-family:'JetBrains Mono';letter-spacing:1px;}
+footer a{color:var(--gold);text-decoration:none;}
+
+/* ── DIVIDER ── */
+.divider{height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent);margin:0;}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.reveal{opacity:0;transform:translateY(30px);transition:all 0.6s ease;}
+.reveal.visible{opacity:1;transform:translateY(0);}
+
+/* ── RESPONSIVE ── */
+@media(max-width:600px){
+  .hero-btns{max-width:100%;}
+  .bono-row{grid-template-columns:1fr 1fr;grid-template-rows:auto auto;}
+  .bono-nivel{grid-column:1;grid-row:1;}
+  .bono-prize{grid-column:2;grid-row:1;}
+  .bono-reqs{grid-column:1/-1;grid-row:2;}
+  .hero-proof{gap:20px;}
+  section{padding:60px 20px;}
+}
+</style>
+</head>
+<body>
+
+<!-- LANG BAR -->
+<div class="lang-bar">
+  <div class="lang-logo">NEO PISK</div>
+  <div class="lang-btns">
+    <button class="lang-btn active" onclick="setLang('en')" id="btn-en">EN</button>
+    <button class="lang-btn" onclick="setLang('es')" id="btn-es">ES</button>
+  </div>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-glow"></div>
+  <div style="position:relative;z-index:1;width:100%;max-width:700px;">
+    <div class="hero-eyebrow" data-en="GLOBAL RWA GUILD · POLYGON NETWORK" data-es="GREMIO GLOBAL RWA · RED POLYGON">GLOBAL RWA GUILD · POLYGON NETWORK</div>
+    <h1 class="hero-title">
+      <span>NEO</span>
+      <span>PISK</span>
+      <span>GUILD</span>
+    </h1>
+    <div class="hero-subtitle" data-en="Real Assets. Real Income. Real People." data-es="Activos Reales. Ingresos Reales. Gente Real.">Real Assets. Real Income. Real People.</div>
+    <p class="hero-desc" data-en="We back every token with a <strong>real electric vehicle fleet</strong> operating in Latin America. Earn $PISK, build your network, collect <strong>real USDT commissions</strong>." data-es="Cada token está respaldado por una <strong>flota eléctrica real</strong> operando en Latinoamérica. Gana $PISK, construye tu red, cobra <strong>comisiones reales en USDT</strong>.">We back every token with a <strong>real electric vehicle fleet</strong> operating in Latin America. Earn $PISK, build your network, collect <strong>real USDT commissions</strong>.</p>
+    <div class="hero-btns">
+      <a href="https://discord.gg/BmnVAuUTA" target="_blank" class="btn-discord">
+        <svg viewBox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057c.002.022.015.043.03.056a19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
+        <span data-en="JOIN DISCORD" data-es="UNIRSE AL DISCORD">JOIN DISCORD</span>
+      </a>
+      <a href="https://t.me/Neo_Pisk_airdrop_bot" target="_blank" class="btn-telegram">
+        <span>✈️</span>
+        <span data-en="GET FREE TOKENS ON TELEGRAM" data-es="OBTENER TOKENS GRATIS EN TELEGRAM">GET FREE TOKENS ON TELEGRAM</span>
+      </a>
+    </div>
+    <div class="hero-proof">
+      <div class="proof-item"><div class="proof-num">$0.10</div><div class="proof-lbl" data-en="Token Price" data-es="Precio Token">Token Price</div></div>
+      <div class="proof-item"><div class="proof-num">10x</div><div class="proof-lbl" data-en="PISK per USDT" data-es="PISK por USDT">PISK per USDT</div></div>
+      <div class="proof-item"><div class="proof-num">10%</div><div class="proof-lbl" data-en="Referral USDT" data-es="Comisión USDT">Referral USDT</div></div>
+      <div class="proof-item"><div class="proof-num">$100</div><div class="proof-lbl" data-en="Top Bounty" data-es="Bono Máximo">Top Bounty</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- HOW IT WORKS -->
+<section>
+  <div class="section-inner">
+    <div class="section-tag reveal" data-en="HOW IT WORKS" data-es="CÓMO FUNCIONA">HOW IT WORKS</div>
+    <h2 class="section-title reveal" data-en="4 Steps to <em>Real Income</em>" data-es="4 Pasos para <em>Ingresos Reales</em>">4 Steps to <em>Real Income</em></h2>
+    <div class="steps-grid reveal">
+      <div class="step-card">
+        <div class="step-n">01</div>
+        <div class="step-icon">✈️</div>
+        <div class="step-title" data-en="JOIN DISCORD" data-es="ÚNETE AL DISCORD">JOIN DISCORD</div>
+        <div class="step-desc" data-en="Enter the Neo Pisk Guild community. Get your referral code and access all resources." data-es="Entra a la comunidad Neo Pisk Guild. Obtén tu código de referido y accede a todos los recursos.">Enter the Neo Pisk Guild community. Get your referral code and access all resources.</div>
+      </div>
+      <div class="step-card">
+        <div class="step-n">02</div>
+        <div class="step-icon">🎮</div>
+        <div class="step-title" data-en="COMPLETE MISSIONS" data-es="COMPLETA MISIONES">COMPLETE MISSIONS</div>
+        <div class="step-desc" data-en="Earn up to 8 $PISK completing missions and mini-games in our Telegram bot." data-es="Gana hasta 8 $PISK completando misiones y mini juegos en nuestro bot de Telegram.">Earn up to 8 $PISK completing missions and mini-games in our Telegram bot.</div>
+        <div class="step-badge">MAX 8 $PISK</div>
+      </div>
+      <div class="step-card">
+        <div class="step-n">03</div>
+        <div class="step-icon">🤝</div>
+        <div class="step-title" data-en="BRING AN INVESTOR" data-es="TRAE UN INVERSOR">BRING AN INVESTOR</div>
+        <div class="step-desc" data-en="Invite 1 person who buys $PISK. Your vault unlocks + you receive 2 bonus $PISK + 10% USDT commission." data-es="Invita 1 persona que compre $PISK. Tu bóveda se desbloquea + recibes 2 $PISK extra + 10% de comisión en USDT.">Invite 1 person who buys $PISK. Your vault unlocks + you receive 2 bonus $PISK + 10% USDT commission.</div>
+        <div class="step-badge">🔓 VAULT UNLOCKED</div>
+      </div>
+      <div class="step-card">
+        <div class="step-n">04</div>
+        <div class="step-icon">💰</div>
+        <div class="step-title" data-en="SCALE & EARN" data-es="ESCALA Y GANA">SCALE & EARN</div>
+        <div class="step-desc" data-en="Build your network. Every purchase your team makes pays you automatically in USDT and $PISK." data-es="Construye tu red. Cada compra de tu equipo te paga automáticamente en USDT y $PISK.">Build your network. Every purchase your team makes pays you automatically in USDT and $PISK.</div>
+        <div class="step-badge">10% + 3% + 1%</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- BONOS -->
+<section>
+  <div class="section-inner">
+    <div class="section-tag reveal" data-en="BOUNTY PROGRAM" data-es="PROGRAMA DE BONOS">BOUNTY PROGRAM</div>
+    <h2 class="section-title reveal" data-en="Earn <em>Real Bonuses</em>" data-es="Gana <em>Bonos Reales</em>">Earn <em>Real Bonuses</em></h2>
+    <p class="section-body reveal" data-en="Bonuses unlock when your group reaches the required investment volume. No bots, no fake accounts — only verified investors count." data-es="Los bonos se liberan cuando tu grupo alcanza el volumen de inversión requerido. Sin bots, sin cuentas falsas — solo cuentan inversores verificados.">Bonuses unlock when your group reaches the required investment volume. No bots, no fake accounts — only verified investors count.</p>
+
+    <div class="bonos-wrap reveal">
+      <div class="bono-row">
+        <div class="bono-nivel">🥉 <span data-en="BRONZE" data-es="BRONCE">BRONZE</span></div>
+        <div class="bono-reqs">
+          <strong data-en="5 verified investors" data-es="5 inversores verificados">5 verified investors</strong><br>
+          <span data-en="+ $100 USD group volume" data-es="+ $100 USD en volumen grupal">+ $100 USD group volume</span>
+        </div>
+        <div class="bono-prize">
+          <div class="bono-usdt">$5</div>
+          <div class="bono-pisk">+ 50 $PISK</div>
+        </div>
+      </div>
+      <div class="bono-row">
+        <div class="bono-nivel">🥈 <span data-en="SILVER" data-es="PLATA">SILVER</span></div>
+        <div class="bono-reqs">
+          <strong data-en="10 verified investors" data-es="10 inversores verificados">10 verified investors</strong><br>
+          <span data-en="+ $250 USD group volume" data-es="+ $250 USD en volumen grupal">+ $250 USD group volume</span>
+        </div>
+        <div class="bono-prize">
+          <div class="bono-usdt">$15</div>
+          <div class="bono-pisk">+ 150 $PISK</div>
+        </div>
+      </div>
+      <div class="bono-row">
+        <div class="bono-nivel">🥇 <span data-en="GOLD" data-es="ORO">GOLD</span></div>
+        <div class="bono-reqs">
+          <strong data-en="25 verified investors" data-es="25 inversores verificados">25 verified investors</strong><br>
+          <span data-en="+ $600 USD group volume" data-es="+ $600 USD en volumen grupal">+ $600 USD group volume</span>
+        </div>
+        <div class="bono-prize">
+          <div class="bono-usdt">$50</div>
+          <div class="bono-pisk">+ 500 $PISK</div>
+        </div>
+      </div>
+      <div class="bono-row" style="border-color:rgba(212,160,23,0.4);background:rgba(212,160,23,0.04);">
+        <div class="bono-nivel" style="color:var(--gold2)">💎 <span data-en="DIAMOND" data-es="DIAMANTE">DIAMOND</span></div>
+        <div class="bono-reqs">
+          <strong data-en="50 verified investors" data-es="50 inversores verificados">50 verified investors</strong><br>
+          <span data-en="+ $1,000 USD group volume" data-es="+ $1,000 USD en volumen grupal">+ $1,000 USD group volume</span>
+        </div>
+        <div class="bono-prize">
+          <div class="bono-usdt" style="font-size:40px">$100</div>
+          <div class="bono-pisk">+ 1,000 $PISK</div>
+        </div>
+      </div>
+    </div>
+
+    <p style="font-size:13px;color:var(--muted2);margin-top:16px;font-family:'JetBrains Mono';text-align:center;" data-en="Payment: 50% USDT + 50% $PISK to your registered Polygon wallet" data-es="Pago: 50% USDT + 50% $PISK a tu wallet Polygon registrada">Payment: 50% USDT + 50% $PISK to your registered Polygon wallet</p>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- RULES -->
+<section>
+  <div class="section-inner">
+    <div class="section-tag reveal" data-en="ANTI-FRAUD RULES" data-es="REGLAS ANTI-FRAUDE">ANTI-FRAUD RULES</div>
+    <h2 class="section-title reveal" data-en="We Protect <em>Real Earners</em>" data-es="Protegemos a los <em>Ganadores Reales</em>">We Protect <em>Real Earners</em></h2>
+    <div class="rules-grid reveal">
+      <div class="rule-card">
+        <div class="rule-icon">💳</div>
+        <div class="rule-title" data-en="UNIQUE WALLET" data-es="WALLET ÚNICA">UNIQUE WALLET</div>
+        <div class="rule-desc" data-en="One wallet = one account. Duplicate wallets are permanently blocked with all commissions forfeited." data-es="Una wallet = una cuenta. Wallets duplicadas son bloqueadas permanentemente con pérdida de todas las comisiones.">One wallet = one account. Duplicate wallets are permanently blocked with all commissions forfeited.</div>
+      </div>
+      <div class="rule-card">
+        <div class="rule-icon">⛓️</div>
+        <div class="rule-title" data-en="ON-CHAIN VERIFIED" data-es="VERIFICADO ON-CHAIN">ON-CHAIN VERIFIED</div>
+        <div class="rule-desc" data-en="Only real Polygon transactions count. The bot checks the blockchain every 5 minutes. Reversed transactions are rejected." data-es="Solo cuentan transacciones reales en Polygon. El bot revisa la blockchain cada 5 minutos. Transacciones revertidas son rechazadas.">Only real Polygon transactions count. The bot checks the blockchain every 5 minutes. Reversed transactions are rejected.</div>
+      </div>
+      <div class="rule-card">
+        <div class="rule-icon">⏱️</div>
+        <div class="rule-title" data-en="24H ACTIVITY CHECK" data-es="ACTIVIDAD 24H PREVIA">24H ACTIVITY CHECK</div>
+        <div class="rule-desc" data-en="Referrals must interact with the bot at least 24h before purchase. Instant-buy new accounts are flagged and rejected." data-es="Los referidos deben interactuar con el bot 24h antes de comprar. Cuentas nuevas con compra inmediata son rechazadas.">Referrals must interact with the bot at least 24h before purchase. Instant-buy new accounts are flagged and rejected.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<div class="divider"></div>
+
+<!-- VIP AMBASSADOR PROGRAM -->
+<section style="background:linear-gradient(180deg,var(--dark) 0%,rgba(212,160,23,0.04) 50%,var(--dark) 100%);">
+  <div class="section-inner">
+    <div class="section-tag reveal" style="text-align:center;display:block" data-en="ELITE OPPORTUNITY · LIMITED SPOTS" data-es="OPORTUNIDAD ÉLITE · CUPOS LIMITADOS">ELITE OPPORTUNITY · LIMITED SPOTS</div>
+    <h2 class="section-title reveal" style="text-align:center;font-size:clamp(40px,8vw,80px);" data-en="The <em>Ultimate</em><br>Ambassador Challenge" data-es="El <em>Máximo</em><br>Desafío Embajador">The <em>Ultimate</em><br>Ambassador Challenge</h2>
+    <p class="section-body reveal" style="text-align:center;margin:0 auto 48px;" data-en="We are not looking for shillers. We are looking for future executives of Neo Pisk Tech — the company building Latin America's largest electric vehicle tokenization platform." data-es="No buscamos 'shillers'. Buscamos futuros ejecutivos de Neo Pisk Tech — la empresa que construye la plataforma de tokenización de vehículos eléctricos más grande de Latinoamérica.">We are not looking for shillers. We are looking for future executives of Neo Pisk Tech — the company building Latin America's largest electric vehicle tokenization platform.</p>
+
+    <!-- INCENTIVES TABLE -->
+    <div class="reveal" style="margin-bottom:48px;">
+      <div style="font-family:'Bebas Neue';font-size:14px;letter-spacing:4px;color:var(--gold);text-align:center;margin-bottom:20px;" data-en="AMBASSADOR INCENTIVE SCALE" data-es="ESCALA DE INCENTIVOS">AMBASSADOR INCENTIVE SCALE</div>
+      
+      <!-- Level 1 -->
+      <div style="display:grid;grid-template-columns:40px 1fr auto;align-items:center;gap:16px;padding:16px 20px;border:1px solid var(--border);margin-bottom:6px;background:var(--dark2);">
+        <div style="font-family:'Bebas Neue';font-size:32px;color:var(--muted2)">10</div>
+        <div>
+          <div style="font-family:'Bebas Neue';font-size:16px;letter-spacing:2px;" data-en="10 VERIFIED SALES" data-es="10 VENTAS VERIFICADAS">10 VERIFIED SALES</div>
+          <div style="font-size:13px;color:var(--muted);" data-en="Confirmed token purchases from your network" data-es="Compras de tokens confirmadas de tu red">Confirmed token purchases from your network</div>
+        </div>
+        <div style="text-align:right;">
+          <div style="font-family:'Bebas Neue';font-size:22px;color:var(--gold2)">+150 $PISK</div>
+          <div style="font-size:11px;color:var(--muted);font-family:'JetBrains Mono'" data-en="TOKEN BONUS" data-es="BONO EN TOKENS">TOKEN BONUS</div>
+        </div>
+      </div>
+
+      <!-- Level 2 -->
+      <div style="display:grid;grid-template-columns:40px 1fr auto;align-items:center;gap:16px;padding:16px 20px;border:1px solid var(--border);margin-bottom:6px;background:var(--dark2);">
+        <div style="font-family:'Bebas Neue';font-size:32px;color:var(--gold)">50</div>
+        <div>
+          <div style="font-family:'Bebas Neue';font-size:16px;letter-spacing:2px;" data-en="50 VERIFIED INVESTORS" data-es="50 INVERSORES VERIFICADOS">50 VERIFIED INVESTORS</div>
+          <div style="font-size:13px;color:var(--muted);" data-en="Min. $1,000 USD in group volume" data-es="Mín. $1,000 USD en volumen grupal">Min. $1,000 USD in group volume</div>
+        </div>
+        <div style="text-align:right;">
+          <div style="font-family:'Bebas Neue';font-size:22px;color:var(--gold2)">$100 USD</div>
+          <div style="font-size:11px;color:var(--muted);font-family:'JetBrains Mono'" data-en="CASH BONUS" data-es="BONO EN EFECTIVO">CASH BONUS</div>
+        </div>
+      </div>
+
+      <!-- Level 3 — THE PRIZE -->
+      <div style="display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:16px;padding:24px 20px;border:2px solid var(--gold);background:rgba(212,160,23,0.05);position:relative;overflow:hidden;">
+        <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent);"></div>
+        <div style="font-family:'Bebas Neue';font-size:20px;color:var(--gold2);min-width:60px;text-align:center;">500+<br><span style="font-size:13px;color:var(--muted)">SALES</span></div>
+        <div>
+          <div style="font-family:'Bebas Neue';font-size:18px;letter-spacing:2px;color:var(--gold2);" data-en="💎 THE ULTIMATE PRIZE" data-es="💎 EL PREMIO MÁXIMO">💎 THE ULTIMATE PRIZE</div>
+          <div style="font-size:13px;color:var(--text);line-height:1.7;margin-top:4px;" data-en="Min. <strong>$20,000 USD</strong> in confirmed sales · Top 1 Global Ambassador" data-es="Mín. <strong>$20,000 USD</strong> en ventas confirmadas · Top 1 Embajador Global">Min. <strong>$20,000 USD</strong> in confirmed sales · Top 1 Global Ambassador</div>
+          <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;">
+            <span style="background:rgba(212,160,23,0.15);border:1px solid var(--border);padding:3px 10px;font-size:11px;font-family:'JetBrains Mono';color:var(--gold)" data-en="✈️ VIP PERU TRIP" data-es="✈️ VIAJE VIP PERÚ">✈️ VIP PERU TRIP</span>
+            <span style="background:rgba(212,160,23,0.15);border:1px solid var(--border);padding:3px 10px;font-size:11px;font-family:'JetBrains Mono';color:var(--gold)" data-en="🏛️ MACHU PICCHU" data-es="🏛️ MACHU PICCHU">🏛️ MACHU PICCHU</span>
+            <span style="background:rgba(212,160,23,0.15);border:1px solid var(--border);padding:3px 10px;font-size:11px;font-family:'JetBrains Mono';color:var(--gold)" data-en="🍽️ CEO DINNER LIMA" data-es="🍽️ CENA CON EL CEO">🍽️ CEO DINNER LIMA</span>
+            <span style="background:rgba(212,160,23,0.15);border:1px solid var(--border);padding:3px 10px;font-size:11px;font-family:'JetBrains Mono';color:var(--gold)" data-en="📋 6-MONTH CONTRACT" data-es="📋 CONTRATO 6 MESES">📋 6-MONTH CONTRACT</span>
+          </div>
+        </div>
+        <div style="text-align:right;min-width:80px;">
+          <div style="font-family:'Bebas Neue';font-size:28px;color:var(--gold2)">LIMA</div>
+          <div style="font-size:11px;color:var(--muted);font-family:'JetBrains Mono'">PERU HQ</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- THE PRIZE DETAILS -->
+    <div class="reveal" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-bottom:48px;">
+      <div style="background:var(--dark2);border:1px solid var(--border);padding:24px;">
+        <div style="font-size:32px;margin-bottom:10px">✈️</div>
+        <div style="font-family:'Bebas Neue';font-size:16px;letter-spacing:2px;color:var(--gold2);margin-bottom:8px;" data-en="VIP EXPEDITION TO PERU" data-es="EXPEDICIÓN VIP A PERÚ">VIP EXPEDITION TO PERU</div>
+        <div style="font-size:14px;color:var(--muted);line-height:1.6;" data-en="International flights covered. Luxury tour of Cusco and Machu Picchu. Experience the culture of the country backing your tokens." data-es="Vuelos internacionales cubiertos. Tour de lujo a Cusco y Machu Picchu. Vive la cultura del país que respalda tus tokens.">International flights covered. Luxury tour of Cusco and Machu Picchu. Experience the culture of the country backing your tokens.</div>
+      </div>
+      <div style="background:var(--dark2);border:1px solid var(--border);padding:24px;">
+        <div style="font-size:32px;margin-bottom:10px">🍽️</div>
+        <div style="font-family:'Bebas Neue';font-size:16px;letter-spacing:2px;color:var(--gold2);margin-bottom:8px;" data-en="GALA DINNER WITH CEO" data-es="CENA DE GALA CON CEO">GALA DINNER WITH CEO</div>
+        <div style="font-size:14px;color:var(--muted);line-height:1.6;" data-en="An exclusive evening with Ernesto (CEO) at one of Lima's finest restaurants — ranked in the World's Top 50. Discuss the future of Neo Pisk together." data-es="Una noche exclusiva con Ernesto (CEO) en uno de los mejores restaurantes de Lima — Top 50 Mundial. Discute el futuro de Neo Pisk juntos.">An exclusive evening with Ernesto (CEO) at one of Lima's finest restaurants — ranked in the World's Top 50. Discuss the future of Neo Pisk together.</div>
+      </div>
+      <div style="background:var(--dark2);border:1px solid var(--border);padding:24px;">
+        <div style="font-size:32px;margin-bottom:10px">📋</div>
+        <div style="font-family:'Bebas Neue';font-size:16px;letter-spacing:2px;color:var(--gold2);margin-bottom:8px;" data-en="6-MONTH EXECUTIVE CONTRACT" data-es="CONTRATO EJECUTIVO 6 MESES">6-MONTH EXECUTIVE CONTRACT</div>
+        <div style="font-size:14px;color:var(--muted);line-height:1.6;" data-en="Legal employment contract at Neo Pisk HQ in Lince, Lima. Paid accommodation + competitive salary. Renewable with 1 month paid vacation per year." data-es="Contrato legal en la sede de Neo Pisk en Lince, Lima. Alojamiento pagado + salario competitivo. Renovable con 1 mes de vacaciones pagadas al año.">Legal employment contract at Neo Pisk HQ in Lince, Lima. Paid accommodation + competitive salary. Renewable with 1 month paid vacation per year.</div>
+      </div>
+      <div style="background:var(--dark2);border:1px solid var(--border);padding:24px;">
+        <div style="font-size:32px;margin-bottom:10px">🏢</div>
+        <div style="font-family:'Bebas Neue';font-size:16px;letter-spacing:2px;color:var(--gold2);margin-bottom:8px;" data-en="YOUR ROLE IN LIMA HQ" data-es="TU ROL EN LA SEDE LIMA">YOUR ROLE IN LIMA HQ</div>
+        <div style="font-size:14px;color:var(--muted);line-height:1.6;" data-en="Global Marketing · Gaming Development · Capital Raising · Investor Relations. You build the world, from Lima." data-es="Marketing Global · Desarrollo de Gaming · Levantamiento de Capital · Relaciones con Inversores. Construyes el mundo, desde Lima.">Global Marketing · Gaming Development · Capital Raising · Investor Relations. You build the world, from Lima.</div>
+      </div>
+    </div>
+
+    <!-- CEO LETTER -->
+    <div class="reveal" style="border:1px solid var(--border);background:var(--dark2);padding:32px;position:relative;overflow:hidden;">
+      <div style="position:absolute;top:0;left:0;bottom:0;width:3px;background:linear-gradient(180deg,var(--gold),transparent);"></div>
+      <div style="font-family:'Bebas Neue';font-size:12px;letter-spacing:4px;color:var(--gold);margin-bottom:16px;" data-en="A MESSAGE FROM OUR CEO" data-es="MENSAJE DE NUESTRO CEO">A MESSAGE FROM OUR CEO</div>
+      <p style="font-size:17px;color:var(--text);line-height:1.8;margin-bottom:20px;font-style:italic;" data-en='"When I started Neo Pisk, I had a simple idea: make real assets accessible to everyone, anywhere in the world. Today, our electric fleet moves people through the streets of Lima every day — and every kilometer is backing your tokens. I am looking for the person who sees this vision and wants to build it with me. Not a follower. A co-builder. If you have the hunger to generate $20,000 in sales and prove your leadership to the world — Lima is waiting for you. The door to our office in Lince is open."' data-es='"Cuando fundé Neo Pisk tuve una idea simple: hacer los activos reales accesibles para todos, en cualquier parte del mundo. Hoy, nuestra flota eléctrica mueve personas por las calles de Lima cada día — y cada kilómetro respalda tus tokens. Busco a la persona que ve esta visión y quiere construirla conmigo. No un seguidor. Un co-constructor. Si tienes el hambre de generar $20,000 en ventas y demostrar tu liderazgo al mundo — Lima te espera. La puerta de nuestra oficina en Lince está abierta."'>"When I started Neo Pisk, I had a simple idea: make real assets accessible to everyone, anywhere in the world. Today, our electric fleet moves people through the streets of Lima every day — and every kilometer is backing your tokens. I am looking for the person who sees this vision and wants to build it with me. Not a follower. A co-builder. If you have the hunger to generate $20,000 in sales and prove your leadership to the world — Lima is waiting for you. The door to our office in Lince is open."</p>
+      <div style="display:flex;align-items:center;gap:16px;">
+        <div>
+          <div style="font-family:'Bebas Neue';font-size:20px;letter-spacing:2px;color:var(--gold2)">ERNESTO PISK</div>
+          <div style="font-size:12px;color:var(--muted);font-family:'JetBrains Mono';letter-spacing:2px" data-en="CEO & FOUNDER · NEO PISK TECH" data-es="CEO Y FUNDADOR · NEO PISK TECH">CEO & FOUNDER · NEO PISK TECH</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- CTA FINAL -->
+<div class="cta-section">
+  <div class="section-inner">
+    <div class="section-tag" style="text-align:center;display:block" data-en="THIS IS NOT A MEME COIN" data-es="ESTO NO ES UNA MEME COIN">THIS IS NOT A MEME COIN</div>
+    <div class="cta-title" data-en="JOIN THE GUILD.<br>BUILD REAL WEALTH." data-es="ÚNETE AL GREMIO.<br>CONSTRUYE RIQUEZA REAL.">JOIN THE GUILD.<br>BUILD REAL WEALTH.</div>
+    <p class="cta-sub" data-en="Every $PISK is backed by a real Changan electric taxi operating on Uber and Yango in Lima, Peru." data-es="Cada $PISK está respaldado por un taxi eléctrico Changan real operando en Uber y Yango en Lima, Perú.">Every $PISK is backed by a real Changan electric taxi operating on Uber and Yango in Lima, Peru.</p>
+    <a href="https://discord.gg/BmnVAuUTA" target="_blank" class="cta-btn">
+      <svg viewBox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057c.002.022.015.043.03.056a19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
+      <span data-en="ENTER DISCORD NOW" data-es="ENTRAR AL DISCORD AHORA">ENTER DISCORD NOW</span>
+    </a>
+    <div class="cta-note" data-en="FREE TO JOIN · NO CREDIT CARD · GLOBAL COMMUNITY" data-es="GRATIS · SIN TARJETA · COMUNIDAD GLOBAL">FREE TO JOIN · NO CREDIT CARD · GLOBAL COMMUNITY</div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2025 Neo Pisk Technology S.A.C. · Lima, Perú · 
+    <a href="https://neopisk.lat">neopisk.lat</a> · 
+    <a href="https://t.me/Neo_Pisk_airdrop_bot">Telegram</a> · 
+    <a href="https://discord.gg/BmnVAuUTA">Discord</a>
+  </p>
+  <p style="margin-top:8px;font-size:10px;color:var(--muted2)">$PISK token on Polygon · Contract: 0x07Fc7AC9D681Cdd3D100c68f6f5646970CC7fF60</p>
+</footer>
+
+<script>
+// ── LANGUAGE TOGGLE ─────────────────────────────────────
+let currentLang = 'en';
+
+function setLang(lang) {
+  currentLang = lang;
+  document.getElementById('btn-en').classList.toggle('active', lang==='en');
+  document.getElementById('btn-es').classList.toggle('active', lang==='es');
+  document.querySelectorAll('[data-en]').forEach(el => {
+    const txt = el.getAttribute('data-'+lang);
+    if (txt) el.innerHTML = txt;
+  });
+  document.documentElement.lang = lang;
+}
+
+// Auto-detect browser language
+if (navigator.language?.startsWith('es')) setLang('es');
+
+// ── SCROLL REVEAL ────────────────────────────────────────
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
