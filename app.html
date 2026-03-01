@@ -532,6 +532,35 @@ function openM(id) {
 }
 
 async function doMision(id) {
+  // Misiones manejadas localmente sin API
+  if (id === 'diario') {
+    const key = 'diario_' + (user?.id||'demo');
+    const ultimo = localStorage.getItem(key);
+    const ahora = Date.now();
+    if (ultimo && (ahora - parseInt(ultimo)) < 23*60*60*1000) {
+      const horas = Math.ceil((23*60*60*1000 - (ahora - parseInt(ultimo))) / 3600000);
+      toast('⏰ Vuelve en ' + horas + ' horas'); return;
+    }
+    localStorage.setItem(key, ahora);
+    if (!user.misiones) user.misiones = {};
+    user.misiones['diario'] = true;
+    user.pisk_balance = (user.pisk_balance||0) + 1;
+    closeModal(); updateUI(); renderMisiones();
+    toast('🎉 +1 $PISK reclamado!');
+    if(tg) tg.HapticFeedback?.notificationOccurred('success');
+    return;
+  }
+
+  if (id === 'humanidad') {
+    if (!user.misiones) user.misiones = {};
+    user.misiones['humanidad'] = true;
+    user.pisk_balance = (user.pisk_balance||0) + 5;
+    closeModal(); updateUI(); renderMisiones();
+    toast('🎉 +5 $PISK ganados!');
+    if(tg) tg.HapticFeedback?.notificationOccurred('success');
+    return;
+  }
+
   const body = { userId: user.id, mision: id };
   if(id==='registro') { body.nombre=document.getElementById('iNombre')?.value; body.pais=document.getElementById('iPais')?.value; if(!body.nombre||!body.pais){toast('⚠️ Completa los campos');return;} }
   if(id==='wallet')   { body.wallet=document.getElementById('iWallet')?.value; }
@@ -540,7 +569,19 @@ async function doMision(id) {
     const d = await r.json();
     if(d.ok){ user=d.usuario; closeModal(); updateUI(); renderMisiones(); toast(`🎉 +${d.tokens} $PISK!`); tg?.HapticFeedback?.notificationOccurred('success'); }
     else toast('❌ '+(d.error||'Error'));
-  } catch(e){ toast('❌ Error de conexión'); }
+  } catch(e){
+    // Fallback local para misiones básicas
+    if (['comunidad','viral'].includes(id)) {
+      if (!user.misiones) user.misiones = {};
+      user.misiones[id] = true;
+      const rewards = {comunidad:10, viral:20};
+      user.pisk_balance = (user.pisk_balance||0) + (rewards[id]||0);
+      closeModal(); updateUI(); renderMisiones();
+      toast('🎉 +' + (rewards[id]||0) + ' $PISK!');
+    } else {
+      toast('❌ Error de conexión. Intenta más tarde.');
+    }
+  }
 }
 
 function checkCaptcha(){ parseInt(document.getElementById('iCaptcha')?.value)===56 ? doMision('humanidad') : toast('❌ Incorrecto'); }
