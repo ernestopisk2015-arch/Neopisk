@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Neo Pisk — Panel Airdrop</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --gold:#D4A017;--gold2:#F0C040;--gold3:#FFF3B0;
+  --dark:#07090C;--dark2:#0D1117;--dark3:#131A24;--dark4:#1A2030;
+  --border:rgba(212,160,23,0.2);--border2:rgba(212,160,23,0.08);
+  --text:#E8EDF5;--muted:#5A6A7A;--muted2:#3A4A5A;
+  --green:#00E676;--red:#FF3D3D;--blue:#1A6EFF;--orange:#FF9800;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--dark);color:var(--text);font-family:'Rajdhani',sans-serif;min-height:100vh;}
+
+/* ── LOGIN ── */
+#loginScreen{position:fixed;inset:0;background:var(--dark);z-index:100;display:flex;align-items:center;justify-content:center;}
+.login-box{background:var(--dark2);border:1px solid var(--border);padding:40px;width:360px;text-align:center;}
+.login-logo{font-family:'Bebas Neue';font-size:42px;background:linear-gradient(135deg,var(--gold),var(--gold2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:4px;}
+.login-sub{font-size:11px;letter-spacing:4px;color:var(--muted);margin-bottom:32px;}
+.login-input{width:100%;background:var(--dark3);border:1px solid var(--border);color:var(--text);padding:12px 16px;font-family:'Rajdhani',sans-serif;font-size:15px;outline:none;margin-bottom:12px;transition:border-color 0.2s;}
+.login-input:focus{border-color:var(--gold);}
+.login-btn{width:100%;padding:14px;background:linear-gradient(135deg,var(--gold),#8B6914);color:var(--dark);border:none;font-family:'Bebas Neue';font-size:20px;letter-spacing:3px;cursor:pointer;}
+.login-err{color:var(--red);font-size:13px;margin-top:8px;display:none;}
+
+/* ── LAYOUT ── */
+#app{display:none;min-height:100vh;}
+.sidebar{position:fixed;left:0;top:0;bottom:0;width:220px;background:var(--dark2);border-right:1px solid var(--border);display:flex;flex-direction:column;z-index:50;}
+.sidebar-logo{padding:20px 16px;border-bottom:1px solid var(--border);}
+.sidebar-logo .logo{font-family:'Bebas Neue';font-size:26px;background:linear-gradient(135deg,var(--gold),var(--gold2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.sidebar-logo .sub{font-size:9px;letter-spacing:3px;color:var(--muted);}
+.nav-item{display:flex;align-items:center;gap:10px;padding:12px 16px;cursor:pointer;color:var(--muted);transition:all 0.2s;font-weight:600;font-size:14px;letter-spacing:1px;border-left:3px solid transparent;}
+.nav-item:hover{color:var(--text);background:var(--border2);}
+.nav-item.active{color:var(--gold);background:rgba(212,160,23,0.06);border-left-color:var(--gold);}
+.nav-icon{font-size:18px;width:24px;text-align:center;}
+.sidebar-bottom{margin-top:auto;padding:16px;border-top:1px solid var(--border);}
+.api-status{display:flex;align-items:center;gap:8px;font-size:11px;color:var(--muted);}
+.api-dot{width:8px;height:8px;border-radius:50%;background:var(--red);animation:pulse 2s infinite;}
+.api-dot.online{background:var(--green);}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+
+.main{margin-left:220px;padding:24px;min-height:100vh;}
+.page{display:none;}
+.page.active{display:block;}
+
+/* ── STATS CARDS ── */
+.page-title{font-family:'Bebas Neue';font-size:28px;letter-spacing:4px;color:var(--gold);margin-bottom:20px;}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px;}
+.stat-card{background:var(--dark2);border:1px solid var(--border);padding:20px 16px;position:relative;overflow:hidden;}
+.stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--gold),transparent);}
+.stat-num{font-family:'Bebas Neue';font-size:42px;line-height:1;color:var(--gold2);}
+.stat-lbl{font-size:11px;letter-spacing:3px;color:var(--muted);margin-top:4px;}
+.stat-icon{position:absolute;right:12px;top:12px;font-size:28px;opacity:0.2;}
+
+/* ── TABLE ── */
+.table-wrap{background:var(--dark2);border:1px solid var(--border);overflow:hidden;margin-bottom:20px;}
+.table-header{padding:14px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.table-title{font-family:'Bebas Neue';font-size:16px;letter-spacing:3px;color:var(--gold);}
+.search-input{background:var(--dark3);border:1px solid var(--border);color:var(--text);padding:8px 12px;font-family:'Rajdhani',sans-serif;font-size:13px;outline:none;width:220px;}
+.search-input::placeholder{color:var(--muted);}
+table{width:100%;border-collapse:collapse;}
+th{padding:10px 14px;text-align:left;font-size:10px;letter-spacing:3px;color:var(--muted);border-bottom:1px solid var(--border);font-weight:600;background:var(--dark3);}
+td{padding:12px 14px;font-size:13px;border-bottom:1px solid rgba(255,255,255,0.03);font-family:'JetBrains Mono',monospace;}
+tr:hover td{background:rgba(212,160,23,0.03);}
+tr:last-child td{border-bottom:none;}
+.badge{display:inline-block;padding:2px 8px;font-size:10px;letter-spacing:1px;font-family:'Bebas Neue';}
+.badge-green{background:rgba(0,230,118,0.15);color:var(--green);border:1px solid rgba(0,230,118,0.3);}
+.badge-red{background:rgba(255,61,61,0.15);color:var(--red);border:1px solid rgba(255,61,61,0.3);}
+.badge-gold{background:rgba(212,160,23,0.15);color:var(--gold);border:1px solid var(--border);}
+.badge-blue{background:rgba(26,110,255,0.15);color:var(--blue);border:1px solid rgba(26,110,255,0.3);}
+
+/* ── BUTTONS ── */
+.btn{padding:6px 14px;font-family:'Bebas Neue';font-size:13px;letter-spacing:2px;cursor:pointer;border:none;transition:all 0.2s;}
+.btn-gold{background:linear-gradient(135deg,var(--gold),#8B6914);color:var(--dark);}
+.btn-green{background:rgba(0,230,118,0.15);color:var(--green);border:1px solid rgba(0,230,118,0.3);}
+.btn-red{background:rgba(255,61,61,0.15);color:var(--red);border:1px solid rgba(255,61,61,0.3);}
+.btn-ghost{background:none;color:var(--muted);border:1px solid var(--border);}
+.btn:hover{opacity:0.85;transform:scale(0.98);}
+
+/* ── MISIONES PROGRESS ── */
+.mission-bars{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.m-bar-item{background:var(--dark3);padding:12px;border:1px solid var(--border);}
+.m-bar-top{display:flex;justify-content:space-between;margin-bottom:6px;}
+.m-bar-name{font-size:12px;font-weight:600;}
+.m-bar-count{font-family:'JetBrains Mono';font-size:12px;color:var(--gold2);}
+.m-bar-bg{height:4px;background:var(--dark4);border-radius:2px;overflow:hidden;}
+.m-bar-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold2));border-radius:2px;transition:width 0.5s;}
+
+/* ── REFERRAL TREE ── */
+.ref-search{display:flex;gap:8px;margin-bottom:16px;}
+.ref-tree{background:var(--dark3);border:1px solid var(--border);padding:16px;font-family:'JetBrains Mono';font-size:12px;min-height:200px;line-height:1.8;}
+.ref-node{color:var(--gold2);}
+.ref-node-2{color:var(--text);padding-left:20px;}
+.ref-node-3{color:var(--muted);padding-left:40px;}
+
+/* ── MODAL APROBAR ── */
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:200;display:none;align-items:center;justify-content:center;}
+.modal-bg.show{display:flex;}
+.modal-box{background:var(--dark2);border:1px solid var(--border);padding:28px;width:440px;max-width:90vw;}
+.modal-title{font-family:'Bebas Neue';font-size:22px;letter-spacing:3px;color:var(--gold);margin-bottom:16px;}
+.modal-field{margin-bottom:12px;}
+.modal-label{font-size:11px;letter-spacing:2px;color:var(--muted);margin-bottom:4px;}
+.modal-val{font-family:'JetBrains Mono';font-size:13px;color:var(--text);background:var(--dark3);padding:8px 12px;border:1px solid var(--border);}
+.modal-btns{display:flex;gap:8px;margin-top:16px;}
+
+/* ── TOAST ── */
+.toast{position:fixed;bottom:24px;right:24px;background:var(--dark2);border:1px solid var(--gold);padding:12px 20px;font-size:14px;font-weight:600;transition:all 0.3s;z-index:300;transform:translateY(80px);opacity:0;}
+.toast.show{transform:translateY(0);opacity:1;}
+
+/* ── LOADING ── */
+.spin{width:32px;height:32px;border:3px solid var(--border);border-top-color:var(--gold);border-radius:50%;animation:spin 0.8s linear infinite;margin:40px auto;}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ── RESPONSIVE ── */
+@media(max-width:768px){
+  .sidebar{width:60px;}
+  .nav-item span{display:none;}
+  .sidebar-logo .logo{font-size:16px;}
+  .sidebar-logo .sub{display:none;}
+  .main{margin-left:60px;padding:16px;}
+  .stats-grid{grid-template-columns:1fr 1fr;}
+}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="loginScreen">
+  <div class="login-box">
+    <div class="login-logo">$PISK</div>
+    <div class="login-sub">PANEL DE CONTROL AIRDROP</div>
+    <input class="login-input" type="text" id="loginUser" placeholder="Usuario" autocomplete="off">
+    <input class="login-input" type="password" id="loginPass" placeholder="Contraseña" onkeydown="if(event.key==='Enter')doLogin()">
+    <button class="login-btn" onclick="doLogin()">INGRESAR</button>
+    <div class="login-err" id="loginErr">❌ Credenciales incorrectas</div>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app">
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo">NEO PISK</div>
+      <div class="sub">PANEL AIRDROP</div>
+    </div>
+    <nav>
+      <div class="nav-item active" onclick="showPage('dashboard')"><span class="nav-icon">📊</span><span>Dashboard</span></div>
+      <div class="nav-item" onclick="showPage('usuarios')"><span class="nav-icon">👥</span><span>Usuarios</span></div>
+      <div class="nav-item" onclick="showPage('misiones')"><span class="nav-icon">🎯</span><span>Misiones</span></div>
+      <div class="nav-item" onclick="showPage('referidos')"><span class="nav-icon">🤝</span><span>Referidos</span></div>
+      <div class="nav-item" onclick="showPage('pendientes')"><span class="nav-icon">⏳</span><span>Pendientes</span></div>
+      <div class="nav-item" onclick="showPage('juegos')"><span class="nav-icon">🎮</span><span>Juegos</span></div>
+    </nav>
+    <div class="sidebar-bottom">
+      <div class="api-status">
+        <div class="api-dot" id="apiDot"></div>
+        <span id="apiStatusTxt">Verificando...</span>
+      </div>
+      <div style="margin-top:8px;font-size:10px;color:var(--muted2);font-family:'JetBrains Mono'">API :3004</div>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+
+    <!-- DASHBOARD -->
+    <div class="page active" id="page-dashboard">
+      <div class="page-title">📊 DASHBOARD</div>
+      <div class="stats-grid">
+        <div class="stat-card"><div class="stat-icon">👥</div><div class="stat-num" id="s-total">—</div><div class="stat-lbl">USUARIOS TOTALES</div></div>
+        <div class="stat-card"><div class="stat-icon">⚡</div><div class="stat-num" id="s-activos">—</div><div class="stat-lbl">USUARIOS ACTIVOS</div></div>
+        <div class="stat-card"><div class="stat-icon">💰</div><div class="stat-num" id="s-inversores">—</div><div class="stat-lbl">INVERSORES</div></div>
+        <div class="stat-card"><div class="stat-icon">🪙</div><div class="stat-num" id="s-tokens">—</div><div class="stat-lbl">$PISK DISTRIBUIDOS</div></div>
+      </div>
+
+      <!-- TOP 10 -->
+      <div class="table-wrap">
+        <div class="table-header">
+          <div class="table-title">🏆 TOP 10 HOLDERS</div>
+          <button class="btn btn-ghost" onclick="cargarDatos()">↻ ACTUALIZAR</button>
+        </div>
+        <table>
+          <thead><tr><th>#</th><th>USUARIO</th><th>$PISK</th><th>REFERIDOS</th><th>VIRTUAL</th></tr></thead>
+          <tbody id="top10Body"></tbody>
+        </table>
+      </div>
+
+      <!-- RECIENTES -->
+      <div class="table-wrap">
+        <div class="table-header"><div class="table-title">🆕 REGISTROS RECIENTES</div></div>
+        <table>
+          <thead><tr><th>NOMBRE</th><th>CÓDIGO</th><th>PAÍS</th><th>$PISK</th><th>REFS</th></tr></thead>
+          <tbody id="recientesBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- USUARIOS -->
+    <div class="page" id="page-usuarios">
+      <div class="page-title">👥 USUARIOS</div>
+      <div class="table-wrap">
+        <div class="table-header">
+          <div class="table-title">TODOS LOS USUARIOS</div>
+          <input class="search-input" id="searchUsuario" placeholder="🔍 Buscar por nombre o código..." oninput="filtrarUsuarios()">
+        </div>
+        <table>
+          <thead><tr><th>NOMBRE</th><th>CÓDIGO REF</th><th>PAÍS</th><th>$PISK</th><th>WALLET</th><th>MISIONES</th><th>ESTADO</th><th>ACCIONES</th></tr></thead>
+          <tbody id="usuariosBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- MISIONES -->
+    <div class="page" id="page-misiones">
+      <div class="page-title">🎯 PROGRESO DE MISIONES</div>
+      <div class="mission-bars" id="misionesBars"></div>
+    </div>
+
+    <!-- REFERIDOS -->
+    <div class="page" id="page-referidos">
+      <div class="page-title">🤝 ÁRBOL DE REFERIDOS</div>
+      <div class="ref-search">
+        <input class="search-input" id="refSearchInput" placeholder="Ingresa código de referido (ej: PISK212995)" style="flex:1;">
+        <button class="btn btn-gold" onclick="buscarArbol()">BUSCAR</button>
+      </div>
+      <div class="ref-tree" id="refTreeBox">Ingresa un código para ver el árbol de referidos</div>
+
+      <div class="table-wrap" style="margin-top:20px;">
+        <div class="table-header"><div class="table-title">🏆 TOP REFERIDORES</div></div>
+        <table>
+          <thead><tr><th>#</th><th>NOMBRE</th><th>CÓDIGO</th><th>REFERIDOS</th><th>COMISIÓN USDT</th></tr></thead>
+          <tbody id="topRefsBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- PENDIENTES -->
+    <div class="page" id="page-pendientes">
+      <div class="page-title">⏳ APROBACIONES PENDIENTES</div>
+      <div id="pendientesWrap">
+        <div class="table-wrap">
+          <div class="table-header"><div class="table-title">VOUCHERS E INFLUENCERS</div></div>
+          <table>
+            <thead><tr><th>USUARIO</th><th>TIPO</th><th>FECHA</th><th>DETALLE</th><th>ACCIONES</th></tr></thead>
+            <tbody id="pendientesBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- JUEGOS -->
+    <div class="page" id="page-juegos">
+      <div class="page-title">🎮 ESTADÍSTICAS DE JUEGOS</div>
+      <div class="stats-grid" style="grid-template-columns:repeat(3,1fr)">
+        <div class="stat-card"><div class="stat-num" id="gj-total">—</div><div class="stat-lbl">JUGADORES TOTALES</div></div>
+        <div class="stat-card"><div class="stat-num" id="gj-pts">—</div><div class="stat-lbl">PUNTOS GENERADOS</div></div>
+        <div class="stat-card"><div class="stat-num" id="gj-canjes">—</div><div class="stat-lbl">$PISK CANJEADOS</div></div>
+      </div>
+      <div class="table-wrap">
+        <div class="table-header"><div class="table-title">TOP JUGADORES</div></div>
+        <table>
+          <thead><tr><th>#</th><th>JUGADOR</th><th>PUNTOS</th><th>$PISK CANJEADOS</th></tr></thead>
+          <tbody id="jugadoresBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- MODAL APROBAR -->
+<div class="modal-bg" id="modalBg" onclick="if(event.target===this)cerrarModal()">
+  <div class="modal-box">
+    <div class="modal-title" id="modalTitle">APROBAR MISIÓN</div>
+    <div class="modal-field"><div class="modal-label">USUARIO</div><div class="modal-val" id="modalUser">—</div></div>
+    <div class="modal-field"><div class="modal-label">MISIÓN</div><div class="modal-val" id="modalMision">—</div></div>
+    <div class="modal-field"><div class="modal-label">TOKENS A OTORGAR</div><input class="login-input" id="modalTokens" type="number" value="0" style="margin:0;background:var(--dark3)"></div>
+    <div class="modal-btns">
+      <button class="btn btn-green" onclick="aprobarMision()" style="flex:1;padding:12px">✅ APROBAR</button>
+      <button class="btn btn-red" onclick="rechazarMision()" style="flex:1;padding:12px">❌ RECHAZAR</button>
+      <button class="btn btn-ghost" onclick="cerrarModal()">CANCELAR</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const API = 'http://69.169.109.120/airdrop-api';
+const CREDS = { user: 'ernesto', pass: 'neopisk2025' };
+let allUsers = [], pendingAction = null;
+
+// ── LOGIN ──────────────────────────────────────────────
+function doLogin() {
+  const u = document.getElementById('loginUser').value;
+  const p = document.getElementById('loginPass').value;
+  if (u === CREDS.user && p === CREDS.pass) {
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('app').style.display = 'block';
+    cargarDatos();
+    checkAPI();
+    setInterval(checkAPI, 30000);
+  } else {
+    document.getElementById('loginErr').style.display = 'block';
+  }
+}
+
+// ── API STATUS ─────────────────────────────────────────
+async function checkAPI() {
+  try {
+    await fetch(API+'/stats', {signal: AbortSignal.timeout(5000)});
+    document.getElementById('apiDot').classList.add('online');
+    document.getElementById('apiStatusTxt').textContent = 'API Online';
+  } catch(e) {
+    document.getElementById('apiDot').classList.remove('online');
+    document.getElementById('apiStatusTxt').textContent = 'API Offline';
+  }
+}
+
+// ── NAVIGATION ────────────────────────────────────────
+function showPage(page) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('page-'+page).classList.add('active');
+  event.currentTarget.classList.add('active');
+  if (page === 'referidos') cargarTopRefs();
+  if (page === 'juegos') cargarJuegos();
+  if (page === 'pendientes') cargarPendientes();
+}
+
+// ── CARGAR DATOS ──────────────────────────────────────
+async function cargarDatos() {
+  try {
+    const r = await fetch(API+'/stats');
+    const d = await r.json();
+
+    document.getElementById('s-total').textContent      = d.total || 0;
+    document.getElementById('s-activos').textContent    = d.activos || 0;
+    document.getElementById('s-inversores').textContent = d.inversores || 0;
+    document.getElementById('s-tokens').textContent     = (d.totalTokens||0).toFixed(0);
+
+    // Top 10
+    const medals = ['🥇','🥈','🥉','4','5','6','7','8','9','10'];
+    document.getElementById('top10Body').innerHTML = (d.top10||[]).map((u,i) => `
+      <tr>
+        <td style="color:var(--gold)">${medals[i]||i+1}</td>
+        <td style="font-family:'Rajdhani';font-size:14px;font-weight:700">${u.nombre}</td>
+        <td><span style="color:var(--gold2);font-family:'Bebas Neue';font-size:16px">${u.pisk}</span> $PISK</td>
+        <td>${u.refs}</td>
+        <td>${u.virtual ? '<span class="badge badge-red">BOT</span>' : '<span class="badge badge-green">OK</span>'}</td>
+      </tr>`).join('') || '<tr><td colspan="5" style="text-align:center;color:var(--muted);padding:24px">Sin datos aún</td></tr>';
+
+    // Recientes
+    document.getElementById('recientesBody').innerHTML = (d.usuarios_recientes||[]).map(u => `
+      <tr>
+        <td style="font-weight:700">${u.nombre}</td>
+        <td style="color:var(--gold2)">${u.codigo_ref}</td>
+        <td>${u.pais||'—'}</td>
+        <td>${u.pisk} $PISK</td>
+        <td>${u.refs}</td>
+      </tr>`).join('') || '<tr><td colspan="5" style="text-align:center;color:var(--muted);padding:24px">Sin registros</td></tr>';
+
+    // Misiones bars
+    const mNames = {registro:'📝 Registro',viral:'🦠 Viral 5x5',redes:'📱 Redes',voucher:'💰 Voucher',influencer:'🎬 Influencer',comunidad:'👥 Comunidad',wallet:'💳 Wallet',humanidad:'🤖 Humanidad',diario:'🔥 Diario'};
+    const total = d.total || 1;
+    document.getElementById('misionesBars').innerHTML = Object.entries(d.misiones||{}).map(([k,v]) => `
+      <div class="m-bar-item">
+        <div class="m-bar-top"><span class="m-bar-name">${mNames[k]||k}</span><span class="m-bar-count">${v}/${total}</span></div>
+        <div class="m-bar-bg"><div class="m-bar-fill" style="width:${total>0?Math.round(v/total*100):0}%"></div></div>
+      </div>`).join('');
+
+    // Cargar usuarios también
+    allUsers = d.usuarios_recientes || [];
+    renderUsuarios(allUsers);
+
+  } catch(e) {
+    toast('❌ Sin conexión con la API');
+  }
+}
+
+// ── USUARIOS ──────────────────────────────────────────
+async function cargarUsuarios() {
+  try {
+    const r = await fetch(API+'/stats');
+    const d = await r.json();
+    allUsers = [...(d.top10||[]), ...(d.usuarios_recientes||[])];
+    // Deduplicar
+    const seen = new Set();
+    allUsers = allUsers.filter(u => { if(seen.has(u.codigo_ref)) return false; seen.add(u.codigo_ref); return true; });
+    renderUsuarios(allUsers);
+  } catch(e) {}
+}
+
+function renderUsuarios(users) {
+  document.getElementById('usuariosBody').innerHTML = users.map(u => `
+    <tr>
+      <td style="font-weight:700;font-family:'Rajdhani';font-size:14px">${u.nombre}</td>
+      <td style="color:var(--gold2)">${u.codigo_ref||'—'}</td>
+      <td>${u.pais||'—'}</td>
+      <td style="color:var(--gold2);font-family:'Bebas Neue';font-size:16px">${u.pisk||0}</td>
+      <td style="font-size:11px;color:var(--muted)">${u.wallet ? u.wallet.slice(0,12)+'...' : '—'}</td>
+      <td>${u.misiones_count||'—'}</td>
+      <td>${u.virtual ? '<span class="badge badge-red">BOT</span>' : '<span class="badge badge-green">REAL</span>'}</td>
+      <td><button class="btn btn-ghost" onclick="verUsuario('${u.codigo_ref}')">VER</button></td>
+    </tr>`).join('') || '<tr><td colspan="8" style="text-align:center;color:var(--muted);padding:24px">Sin usuarios</td></tr>';
+}
+
+function filtrarUsuarios() {
+  const q = document.getElementById('searchUsuario').value.toLowerCase();
+  const filtered = allUsers.filter(u => u.nombre?.toLowerCase().includes(q) || u.codigo_ref?.toLowerCase().includes(q));
+  renderUsuarios(filtered);
+}
+
+function verUsuario(codigo) {
+  document.getElementById('refSearchInput').value = codigo;
+  showPage('referidos');
+  buscarArbol();
+}
+
+// ── REFERIDOS ─────────────────────────────────────────
+async function buscarArbol() {
+  const codigo = document.getElementById('refSearchInput').value.trim();
+  if (!codigo) return;
+  const box = document.getElementById('refTreeBox');
+  box.innerHTML = '<div class="spin"></div>';
+  try {
+    const r = await fetch(`${API}/arbol?codigo=${codigo}`);
+    const d = await r.json();
+    if (!d.root) { box.innerHTML = '<span style="color:var(--muted)">Sin resultados para ese código</span>'; return; }
+    box.innerHTML = renderTree(d.root, 0);
+  } catch(e) {
+    box.innerHTML = '<span style="color:var(--red)">❌ Error de conexión</span>';
+  }
+}
+
+function renderTree(node, level) {
+  if (!node) return '';
+  const indent = ['','  ├── ','  │   └── '][level] || '  │       └── ';
+  const color = ['var(--gold2)','var(--text)','var(--muted)'][level] || 'var(--muted2)';
+  let html = `<div style="color:${color};padding-left:${level*20}px">${indent}👤 <strong>${node.nombre}</strong> — ${node.pisk} $PISK</div>`;
+  (node.refs||[]).forEach(child => { html += renderTree(child, level+1); });
+  return html;
+}
+
+async function cargarTopRefs() {
+  try {
+    const r = await fetch(API+'/ranking');
+    const d = await r.json();
+    document.getElementById('topRefsBody').innerHTML = (d.top||[]).slice(0,10).map((u,i) => `
+      <tr>
+        <td style="color:var(--gold)">${i+1}</td>
+        <td style="font-weight:700">${u.nombre}</td>
+        <td style="color:var(--gold2)">${u.codigo_ref||'—'}</td>
+        <td>${u.refs}</td>
+        <td style="color:var(--green)">$${(u.refs*5).toFixed(2)}</td>
+      </tr>`).join('') || '<tr><td colspan="5" style="text-align:center;color:var(--muted);padding:24px">Sin datos</td></tr>';
+  } catch(e){}
+}
+
+// ── PENDIENTES ────────────────────────────────────────
+async function cargarPendientes() {
+  // Por ahora mostrar placeholder — se integra con notificaciones del bot
+  document.getElementById('pendientesBody').innerHTML = `
+    <tr><td colspan="5" style="text-align:center;padding:32px;">
+      <div style="color:var(--muted);font-size:13px">Las aprobaciones pendientes llegan por WhatsApp al admin.<br><br>
+      Para aprobar manualmente usa los comandos:<br>
+      <span style="color:var(--gold);font-family:'JetBrains Mono'">APROBAR_TG [userId] [mision]</span><br>
+      <span style="color:var(--gold);font-family:'JetBrains Mono'">RECHAZAR_TG [userId]</span></div>
+    </td></tr>`;
+}
+
+// ── JUEGOS ────────────────────────────────────────────
+async function cargarJuegos() {
+  try {
+    const r = await fetch(API+'/stats');
+    const d = await r.json();
+    document.getElementById('gj-total').textContent = d.total||0;
+    document.getElementById('gj-pts').textContent   = '—';
+    document.getElementById('gj-canjes').textContent = '—';
+    document.getElementById('jugadoresBody').innerHTML = (d.top10||[]).map((u,i) => `
+      <tr>
+        <td style="color:var(--gold)">${i+1}</td>
+        <td style="font-weight:700">${u.nombre}</td>
+        <td style="color:var(--gold2)">${u.game_points||0}</td>
+        <td>${u.pisk_canjeados||0}</td>
+      </tr>`).join('');
+  } catch(e){}
+}
+
+// ── MODAL ─────────────────────────────────────────────
+function abrirModalAprobar(userId, nombre, mision, tokens) {
+  pendingAction = { userId, mision };
+  document.getElementById('modalUser').textContent   = nombre;
+  document.getElementById('modalMision').textContent = mision;
+  document.getElementById('modalTokens').value       = tokens;
+  document.getElementById('modalBg').classList.add('show');
+}
+
+function cerrarModal() { document.getElementById('modalBg').classList.remove('show'); pendingAction=null; }
+
+async function aprobarMision() {
+  if (!pendingAction) return;
+  const tokens = parseInt(document.getElementById('modalTokens').value);
+  try {
+    await fetch(API+'/aprobar', { method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ ...pendingAction, tokens }) });
+    toast('✅ Misión aprobada — +'+tokens+' $PISK');
+    cerrarModal(); cargarDatos();
+  } catch(e) { toast('❌ Error al aprobar'); }
+}
+
+async function rechazarMision() {
+  if (!pendingAction) return;
+  toast('❌ Misión rechazada');
+  cerrarModal();
+}
+
+// ── TOAST ─────────────────────────────────────────────
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3500);
+}
+
+// ── AUTO REFRESH ──────────────────────────────────────
+setInterval(() => {
+  if (document.getElementById('page-dashboard').classList.contains('active')) cargarDatos();
+}, 30000);
+</script>
+</body>
+</html>
