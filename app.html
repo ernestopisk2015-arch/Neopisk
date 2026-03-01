@@ -188,24 +188,56 @@
 
 <!-- REFERIDOS -->
 <div class="tab-content" id="tab-referidos">
-  <div class="ref-box">
-    <div class="ref-code-lbl">TU CÓDIGO DE REFERIDO</div>
-    <div class="ref-code" id="refCode">—</div>
-    <button class="btn-full btn-gold" style="margin-top:12px" onclick="compartir()">📤 COMPARTIR</button>
+  <!-- CÓDIGO Y COMPARTIR -->
+  <div class="ref-box" style="text-align:center;padding:20px 16px;">
+    <div style="font-size:10px;letter-spacing:3px;color:var(--muted);margin-bottom:6px">TU CÓDIGO DE REFERIDO</div>
+    <div id="refCode" style="font-family:'Bebas Neue';font-size:34px;color:var(--gold2);letter-spacing:4px;margin-bottom:4px">—</div>
+    <div style="font-size:11px;color:var(--muted);margin-bottom:16px">Comparte este código para ganar comisiones</div>
+    <button class="btn-full btn-gold" onclick="compartir()" style="display:flex;align-items:center;justify-content:center;gap:8px;font-size:18px;">
+      📤 COMPARTIR INVITACIÓN
+    </button>
+    <button onclick="copiarCodigo()" style="background:none;border:1px solid var(--border);color:var(--muted);padding:8px;width:100%;margin-top:8px;font-family:'Bebas Neue';font-size:13px;letter-spacing:2px;cursor:pointer;">
+      📋 COPIAR SOLO EL CÓDIGO
+    </button>
   </div>
-  <div class="sec-title">COMISIONES</div>
+
+  <!-- STATS -->
+  <div class="ref-stats" style="margin-bottom:12px;">
+    <div class="ref-st"><div class="val" id="refTotal">0</div><div class="lbl">REFERIDOS</div></div>
+    <div class="ref-st"><div class="val" id="refUsdt">$0.00</div><div class="lbl">USDT GANADO</div></div>
+  </div>
+
+  <!-- PROGRESO GATE -->
+  <div id="gateRefProgress" style="background:rgba(212,160,23,0.06);border:1px solid var(--border);padding:12px 16px;margin-bottom:12px;">
+    <div style="display:flex;justify-content:space-between;font-size:11px;letter-spacing:2px;color:var(--muted);margin-bottom:6px;">
+      <span>PERSONAS INVITADAS ESTE CICLO</span>
+      <span id="gateRefCount" style="color:var(--gold2)">0/3</span>
+    </div>
+    <div style="height:6px;background:var(--dark4);border-radius:3px;overflow:hidden;">
+      <div id="gateRefBar" style="height:100%;width:0%;background:linear-gradient(90deg,var(--gold),var(--green));border-radius:3px;transition:width 0.5s;"></div>
+    </div>
+    <div style="font-size:10px;color:var(--muted);margin-top:6px;">Necesitas 3 personas que digan "Hola" a Karla para seguir jugando cada 2 días</div>
+  </div>
+
+  <!-- MIS REFERIDOS -->
+  <div class="sec-title">MIS REFERIDOS</div>
+  <div id="misReferidosList" style="margin-bottom:12px;">
+    <div style="text-align:center;padding:16px;color:var(--muted);font-size:13px;">
+      Aún no tienes referidos. ¡Comparte tu código! 🚀
+    </div>
+  </div>
+
+  <!-- COMISIONES -->
+  <div class="sec-title">COMISIONES POR INVERSIÓN</div>
   <div class="ref-levels">
     <div class="ref-lv"><div class="pct">10%</div><div class="lbl">NIVEL 1<br>DIRECTO</div></div>
     <div class="ref-lv"><div class="pct">3%</div><div class="lbl">NIVEL 2</div></div>
     <div class="ref-lv"><div class="pct">1%</div><div class="lbl">NIVEL 3</div></div>
   </div>
   <div style="font-size:11px;color:var(--muted);text-align:center;margin-bottom:12px">50% USDT + 50% $PISK por cada inversión</div>
-  <div class="sec-title">MIS STATS</div>
-  <div class="ref-stats">
-    <div class="ref-st"><div class="val" id="refTotal">0</div><div class="lbl">REFERIDOS</div></div>
-    <div class="ref-st"><div class="val" id="refUsdt">$0</div><div class="lbl">USDT GANADO</div></div>
-  </div>
-  <div class="sec-title" style="margin-top:12px">BONOS</div>
+
+  <!-- BONOS -->
+  <div class="sec-title">BONOS POR VOLUMEN</div>
   <div id="bonosGrid"></div>
 </div>
 
@@ -434,20 +466,55 @@ window.addEventListener('load', async () => {
 });
 
 async function cargarUsuario(uid, nombre) {
+  // Cargar desde localStorage primero (instantáneo)
+  const local = loadUserLocal(uid);
+  if (local) {
+    user = local;
+    lang = user.idioma || 'es';
+    document.getElementById('langSelect').value = lang;
+    updateUI();
+    renderMisiones();
+  }
+
+  // Intentar sincronizar con API en segundo plano
   try {
-    const r = await fetch(`${API}/usuario?id=${uid}&nombre=${encodeURIComponent(nombre)}`);
-    user = await r.json();
+    const r = await fetch(`${API}/usuario?id=${uid}&nombre=${encodeURIComponent(nombre)}`, {signal: AbortSignal.timeout(5000)});
+    const remoto = await r.json();
+    // Fusionar: tomar el mayor balance entre local y remoto
+    if (local) {
+      remoto.pisk_balance = Math.max(remoto.pisk_balance||0, local.pisk_balance||0);
+      remoto.misiones = Object.assign({}, remoto.misiones||{}, local.misiones||{});
+      remoto.wallet = remoto.wallet || local.wallet;
+    }
+    user = remoto;
   } catch(e) {
-    user = { id: uid, nombre, idioma:'es', pisk_balance:0, usdt_pendiente:0,
-             codigo_ref:'PISK'+String(uid).slice(-6), mis_referidos:[], misiones:{} };
+    // Sin API — usar local o crear nuevo
+    if (!user) {
+      user = { id: uid, nombre, idioma:'es', pisk_balance:0, usdt_pendiente:0,
+               codigo_ref:'PISK'+String(uid).slice(-6), mis_referidos:[], misiones:{} };
+    }
   }
   lang = user.idioma || 'es';
   document.getElementById('langSelect').value = lang;
   updateUI();
+  renderMisiones();
+}
+
+function saveUserLocal() {
+  if (!user) return;
+  try { localStorage.setItem('pisk_user_'+state.userId, JSON.stringify(user)); } catch(e){}
+}
+
+function loadUserLocal(uid) {
+  try {
+    const s = localStorage.getItem('pisk_user_'+uid);
+    return s ? JSON.parse(s) : null;
+  } catch(e){ return null; }
 }
 
 function updateUI() {
   if (!user) return;
+  saveUserLocal();
   document.getElementById('balAmt').textContent  = user.pisk_balance || 0;
   document.getElementById('balUsd').textContent  = `≈ $${((user.pisk_balance||0)*TP).toFixed(2)} USD`;
   document.getElementById('balUsdt').textContent = `$${(user.usdt_pendiente||0).toFixed(2)}`;
@@ -458,6 +525,7 @@ function updateUI() {
   document.getElementById('refTotal').textContent= (user.mis_referidos||[]).length;
   document.getElementById('refUsdt').textContent = `$${(user.usdt_pendiente||0).toFixed(2)}`;
   document.getElementById('userCode').textContent= 'CÓDIGO: ' + (user.codigo_ref||'—');
+  renderMisReferidos();
   const refs = (user.mis_referidos||[]).length;
   document.getElementById('bonosGrid').innerHTML = [{n:5,u:5},{n:10,u:15},{n:25,u:50},{n:50,u:100}].map(b=>`
     <div style="display:flex;align-items:center;gap:10px;padding:10px;background:var(--dark3);border:1px solid ${refs>=b.n?'var(--green)':'var(--border)'};margin-bottom:6px;">
@@ -563,23 +631,43 @@ async function doMision(id) {
 
   const body = { userId: user.id, mision: id };
   if(id==='registro') { body.nombre=document.getElementById('iNombre')?.value; body.pais=document.getElementById('iPais')?.value; if(!body.nombre||!body.pais){toast('⚠️ Completa los campos');return;} }
-  if(id==='wallet')   { body.wallet=document.getElementById('iWallet')?.value; }
+  if(id==='wallet') {
+    const w = document.getElementById('iWallet')?.value?.trim();
+    if(!w||w.length<20){toast('⚠️ Wallet inválida');return;}
+    body.wallet = w;
+    // Guardar wallet localmente de inmediato
+    if(!user.misiones) user.misiones={};
+    if(!user.misiones['wallet']) {
+      user.wallet = w;
+      user.misiones['wallet'] = true;
+      user.pisk_balance = (user.pisk_balance||0) + 5;
+      closeModal(); updateUI(); renderMisiones();
+      toast('🎉 +5 $PISK! Wallet guardada');
+      if(tg) tg.HapticFeedback?.notificationOccurred('success');
+      // Intentar sincronizar con API en fondo
+      fetch(`${API}/mision`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}).catch(()=>{});
+    } else { toast('⚠️ Wallet ya registrada'); closeModal(); }
+    return;
+  }
+
+  const REWARDS_LOCAL = {registro:5,viral:20,redes:10,comunidad:10,humanidad:5,diario:1};
   try {
-    const r = await fetch(`${API}/mision`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+    const r = await fetch(`${API}/mision`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body), signal: AbortSignal.timeout(6000)});
     const d = await r.json();
     if(d.ok){ user=d.usuario; closeModal(); updateUI(); renderMisiones(); toast(`🎉 +${d.tokens} $PISK!`); tg?.HapticFeedback?.notificationOccurred('success'); }
     else toast('❌ '+(d.error||'Error'));
   } catch(e){
-    // Fallback local para misiones básicas
-    if (['comunidad','viral'].includes(id)) {
+    // Fallback local para misiones que no requieren verificación manual
+    if (REWARDS_LOCAL[id] !== undefined && !user.misiones?.[id]) {
       if (!user.misiones) user.misiones = {};
       user.misiones[id] = true;
-      const rewards = {comunidad:10, viral:20};
-      user.pisk_balance = (user.pisk_balance||0) + (rewards[id]||0);
+      user.pisk_balance = (user.pisk_balance||0) + REWARDS_LOCAL[id];
       closeModal(); updateUI(); renderMisiones();
-      toast('🎉 +' + (rewards[id]||0) + ' $PISK!');
+      toast('🎉 +' + REWARDS_LOCAL[id] + ' $PISK!');
+      if(tg) tg.HapticFeedback?.notificationOccurred('success');
     } else {
-      toast('❌ Error de conexión. Intenta más tarde.');
+      toast('⚠️ Sin conexión. Los puntos se guardan localmente.');
+      closeModal();
     }
   }
 }
@@ -589,7 +677,63 @@ async function guardarWallet(){ const w=document.getElementById('iWallet')?.valu
 async function enviarVideo(){ const l=document.getElementById('iVideo')?.value?.trim(); if(!l||!l.startsWith('http')){toast('⚠️ Link inválido');return;} try{await fetch(`${API}/video-link`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({userId:user.id,link:l})});closeModal();toast('✅ Enviado al admin');}catch(e){toast('❌ Error');} }
 async function subirVoucher(){ const f=document.getElementById('vFile').files[0]; if(!f)return; const fd=new FormData(); fd.append('voucher',f); fd.append('userId',user.id); try{await fetch(`${API}/voucher`,{method:'POST',body:fd});closeModal();toast('✅ Comprobante enviado');}catch(e){toast('❌ Error');} }
 
-function compartir(){ const t=TX[lang]; const txt=t.share_txt+user.codigo_ref; if(tg?.switchInlineQuery)tg.switchInlineQuery(txt); else if(navigator.share)navigator.share({text:txt}); else{navigator.clipboard?.writeText(txt);toast('📋 Copiado!');} }
+function copiarCodigo() {
+  const codigo = user?.codigo_ref || '—';
+  if (navigator.clipboard) { navigator.clipboard.writeText(codigo).then(() => toast('📋 Código copiado: ' + codigo)); }
+  else { const el=document.createElement('input'); el.value=codigo; document.body.appendChild(el); el.select(); document.execCommand('copy'); document.body.removeChild(el); toast('📋 Código copiado: '+codigo); }
+}
+
+function renderMisReferidos() {
+  const refs = user?.mis_referidos || [];
+  const el = document.getElementById('misReferidosList');
+  if (!el) return;
+  // Update gate progress
+  const gateEl = document.getElementById('gateRefCount');
+  const gateBar = document.getElementById('gateRefBar');
+  const count = Math.min(refs.length, 3);
+  if (gateEl) gateEl.textContent = count + '/3';
+  if (gateBar) gateBar.style.width = (count/3*100) + '%';
+  if (refs.length === 0) {
+    el.innerHTML = '<div style="text-align:center;padding:16px;color:var(--muted);font-size:13px;">Aún no tienes referidos. ¡Comparte tu código! 🚀</div>';
+    return;
+  }
+  el.innerHTML = refs.slice(0,10).map((r,i) => {
+    const nombre = typeof r === 'object' ? r.nombre : 'Usuario #'+(i+1);
+    const pisk   = typeof r === 'object' ? (r.pisk||0) : 0;
+    return '<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:var(--dark3);border:1px solid var(--border);margin-bottom:4px;">' +
+      '<div style="display:flex;align-items:center;gap:10px;">' +
+      '<div style="width:32px;height:32px;border-radius:50%;background:rgba(212,160,23,0.15);display:flex;align-items:center;justify-content:center;font-size:14px;">👤</div>' +
+      '<div><div style="font-weight:700;font-size:13px;">' + nombre + '</div>' +
+      '<div style="font-size:10px;color:var(--muted);">NIVEL 1 DIRECTO</div></div></div>' +
+      '<div style="text-align:right;"><div style="font-family:Bebas Neue;font-size:14px;color:var(--gold2);">' + pisk + ' $PISK</div>' +
+      '<div style="font-size:10px;color:var(--green);">✅ Activo</div></div></div>';
+  }).join('') + (refs.length > 10 ? '<div style="text-align:center;padding:8px;color:var(--muted);font-size:12px;">+' + (refs.length-10) + ' más...</div>' : '');
+}
+
+function compartir(){
+  const codigo = user?.codigo_ref || 'PISK000000';
+  const txt = '🚀 ¡Únete al Airdrop Global $PISK y gana tokens reales!\n\n' +
+    '💎 Token respaldado por flota eléctrica y robótica en Perú.\n' +
+    'Precio de preventa: $0.10 USD\n\n' +
+    '🎮 Gana $PISK jugando mini juegos\n' +
+    '🤝 Comisiones por referidos: 10% + 3% + 1%\n\n' +
+    '📲 Escríbele "Hola" a Karla:\n' +
+    '✈️ https://t.me/NeoPisk_bot\n' +
+    '💬 https://wa.me/51948115030\n\n' +
+    '🔑 Mi código: ' + codigo;
+
+  if (tg?.openTelegramLink) {
+    const enc = encodeURIComponent(txt);
+    tg.openTelegramLink('https://t.me/share/url?url=https://t.me/NeoPisk_bot&text=' + enc);
+    return;
+  }
+  if (navigator.share) { navigator.share({ title: 'Airdrop $PISK', text: txt }); return; }
+  if (navigator.clipboard) { navigator.clipboard.writeText(txt).then(() => toast('📋 ¡Mensaje copiado!')); return; }
+  const el = document.createElement('textarea');
+  el.value = txt; document.body.appendChild(el); el.select();
+  document.execCommand('copy'); document.body.removeChild(el);
+  toast('📋 ¡Copiado al portapapeles!');
+}
 function showTab(tab,btn){ document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active')); document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active')); document.getElementById('tab-'+tab).classList.add('active'); btn.classList.add('active'); if(tab==='ranking')cargarRanking(); }
 function closeModal(e){ if(e&&e.target!==document.getElementById('modalOverlay'))return; document.getElementById('modalOverlay').classList.remove('show'); }
 function cambiarIdioma(l){ lang=l; if(user)user.idioma=l; renderMisiones(); updateUI(); }
