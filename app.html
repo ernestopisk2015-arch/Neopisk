@@ -768,7 +768,22 @@ function updateGameUI() {
   const el = document.getElementById('gPtsDisplay');
   const btn = document.getElementById('gCanjeBtn');
   if(el) el.textContent = gState.pts.toLocaleString();
-  if(btn) btn.disabled = gState.pts < PPK;
+  if(btn) {
+    const balance = user?.pisk_balance || 0;
+    const piskMis = contarPiskMisionesSimple();
+    const ext = balance - piskMis;
+    const bloqueado = balance < 10 || ext < 2;
+    btn.disabled = gState.pts < PPK || bloqueado;
+    if(gState.pts >= PPK && bloqueado) {
+      btn.textContent = '🔒 BLOQUEADO';
+      btn.style.background = 'rgba(255,61,61,0.2)';
+      btn.style.color = '#FF3D3D';
+    } else if(gState.pts >= PPK) {
+      btn.textContent = 'CANJEAR';
+      btn.style.background = 'linear-gradient(135deg,var(--gold),#8B6914)';
+      btn.style.color = 'var(--dark)';
+    }
+  }
 }
 
 function updateGameCooldowns() {
@@ -835,11 +850,107 @@ function showGameResult(g, pts, icon) {
 function canjearPuntos() {
   const pisk = Math.floor(gState.pts/PPK);
   if(pisk<1) return;
+
+  // ── REGLA DE DESBLOQUEO ────────────────────────────────────
+  // Para canjear puntos de juegos necesitas mínimo 10 $PISK en balance
+  // Los primeros 2 $PISK DEBEN venir de referidos o compra propia
+  // Las misiones solo dan máximo 8 $PISK
+  const balance_actual = user?.pisk_balance || 0;
+  const pisk_misiones  = contarPiskMisiones();
+  const pisk_externo   = balance_actual - pisk_misiones; // compras + comisiones
+
+  if (balance_actual < 10) {
+    const faltan = 10 - balance_actual;
+    const faltan_externos = Math.max(0, 2 - pisk_externo);
+    let msg = '';
+    if (faltan_externos > 0) {
+      msg = `🔒 Para canjear necesitas ${faltan} $PISK más.
+
+` +
+            `Necesitas ${faltan_externos} $PISK de:
+` +
+            `• Traer un referido que compre
+` +
+            `• Comprar $PISK con MetaMask
+
+` +
+            `No puedes completar los 10 $PISK solo con misiones.`;
+    } else {
+      msg = `🔒 Te faltan ${faltan} $PISK para canjear.
+
+Completa más misiones o trae referidos.`;
+    }
+    showLockModal(msg);
+    return;
+  }
+
+  // Verificar que tiene al menos 2 $PISK no provenientes de misiones
+  if (pisk_externo < 2) {
+    showLockModal(
+      `🔒 ¡Casi listo!
+
+` +
+      `Tienes ${balance_actual} $PISK pero necesitas al menos *2 $PISK* de:
+
+` +
+      `• 🤝 Traer un referido que compre $PISK
+` +
+      `• 🦊 Comprar $PISK tú mismo con MetaMask
+
+` +
+      `Esto garantiza que eres un participante real.`
+    );
+    return;
+  }
+
+  // ✅ Puede canjear
   gState.pts -= pisk*PPK; saveGameState(); updateGameUI();
   if(user){ user.pisk_balance=(user.pisk_balance||0)+pisk; updateUI(); }
   fetch(API+'/canjear-puntos',{method:'POST',headers:{'Content-Type':'application/json'},
     body:JSON.stringify({userId:user?.id,puntos:pisk*PPK,pisk})}).catch(()=>{});
   toast('🎉 ¡+'+pisk+' $PISK canjeados!');
+  if(tg) tg.HapticFeedback?.notificationOccurred('success');
+}
+
+function contarPiskMisionesSimple() {
+  if (!user) return 0;
+  return contarPiskMisiones();
+}
+
+function contarPiskMisiones() {
+  // Máximo 8 $PISK vienen de misiones
+  const misiones = user?.misiones || {};
+  const rewards = {registro:5,viral:20,redes:10,comunidad:10,humanidad:5,diario:1,wallet:5};
+  let total = 0;
+  Object.entries(misiones).forEach(([k,v]) => { if(v && rewards[k]) total += rewards[k]; });
+  return Math.min(total, 8); // cap de 8 de misiones
+}
+
+function showLockModal(msg) {
+  const overlay = document.getElementById('lockOverlay');
+  const txt     = document.getElementById('lockMsg');
+  if (!overlay) {
+    // Crear overlay si no existe
+    const div = document.createElement('div');
+    div.id = 'lockOverlay';
+    div.style.cssText = 'position:fixed;inset:0;background:rgba(7,9,12,0.95);z-index:500;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;';
+    div.innerHTML = `
+      <div style="font-size:48px;margin-bottom:16px;">🔒</div>
+      <div style="font-family:'Bebas Neue';font-size:22px;letter-spacing:3px;color:#D4A017;margin-bottom:12px;">CANJE BLOQUEADO</div>
+      <div id="lockMsg" style="font-size:14px;color:#E8EDF5;text-align:center;line-height:1.6;margin-bottom:20px;max-width:300px;white-space:pre-line;">${msg}</div>
+      <button onclick="document.getElementById('lockOverlay').style.display='none'"
+        style="background:linear-gradient(135deg,#D4A017,#8B6914);color:#07090C;border:none;padding:14px 32px;font-family:'Bebas Neue';font-size:18px;letter-spacing:3px;cursor:pointer;width:100%;max-width:300px;">
+        ENTENDIDO
+      </button>
+      <div style="margin-top:12px;font-size:11px;color:#5A6A7A;text-align:center;">
+        Trae un amigo que compre $PISK o compra tú mismo
+      </div>`;
+    document.body.appendChild(div);
+  } else {
+    document.getElementById('lockMsg').textContent = msg;
+    overlay.style.display = 'flex';
+  }
+  if(tg) tg.HapticFeedback?.notificationOccurred('error');
 }
 
 // ── TAP ───────────────────────────────────────────────
