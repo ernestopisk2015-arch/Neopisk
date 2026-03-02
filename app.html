@@ -650,7 +650,40 @@ const ROPTS=[{l:'10',p:10,c:'#1A2030'},{l:'50',p:50,c:'#5A3800'},{l:'25',p:25,c:
 let rAngle=0,rSpinning=false;
 function initRuleta(){rSpinning=false;const sb=document.getElementById('spinBtn');if(sb)sb.disabled=false;const rr=document.getElementById('ruletaResult');if(rr)rr.textContent='¡Gira!';drawR(0);}
 function drawR(angle){const cv=document.getElementById('ruletaCanvas');if(!cv)return;const ctx=cv.getContext('2d'),cx=cv.width/2,cy=cv.height/2,r=cx-10,arc=(2*Math.PI)/ROPTS.length;ctx.clearRect(0,0,cv.width,cv.height);ROPTS.forEach((o,i)=>{const s=angle+i*arc,e=s+arc;ctx.beginPath();ctx.moveTo(cx,cy);ctx.arc(cx,cy,r,s,e);ctx.fillStyle=o.c;ctx.fill();ctx.strokeStyle='rgba(212,160,23,0.3)';ctx.lineWidth=1;ctx.stroke();ctx.save();ctx.translate(cx,cy);ctx.rotate(s+arc/2);ctx.fillStyle='#E8EDF5';ctx.font='bold 11px sans-serif';ctx.textAlign='right';ctx.fillText(o.l+' PTS',r-8,4);ctx.restore();});ctx.beginPath();ctx.arc(cx,cy,r,0,2*Math.PI);ctx.strokeStyle='rgba(212,160,23,0.5)';ctx.lineWidth=3;ctx.stroke();}
-function girarRuleta(){if(rSpinning)return;rSpinning=true;const sb=document.getElementById('spinBtn');if(sb)sb.disabled=true;const rr=document.getElementById('ruletaResult');if(rr)rr.textContent='...';const extra=Math.random()*360,total=(5+Math.floor(Math.random()*3))*360+extra,dur=4000,start=performance.now(),sa=rAngle;function anim(now){const p=Math.min((now-start)/dur,1),ease=1-Math.pow(1-p,3);rAngle=sa+(total*Math.PI/180)*ease;drawR(rAngle);if(p<1){requestAnimationFrame(anim);return;}const arc=(2*Math.PI)/ROPTS.length,norm=((rAngle%(2*Math.PI))+2*Math.PI)%(2*Math.PI),idx=Math.floor(((2*Math.PI-norm)/arc)%ROPTS.length),winner=ROPTS[idx];if(rr)rr.innerHTML='<span style="color:#F0C040">🎉 '+winner.l+' PTS</span>';setTimeout(()=>showGameResult('ruleta',winner.p,'🎰'),800);}requestAnimationFrame(anim);}
+function girarRuleta(){
+  if(rSpinning)return;
+  rSpinning=true;
+  const sb=document.getElementById('spinBtn');
+  if(sb)sb.disabled=true;
+  const rr=document.getElementById('ruletaResult');
+  if(rr)rr.textContent='...';
+  // Giros aleatorios entre 5 y 8 vueltas completas + posición aleatoria
+  const vueltas = 5 + Math.floor(Math.random()*4);
+  const anguloExtra = Math.random() * 2 * Math.PI;
+  const totalGiro = vueltas * 2 * Math.PI + anguloExtra;
+  const dur = 4000;
+  const start = performance.now();
+  const sa = rAngle;
+  function anim(now){
+    const p = Math.min((now-start)/dur, 1);
+    const ease = 1 - Math.pow(1-p, 3);
+    rAngle = sa + totalGiro * ease;
+    drawR(rAngle);
+    if(p < 1){ requestAnimationFrame(anim); return; }
+    // La flecha apunta ARRIBA (ángulo -PI/2 en canvas = 270°)
+    // Calculamos qué sector está bajo la flecha
+    const arc = (2 * Math.PI) / ROPTS.length;
+    // Normalizamos el ángulo final
+    const norm = ((rAngle % (2*Math.PI)) + 2*Math.PI) % (2*Math.PI);
+    // La flecha está en -PI/2 (arriba), ajustamos
+    const flechaAngulo = (2*Math.PI - norm + Math.PI*1.5) % (2*Math.PI);
+    const idx = Math.floor(flechaAngulo / arc) % ROPTS.length;
+    const winner = ROPTS[idx];
+    if(rr) rr.innerHTML='<span style="color:#F0C040">🎉 '+winner.l+' PTS</span>';
+    setTimeout(()=>showGameResult('ruleta', winner.p, '🎰'), 800);
+  }
+  requestAnimationFrame(anim);
+}
 
 // ── CHANGAN ───────────────────────────────────────────
 const CIMG='https://res.cloudinary.com/dfmqybaac/image/upload/v1772308696/alsvin-web-1700x830-exterior-5_dz0dkv.jpg';
