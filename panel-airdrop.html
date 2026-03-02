@@ -6,30 +6,20 @@
 <title>Neo Pisk — Panel Airdrop</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root {
-  --gold:#B8860B;--gold2:#8B6914;--gold3:#5A4000;
-  --dark:#F5F7FA;--dark2:#FFFFFF;--dark3:#F0F2F5;--dark4:#E0E4EA;
-  --border:rgba(0,0,0,0.12);--border2:rgba(0,0,0,0.06);
-  --text:#111827;--muted:#4B5563;--muted2:#6B7280;
-  --green:#059669;--red:#DC2626;--blue:#1D4ED8;--orange:#D97706;
-}
+:root{--gold:#B8860B;--gold2:#8B6914;--border:rgba(0,0,0,0.12);--text:#111827;--muted:#4B5563;--muted2:#6B7280;--green:#059669;--red:#DC2626;}
 *{margin:0;padding:0;box-sizing:border-box;}
-body{background:#EEF0F4;color:var(--text);font-family:'Rajdhani',sans-serif;min-height:100vh;font-size:16px;}
-
-/* ── LOGIN ── */
+body{background:#EEF0F4;color:var(--text);font-family:'Rajdhani',sans-serif;min-height:100vh;}
 #loginScreen{position:fixed;inset:0;background:#EEF0F4;z-index:100;display:flex;align-items:center;justify-content:center;}
-.login-box{background:#FFFFFF;border:1px solid rgba(0,0,0,0.12);padding:40px;width:360px;text-align:center;box-shadow:0 8px 32px rgba(0,0,0,0.12);border-radius:4px;}
+.login-box{background:#fff;border:1px solid rgba(0,0,0,0.12);padding:40px;width:360px;text-align:center;box-shadow:0 8px 32px rgba(0,0,0,0.12);border-radius:4px;}
 .login-logo{font-family:'Bebas Neue';font-size:42px;color:#B8860B;margin-bottom:4px;}
 .login-sub{font-size:11px;letter-spacing:4px;color:var(--muted);margin-bottom:32px;}
-.login-input{width:100%;background:#F9FAFB;border:1px solid rgba(0,0,0,0.15);color:#111827;padding:13px 16px;font-family:'Rajdhani',sans-serif;font-size:16px;outline:none;margin-bottom:12px;transition:border-color 0.2s;border-radius:4px;}
+.login-input{width:100%;background:#F9FAFB;border:1px solid rgba(0,0,0,0.15);color:#111827;padding:13px 16px;font-family:'Rajdhani',sans-serif;font-size:16px;outline:none;margin-bottom:12px;border-radius:4px;transition:border-color 0.2s;}
 .login-input:focus{border-color:#B8860B;box-shadow:0 0 0 3px rgba(184,134,11,0.1);}
-.login-btn{width:100%;padding:14px;background:linear-gradient(135deg,var(--gold),#8B6914);color:var(--dark);border:none;font-family:'Bebas Neue';font-size:20px;letter-spacing:3px;cursor:pointer;}
+.login-btn{width:100%;padding:14px;background:linear-gradient(135deg,#B8860B,#8B6914);color:#fff;border:none;font-family:'Bebas Neue';font-size:20px;letter-spacing:3px;cursor:pointer;border-radius:4px;}
 .login-err{color:var(--red);font-size:13px;margin-top:8px;display:none;}
-
-/* ── LAYOUT ── */
 #app{display:none;min-height:100vh;}
 .sidebar{position:fixed;left:0;top:0;bottom:0;width:220px;background:#1A1A2E;border-right:1px solid rgba(255,255,255,0.1);display:flex;flex-direction:column;z-index:50;}
-.sidebar-logo{padding:20px 16px;border-bottom:1px solid var(--border);}
+.sidebar-logo{padding:20px 16px;border-bottom:1px solid rgba(255,255,255,0.1);}
 .sidebar-logo .logo{font-family:'Bebas Neue';font-size:26px;color:#F0C040;}
 .sidebar-logo .sub{font-size:9px;letter-spacing:3px;color:rgba(255,255,255,0.4);}
 .nav-item{display:flex;align-items:center;gap:10px;padding:12px 16px;cursor:pointer;color:rgba(255,255,255,0.55);transition:all 0.2s;font-weight:600;font-size:15px;letter-spacing:1px;border-left:3px solid transparent;}
@@ -39,95 +29,61 @@ body{background:#EEF0F4;color:var(--text);font-family:'Rajdhani',sans-serif;min-
 .sidebar-bottom{margin-top:auto;padding:16px;border-top:1px solid rgba(255,255,255,0.1);}
 .api-status{display:flex;align-items:center;gap:8px;font-size:11px;color:rgba(255,255,255,0.5);}
 .api-dot{width:8px;height:8px;border-radius:50%;background:#DC2626;animation:pulse 2s infinite;}
-.api-dot.online{background:var(--green);}
+.api-dot.online{background:#059669;}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
-
 .main{margin-left:220px;padding:24px;min-height:100vh;}
 .page{display:none;}
 .page.active{display:block;}
-
-/* ── STATS CARDS ── */
 .page-title{font-family:'Bebas Neue';font-size:32px;letter-spacing:4px;color:#111827;margin-bottom:20px;}
 .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px;}
-.stat-card{background:#FFFFFF;border:1px solid rgba(0,0,0,0.08);padding:20px 16px;position:relative;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.06);border-radius:4px;}
+.stat-card{background:#fff;border:1px solid rgba(0,0,0,0.08);padding:20px 16px;position:relative;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.06);border-radius:4px;}
 .stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#B8860B,transparent);}
 .stat-num{font-family:'Bebas Neue';font-size:48px;line-height:1;color:#B8860B;}
 .stat-lbl{font-size:12px;letter-spacing:2px;color:#6B7280;margin-top:4px;font-weight:600;}
 .stat-icon{position:absolute;right:12px;top:12px;font-size:28px;opacity:0.2;}
-
-/* ── TABLE ── */
-.table-wrap{background:#FFFFFF;border:1px solid rgba(0,0,0,0.08);overflow:hidden;margin-bottom:20px;box-shadow:0 2px 8px rgba(0,0,0,0.06);border-radius:4px;}
-.table-header{padding:16px 16px;border-bottom:1px solid rgba(0,0,0,0.08);display:flex;align-items:center;justify-content:space-between;}
+.table-wrap{background:#fff;border:1px solid rgba(0,0,0,0.08);overflow:hidden;margin-bottom:20px;box-shadow:0 2px 8px rgba(0,0,0,0.06);border-radius:4px;}
+.table-header{padding:16px;border-bottom:1px solid rgba(0,0,0,0.08);display:flex;align-items:center;justify-content:space-between;}
 .table-title{font-family:'Bebas Neue';font-size:18px;letter-spacing:3px;color:#111827;}
 .search-input{background:#F9FAFB;border:1px solid rgba(0,0,0,0.12);color:#111827;padding:10px 14px;font-family:'Rajdhani',sans-serif;font-size:15px;outline:none;width:240px;border-radius:4px;}
-.search-input::placeholder{color:var(--muted);}
 table{width:100%;border-collapse:collapse;}
 th{padding:12px 14px;text-align:left;font-size:12px;letter-spacing:2px;color:#374151;border-bottom:1px solid rgba(0,0,0,0.08);font-weight:700;background:#F9FAFB;}
 td{padding:13px 14px;font-size:14px;border-bottom:1px solid rgba(0,0,0,0.05);font-family:'JetBrains Mono',monospace;color:#111827;}
 tr:hover td{background:rgba(184,134,11,0.04);}
 tr:last-child td{border-bottom:none;}
 .badge{display:inline-block;padding:2px 8px;font-size:10px;letter-spacing:1px;font-family:'Bebas Neue';}
-.badge-green{background:rgba(0,230,118,0.15);color:var(--green);border:1px solid rgba(0,230,118,0.3);}
-.badge-red{background:rgba(255,61,61,0.15);color:var(--red);border:1px solid rgba(255,61,61,0.3);}
-.badge-gold{background:rgba(212,160,23,0.15);color:var(--gold);border:1px solid var(--border);}
-.badge-blue{background:rgba(26,110,255,0.15);color:var(--blue);border:1px solid rgba(26,110,255,0.3);}
-
-/* ── BUTTONS ── */
-.btn{padding:6px 14px;font-family:'Bebas Neue';font-size:13px;letter-spacing:2px;cursor:pointer;border:none;transition:all 0.2s;}
-.btn-gold{background:linear-gradient(135deg,var(--gold),#8B6914);color:var(--dark);}
-.btn-green{background:rgba(0,230,118,0.15);color:var(--green);border:1px solid rgba(0,230,118,0.3);}
-.btn-red{background:rgba(255,61,61,0.15);color:var(--red);border:1px solid rgba(255,61,61,0.3);}
+.badge-green{background:rgba(5,150,105,0.15);color:#059669;border:1px solid rgba(5,150,105,0.3);}
+.badge-red{background:rgba(220,38,38,0.15);color:#DC2626;border:1px solid rgba(220,38,38,0.3);}
+.btn{padding:6px 14px;font-family:'Bebas Neue';font-size:13px;letter-spacing:2px;cursor:pointer;border:none;transition:all 0.2s;border-radius:3px;}
+.btn-gold{background:linear-gradient(135deg,#B8860B,#8B6914);color:#fff;}
+.btn-green{background:rgba(5,150,105,0.15);color:#059669;border:1px solid rgba(5,150,105,0.3);}
+.btn-red{background:rgba(220,38,38,0.15);color:#DC2626;border:1px solid rgba(220,38,38,0.3);}
 .btn-ghost{background:none;color:var(--muted);border:1px solid var(--border);}
-.btn:hover{opacity:0.85;transform:scale(0.98);}
-
-/* ── MISIONES PROGRESS ── */
+.btn:hover{opacity:0.85;}
 .mission-bars{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
-.m-bar-item{background:#FFFFFF;padding:14px;border:1px solid rgba(0,0,0,0.08);box-shadow:0 1px 4px rgba(0,0,0,0.05);border-radius:4px;}
+.m-bar-item{background:#fff;padding:14px;border:1px solid rgba(0,0,0,0.08);border-radius:4px;}
 .m-bar-top{display:flex;justify-content:space-between;margin-bottom:6px;}
 .m-bar-name{font-size:12px;font-weight:600;}
-.m-bar-count{font-family:'JetBrains Mono';font-size:12px;color:var(--gold2);}
+.m-bar-count{font-family:'JetBrains Mono';font-size:12px;color:#8B6914;}
 .m-bar-bg{height:6px;background:#E5E7EB;border-radius:3px;overflow:hidden;}
-.m-bar-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold2));border-radius:2px;transition:width 0.5s;}
-
-/* ── REFERRAL TREE ── */
+.m-bar-fill{height:100%;background:linear-gradient(90deg,#B8860B,#8B6914);transition:width 0.5s;}
 .ref-search{display:flex;gap:8px;margin-bottom:16px;}
 .ref-tree{background:#F9FAFB;border:1px solid rgba(0,0,0,0.1);padding:16px;font-family:'JetBrains Mono';font-size:14px;min-height:200px;line-height:2;color:#111827;border-radius:4px;}
-.ref-node{color:#B8860B;font-weight:700;}
-.ref-node-2{color:#374151;padding-left:20px;}
-.ref-node-3{color:#6B7280;padding-left:40px;}
-
-/* ── MODAL APROBAR ── */
 .modal-bg{position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:200;display:none;align-items:center;justify-content:center;}
 .modal-bg.show{display:flex;}
-.modal-box{background:#FFFFFF;border:1px solid rgba(0,0,0,0.1);padding:28px;width:440px;max-width:90vw;box-shadow:0 16px 48px rgba(0,0,0,0.15);border-radius:4px;}
+.modal-box{background:#fff;padding:28px;width:440px;max-width:90vw;border-radius:4px;box-shadow:0 16px 48px rgba(0,0,0,0.2);}
 .modal-title{font-family:'Bebas Neue';font-size:24px;letter-spacing:3px;color:#111827;margin-bottom:16px;}
 .modal-field{margin-bottom:12px;}
 .modal-label{font-size:11px;letter-spacing:2px;color:var(--muted);margin-bottom:4px;}
 .modal-val{font-family:'JetBrains Mono';font-size:14px;color:#111827;background:#F9FAFB;padding:8px 12px;border:1px solid rgba(0,0,0,0.1);}
 .modal-btns{display:flex;gap:8px;margin-top:16px;}
-
-/* ── TOAST ── */
-.toast{position:fixed;bottom:24px;right:24px;background:#1A1A2E;color:#fff;border:1px solid #F0C040;padding:12px 20px;font-size:15px;font-weight:600;transition:all 0.3s;z-index:300;transform:translateY(80px);opacity:0;border-radius:4px;box-shadow:0 4px 16px rgba(0,0,0,0.2);}
+.toast{position:fixed;bottom:24px;right:24px;background:#1A1A2E;color:#fff;border:1px solid #F0C040;padding:12px 20px;font-size:15px;font-weight:600;transition:all 0.3s;z-index:300;transform:translateY(80px);opacity:0;border-radius:4px;}
 .toast.show{transform:translateY(0);opacity:1;}
-
-/* ── LOADING ── */
-.spin{width:32px;height:32px;border:3px solid var(--border);border-top-color:var(--gold);border-radius:50%;animation:spin 0.8s linear infinite;margin:40px auto;}
+.spin{width:32px;height:32px;border:3px solid rgba(0,0,0,0.1);border-top-color:#B8860B;border-radius:50%;animation:spin 0.8s linear infinite;margin:40px auto;}
 @keyframes spin{to{transform:rotate(360deg)}}
-
-/* ── RESPONSIVE ── */
-@media(max-width:768px){
-  .sidebar{width:60px;}
-  .nav-item span{display:none;}
-  .sidebar-logo .logo{font-size:16px;}
-  .sidebar-logo .sub{display:none;}
-  .main{margin-left:60px;padding:16px;}
-  .stats-grid{grid-template-columns:1fr 1fr;}
-}
+@media(max-width:768px){.sidebar{width:60px;}.nav-item span{display:none;}.main{margin-left:60px;padding:16px;}.stats-grid{grid-template-columns:1fr 1fr;}}
 </style>
 </head>
 <body>
-
-<!-- LOGIN -->
 <div id="loginScreen">
   <div class="login-box">
     <div class="login-logo">$PISK</div>
@@ -138,36 +94,23 @@ tr:last-child td{border-bottom:none;}
     <div class="login-err" id="loginErr">❌ Credenciales incorrectas</div>
   </div>
 </div>
-
-<!-- APP -->
 <div id="app">
-  <!-- SIDEBAR -->
   <div class="sidebar">
-    <div class="sidebar-logo">
-      <div class="logo">NEO PISK</div>
-      <div class="sub">PANEL AIRDROP</div>
-    </div>
+    <div class="sidebar-logo"><div class="logo">NEO PISK</div><div class="sub">PANEL AIRDROP</div></div>
     <nav>
-      <div class="nav-item active" onclick="showPage('dashboard')"><span class="nav-icon">📊</span><span>Dashboard</span></div>
-      <div class="nav-item" onclick="showPage('usuarios')"><span class="nav-icon">👥</span><span>Usuarios</span></div>
-      <div class="nav-item" onclick="showPage('misiones')"><span class="nav-icon">🎯</span><span>Misiones</span></div>
-      <div class="nav-item" onclick="showPage('referidos')"><span class="nav-icon">🤝</span><span>Referidos</span></div>
-      <div class="nav-item" onclick="showPage('pendientes')"><span class="nav-icon">⏳</span><span>Pendientes</span></div>
-      <div class="nav-item" onclick="showPage('juegos')"><span class="nav-icon">🎮</span><span>Juegos</span></div>
+      <div class="nav-item active" onclick="showPage('dashboard',this)"><span class="nav-icon">📊</span><span>Dashboard</span></div>
+      <div class="nav-item" onclick="showPage('usuarios',this)"><span class="nav-icon">👥</span><span>Usuarios</span></div>
+      <div class="nav-item" onclick="showPage('misiones',this)"><span class="nav-icon">🎯</span><span>Misiones</span></div>
+      <div class="nav-item" onclick="showPage('referidos',this)"><span class="nav-icon">🤝</span><span>Referidos</span></div>
+      <div class="nav-item" onclick="showPage('pendientes',this)"><span class="nav-icon">⏳</span><span>Pendientes</span></div>
+      <div class="nav-item" onclick="showPage('juegos',this)"><span class="nav-icon">🎮</span><span>Juegos</span></div>
     </nav>
     <div class="sidebar-bottom">
-      <div class="api-status">
-        <div class="api-dot" id="apiDot"></div>
-        <span id="apiStatusTxt">Verificando...</span>
-      </div>
-      <div style="margin-top:8px;font-size:10px;color:var(--muted2);font-family:'JetBrains Mono'">API :3004</div>
+      <div class="api-status"><div class="api-dot" id="apiDot"></div><span id="apiStatusTxt">Verificando...</span></div>
+      <div style="margin-top:8px;font-size:10px;color:rgba(255,255,255,0.3);font-family:'JetBrains Mono'">:3004</div>
     </div>
   </div>
-
-  <!-- MAIN -->
   <div class="main">
-
-    <!-- DASHBOARD -->
     <div class="page active" id="page-dashboard">
       <div class="page-title">📊 DASHBOARD</div>
       <div class="stats-grid">
@@ -176,83 +119,45 @@ tr:last-child td{border-bottom:none;}
         <div class="stat-card"><div class="stat-icon">💰</div><div class="stat-num" id="s-inversores">—</div><div class="stat-lbl">INVERSORES</div></div>
         <div class="stat-card"><div class="stat-icon">🪙</div><div class="stat-num" id="s-tokens">—</div><div class="stat-lbl">$PISK DISTRIBUIDOS</div></div>
       </div>
-
-      <!-- TOP 10 -->
       <div class="table-wrap">
-        <div class="table-header">
-          <div class="table-title">🏆 TOP 10 HOLDERS</div>
-          <button class="btn btn-ghost" onclick="cargarDatos()">↻ ACTUALIZAR</button>
-        </div>
-        <table>
-          <thead><tr><th>#</th><th>USUARIO</th><th>$PISK</th><th>REFERIDOS</th><th>VIRTUAL</th></tr></thead>
-          <tbody id="top10Body"></tbody>
-        </table>
+        <div class="table-header"><div class="table-title">🏆 TOP 10 HOLDERS</div><button class="btn btn-ghost" onclick="cargarDatos()">↻ ACTUALIZAR</button></div>
+        <table><thead><tr><th>#</th><th>USUARIO</th><th>$PISK</th><th>REFERIDOS</th><th>VIRTUAL</th></tr></thead><tbody id="top10Body"></tbody></table>
       </div>
-
-      <!-- RECIENTES -->
       <div class="table-wrap">
         <div class="table-header"><div class="table-title">🆕 REGISTROS RECIENTES</div></div>
-        <table>
-          <thead><tr><th>NOMBRE</th><th>CÓDIGO</th><th>PAÍS</th><th>$PISK</th><th>REFS</th></tr></thead>
-          <tbody id="recientesBody"></tbody>
-        </table>
+        <table><thead><tr><th>NOMBRE</th><th>CÓDIGO</th><th>PAÍS</th><th>$PISK</th><th>REFS</th></tr></thead><tbody id="recientesBody"></tbody></table>
       </div>
     </div>
-
-    <!-- USUARIOS -->
     <div class="page" id="page-usuarios">
       <div class="page-title">👥 USUARIOS</div>
       <div class="table-wrap">
-        <div class="table-header">
-          <div class="table-title">TODOS LOS USUARIOS</div>
-          <input class="search-input" id="searchUsuario" placeholder="🔍 Buscar por nombre o código..." oninput="filtrarUsuarios()">
-        </div>
-        <table>
-          <thead><tr><th>NOMBRE</th><th>CÓDIGO REF</th><th>PAÍS</th><th>$PISK</th><th>WALLET</th><th>MISIONES</th><th>ESTADO</th><th>ACCIONES</th></tr></thead>
-          <tbody id="usuariosBody"></tbody>
-        </table>
+        <div class="table-header"><div class="table-title">TODOS LOS USUARIOS</div><input class="search-input" id="searchUsuario" placeholder="🔍 Buscar..." oninput="filtrarUsuarios()"></div>
+        <table><thead><tr><th>NOMBRE</th><th>CÓDIGO REF</th><th>PAÍS</th><th>$PISK</th><th>WALLET</th><th>ESTADO</th><th></th></tr></thead><tbody id="usuariosBody"></tbody></table>
       </div>
     </div>
-
-    <!-- MISIONES -->
     <div class="page" id="page-misiones">
       <div class="page-title">🎯 PROGRESO DE MISIONES</div>
       <div class="mission-bars" id="misionesBars"></div>
     </div>
-
-    <!-- REFERIDOS -->
     <div class="page" id="page-referidos">
       <div class="page-title">🤝 ÁRBOL DE REFERIDOS</div>
       <div class="ref-search">
-        <input class="search-input" id="refSearchInput" placeholder="Ingresa código de referido (ej: PISK212995)" style="flex:1;">
+        <input class="search-input" id="refSearchInput" placeholder="Código (ej: PISK212995)" style="flex:1;">
         <button class="btn btn-gold" onclick="buscarArbol()">BUSCAR</button>
       </div>
       <div class="ref-tree" id="refTreeBox">Ingresa un código para ver el árbol de referidos</div>
-
       <div class="table-wrap" style="margin-top:20px;">
         <div class="table-header"><div class="table-title">🏆 TOP REFERIDORES</div></div>
-        <table>
-          <thead><tr><th>#</th><th>NOMBRE</th><th>CÓDIGO</th><th>REFERIDOS</th><th>COMISIÓN USDT</th></tr></thead>
-          <tbody id="topRefsBody"></tbody>
-        </table>
+        <table><thead><tr><th>#</th><th>NOMBRE</th><th>CÓDIGO</th><th>REFERIDOS</th><th>COMISIÓN USDT</th></tr></thead><tbody id="topRefsBody"></tbody></table>
       </div>
     </div>
-
-    <!-- PENDIENTES -->
     <div class="page" id="page-pendientes">
       <div class="page-title">⏳ APROBACIONES PENDIENTES</div>
-      <div id="pendientesWrap">
-        <div class="table-wrap">
-          <div class="table-header"><div class="table-title">VOUCHERS E INFLUENCERS</div></div>
-          <table>
-            <thead><tr><th>USUARIO</th><th>TIPO</th><th>FECHA</th><th>DETALLE</th><th>ACCIONES</th></tr></thead>
-            <tbody id="pendientesBody"></tbody>
-          </table>
-        </div>
+      <div class="table-wrap">
+        <div class="table-header"><div class="table-title">VOUCHERS E INFLUENCERS</div></div>
+        <table><thead><tr><th>USUARIO</th><th>TIPO</th><th>FECHA</th><th>DETALLE</th><th>ACCIONES</th></tr></thead><tbody id="pendientesBody"></tbody></table>
       </div>
     </div>
-
-    <!-- JUEGOS -->
     <div class="page" id="page-juegos">
       <div class="page-title">🎮 ESTADÍSTICAS DE JUEGOS</div>
       <div class="stats-grid" style="grid-template-columns:repeat(3,1fr)">
@@ -262,23 +167,17 @@ tr:last-child td{border-bottom:none;}
       </div>
       <div class="table-wrap">
         <div class="table-header"><div class="table-title">TOP JUGADORES</div></div>
-        <table>
-          <thead><tr><th>#</th><th>JUGADOR</th><th>PUNTOS</th><th>$PISK CANJEADOS</th></tr></thead>
-          <tbody id="jugadoresBody"></tbody>
-        </table>
+        <table><thead><tr><th>#</th><th>JUGADOR</th><th>PUNTOS</th><th>$PISK CANJEADOS</th></tr></thead><tbody id="jugadoresBody"></tbody></table>
       </div>
     </div>
-
   </div>
 </div>
-
-<!-- MODAL APROBAR -->
 <div class="modal-bg" id="modalBg" onclick="if(event.target===this)cerrarModal()">
   <div class="modal-box">
-    <div class="modal-title" id="modalTitle">APROBAR MISIÓN</div>
+    <div class="modal-title">APROBAR MISIÓN</div>
     <div class="modal-field"><div class="modal-label">USUARIO</div><div class="modal-val" id="modalUser">—</div></div>
     <div class="modal-field"><div class="modal-label">MISIÓN</div><div class="modal-val" id="modalMision">—</div></div>
-    <div class="modal-field"><div class="modal-label">TOKENS A OTORGAR</div><input class="login-input" id="modalTokens" type="number" value="0" style="margin:0;background:var(--dark3)"></div>
+    <div class="modal-field"><div class="modal-label">TOKENS A OTORGAR</div><input class="login-input" id="modalTokens" type="number" value="0" style="margin:0;background:#F9FAFB"></div>
     <div class="modal-btns">
       <button class="btn btn-green" onclick="aprobarMision()" style="flex:1;padding:12px">✅ APROBAR</button>
       <button class="btn btn-red" onclick="rechazarMision()" style="flex:1;padding:12px">❌ RECHAZAR</button>
@@ -286,250 +185,220 @@ tr:last-child td{border-bottom:none;}
     </div>
   </div>
 </div>
-
 <div class="toast" id="toast"></div>
-
 <script>
-const API = 'http://69.169.109.120/airdrop-api';
-const CREDS = { user: 'ernesto', pass: 'neopisk2025' };
+// ✅ FIX: URL corregida de '/airdrop-api' → ':3004'
+const API = 'http://69.169.109.120:3004';
+const CREDS = { user:'ernesto', pass:'neopisk2025' };
 let allUsers = [], pendingAction = null;
 
-// ── LOGIN ──────────────────────────────────────────────
 function doLogin() {
   const u = document.getElementById('loginUser').value;
   const p = document.getElementById('loginPass').value;
-  if (u === CREDS.user && p === CREDS.pass) {
-    document.getElementById('loginScreen').style.display = 'none';
-    document.getElementById('app').style.display = 'block';
-    cargarDatos();
-    checkAPI();
-    setInterval(checkAPI, 30000);
+  if (u===CREDS.user && p===CREDS.pass) {
+    document.getElementById('loginScreen').style.display='none';
+    document.getElementById('app').style.display='block';
+    cargarDatos(); checkAPI();
+    setInterval(checkAPI,30000);
   } else {
-    document.getElementById('loginErr').style.display = 'block';
+    document.getElementById('loginErr').style.display='block';
   }
 }
 
-// ── API STATUS ─────────────────────────────────────────
 async function checkAPI() {
   try {
-    await fetch(API+'/stats', {signal: AbortSignal.timeout(5000)});
+    const r = await fetch(API+'/stats',{signal:AbortSignal.timeout(5000)});
+    if(!r.ok) throw new Error();
     document.getElementById('apiDot').classList.add('online');
-    document.getElementById('apiStatusTxt').textContent = 'API Online';
+    document.getElementById('apiStatusTxt').textContent='API Online';
   } catch(e) {
     document.getElementById('apiDot').classList.remove('online');
-    document.getElementById('apiStatusTxt').textContent = 'API Offline';
+    document.getElementById('apiStatusTxt').textContent='API Offline';
   }
 }
 
-// ── NAVIGATION ────────────────────────────────────────
-function showPage(page) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+function showPage(page, el) {
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
   document.getElementById('page-'+page).classList.add('active');
-  event.currentTarget.classList.add('active');
-  if (page === 'referidos') cargarTopRefs();
-  if (page === 'juegos') cargarJuegos();
-  if (page === 'pendientes') cargarPendientes();
+  if(el) el.classList.add('active');
+  if(page==='referidos') cargarTopRefs();
+  if(page==='juegos') cargarJuegos();
+  if(page==='pendientes') cargarPendientes();
+  if(page==='usuarios') cargarUsuariosCompleto();
 }
 
-// ── CARGAR DATOS ──────────────────────────────────────
 async function cargarDatos() {
   try {
     const r = await fetch(API+'/stats');
+    if(!r.ok) throw new Error('HTTP '+r.status);
     const d = await r.json();
-
-    document.getElementById('s-total').textContent      = d.total || 0;
-    document.getElementById('s-activos').textContent    = d.activos || 0;
-    document.getElementById('s-inversores').textContent = d.inversores || 0;
-    document.getElementById('s-tokens').textContent     = (d.totalTokens||0).toFixed(0);
-
-    // Top 10
-    const medals = ['🥇','🥈','🥉','4','5','6','7','8','9','10'];
-    document.getElementById('top10Body').innerHTML = (d.top10||[]).map((u,i) => `
+    document.getElementById('s-total').textContent     = d.total??0;
+    document.getElementById('s-activos').textContent   = d.activos??0;
+    document.getElementById('s-inversores').textContent= d.inversores??0;
+    document.getElementById('s-tokens').textContent    = Number(d.totalTokens??0).toFixed(0);
+    const medals=['🥇','🥈','🥉','4','5','6','7','8','9','10'];
+    document.getElementById('top10Body').innerHTML=(d.top10||[]).map((u,i)=>`
       <tr>
-        <td style="color:var(--gold)">${medals[i]||i+1}</td>
+        <td style="color:#B8860B">${medals[i]||i+1}</td>
         <td style="font-family:'Rajdhani';font-size:14px;font-weight:700">${u.nombre}</td>
-        <td><span style="color:var(--gold2);font-family:'Bebas Neue';font-size:16px">${u.pisk}</span> $PISK</td>
+        <td><span style="color:#8B6914;font-family:'Bebas Neue';font-size:16px">${u.pisk}</span> $PISK</td>
         <td>${u.refs}</td>
-        <td>${u.virtual ? '<span class="badge badge-red">BOT</span>' : '<span class="badge badge-green">OK</span>'}</td>
-      </tr>`).join('') || '<tr><td colspan="5" style="text-align:center;color:var(--muted);padding:24px">Sin datos aún</td></tr>';
-
-    // Recientes
-    document.getElementById('recientesBody').innerHTML = (d.usuarios_recientes||[]).map(u => `
+        <td>${u.virtual?'<span class="badge badge-red">BOT</span>':'<span class="badge badge-green">REAL</span>'}</td>
+      </tr>`).join('')||'<tr><td colspan="5" style="text-align:center;color:#6B7280;padding:24px">Sin datos aún</td></tr>';
+    document.getElementById('recientesBody').innerHTML=(d.usuarios_recientes||[]).map(u=>`
       <tr>
         <td style="font-weight:700">${u.nombre}</td>
-        <td style="color:var(--gold2)">${u.codigo_ref}</td>
+        <td style="color:#8B6914">${u.codigo_ref||'—'}</td>
         <td>${u.pais||'—'}</td>
         <td>${u.pisk} $PISK</td>
         <td>${u.refs}</td>
-      </tr>`).join('') || '<tr><td colspan="5" style="text-align:center;color:var(--muted);padding:24px">Sin registros</td></tr>';
-
-    // Misiones bars
-    const mNames = {registro:'📝 Registro',viral:'🦠 Viral 5x5',redes:'📱 Redes',voucher:'💰 Voucher',influencer:'🎬 Influencer',comunidad:'👥 Comunidad',wallet:'💳 Wallet',humanidad:'🤖 Humanidad',diario:'🔥 Diario'};
-    const total = d.total || 1;
-    document.getElementById('misionesBars').innerHTML = Object.entries(d.misiones||{}).map(([k,v]) => `
+      </tr>`).join('')||'<tr><td colspan="5" style="text-align:center;color:#6B7280;padding:24px">Sin registros</td></tr>';
+    const mNames={registro:'📝 Registro',viral:'🦠 Viral 5x5',redes:'📱 Redes',voucher:'💰 Voucher',influencer:'🎬 Influencer',comunidad:'👥 Comunidad',wallet:'💳 Wallet',humanidad:'🤖 Humanidad',diario:'🔥 Diario'};
+    const total=d.total||1;
+    document.getElementById('misionesBars').innerHTML=Object.entries(d.misiones||{}).map(([k,v])=>`
       <div class="m-bar-item">
         <div class="m-bar-top"><span class="m-bar-name">${mNames[k]||k}</span><span class="m-bar-count">${v}/${total}</span></div>
         <div class="m-bar-bg"><div class="m-bar-fill" style="width:${total>0?Math.round(v/total*100):0}%"></div></div>
       </div>`).join('');
-
-    // Cargar usuarios también
-    allUsers = d.usuarios_recientes || [];
+    allUsers=d.usuarios_recientes||[];
     renderUsuarios(allUsers);
-
   } catch(e) {
-    toast('❌ Sin conexión con la API');
+    toast('❌ '+e.message);
+    document.getElementById('apiDot').classList.remove('online');
+    document.getElementById('apiStatusTxt').textContent='API Offline';
   }
 }
 
-// ── USUARIOS ──────────────────────────────────────────
-async function cargarUsuarios() {
+async function cargarUsuariosCompleto() {
   try {
-    const r = await fetch(API+'/stats');
-    const d = await r.json();
-    allUsers = [...(d.top10||[]), ...(d.usuarios_recientes||[])];
-    // Deduplicar
-    const seen = new Set();
-    allUsers = allUsers.filter(u => { if(seen.has(u.codigo_ref)) return false; seen.add(u.codigo_ref); return true; });
+    const r=await fetch(API+'/stats'); const d=await r.json();
+    const todos=[...(d.top10||[]),...(d.usuarios_recientes||[])];
+    const seen=new Set();
+    allUsers=todos.filter(u=>{const k=u.codigo_ref||u.nombre;if(seen.has(k))return false;seen.add(k);return true;});
     renderUsuarios(allUsers);
-  } catch(e) {}
+  } catch(e){toast('❌ Error cargando usuarios');}
 }
 
 function renderUsuarios(users) {
-  document.getElementById('usuariosBody').innerHTML = users.map(u => `
+  document.getElementById('usuariosBody').innerHTML=users.map(u=>`
     <tr>
-      <td style="font-weight:700;font-family:'Rajdhani';font-size:14px">${u.nombre}</td>
-      <td style="color:var(--gold2)">${u.codigo_ref||'—'}</td>
+      <td style="font-weight:700;font-family:'Rajdhani';font-size:14px">${u.nombre||'—'}</td>
+      <td style="color:#8B6914">${u.codigo_ref||'—'}</td>
       <td>${u.pais||'—'}</td>
-      <td style="color:var(--gold2);font-family:'Bebas Neue';font-size:16px">${u.pisk||0}</td>
-      <td style="font-size:11px;color:var(--muted)">${u.wallet ? u.wallet.slice(0,12)+'...' : '—'}</td>
-      <td>${u.misiones_count||'—'}</td>
-      <td>${u.virtual ? '<span class="badge badge-red">BOT</span>' : '<span class="badge badge-green">REAL</span>'}</td>
-      <td><button class="btn btn-ghost" onclick="verUsuario('${u.codigo_ref}')">VER</button></td>
-    </tr>`).join('') || '<tr><td colspan="8" style="text-align:center;color:var(--muted);padding:24px">Sin usuarios</td></tr>';
+      <td style="color:#8B6914;font-family:'Bebas Neue';font-size:16px">${u.pisk||0}</td>
+      <td style="font-size:11px;color:#6B7280">${u.wallet?u.wallet.slice(0,12)+'...':'—'}</td>
+      <td>${u.virtual?'<span class="badge badge-red">BOT</span>':'<span class="badge badge-green">REAL</span>'}</td>
+      <td><button class="btn btn-ghost" onclick="irArbol('${u.codigo_ref}')">VER</button></td>
+    </tr>`).join('')||'<tr><td colspan="7" style="text-align:center;color:#6B7280;padding:24px">Sin usuarios</td></tr>';
 }
 
 function filtrarUsuarios() {
-  const q = document.getElementById('searchUsuario').value.toLowerCase();
-  const filtered = allUsers.filter(u => u.nombre?.toLowerCase().includes(q) || u.codigo_ref?.toLowerCase().includes(q));
-  renderUsuarios(filtered);
+  const q=document.getElementById('searchUsuario').value.toLowerCase();
+  renderUsuarios(allUsers.filter(u=>(u.nombre||'').toLowerCase().includes(q)||(u.codigo_ref||'').toLowerCase().includes(q)));
 }
 
-function verUsuario(codigo) {
-  document.getElementById('refSearchInput').value = codigo;
-  showPage('referidos');
-  buscarArbol();
+function irArbol(codigo) {
+  document.getElementById('refSearchInput').value=codigo;
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById('page-referidos').classList.add('active');
+  document.querySelectorAll('.nav-item')[3].classList.add('active');
+  cargarTopRefs(); buscarArbol();
 }
 
-// ── REFERIDOS ─────────────────────────────────────────
 async function buscarArbol() {
-  const codigo = document.getElementById('refSearchInput').value.trim();
-  if (!codigo) return;
-  const box = document.getElementById('refTreeBox');
-  box.innerHTML = '<div class="spin"></div>';
+  const codigo=document.getElementById('refSearchInput').value.trim();
+  if(!codigo) return;
+  const box=document.getElementById('refTreeBox');
+  box.innerHTML='<div class="spin"></div>';
   try {
-    const r = await fetch(`${API}/arbol?codigo=${codigo}`);
-    const d = await r.json();
-    if (!d.root) { box.innerHTML = '<span style="color:var(--muted)">Sin resultados para ese código</span>'; return; }
-    box.innerHTML = renderTree(d.root, 0);
-  } catch(e) {
-    box.innerHTML = '<span style="color:var(--red)">❌ Error de conexión</span>';
-  }
+    const r=await fetch(`${API}/arbol?codigo=${encodeURIComponent(codigo)}`);
+    const d=await r.json();
+    if(!d.root){box.innerHTML='<span style="color:#6B7280">Sin resultados para ese código</span>';return;}
+    box.innerHTML=renderTree(d.root,0);
+  } catch(e){box.innerHTML='<span style="color:#DC2626">❌ Error de conexión</span>';}
 }
 
-function renderTree(node, level) {
-  if (!node) return '';
-  const indent = ['','  ├── ','  │   └── '][level] || '  │       └── ';
-  const color = ['var(--gold2)','var(--text)','var(--muted)'][level] || 'var(--muted2)';
-  let html = `<div style="color:${color};padding-left:${level*20}px">${indent}👤 <strong>${node.nombre}</strong> — ${node.pisk} $PISK</div>`;
-  (node.refs||[]).forEach(child => { html += renderTree(child, level+1); });
+function renderTree(node,level){
+  if(!node) return '';
+  const colors=['#B8860B','#374151','#6B7280','#9CA3AF'];
+  const color=colors[level]||'#9CA3AF';
+  let html=`<div style="color:${color};padding-left:${level*20}px;margin:2px 0">👤 <strong>${node.nombre}</strong> — <span style="color:#B8860B">${node.pisk} $PISK</span></div>`;
+  (node.refs||[]).forEach(child=>{html+=renderTree(child,level+1);});
   return html;
 }
 
 async function cargarTopRefs() {
   try {
-    const r = await fetch(API+'/ranking');
-    const d = await r.json();
-    document.getElementById('topRefsBody').innerHTML = (d.top||[]).slice(0,10).map((u,i) => `
+    const r=await fetch(API+'/ranking'); const d=await r.json();
+    document.getElementById('topRefsBody').innerHTML=(d.top||[]).slice(0,10).map((u,i)=>`
       <tr>
-        <td style="color:var(--gold)">${i+1}</td>
+        <td style="color:#B8860B">${i+1}</td>
         <td style="font-weight:700">${u.nombre}</td>
-        <td style="color:var(--gold2)">${u.codigo_ref||'—'}</td>
+        <td style="color:#8B6914">${u.codigo_ref||'—'}</td>
         <td>${u.refs}</td>
-        <td style="color:var(--green)">$${(u.refs*5).toFixed(2)}</td>
-      </tr>`).join('') || '<tr><td colspan="5" style="text-align:center;color:var(--muted);padding:24px">Sin datos</td></tr>';
+        <td style="color:#059669">$${((u.refs||0)*5).toFixed(2)}</td>
+      </tr>`).join('')||'<tr><td colspan="5" style="text-align:center;color:#6B7280;padding:24px">Sin datos</td></tr>';
   } catch(e){}
 }
 
-// ── PENDIENTES ────────────────────────────────────────
-async function cargarPendientes() {
-  // Por ahora mostrar placeholder — se integra con notificaciones del bot
-  document.getElementById('pendientesBody').innerHTML = `
-    <tr><td colspan="5" style="text-align:center;padding:32px;">
-      <div style="color:var(--muted);font-size:13px">Las aprobaciones pendientes llegan por WhatsApp al admin.<br><br>
-      Para aprobar manualmente usa los comandos:<br>
-      <span style="color:var(--gold);font-family:'JetBrains Mono'">APROBAR_TG [userId] [mision]</span><br>
-      <span style="color:var(--gold);font-family:'JetBrains Mono'">RECHAZAR_TG [userId]</span></div>
+function cargarPendientes() {
+  document.getElementById('pendientesBody').innerHTML=`
+    <tr><td colspan="5" style="text-align:center;padding:32px;color:#6B7280;font-size:13px">
+      Las aprobaciones llegan por WhatsApp al admin.<br><br>
+      <span style="color:#B8860B;font-family:'JetBrains Mono'">APROBAR_TG [userId] [mision]</span><br>
+      <span style="color:#B8860B;font-family:'JetBrains Mono'">RECHAZAR_TG [userId]</span>
     </td></tr>`;
 }
 
-// ── JUEGOS ────────────────────────────────────────────
 async function cargarJuegos() {
   try {
-    const r = await fetch(API+'/stats');
-    const d = await r.json();
-    document.getElementById('gj-total').textContent = d.total||0;
-    document.getElementById('gj-pts').textContent   = '—';
-    document.getElementById('gj-canjes').textContent = '—';
-    document.getElementById('jugadoresBody').innerHTML = (d.top10||[]).map((u,i) => `
+    const r=await fetch(API+'/stats'); const d=await r.json();
+    document.getElementById('gj-total').textContent=d.total||0;
+    document.getElementById('gj-pts').textContent='—';
+    document.getElementById('gj-canjes').textContent='—';
+    document.getElementById('jugadoresBody').innerHTML=(d.top10||[]).map((u,i)=>`
       <tr>
-        <td style="color:var(--gold)">${i+1}</td>
+        <td style="color:#B8860B">${i+1}</td>
         <td style="font-weight:700">${u.nombre}</td>
-        <td style="color:var(--gold2)">${u.game_points||0}</td>
+        <td style="color:#8B6914">${u.game_points||0}</td>
         <td>${u.pisk_canjeados||0}</td>
       </tr>`).join('');
   } catch(e){}
 }
 
-// ── MODAL ─────────────────────────────────────────────
-function abrirModalAprobar(userId, nombre, mision, tokens) {
-  pendingAction = { userId, mision };
-  document.getElementById('modalUser').textContent   = nombre;
-  document.getElementById('modalMision').textContent = mision;
-  document.getElementById('modalTokens').value       = tokens;
+function abrirModalAprobar(userId,nombre,mision,tokens) {
+  pendingAction={userId,mision};
+  document.getElementById('modalUser').textContent=nombre;
+  document.getElementById('modalMision').textContent=mision;
+  document.getElementById('modalTokens').value=tokens;
   document.getElementById('modalBg').classList.add('show');
 }
 
-function cerrarModal() { document.getElementById('modalBg').classList.remove('show'); pendingAction=null; }
+function cerrarModal(){document.getElementById('modalBg').classList.remove('show');pendingAction=null;}
 
 async function aprobarMision() {
-  if (!pendingAction) return;
-  const tokens = parseInt(document.getElementById('modalTokens').value);
+  if(!pendingAction) return;
+  const tokens=parseInt(document.getElementById('modalTokens').value);
   try {
-    await fetch(API+'/aprobar', { method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({ ...pendingAction, tokens }) });
+    await fetch(API+'/aprobar',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({...pendingAction,tokens})});
     toast('✅ Misión aprobada — +'+tokens+' $PISK');
     cerrarModal(); cargarDatos();
-  } catch(e) { toast('❌ Error al aprobar'); }
+  } catch(e){toast('❌ Error al aprobar');}
 }
 
-async function rechazarMision() {
-  if (!pendingAction) return;
-  toast('❌ Misión rechazada');
-  cerrarModal();
-}
+function rechazarMision(){toast('❌ Misión rechazada');cerrarModal();}
 
-// ── TOAST ─────────────────────────────────────────────
 function toast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg; t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 3500);
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),3500);
 }
 
-// ── AUTO REFRESH ──────────────────────────────────────
-setInterval(() => {
-  if (document.getElementById('page-dashboard').classList.contains('active')) cargarDatos();
-}, 30000);
+setInterval(()=>{
+  if(document.getElementById('page-dashboard').classList.contains('active')) cargarDatos();
+},30000);
 </script>
 </body>
 </html>
