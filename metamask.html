@@ -20,13 +20,25 @@ body{background:var(--dark);color:var(--text);font-family:'Barlow Condensed',san
 body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(212,160,23,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(212,160,23,0.03) 1px,transparent 1px);background-size:48px 48px;pointer-events:none;z-index:0;}
 .wrap{position:relative;z-index:1;max-width:440px;margin:0 auto;padding:20px 16px 60px;}
 
-.header{text-align:center;padding:28px 20px 20px;border-bottom:1px solid var(--border);margin-bottom:20px;}
-.logo-row{display:flex;justify-content:center;gap:14px;margin-bottom:14px;}
-.logo-img{width:60px;height:60px;border-radius:50%;border:2px solid var(--gold);box-shadow:0 0 16px rgba(212,160,23,0.3);object-fit:cover;}
-.header-title{font-family:'Bebas Neue';font-size:36px;letter-spacing:4px;background:linear-gradient(180deg,var(--gold3),var(--gold2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1;margin-bottom:4px;}
+.header{text-align:center;padding:24px 20px 18px;border-bottom:1px solid var(--border);margin-bottom:20px;}
+.logo-row{display:flex;justify-content:center;gap:14px;margin-bottom:12px;}
+.logo-img{width:56px;height:56px;border-radius:50%;border:2px solid var(--gold);box-shadow:0 0 16px rgba(212,160,23,0.3);object-fit:cover;}
+.header-title{font-family:'Bebas Neue';font-size:34px;letter-spacing:4px;background:linear-gradient(180deg,var(--gold3),var(--gold2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1;margin-bottom:4px;}
 .header-sub{font-size:10px;letter-spacing:5px;color:var(--muted);font-family:'JetBrains Mono';}
 
-/* STATUS */
+/* ── PANTALLA 1: Sin MetaMask ── */
+#screenNoMM{text-align:center;padding:8px 0;}
+.mm-fox{margin:0 auto 20px;width:90px;height:90px;}
+.open-title{font-family:'Bebas Neue';font-size:26px;letter-spacing:3px;color:var(--gold2);margin-bottom:10px;}
+.open-desc{font-size:15px;color:var(--muted);line-height:1.6;margin-bottom:24px;}
+.open-desc strong{color:var(--text);}
+.btn-open{display:block;width:100%;padding:20px;background:linear-gradient(135deg,#F6851B,#C96B00);color:#fff;border:none;cursor:pointer;font-family:'Bebas Neue';font-size:24px;letter-spacing:3px;box-shadow:0 0 32px rgba(246,133,27,0.25);text-decoration:none;text-align:center;margin-bottom:10px;transition:all 0.2s;}
+.btn-open:active{transform:scale(0.98);}
+.open-note{font-size:11px;color:var(--muted2);font-family:'JetBrains Mono';line-height:1.7;text-align:center;}
+
+/* ── PANTALLA 2: Dentro de MetaMask ── */
+#screenMM{display:none;}
+
 .status-bar{padding:10px 14px;border:1px solid var(--border2);background:var(--dark3);margin-bottom:14px;font-family:'JetBrains Mono';font-size:12px;color:var(--muted);display:flex;align-items:center;gap:8px;}
 .dot{width:8px;height:8px;border-radius:50%;background:var(--muted2);flex-shrink:0;transition:all 0.3s;}
 .dot.green{background:var(--green);box-shadow:0 0 8px var(--green);}
@@ -34,50 +46,42 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 .dot.orange{background:var(--orange);animation:blink 1s infinite;}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
 
-/* BALANCE */
-.balance-card{background:var(--dark2);border:1px solid var(--border);padding:20px;margin-bottom:16px;position:relative;overflow:hidden;}
+.balance-card{background:var(--dark2);border:1px solid var(--border);padding:18px;margin-bottom:14px;position:relative;overflow:hidden;}
 .balance-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--gold),transparent);}
 .balance-lbl{font-size:10px;letter-spacing:4px;color:var(--muted);font-family:'JetBrains Mono';margin-bottom:4px;}
-.balance-val{font-family:'Bebas Neue';font-size:44px;color:var(--gold2);line-height:1;}
+.balance-val{font-family:'Bebas Neue';font-size:40px;color:var(--gold2);line-height:1;}
 .balance-addr{font-family:'JetBrains Mono';font-size:10px;color:var(--muted);margin-top:6px;word-break:break-all;}
 
-/* CALCULADORA */
-.calc-card{background:var(--dark2);border:1px solid var(--border);padding:20px;margin-bottom:14px;position:relative;overflow:hidden;}
+.calc-card{background:var(--dark2);border:1px solid var(--border);padding:18px;margin-bottom:14px;position:relative;overflow:hidden;}
 .calc-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--gold),transparent);}
 .input-lbl{font-size:10px;letter-spacing:3px;color:var(--muted);font-family:'JetBrains Mono';margin-bottom:6px;}
-.input-field{width:100%;background:var(--dark3);border:1px solid var(--border);color:var(--text);padding:16px;font-family:'JetBrains Mono';font-size:24px;text-align:center;outline:none;transition:border-color 0.2s;margin-bottom:6px;}
+.input-field{width:100%;background:var(--dark3);border:1px solid var(--border);color:var(--text);padding:14px;font-family:'JetBrains Mono';font-size:24px;text-align:center;outline:none;transition:border-color 0.2s;margin-bottom:8px;}
 .input-field:focus{border-color:var(--gold);}
 .input-field::placeholder{color:var(--muted2);}
-.calc-result{background:var(--dark3);border:1px solid var(--border);padding:12px;text-align:center;margin-bottom:4px;}
+.calc-result{background:var(--dark3);border:1px solid var(--border);padding:10px;text-align:center;}
 .calc-result-lbl{font-size:10px;letter-spacing:3px;color:var(--muted);font-family:'JetBrains Mono';margin-bottom:2px;}
-.calc-result-val{font-family:'Bebas Neue';font-size:36px;color:var(--gold2);}
-.calc-debug{font-size:10px;color:var(--muted2);font-family:'JetBrains Mono';text-align:center;margin-top:4px;}
+.calc-result-val{font-family:'Bebas Neue';font-size:34px;color:var(--gold2);}
 
-/* BUTTONS */
-.btn{width:100%;padding:16px;border:none;cursor:pointer;font-family:'Bebas Neue';font-size:20px;letter-spacing:3px;transition:all 0.2s;display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:10px;}
+.btn{width:100%;padding:15px;border:none;cursor:pointer;font-family:'Bebas Neue';font-size:19px;letter-spacing:3px;transition:all 0.2s;display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:10px;}
 .btn:active{transform:scale(0.97);}
 .btn:disabled{opacity:0.35;cursor:not-allowed;}
 .btn-connect{background:var(--dark2);border:1px solid var(--border);color:var(--gold2);}
 .btn-approve{background:var(--dark2);border:1px solid var(--border);color:var(--text);}
-.btn-buy{background:linear-gradient(135deg,var(--gold),#8B6914);color:var(--dark);font-size:22px;box-shadow:0 0 24px rgba(212,160,23,0.2);}
-.btn-buy:hover{box-shadow:0 0 40px rgba(212,160,23,0.4);}
+.btn-buy{background:linear-gradient(135deg,var(--gold),#8B6914);color:var(--dark);font-size:21px;box-shadow:0 0 24px rgba(212,160,23,0.2);}
 
 .section-tag{font-family:'Bebas Neue';font-size:11px;letter-spacing:4px;color:var(--gold);margin:16px 0 10px;display:flex;align-items:center;gap:8px;}
 .section-tag::after{content:'';flex:1;height:1px;background:var(--border);}
 .divider{height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent);margin:14px 0;}
 
-/* PRESALE */
-.presale-box{background:var(--dark2);border:1px solid var(--border);padding:16px;margin-bottom:14px;}
+.presale-box{background:var(--dark2);border:1px solid var(--border);padding:16px;}
 .presale-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--border2);}
 .presale-row:last-child{border:none;}
 .presale-key{font-size:10px;letter-spacing:2px;color:var(--muted);font-family:'JetBrains Mono';}
 .presale-val{font-family:'Bebas Neue';font-size:15px;color:var(--gold2);}
 .sold-badge{background:rgba(0,230,118,0.1);border:1px solid rgba(0,230,118,0.2);padding:2px 8px;font-family:'JetBrains Mono';font-size:10px;color:var(--green);}
 .phase-badge{background:rgba(212,160,23,0.1);border:1px solid var(--border);padding:2px 8px;font-family:'JetBrains Mono';font-size:10px;color:var(--gold);}
-
 .legal-box{background:var(--dark3);border:1px solid var(--border2);padding:12px;font-size:10px;color:var(--muted2);line-height:1.7;font-family:'JetBrains Mono';margin-top:14px;}
 .float-btn{position:fixed;bottom:18px;right:14px;background:rgba(34,158,217,0.15);border:1px solid rgba(34,158,217,0.3);width:50px;height:50px;border-radius:50%;display:flex;align-items:center;justify-content:center;text-decoration:none;z-index:100;}
-
 @keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
 .wrap>*{animation:fadeUp 0.4s ease both;}
 </style>
@@ -94,53 +98,111 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
     <div class="header-sub">COMPRAR $PISK · POLYGON</div>
   </div>
 
-  <!-- STATUS -->
-  <div class="status-bar">
-    <div class="dot" id="dot"></div>
-    <span id="statusTxt">Cargando...</span>
-  </div>
+  <!-- ══ PANTALLA 1: Sin window.ethereum (Chrome, Safari, Telegram) ══ -->
+  <div id="screenNoMM">
+    <svg class="mm-fox" viewBox="0 0 318.6 318.6" xmlns="http://www.w3.org/2000/svg">
+      <polygon fill="#E2761B" stroke="#E2761B" points="274.1,35.5 174.6,109.4 193,65.8"/>
+      <g fill="#E4761B" stroke="#E4761B">
+        <polygon points="44.4,35.5 143.1,110.1 125.6,65.8"/>
+        <polygon points="238.3,206.8 211.8,247.4 268.5,263 284.8,207.7"/>
+        <polygon points="33.9,207.7 50.1,263 106.8,247.4 80.3,206.8"/>
+        <polygon points="103.6,138.2 87.8,162.1 144.1,164.6 142.1,104.1"/>
+        <polygon points="214.9,138.2 175.9,103.4 174.6,164.6 230.8,162.1"/>
+        <polygon points="106.8,247.4 140.6,230.9 111.4,208.1"/>
+        <polygon points="177.9,230.9 211.8,247.4 207.1,208.1"/>
+      </g>
+      <g fill="#D7C1B3" stroke="#D7C1B3">
+        <polygon points="211.8,247.4 177.9,230.9 180.6,253 180.3,262.3"/>
+        <polygon points="106.8,247.4 138.3,262.3 138.1,253 140.6,230.9"/>
+      </g>
+      <polygon fill="#233447" stroke="#233447" points="138.8,193.5 110.6,185.2 130.5,176.1"/>
+      <polygon fill="#233447" stroke="#233447" points="179.7,193.5 188,176.1 208,185.2"/>
+      <g fill="#CD6116" stroke="#CD6116">
+        <polygon points="106.8,247.4 111.6,206.8 80.3,207.7"/>
+        <polygon points="207,206.8 211.8,247.4 238.3,207.7"/>
+        <polygon points="230.8,162.1 174.6,164.6 179.8,193.5 188.1,176.1 208.1,185.2"/>
+        <polygon points="110.6,185.2 130.6,176.1 138.8,193.5 144.1,164.6 87.8,162.1"/>
+      </g>
+      <g fill="#E4751F" stroke="#E4751F">
+        <polygon points="87.8,162.1 111.4,208.1 110.6,185.2"/>
+        <polygon points="208.1,185.2 207.1,208.1 230.8,162.1"/>
+        <polygon points="144.1,164.6 138.8,193.5 145.4,227.6 146.9,182.7"/>
+        <polygon points="174.6,164.6 171.9,182.6 173.1,227.6 179.8,193.5"/>
+      </g>
+      <polygon fill="#F6851B" stroke="#F6851B" points="179.8,193.5 173.1,227.6 177.9,230.9 207.1,208.1 208.1,185.2"/>
+      <polygon fill="#F6851B" stroke="#F6851B" points="110.6,185.2 111.4,208.1 140.6,230.9 145.4,227.6 138.8,193.5"/>
+      <polygon fill="#C0AD9E" stroke="#C0AD9E" points="180.3,262.3 180.6,253 178.1,250.8 140.4,250.8 138.1,253 138.3,262.3 106.8,247.4 117.8,256.4 140.1,271.9 178.4,271.9 200.8,256.4 211.8,247.4"/>
+      <polygon fill="#161616" stroke="#161616" points="177.9,230.9 173.1,227.6 145.4,227.6 140.6,230.9 138.1,253 140.4,250.8 178.1,250.8 180.6,253"/>
+      <g fill="#763D16" stroke="#763D16">
+        <polygon points="278.3,114.2 286.8,73.4 274.1,35.5 177.9,106.9 214.9,138.2 267.2,153.5 278.8,140 273.8,136.4 281.8,129.1 275.6,124.3 283.6,118.2"/>
+        <polygon points="31.8,73.4 40.3,114.2 34.9,118.2 42.9,124.3 36.8,129.1 44.8,136.4 39.8,140 51.3,153.5 103.6,138.2 140.6,106.9 44.4,35.5"/>
+      </g>
+      <polygon fill="#F6851B" stroke="#F6851B" points="267.2,153.5 214.9,138.2 230.8,162.1 207.1,208.1 238.3,207.7 284.8,207.7"/>
+      <polygon fill="#F6851B" stroke="#F6851B" points="103.6,138.2 51.3,153.5 33.9,207.7 80.3,207.7 111.4,208.1 87.8,162.1"/>
+      <polygon fill="#F6851B" stroke="#F6851B" points="174.6,164.6 177.9,106.9 193.1,65.8 125.6,65.8 140.6,106.9 144.1,164.6 145.3,182.8 145.4,227.6 173.1,227.6 173.3,182.8"/>
+    </svg>
 
-  <!-- BALANCE -->
-  <div class="balance-card">
-    <div class="balance-lbl">TU BALANCE $PISK</div>
-    <div class="balance-val" id="balVal">—</div>
-    <div class="balance-addr" id="balAddr">Sin conectar</div>
-  </div>
+    <div class="open-title">COMPRAR $PISK</div>
+    <p class="open-desc">Esta página debe abrirse dentro del <strong>navegador de MetaMask</strong> para conectar tu wallet y comprar.</p>
+    <a id="btnOpenMM" href="#" class="btn-open">🦊 ABRIR EN METAMASK</a>
+    <p class="open-note">
+      Necesitas MetaMask instalado en tu celular<br>
+      1 USDT = 10 $PISK · Red Polygon
+    </p>
 
-  <!-- CONECTAR -->
-  <button class="btn btn-connect" id="btnConectar" onclick="conectar()">🔌 CONECTAR METAMASK</button>
-
-  <div class="divider"></div>
-
-  <!-- CALCULADORA -->
-  <div class="section-tag">CALCULADORA</div>
-  <div class="calc-card">
-    <div class="input-lbl">CANTIDAD DE USDT A INVERTIR</div>
-    <input class="input-field" type="number" id="inputUSDT" placeholder="1" min="0.01" step="0.01" value="1" oninput="calcular()">
-    <div class="calc-result">
-      <div class="calc-result-lbl">RECIBIRÁS</div>
-      <div class="calc-result-val" id="resultPisk">10 $PISK</div>
+    <div class="divider"></div>
+    <div class="section-tag">TOKENOMICS</div>
+    <div class="presale-box">
+      <div class="presale-row"><span class="presale-key">EMISIÓN TOTAL</span><span class="presale-val">100,000,000</span></div>
+      <div class="presale-row"><span class="presale-key">POLÍTICA</span><span class="presale-val" style="font-size:12px">BUYBACK & BURN</span></div>
+      <div class="presale-row"><span class="presale-key">FASE 1</span><span class="sold-badge">SOLD OUT ✓</span></div>
+      <div class="presale-row" style="border:none"><span class="presale-key">FASE 2 · PRECIO</span><span class="phase-badge">$0.10 USD</span></div>
     </div>
-    <div class="calc-debug" id="debugInfo">1 USDT = 10 $PISK · Red Polygon</div>
   </div>
 
-  <!-- BOTONES COMPRA -->
-  <button class="btn btn-approve" id="btnApprove" onclick="aprobar()" disabled>① AUTORIZAR USDT</button>
-  <button class="btn btn-buy"     id="btnBuy"     onclick="comprar()"  disabled>② COMPRAR $PISK</button>
+  <!-- ══ PANTALLA 2: Dentro de MetaMask (window.ethereum disponible) ══ -->
+  <div id="screenMM">
 
-  <div class="divider"></div>
+    <div class="status-bar">
+      <div class="dot" id="dot"></div>
+      <span id="statusTxt">Conectando...</span>
+    </div>
 
-  <!-- TOKENOMICS -->
-  <div class="section-tag">TOKENOMICS</div>
-  <div class="presale-box">
-    <div class="presale-row"><span class="presale-key">EMISIÓN TOTAL</span><span class="presale-val">100,000,000</span></div>
-    <div class="presale-row"><span class="presale-key">POLÍTICA</span><span class="presale-val" style="font-size:12px">BUYBACK & BURN</span></div>
-    <div class="presale-row"><span class="presale-key">FASE 1</span><span class="sold-badge">SOLD OUT ✓</span></div>
-    <div class="presale-row" style="border:none"><span class="presale-key">FASE 2 · PRECIO</span><span class="phase-badge">$0.10 USD</span></div>
+    <div class="balance-card">
+      <div class="balance-lbl">TU BALANCE $PISK</div>
+      <div class="balance-val" id="balVal">—</div>
+      <div class="balance-addr" id="balAddr">Sin conectar</div>
+    </div>
+
+    <button class="btn btn-connect" id="btnConectar" onclick="conectar()">🔌 CONECTAR WALLET</button>
+
+    <div class="divider"></div>
+
+    <div class="section-tag">CALCULADORA</div>
+    <div class="calc-card">
+      <div class="input-lbl">CANTIDAD DE USDT</div>
+      <input class="input-field" type="number" id="inputUSDT" placeholder="1" min="0.01" step="0.01" value="1" oninput="calcular()">
+      <div class="calc-result">
+        <div class="calc-result-lbl">RECIBIRÁS</div>
+        <div class="calc-result-val" id="resultPisk">10 $PISK</div>
+      </div>
+    </div>
+
+    <button class="btn btn-approve" id="btnApprove" onclick="aprobar()" disabled>① AUTORIZAR USDT</button>
+    <button class="btn btn-buy"     id="btnBuy"     onclick="comprar()"  disabled>② COMPRAR $PISK</button>
+
+    <div class="divider"></div>
+    <div class="section-tag">TOKENOMICS</div>
+    <div class="presale-box">
+      <div class="presale-row"><span class="presale-key">EMISIÓN TOTAL</span><span class="presale-val">100,000,000</span></div>
+      <div class="presale-row"><span class="presale-key">POLÍTICA</span><span class="presale-val" style="font-size:12px">BUYBACK & BURN</span></div>
+      <div class="presale-row"><span class="presale-key">FASE 1</span><span class="sold-badge">SOLD OUT ✓</span></div>
+      <div class="presale-row" style="border:none"><span class="presale-key">FASE 2 · PRECIO</span><span class="phase-badge">$0.10 USD</span></div>
+    </div>
   </div>
 
-  <div class="legal-box">⚖️ La adquisición de $PISK representa utilidad digital del ecosistema Neo Pisk. No representa inversión financiera ni promete retornos garantizados. Red Polygon · Contrato verificado.</div>
-  <div style="text-align:center;padding:16px 0;font-size:10px;color:var(--muted2);font-family:'JetBrains Mono';">
+  <div class="legal-box">⚖️ La adquisición de $PISK representa utilidad digital del ecosistema Neo Pisk. No representa inversión financiera ni promete retornos garantizados.</div>
+  <div style="text-align:center;padding:14px 0;font-size:10px;color:var(--muted2);font-family:'JetBrains Mono';">
     © NEO PISK TECH SAC · <a href="https://neopisk.lat" style="color:var(--gold);text-decoration:none">neopisk.lat</a>
   </div>
 </div>
@@ -150,56 +212,33 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 </a>
 
 <script>
-// ── CONTRATOS ─────────────────────────────────────────────
 const CONTRACT_ADDR = '0x07Fc7AC9D681Cdd3D100c68f6f5646970CC7fF60';
 const USDT_ADDR     = '0xc2132D05D31c914a87C6611C10748AEb04B58e8F';
 const PISK_ADDR     = '0x9d5B2A73d16dAF61712BA8527d94F6997a0E6323';
 
-// USDT Polygon tiene 6 decimales
-// PISK tiene 18 decimales
-// El contrato recibe _amountUSDT en unidades de 6 decimales (microUSDT)
-
-const USDT_ABI = [
-  'function approve(address spender, uint256 amount) returns (bool)',
-  'function allowance(address owner, address spender) view returns (uint256)',
-  'function balanceOf(address account) view returns (uint256)'
-];
-const PISK_ABI = ['function balanceOf(address account) view returns (uint256)'];
-const BUY_ABI  = ['function buyWithUSDT(uint256 _amountUSDT)'];
-
-// ── ESTADO ────────────────────────────────────────────────
-let web3     = null;
-let cuenta   = null;
-let aprobado = false;
-
-// Leer params URL
 const params = new URLSearchParams(window.location.search);
 const UID    = params.get('uid') || '';
 const REF    = params.get('ref') || '';
 
-// ── UI ────────────────────────────────────────────────────
+let web3 = null, cuenta = null, aprobado = false;
+
 function setStatus(msg, tipo) {
   document.getElementById('statusTxt').textContent = msg;
   const d = document.getElementById('dot');
-  d.className = 'dot' + (tipo==='ok'?' green':tipo==='err'?' red':tipo==='wait'?' orange':'');
+  d.className = 'dot'+(tipo==='ok'?' green':tipo==='err'?' red':tipo==='wait'?' orange':'');
 }
 
 function calcular() {
   const usdt = parseFloat(document.getElementById('inputUSDT').value) || 0;
-  const pisk = usdt * 10;
-  document.getElementById('resultPisk').textContent = pisk.toLocaleString() + ' $PISK';
-  // Mostrar exactamente qué número se enviará al contrato (microUSDT)
-  const microUSDT = Math.round(usdt * 1e6);
-  document.getElementById('debugInfo').textContent = 
-    usdt + ' USDT = ' + microUSDT + ' microUSDT → ' + pisk + ' $PISK';
+  document.getElementById('resultPisk').textContent = (usdt * 10).toLocaleString() + ' $PISK';
   aprobado = false;
-  document.getElementById('btnBuy').disabled = true;
+  if (document.getElementById('btnBuy')) document.getElementById('btnBuy').disabled = true;
 }
 
 function habilitarBotones(on) {
   document.getElementById('btnApprove').disabled = !on;
-  document.getElementById('btnBuy').disabled = true; // Buy solo se habilita tras approve
-  document.getElementById('btnConectar').style.display = on ? 'none' : 'block';
+  document.getElementById('btnBuy').disabled = true;
+  document.getElementById('btnConectar').style.display = on ? 'none' : 'flex';
 }
 
 async function actualizarBalance() {
@@ -207,186 +246,142 @@ async function actualizarBalance() {
   try {
     const pisk = new web3.eth.Contract([{constant:true,inputs:[{name:'_owner',type:'address'}],name:'balanceOf',outputs:[{name:'balance',type:'uint256'}],type:'function'}], PISK_ADDR);
     const bal  = await pisk.methods.balanceOf(cuenta).call();
-    const num  = parseFloat(web3.utils.fromWei(bal, 'ether')).toFixed(2);
-    document.getElementById('balVal').textContent  = parseFloat(num).toLocaleString() + ' $PISK';
+    document.getElementById('balVal').textContent  = parseFloat(web3.utils.fromWei(bal,'ether')).toFixed(2) + ' $PISK';
     document.getElementById('balAddr').textContent = cuenta;
-  } catch(e) { console.warn('balance error', e); }
+  } catch(e) {}
 }
 
-// ── CONECTAR ──────────────────────────────────────────────
 async function conectar() {
-  if (!window.ethereum) {
-    setStatus('MetaMask no detectado — abre desde MetaMask app', 'err');
-    return;
-  }
   setStatus('Conectando...', 'wait');
   try {
     web3 = new Web3(window.ethereum);
     const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
     cuenta = accounts[0];
-
-    // Verificar Polygon
     const chainId = await web3.eth.getChainId();
     if (chainId !== 137) {
       setStatus('Cambiando a Polygon...', 'wait');
       try {
-        await window.ethereum.request({ method: 'wallet_switchEthereumChain', params: [{ chainId: '0x89' }] });
-        web3 = new Web3(window.ethereum);
+        await window.ethereum.request({ method:'wallet_switchEthereumChain', params:[{chainId:'0x89'}] });
       } catch(e) {
         if (e.code === 4902) {
-          await window.ethereum.request({ method: 'wallet_addEthereumChain', params: [{
-            chainId: '0x89', chainName: 'Polygon Mainnet',
-            nativeCurrency: { name: 'MATIC', symbol: 'MATIC', decimals: 18 },
-            rpcUrls: ['https://polygon-rpc.com/'],
-            blockExplorerUrls: ['https://polygonscan.com/']
+          await window.ethereum.request({ method:'wallet_addEthereumChain', params:[{
+            chainId:'0x89', chainName:'Polygon Mainnet',
+            nativeCurrency:{name:'MATIC',symbol:'MATIC',decimals:18},
+            rpcUrls:['https://polygon-rpc.com/'],
+            blockExplorerUrls:['https://polygonscan.com/']
           }]});
         } else throw e;
       }
+      web3 = new Web3(window.ethereum);
     }
-
-    setStatus('✅ Conectado · ' + cuenta.slice(0,6) + '...' + cuenta.slice(-4), 'ok');
+    setStatus('✅ Conectado · '+cuenta.slice(0,6)+'...'+cuenta.slice(-4), 'ok');
     habilitarBotones(true);
     calcular();
     await actualizarBalance();
-
-    window.ethereum.on('accountsChanged', a => { cuenta = a[0]; actualizarBalance(); });
+    window.ethereum.on('accountsChanged', a => { cuenta=a[0]; actualizarBalance(); });
     window.ethereum.on('chainChanged', () => window.location.reload());
-
   } catch(e) {
-    if (e.code === 4001) setStatus('Conexión rechazada', 'err');
-    else setStatus('Error: ' + e.message, 'err');
+    if (e.code===4001) setStatus('Conexión rechazada', 'err');
+    else setStatus('Error: '+e.message.slice(0,50), 'err');
   }
 }
 
-// ── APROBAR USDT ──────────────────────────────────────────
 async function aprobar() {
   const usdt = parseFloat(document.getElementById('inputUSDT').value);
   if (!usdt || usdt <= 0) { alert('⚠️ Ingresa un monto válido'); return; }
   if (!cuenta) { await conectar(); return; }
-
-  // Calcular monto exacto en microUSDT (6 decimales)
-  // Ejemplo: 1 USDT → 1000000
-  //          0.1 USDT → 100000
   const microUSDT = Math.round(usdt * 1e6).toString();
-  console.log('Aprobando microUSDT:', microUSDT);
-
   try {
-    const usdt_contrato = new web3.eth.Contract([
-      { constant:false, inputs:[{name:'_spender',type:'address'},{name:'_value',type:'uint256'}], name:'approve', outputs:[{name:'',type:'bool'}], type:'function' },
-      { constant:true,  inputs:[{name:'_owner',type:'address'},{name:'_spender',type:'address'}], name:'allowance', outputs:[{name:'',type:'uint256'}], type:'function' }
+    const contrato = new web3.eth.Contract([
+      {constant:false,inputs:[{name:'_spender',type:'address'},{name:'_value',type:'uint256'}],name:'approve',outputs:[{name:'',type:'bool'}],type:'function'},
+      {constant:true,inputs:[{name:'_owner',type:'address'},{name:'_spender',type:'address'}],name:'allowance',outputs:[{name:'',type:'uint256'}],type:'function'}
     ], USDT_ADDR);
-
-    const gp = Math.floor(parseInt(await web3.eth.getGasPrice()) * 1.2).toString();
-
-    // Verificar allowance actual
+    const gp = Math.floor(parseInt(await web3.eth.getGasPrice())*1.2).toString();
     setStatus('Verificando allowance...', 'wait');
-    const allowance = await usdt_contrato.methods.allowance(cuenta, CONTRACT_ADDR).call();
-    console.log('Allowance actual:', allowance, 'Necesitamos:', microUSDT);
-
-    // Si ya hay allowance mayor o igual, saltar approve
+    const allowance = await contrato.methods.allowance(cuenta, CONTRACT_ADDR).call();
     if (parseInt(allowance) >= parseInt(microUSDT)) {
-      setStatus('✅ USDT ya autorizado — toca ② COMPRAR', 'ok');
       aprobado = true;
       document.getElementById('btnBuy').disabled = false;
+      setStatus('✅ USDT autorizado — toca ② COMPRAR', 'ok');
       return;
     }
-
-    // Si hay allowance pero menor, resetear primero
     if (parseInt(allowance) > 0) {
       setStatus('Reseteando allowance...', 'wait');
-      await usdt_contrato.methods.approve(CONTRACT_ADDR, '0').send({ from: cuenta, gasPrice: gp });
+      await contrato.methods.approve(CONTRACT_ADDR, '0').send({from:cuenta, gasPrice:gp});
       await new Promise(r => setTimeout(r, 2000));
     }
-
-    setStatus('Aprueba ' + usdt + ' USDT en MetaMask...', 'wait');
-    await usdt_contrato.methods.approve(CONTRACT_ADDR, microUSDT).send({ from: cuenta, gasPrice: gp });
-
+    setStatus('Aprueba '+usdt+' USDT en MetaMask...', 'wait');
+    await contrato.methods.approve(CONTRACT_ADDR, microUSDT).send({from:cuenta, gasPrice:gp});
     aprobado = true;
     document.getElementById('btnBuy').disabled = false;
     setStatus('✅ USDT autorizado — toca ② COMPRAR', 'ok');
-
   } catch(e) {
-    console.error('Approve error:', e);
-    if (e.code === 4001) setStatus('Autorización rechazada', 'err');
-    else setStatus('Error approve: ' + e.message.slice(0, 60), 'err');
+    if (e.code===4001) setStatus('Autorización rechazada', 'err');
+    else setStatus('Error approve: '+e.message.slice(0,60), 'err');
   }
 }
 
-// ── COMPRAR $PISK ─────────────────────────────────────────
 async function comprar() {
-  if (!aprobado) { alert('⚠️ Primero autoriza el USDT en el paso ①'); return; }
-  if (!cuenta)   { await conectar(); return; }
-
+  if (!aprobado) { alert('⚠️ Primero autoriza en paso ①'); return; }
   const usdt = parseFloat(document.getElementById('inputUSDT').value);
-  if (!usdt || usdt <= 0) { alert('⚠️ Ingresa un monto válido'); return; }
-
-  // MISMO cálculo que en approve — microUSDT exactos
   const microUSDT = Math.round(usdt * 1e6).toString();
-  console.log('Comprando con microUSDT:', microUSDT);
-
   try {
     const contrato = new web3.eth.Contract([
-      { inputs:[{name:'_amountUSDT',type:'uint256'}], name:'buyWithUSDT', outputs:[], stateMutability:'nonpayable', type:'function' }
+      {inputs:[{name:'_amountUSDT',type:'uint256'}],name:'buyWithUSDT',outputs:[],stateMutability:'nonpayable',type:'function'}
     ], CONTRACT_ADDR);
-
-    const gp = Math.floor(parseInt(await web3.eth.getGasPrice()) * 1.2).toString();
-
+    const gp = Math.floor(parseInt(await web3.eth.getGasPrice())*1.2).toString();
     setStatus('Confirma la compra en MetaMask...', 'wait');
-    const tx = await contrato.methods.buyWithUSDT(microUSDT).send({
-      from:     cuenta,
-      gas:      300000,
-      gasPrice: gp
-    });
-
-    console.log('TX exitosa:', tx.transactionHash);
+    const tx = await contrato.methods.buyWithUSDT(microUSDT).send({from:cuenta, gas:300000, gasPrice:gp});
     setStatus('🎉 ¡Compra exitosa!', 'ok');
     aprobado = false;
     document.getElementById('btnBuy').disabled = true;
     document.getElementById('inputUSDT').value = '1';
     calcular();
-
-    // Registrar en el bot
     registrarCompra(tx.transactionHash);
-
     setTimeout(actualizarBalance, 5000);
-
   } catch(e) {
-    console.error('Buy error:', e);
-    if (e.code === 4001) setStatus('Compra cancelada', 'err');
-    else setStatus('Error compra: ' + (e.message || 'verifica saldo USDT').slice(0, 60), 'err');
+    if (e.code===4001) setStatus('Compra cancelada', 'err');
+    else setStatus('Error compra: '+(e.message||'').slice(0,60), 'err');
   }
 }
 
-// ── REGISTRAR EN BOT ──────────────────────────────────────
 async function registrarCompra(txHash) {
   try {
     await fetch('http://69.169.109.120:3001/registrar-compra', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ txHash, uid: UID, ref: REF, wallet: cuenta })
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({txHash, uid:UID, ref:REF, wallet:cuenta})
     });
-  } catch(e) { console.warn('Bot no disponible:', e); }
+  } catch(e) {}
 }
 
-// ── INIT ──────────────────────────────────────────────────
+// ── INIT: detectar dónde estamos ─────────────────────────
 window.addEventListener('load', async () => {
   calcular();
-  if (!window.ethereum) {
-    setStatus('Abre esta página dentro de MetaMask app', 'err');
-    return;
+
+  if (window.ethereum) {
+    // ✅ Estamos dentro de MetaMask — mostrar pantalla de compra
+    document.getElementById('screenNoMM').style.display = 'none';
+    document.getElementById('screenMM').style.display   = 'block';
+    setStatus('MetaMask detectado — conecta tu wallet', 'ok');
+    web3 = new Web3(window.ethereum);
+    // Auto-reconectar si ya tenía cuenta
+    try {
+      const accounts = await web3.eth.getAccounts();
+      if (accounts.length > 0) {
+        cuenta = accounts[0];
+        habilitarBotones(true);
+        setStatus('✅ Conectado · '+cuenta.slice(0,6)+'...'+cuenta.slice(-4), 'ok');
+        await actualizarBalance();
+      }
+    } catch(e) {}
+  } else {
+    // ❌ Chrome/Safari/Telegram — mostrar botón "Abrir en MetaMask"
+    document.getElementById('screenNoMM').style.display = 'block';
+    document.getElementById('screenMM').style.display   = 'none';
+    // Armar deep link con los params del usuario
+    const urlActual = window.location.href.replace(/^https?:\/\//, '');
+    document.getElementById('btnOpenMM').href = 'https://metamask.app.link/dapp/' + urlActual;
   }
-  setStatus('MetaMask detectado ✅ — conecta tu wallet', 'ok');
-  web3 = new Web3(window.ethereum);
-  // Intentar reconectar si ya estaba conectado
-  try {
-    const accounts = await web3.eth.getAccounts();
-    if (accounts.length > 0) {
-      cuenta = accounts[0];
-      habilitarBotones(true);
-      setStatus('✅ Conectado · ' + cuenta.slice(0,6)+'...'+cuenta.slice(-4), 'ok');
-      await actualizarBalance();
-    }
-  } catch(e) {}
 });
 </script>
 </body>
