@@ -4,9 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Neo Pisk — Comprar $PISK</title>
-<link rel="icon" type="image/jpg" href="asset/IMG-20260126-WA0020.jpg">
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.7.4/web3.min.js"></script>
 <style>
 :root{
   --gold:#D4A017;--gold2:#F0C040;--gold3:#FFF3B0;
@@ -26,62 +25,65 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 .header-title{font-family:'Bebas Neue';font-size:34px;letter-spacing:4px;background:linear-gradient(180deg,var(--gold3),var(--gold2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1;margin-bottom:4px;}
 .header-sub{font-size:10px;letter-spacing:5px;color:var(--muted);font-family:'JetBrains Mono';}
 
-/* ── PANTALLA 1: Sin MetaMask ── */
-#screenNoMM{text-align:center;padding:8px 0;}
-.mm-fox{margin:0 auto 20px;width:90px;height:90px;}
-.open-title{font-family:'Bebas Neue';font-size:26px;letter-spacing:3px;color:var(--gold2);margin-bottom:10px;}
-.open-desc{font-size:15px;color:var(--muted);line-height:1.6;margin-bottom:24px;}
-.open-desc strong{color:var(--text);}
-.btn-open{display:block;width:100%;padding:20px;background:linear-gradient(135deg,#F6851B,#C96B00);color:#fff;border:none;cursor:pointer;font-family:'Bebas Neue';font-size:24px;letter-spacing:3px;box-shadow:0 0 32px rgba(246,133,27,0.25);text-decoration:none;text-align:center;margin-bottom:10px;transition:all 0.2s;}
-.btn-open:active{transform:scale(0.98);}
-.open-note{font-size:11px;color:var(--muted2);font-family:'JetBrains Mono';line-height:1.7;text-align:center;}
+/* PRECIO */
+.price-card{background:var(--dark2);border:1px solid var(--border);padding:18px;margin-bottom:16px;position:relative;overflow:hidden;text-align:center;}
+.price-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--gold),transparent);}
+.price-tag{font-family:'Bebas Neue';font-size:48px;color:var(--gold2);line-height:1;}
+.price-sub{font-size:11px;letter-spacing:3px;color:var(--muted);font-family:'JetBrains Mono';}
+.price-row{display:flex;justify-content:center;gap:24px;margin-top:12px;padding-top:12px;border-top:1px solid var(--border);}
+.price-item .val{font-family:'Bebas Neue';font-size:22px;color:var(--green);}
+.price-item .lbl{font-size:9px;letter-spacing:2px;color:var(--muted);font-family:'JetBrains Mono';}
 
-/* ── PANTALLA 2: Dentro de MetaMask ── */
-#screenMM{display:none;}
-
-.status-bar{padding:10px 14px;border:1px solid var(--border2);background:var(--dark3);margin-bottom:14px;font-family:'JetBrains Mono';font-size:12px;color:var(--muted);display:flex;align-items:center;gap:8px;}
-.dot{width:8px;height:8px;border-radius:50%;background:var(--muted2);flex-shrink:0;transition:all 0.3s;}
-.dot.green{background:var(--green);box-shadow:0 0 8px var(--green);}
-.dot.red{background:var(--red);}
-.dot.orange{background:var(--orange);animation:blink 1s infinite;}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
-
-.balance-card{background:var(--dark2);border:1px solid var(--border);padding:18px;margin-bottom:14px;position:relative;overflow:hidden;}
-.balance-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--gold),transparent);}
-.balance-lbl{font-size:10px;letter-spacing:4px;color:var(--muted);font-family:'JetBrains Mono';margin-bottom:4px;}
-.balance-val{font-family:'Bebas Neue';font-size:40px;color:var(--gold2);line-height:1;}
-.balance-addr{font-family:'JetBrains Mono';font-size:10px;color:var(--muted);margin-top:6px;word-break:break-all;}
-
-.calc-card{background:var(--dark2);border:1px solid var(--border);padding:18px;margin-bottom:14px;position:relative;overflow:hidden;}
+/* CALCULADORA */
+.calc-card{background:var(--dark2);border:1px solid var(--border);padding:18px;margin-bottom:16px;position:relative;overflow:hidden;}
 .calc-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--gold),transparent);}
 .input-lbl{font-size:10px;letter-spacing:3px;color:var(--muted);font-family:'JetBrains Mono';margin-bottom:6px;}
-.input-field{width:100%;background:var(--dark3);border:1px solid var(--border);color:var(--text);padding:14px;font-family:'JetBrains Mono';font-size:24px;text-align:center;outline:none;transition:border-color 0.2s;margin-bottom:8px;}
+.input-field{width:100%;background:var(--dark3);border:1px solid var(--border);color:var(--text);padding:14px;font-family:'JetBrains Mono';font-size:28px;text-align:center;outline:none;transition:border-color 0.2s;margin-bottom:8px;}
 .input-field:focus{border-color:var(--gold);}
 .input-field::placeholder{color:var(--muted2);}
-.calc-result{background:var(--dark3);border:1px solid var(--border);padding:10px;text-align:center;}
-.calc-result-lbl{font-size:10px;letter-spacing:3px;color:var(--muted);font-family:'JetBrains Mono';margin-bottom:2px;}
-.calc-result-val{font-family:'Bebas Neue';font-size:34px;color:var(--gold2);}
+.calc-result{background:var(--dark3);border:1px solid var(--border);padding:12px;text-align:center;}
+.calc-lbl{font-size:10px;letter-spacing:3px;color:var(--muted);font-family:'JetBrains Mono';margin-bottom:4px;}
+.calc-val{font-family:'Bebas Neue';font-size:38px;color:var(--gold2);}
 
-.btn{width:100%;padding:15px;border:none;cursor:pointer;font-family:'Bebas Neue';font-size:19px;letter-spacing:3px;transition:all 0.2s;display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:10px;}
-.btn:active{transform:scale(0.97);}
-.btn:disabled{opacity:0.35;cursor:not-allowed;}
-.btn-connect{background:var(--dark2);border:1px solid var(--border);color:var(--gold2);}
-.btn-approve{background:var(--dark2);border:1px solid var(--border);color:var(--text);}
-.btn-buy{background:linear-gradient(135deg,var(--gold),#8B6914);color:var(--dark);font-size:21px;box-shadow:0 0 24px rgba(212,160,23,0.2);}
-
-.section-tag{font-family:'Bebas Neue';font-size:11px;letter-spacing:4px;color:var(--gold);margin:16px 0 10px;display:flex;align-items:center;gap:8px;}
+/* PASOS */
+.section-tag{font-family:'Bebas Neue';font-size:11px;letter-spacing:4px;color:var(--gold);margin:20px 0 12px;display:flex;align-items:center;gap:8px;}
 .section-tag::after{content:'';flex:1;height:1px;background:var(--border);}
-.divider{height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent);margin:14px 0;}
 
-.presale-box{background:var(--dark2);border:1px solid var(--border);padding:16px;}
-.presale-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--border2);}
-.presale-row:last-child{border:none;}
-.presale-key{font-size:10px;letter-spacing:2px;color:var(--muted);font-family:'JetBrains Mono';}
-.presale-val{font-family:'Bebas Neue';font-size:15px;color:var(--gold2);}
+.step-card{background:var(--dark2);border:1px solid var(--border);padding:16px;margin-bottom:8px;display:flex;gap:14px;align-items:flex-start;position:relative;overflow:hidden;}
+.step-card.active-step::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--gold);}
+.step-n{width:28px;height:28px;border-radius:50%;border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue';font-size:15px;color:var(--gold);flex-shrink:0;margin-top:2px;}
+.step-title{font-family:'Bebas Neue';font-size:16px;letter-spacing:1px;color:var(--text);margin-bottom:4px;}
+.step-desc{font-size:13px;color:var(--muted);line-height:1.5;}
+.step-desc strong{color:var(--text);}
+
+/* URL BOX */
+.url-box{background:var(--dark3);border:1px solid var(--gold);padding:14px;margin:10px 0;text-align:center;}
+.url-text{font-family:'JetBrains Mono';font-size:16px;color:var(--gold2);letter-spacing:1px;margin-bottom:10px;}
+.btn-copy{width:100%;padding:14px;background:linear-gradient(135deg,var(--gold),#8B6914);color:var(--dark);border:none;font-family:'Bebas Neue';font-size:18px;letter-spacing:3px;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;justify-content:center;gap:8px;}
+.btn-copy:active{transform:scale(0.98);}
+.btn-copy.copied{background:linear-gradient(135deg,var(--green),#006633);}
+
+/* WALLET REGISTER */
+.wallet-card{background:var(--dark2);border:1px solid var(--border);padding:18px;margin-bottom:16px;}
+.wallet-input{width:100%;background:var(--dark3);border:1px solid var(--border);color:var(--text);padding:12px;font-family:'JetBrains Mono';font-size:12px;outline:none;margin-bottom:10px;transition:border-color 0.2s;}
+.wallet-input:focus{border-color:var(--gold);}
+.wallet-input::placeholder{color:var(--muted2);font-size:11px;}
+.btn-wallet{width:100%;padding:14px;background:var(--dark3);border:1px solid var(--border);color:var(--text);font-family:'Bebas Neue';font-size:16px;letter-spacing:2px;cursor:pointer;transition:all 0.2s;}
+.btn-wallet:active{transform:scale(0.98);}
+.btn-wallet.saved{border-color:var(--green);color:var(--green);}
+
+/* INFO */
+.info-box{background:rgba(212,160,23,0.06);border:1px solid var(--border);padding:14px;margin-bottom:16px;}
+.info-row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border2);}
+.info-row:last-child{border:none;}
+.info-key{font-size:10px;letter-spacing:2px;color:var(--muted);font-family:'JetBrains Mono';}
+.info-val{font-family:'Bebas Neue';font-size:14px;color:var(--gold2);}
 .sold-badge{background:rgba(0,230,118,0.1);border:1px solid rgba(0,230,118,0.2);padding:2px 8px;font-family:'JetBrains Mono';font-size:10px;color:var(--green);}
 .phase-badge{background:rgba(212,160,23,0.1);border:1px solid var(--border);padding:2px 8px;font-family:'JetBrains Mono';font-size:10px;color:var(--gold);}
+
 .legal-box{background:var(--dark3);border:1px solid var(--border2);padding:12px;font-size:10px;color:var(--muted2);line-height:1.7;font-family:'JetBrains Mono';margin-top:14px;}
-.float-btn{position:fixed;bottom:18px;right:14px;background:rgba(34,158,217,0.15);border:1px solid rgba(34,158,217,0.3);width:50px;height:50px;border-radius:50%;display:flex;align-items:center;justify-content:center;text-decoration:none;z-index:100;}
+.divider{height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent);margin:14px 0;}
+
 @keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
 .wrap>*{animation:fadeUp 0.4s ease both;}
 </style>
@@ -98,291 +100,197 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
     <div class="header-sub">COMPRAR $PISK · POLYGON</div>
   </div>
 
-  <!-- ══ PANTALLA 1: Sin window.ethereum (Chrome, Safari, Telegram) ══ -->
-  <div id="screenNoMM">
-    <svg class="mm-fox" viewBox="0 0 318.6 318.6" xmlns="http://www.w3.org/2000/svg">
-      <polygon fill="#E2761B" stroke="#E2761B" points="274.1,35.5 174.6,109.4 193,65.8"/>
-      <g fill="#E4761B" stroke="#E4761B">
-        <polygon points="44.4,35.5 143.1,110.1 125.6,65.8"/>
-        <polygon points="238.3,206.8 211.8,247.4 268.5,263 284.8,207.7"/>
-        <polygon points="33.9,207.7 50.1,263 106.8,247.4 80.3,206.8"/>
-        <polygon points="103.6,138.2 87.8,162.1 144.1,164.6 142.1,104.1"/>
-        <polygon points="214.9,138.2 175.9,103.4 174.6,164.6 230.8,162.1"/>
-        <polygon points="106.8,247.4 140.6,230.9 111.4,208.1"/>
-        <polygon points="177.9,230.9 211.8,247.4 207.1,208.1"/>
-      </g>
-      <g fill="#D7C1B3" stroke="#D7C1B3">
-        <polygon points="211.8,247.4 177.9,230.9 180.6,253 180.3,262.3"/>
-        <polygon points="106.8,247.4 138.3,262.3 138.1,253 140.6,230.9"/>
-      </g>
-      <polygon fill="#233447" stroke="#233447" points="138.8,193.5 110.6,185.2 130.5,176.1"/>
-      <polygon fill="#233447" stroke="#233447" points="179.7,193.5 188,176.1 208,185.2"/>
-      <g fill="#CD6116" stroke="#CD6116">
-        <polygon points="106.8,247.4 111.6,206.8 80.3,207.7"/>
-        <polygon points="207,206.8 211.8,247.4 238.3,207.7"/>
-        <polygon points="230.8,162.1 174.6,164.6 179.8,193.5 188.1,176.1 208.1,185.2"/>
-        <polygon points="110.6,185.2 130.6,176.1 138.8,193.5 144.1,164.6 87.8,162.1"/>
-      </g>
-      <g fill="#E4751F" stroke="#E4751F">
-        <polygon points="87.8,162.1 111.4,208.1 110.6,185.2"/>
-        <polygon points="208.1,185.2 207.1,208.1 230.8,162.1"/>
-        <polygon points="144.1,164.6 138.8,193.5 145.4,227.6 146.9,182.7"/>
-        <polygon points="174.6,164.6 171.9,182.6 173.1,227.6 179.8,193.5"/>
-      </g>
-      <polygon fill="#F6851B" stroke="#F6851B" points="179.8,193.5 173.1,227.6 177.9,230.9 207.1,208.1 208.1,185.2"/>
-      <polygon fill="#F6851B" stroke="#F6851B" points="110.6,185.2 111.4,208.1 140.6,230.9 145.4,227.6 138.8,193.5"/>
-      <polygon fill="#C0AD9E" stroke="#C0AD9E" points="180.3,262.3 180.6,253 178.1,250.8 140.4,250.8 138.1,253 138.3,262.3 106.8,247.4 117.8,256.4 140.1,271.9 178.4,271.9 200.8,256.4 211.8,247.4"/>
-      <polygon fill="#161616" stroke="#161616" points="177.9,230.9 173.1,227.6 145.4,227.6 140.6,230.9 138.1,253 140.4,250.8 178.1,250.8 180.6,253"/>
-      <g fill="#763D16" stroke="#763D16">
-        <polygon points="278.3,114.2 286.8,73.4 274.1,35.5 177.9,106.9 214.9,138.2 267.2,153.5 278.8,140 273.8,136.4 281.8,129.1 275.6,124.3 283.6,118.2"/>
-        <polygon points="31.8,73.4 40.3,114.2 34.9,118.2 42.9,124.3 36.8,129.1 44.8,136.4 39.8,140 51.3,153.5 103.6,138.2 140.6,106.9 44.4,35.5"/>
-      </g>
-      <polygon fill="#F6851B" stroke="#F6851B" points="267.2,153.5 214.9,138.2 230.8,162.1 207.1,208.1 238.3,207.7 284.8,207.7"/>
-      <polygon fill="#F6851B" stroke="#F6851B" points="103.6,138.2 51.3,153.5 33.9,207.7 80.3,207.7 111.4,208.1 87.8,162.1"/>
-      <polygon fill="#F6851B" stroke="#F6851B" points="174.6,164.6 177.9,106.9 193.1,65.8 125.6,65.8 140.6,106.9 144.1,164.6 145.3,182.8 145.4,227.6 173.1,227.6 173.3,182.8"/>
-    </svg>
-
-    <div class="open-title">COMPRAR $PISK</div>
-    <p class="open-desc">Esta página debe abrirse dentro del <strong>navegador de MetaMask</strong> para conectar tu wallet y comprar.</p>
-    <a id="btnOpenMM" href="#" class="btn-open">🦊 ABRIR EN METAMASK</a>
-    <p class="open-note">
-      Necesitas MetaMask instalado en tu celular<br>
-      1 USDT = 10 $PISK · Red Polygon
-    </p>
-
-    <div class="divider"></div>
-    <div class="section-tag">TOKENOMICS</div>
-    <div class="presale-box">
-      <div class="presale-row"><span class="presale-key">EMISIÓN TOTAL</span><span class="presale-val">100,000,000</span></div>
-      <div class="presale-row"><span class="presale-key">POLÍTICA</span><span class="presale-val" style="font-size:12px">BUYBACK & BURN</span></div>
-      <div class="presale-row"><span class="presale-key">FASE 1</span><span class="sold-badge">SOLD OUT ✓</span></div>
-      <div class="presale-row" style="border:none"><span class="presale-key">FASE 2 · PRECIO</span><span class="phase-badge">$0.10 USD</span></div>
+  <!-- PRECIO -->
+  <div class="price-card">
+    <div class="price-sub">PRECIO DE PREVENTA FASE 2</div>
+    <div class="price-tag">$0.10 USD</div>
+    <div class="price-row">
+      <div class="price-item"><div class="val">10 $PISK</div><div class="lbl">POR 1 USDT</div></div>
+      <div class="price-item"><div class="val">POLYGON</div><div class="lbl">RED</div></div>
+      <div class="price-item"><div class="val" id="stockVal">...</div><div class="lbl">EN STOCK</div></div>
     </div>
   </div>
 
-  <!-- ══ PANTALLA 2: Dentro de MetaMask (window.ethereum disponible) ══ -->
-  <div id="screenMM">
-
-    <div class="status-bar">
-      <div class="dot" id="dot"></div>
-      <span id="statusTxt">Conectando...</span>
+  <!-- CALCULADORA -->
+  <div class="section-tag">CALCULADORA</div>
+  <div class="calc-card">
+    <div class="input-lbl">¿CUÁNTO USDT QUIERES INVERTIR?</div>
+    <input class="input-field" type="number" id="inputUSDT" placeholder="10" min="1" step="any" value="10" oninput="calcular()">
+    <div class="calc-result">
+      <div class="calc-lbl">RECIBIRÁS</div>
+      <div class="calc-val" id="resultPisk">100 $PISK</div>
     </div>
+  </div>
 
-    <div class="balance-card">
-      <div class="balance-lbl">TU BALANCE $PISK</div>
-      <div class="balance-val" id="balVal">—</div>
-      <div class="balance-addr" id="balAddr">Sin conectar</div>
+  <!-- PASOS -->
+  <div class="section-tag">CÓMO COMPRAR</div>
+
+  <div class="step-card active-step">
+    <div class="step-n">1</div>
+    <div>
+      <div class="step-title">ABRE METAMASK APP</div>
+      <div class="step-desc">En tu celular abre la app de <strong>MetaMask</strong> → toca el ícono del <strong>navegador</strong> (🌐 globo abajo)</div>
     </div>
+  </div>
 
-    <button class="btn btn-connect" id="btnConectar" onclick="conectar()">🔌 CONECTAR WALLET</button>
-
-    <div class="divider"></div>
-
-    <div class="section-tag">CALCULADORA</div>
-    <div class="calc-card">
-      <div class="input-lbl">CANTIDAD DE USDT</div>
-      <input class="input-field" type="number" id="inputUSDT" placeholder="1" min="0.01" step="0.01" value="1" oninput="calcular()">
-      <div class="calc-result">
-        <div class="calc-result-lbl">RECIBIRÁS</div>
-        <div class="calc-result-val" id="resultPisk">10 $PISK</div>
+  <div class="step-card active-step">
+    <div class="step-n">2</div>
+    <div>
+      <div class="step-title">COPIA Y PEGA ESTA URL</div>
+      <div class="step-desc">Toca el botón para copiar y pégala en el navegador de MetaMask</div>
+      <div class="url-box">
+        <div class="url-text" id="urlDisplay">neopisk.lat/metamask.html</div>
+        <button class="btn-copy" id="btnCopyUrl" onclick="copiarUrl()">📋 COPIAR URL</button>
       </div>
     </div>
+  </div>
 
-    <button class="btn btn-approve" id="btnApprove" onclick="aprobar()" disabled>① AUTORIZAR USDT</button>
-    <button class="btn btn-buy"     id="btnBuy"     onclick="comprar()"  disabled>② COMPRAR $PISK</button>
-
-    <div class="divider"></div>
-    <div class="section-tag">TOKENOMICS</div>
-    <div class="presale-box">
-      <div class="presale-row"><span class="presale-key">EMISIÓN TOTAL</span><span class="presale-val">100,000,000</span></div>
-      <div class="presale-row"><span class="presale-key">POLÍTICA</span><span class="presale-val" style="font-size:12px">BUYBACK & BURN</span></div>
-      <div class="presale-row"><span class="presale-key">FASE 1</span><span class="sold-badge">SOLD OUT ✓</span></div>
-      <div class="presale-row" style="border:none"><span class="presale-key">FASE 2 · PRECIO</span><span class="phase-badge">$0.10 USD</span></div>
+  <div class="step-card active-step">
+    <div class="step-n">3</div>
+    <div>
+      <div class="step-title">CONECTA TU WALLET</div>
+      <div class="step-desc">En la página que se abre: toca <strong>Conectar Wallet</strong> → aprueba en MetaMask</div>
     </div>
   </div>
 
-  <div class="legal-box">⚖️ La adquisición de $PISK representa utilidad digital del ecosistema Neo Pisk. No representa inversión financiera ni promete retornos garantizados.</div>
+  <div class="step-card active-step">
+    <div class="step-n">4</div>
+    <div>
+      <div class="step-title">INGRESA EL MONTO Y COMPRA</div>
+      <div class="step-desc">Escribe <strong id="montoSugerido">10 USDT</strong> → toca <strong>① Autorizar USDT</strong> → luego <strong>② Comprar $PISK</strong></div>
+    </div>
+  </div>
+
+  <div class="step-card">
+    <div class="step-n">5</div>
+    <div>
+      <div class="step-title">REGISTRA TU WALLET AQUÍ</div>
+      <div class="step-desc">Para recibir tus comisiones, registra tu wallet de Polygon (la misma que usas en MetaMask)</div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- REGISTRAR WALLET -->
+  <div class="section-tag">REGISTRAR WALLET POLYGON</div>
+  <div class="wallet-card">
+    <div class="input-lbl">TU DIRECCIÓN WALLET (POLYGON)</div>
+    <input class="wallet-input" type="text" id="inputWallet" placeholder="0x... dirección de tu wallet en MetaMask" id="walletInput">
+    <button class="btn-wallet" id="btnWallet" onclick="guardarWallet()">💾 GUARDAR MI WALLET</button>
+    <div id="walletMsg" style="font-size:11px;color:var(--muted);font-family:'JetBrains Mono';margin-top:8px;text-align:center;"></div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- INFO -->
+  <div class="section-tag">TOKENOMICS</div>
+  <div class="info-box">
+    <div class="info-row"><span class="info-key">EMISIÓN TOTAL</span><span class="info-val">100,000,000</span></div>
+    <div class="info-row"><span class="info-key">POLÍTICA</span><span class="info-val" style="font-size:12px">BUYBACK & BURN</span></div>
+    <div class="info-row"><span class="info-key">FASE 1</span><span class="sold-badge">SOLD OUT ✓</span></div>
+    <div class="info-row" style="border:none"><span class="info-key">FASE 2 · PRECIO</span><span class="phase-badge">$0.10 USD</span></div>
+  </div>
+
+  <div class="legal-box">⚖️ La adquisición de $PISK representa utilidad digital del ecosistema Neo Pisk. No representa inversión financiera ni promete retornos garantizados. Red Polygon · Contrato verificado.</div>
   <div style="text-align:center;padding:14px 0;font-size:10px;color:var(--muted2);font-family:'JetBrains Mono';">
     © NEO PISK TECH SAC · <a href="https://neopisk.lat" style="color:var(--gold);text-decoration:none">neopisk.lat</a>
   </div>
 </div>
 
-<a href="https://t.me/NeoPisk_bot" class="float-btn" target="_blank">
-  <svg width="22" height="22" viewBox="0 0 24 24" fill="#229ED9"><path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z"/></svg>
-</a>
-
 <script>
-const CONTRACT_ADDR = '0x07Fc7AC9D681Cdd3D100c68f6f5646970CC7fF60';
-const USDT_ADDR     = '0xc2132D05D31c914a87C6611C10748AEb04B58e8F';
-const PISK_ADDR     = '0x9d5B2A73d16dAF61712BA8527d94F6997a0E6323';
+const API = 'http://69.169.109.120/airdrop-api';
+const tg  = window.Telegram?.WebApp;
+if (tg) { tg.ready(); tg.expand(); tg.setHeaderColor('#07090C'); tg.setBackgroundColor('#07090C'); }
 
-const params = new URLSearchParams(window.location.search);
-const UID    = params.get('uid') || '';
-const REF    = params.get('ref') || '';
+// Leer usuario de Telegram
+const tgUser = tg?.initDataUnsafe?.user;
+const UID    = tgUser?.id || '';
+const REF    = new URLSearchParams(window.location.search).get('ref') || '';
 
-let web3 = null, cuenta = null, aprobado = false;
+// URL con parámetros del usuario
+const COMPRA_URL = `neopisk.lat/metamask.html?uid=${UID}&ref=${REF}`;
 
-function setStatus(msg, tipo) {
-  document.getElementById('statusTxt').textContent = msg;
-  const d = document.getElementById('dot');
-  d.className = 'dot'+(tipo==='ok'?' green':tipo==='err'?' red':tipo==='wait'?' orange':'');
-}
+window.addEventListener('load', () => {
+  calcular();
+  document.getElementById('urlDisplay').textContent = COMPRA_URL;
+  cargarStock();
+  cargarWalletGuardada();
+});
 
 function calcular() {
   const usdt = parseFloat(document.getElementById('inputUSDT').value) || 0;
   document.getElementById('resultPisk').textContent = (usdt * 10).toLocaleString() + ' $PISK';
-  aprobado = false;
-  if (document.getElementById('btnBuy')) document.getElementById('btnBuy').disabled = true;
+  document.getElementById('montoSugerido').textContent = usdt + ' USDT';
 }
 
-function habilitarBotones(on) {
-  document.getElementById('btnApprove').disabled = !on;
-  document.getElementById('btnBuy').disabled = true;
-  document.getElementById('btnConectar').style.display = on ? 'none' : 'flex';
-}
-
-async function actualizarBalance() {
-  if (!cuenta || !web3) return;
-  try {
-    const pisk = new web3.eth.Contract([{constant:true,inputs:[{name:'_owner',type:'address'}],name:'balanceOf',outputs:[{name:'balance',type:'uint256'}],type:'function'}], PISK_ADDR);
-    const bal  = await pisk.methods.balanceOf(cuenta).call();
-    document.getElementById('balVal').textContent  = parseFloat(web3.utils.fromWei(bal,'ether')).toFixed(2) + ' $PISK';
-    document.getElementById('balAddr').textContent = cuenta;
-  } catch(e) {}
-}
-
-async function conectar() {
-  setStatus('Conectando...', 'wait');
-  try {
-    web3 = new Web3(window.ethereum);
-    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-    cuenta = accounts[0];
-    const chainId = await web3.eth.getChainId();
-    if (chainId !== 137) {
-      setStatus('Cambiando a Polygon...', 'wait');
-      try {
-        await window.ethereum.request({ method:'wallet_switchEthereumChain', params:[{chainId:'0x89'}] });
-      } catch(e) {
-        if (e.code === 4902) {
-          await window.ethereum.request({ method:'wallet_addEthereumChain', params:[{
-            chainId:'0x89', chainName:'Polygon Mainnet',
-            nativeCurrency:{name:'MATIC',symbol:'MATIC',decimals:18},
-            rpcUrls:['https://polygon-rpc.com/'],
-            blockExplorerUrls:['https://polygonscan.com/']
-          }]});
-        } else throw e;
-      }
-      web3 = new Web3(window.ethereum);
-    }
-    setStatus('✅ Conectado · '+cuenta.slice(0,6)+'...'+cuenta.slice(-4), 'ok');
-    habilitarBotones(true);
-    calcular();
-    await actualizarBalance();
-    window.ethereum.on('accountsChanged', a => { cuenta=a[0]; actualizarBalance(); });
-    window.ethereum.on('chainChanged', () => window.location.reload());
-  } catch(e) {
-    if (e.code===4001) setStatus('Conexión rechazada', 'err');
-    else setStatus('Error: '+e.message.slice(0,50), 'err');
-  }
-}
-
-async function aprobar() {
-  const usdt = parseFloat(document.getElementById('inputUSDT').value);
-  if (!usdt || usdt <= 0) { alert('⚠️ Ingresa un monto válido'); return; }
-  if (!cuenta) { await conectar(); return; }
-  const microUSDT = Math.round(usdt * 1e6).toString();
-  try {
-    const contrato = new web3.eth.Contract([
-      {constant:false,inputs:[{name:'_spender',type:'address'},{name:'_value',type:'uint256'}],name:'approve',outputs:[{name:'',type:'bool'}],type:'function'},
-      {constant:true,inputs:[{name:'_owner',type:'address'},{name:'_spender',type:'address'}],name:'allowance',outputs:[{name:'',type:'uint256'}],type:'function'}
-    ], USDT_ADDR);
-    const gp = Math.floor(parseInt(await web3.eth.getGasPrice())*1.2).toString();
-    setStatus('Verificando allowance...', 'wait');
-    const allowance = await contrato.methods.allowance(cuenta, CONTRACT_ADDR).call();
-    if (parseInt(allowance) >= parseInt(microUSDT)) {
-      aprobado = true;
-      document.getElementById('btnBuy').disabled = false;
-      setStatus('✅ USDT autorizado — toca ② COMPRAR', 'ok');
-      return;
-    }
-    if (parseInt(allowance) > 0) {
-      setStatus('Reseteando allowance...', 'wait');
-      await contrato.methods.approve(CONTRACT_ADDR, '0').send({from:cuenta, gasPrice:gp});
-      await new Promise(r => setTimeout(r, 2000));
-    }
-    setStatus('Aprueba '+usdt+' USDT en MetaMask...', 'wait');
-    await contrato.methods.approve(CONTRACT_ADDR, microUSDT).send({from:cuenta, gasPrice:gp});
-    aprobado = true;
-    document.getElementById('btnBuy').disabled = false;
-    setStatus('✅ USDT autorizado — toca ② COMPRAR', 'ok');
-  } catch(e) {
-    if (e.code===4001) setStatus('Autorización rechazada', 'err');
-    else setStatus('Error approve: '+e.message.slice(0,60), 'err');
-  }
-}
-
-async function comprar() {
-  if (!aprobado) { alert('⚠️ Primero autoriza en paso ①'); return; }
-  const usdt = parseFloat(document.getElementById('inputUSDT').value);
-  const microUSDT = Math.round(usdt * 1e6).toString();
-  try {
-    const contrato = new web3.eth.Contract([
-      {inputs:[{name:'_amountUSDT',type:'uint256'}],name:'buyWithUSDT',outputs:[],stateMutability:'nonpayable',type:'function'}
-    ], CONTRACT_ADDR);
-    const gp = Math.floor(parseInt(await web3.eth.getGasPrice())*1.2).toString();
-    setStatus('Confirma la compra en MetaMask...', 'wait');
-    const tx = await contrato.methods.buyWithUSDT(microUSDT).send({from:cuenta, gas:300000, gasPrice:gp});
-    setStatus('🎉 ¡Compra exitosa!', 'ok');
-    aprobado = false;
-    document.getElementById('btnBuy').disabled = true;
-    document.getElementById('inputUSDT').value = '1';
-    calcular();
-    registrarCompra(tx.transactionHash);
-    setTimeout(actualizarBalance, 5000);
-  } catch(e) {
-    if (e.code===4001) setStatus('Compra cancelada', 'err');
-    else setStatus('Error compra: '+(e.message||'').slice(0,60), 'err');
-  }
-}
-
-async function registrarCompra(txHash) {
-  try {
-    await fetch('http://69.169.109.120:3001/registrar-compra', {
-      method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({txHash, uid:UID, ref:REF, wallet:cuenta})
+function copiarUrl() {
+  const url = 'https://' + COMPRA_URL;
+  const btn = document.getElementById('btnCopyUrl');
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(url).then(() => {
+      btn.textContent = '✅ COPIADO — PEGA EN METAMASK';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = '📋 COPIAR URL'; btn.classList.remove('copied'); }, 3000);
     });
+  } else {
+    const el = document.createElement('input');
+    el.value = url; document.body.appendChild(el); el.select();
+    document.execCommand('copy'); document.body.removeChild(el);
+    btn.textContent = '✅ COPIADO';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = '📋 COPIAR URL'; btn.classList.remove('copied'); }, 3000);
+  }
+  if (tg) tg.HapticFeedback?.notificationOccurred('success');
+}
+
+async function cargarStock() {
+  try {
+    const r = await fetch(`${API}/stock`);
+    const d = await r.json();
+    document.getElementById('stockVal').textContent = (d.stock || 0).toLocaleString();
+  } catch(e) {
+    document.getElementById('stockVal').textContent = '1,018';
+  }
+}
+
+function cargarWalletGuardada() {
+  try {
+    const w = localStorage.getItem('pisk_wallet_' + UID);
+    if (w) {
+      document.getElementById('inputWallet').value = w;
+      document.getElementById('walletMsg').textContent = '✅ Wallet guardada';
+      document.getElementById('walletMsg').style.color = 'var(--green)';
+      document.getElementById('btnWallet').textContent = '✅ WALLET GUARDADA';
+      document.getElementById('btnWallet').classList.add('saved');
+    }
   } catch(e) {}
 }
 
-// ── INIT: detectar dónde estamos ─────────────────────────
-window.addEventListener('load', async () => {
-  calcular();
-
-  if (window.ethereum) {
-    // ✅ Estamos dentro de MetaMask — mostrar pantalla de compra
-    document.getElementById('screenNoMM').style.display = 'none';
-    document.getElementById('screenMM').style.display   = 'block';
-    setStatus('MetaMask detectado — conecta tu wallet', 'ok');
-    web3 = new Web3(window.ethereum);
-    // Auto-reconectar si ya tenía cuenta
-    try {
-      const accounts = await web3.eth.getAccounts();
-      if (accounts.length > 0) {
-        cuenta = accounts[0];
-        habilitarBotones(true);
-        setStatus('✅ Conectado · '+cuenta.slice(0,6)+'...'+cuenta.slice(-4), 'ok');
-        await actualizarBalance();
-      }
-    } catch(e) {}
-  } else {
-    // ❌ Chrome/Safari/Telegram — mostrar botón "Abrir en MetaMask"
-    document.getElementById('screenNoMM').style.display = 'block';
-    document.getElementById('screenMM').style.display   = 'none';
-    // Armar deep link con los params del usuario
-    const urlActual = window.location.href.replace(/^https?:\/\//, '');
-    document.getElementById('btnOpenMM').href = 'https://metamask.app.link/dapp/' + urlActual;
+async function guardarWallet() {
+  const wallet = document.getElementById('inputWallet').value.trim();
+  if (!wallet || wallet.length < 20) {
+    document.getElementById('walletMsg').textContent = '⚠️ Ingresa una wallet válida';
+    document.getElementById('walletMsg').style.color = 'var(--red)';
+    return;
   }
-});
+  try {
+    localStorage.setItem('pisk_wallet_' + UID, wallet);
+    // Enviar al bot
+    await fetch(`${API}/mision`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ userId: UID, mision: 'wallet', wallet })
+    });
+    document.getElementById('walletMsg').textContent = '✅ Wallet registrada — recibirás tus comisiones aquí';
+    document.getElementById('walletMsg').style.color = 'var(--green)';
+    document.getElementById('btnWallet').textContent = '✅ WALLET GUARDADA';
+    document.getElementById('btnWallet').classList.add('saved');
+    if (tg) tg.HapticFeedback?.notificationOccurred('success');
+  } catch(e) {
+    document.getElementById('walletMsg').textContent = '✅ Wallet guardada localmente';
+    document.getElementById('walletMsg').style.color = 'var(--green)';
+  }
+}
 </script>
 </body>
 </html>
