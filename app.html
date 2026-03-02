@@ -195,6 +195,9 @@
     <div class="mission-card" id="gc-ruleta" onclick="abrirJuego('ruleta')"><div class="m-icon">🎰</div><div class="m-info"><div class="m-name">RULETA</div><div class="m-desc">Gira y gana puntos</div></div><div class="m-reward"><div class="m-pts">300</div><div class="m-lbl">PTS</div></div><div class="m-check" id="gcd-ruleta"></div></div>
     <div class="mission-card" id="gc-changan" onclick="abrirJuego('changan')"><div class="m-icon">🚗</div><div class="m-info"><div class="m-name">CHANGAN</div><div class="m-desc">Rompecabezas 4x4</div></div><div class="m-reward"><div class="m-pts">10</div><div class="m-lbl">PTS</div></div><div class="m-check" id="gcd-changan"></div></div>
     <div class="mission-card" id="gc-tetris" onclick="abrirJuego('tetris')" style="grid-column:1/-1;"><div class="m-icon">🎮</div><div class="m-info"><div class="m-name">TETRIS PISK</div><div class="m-desc">Completa 6 líneas → 500 pts</div></div><div class="m-reward"><div class="m-pts">500</div><div class="m-lbl">PTS</div></div><div class="m-check" id="gcd-tetris"></div></div>
+    <div class="mission-card" id="gc-memory" onclick="abrirJuego('memory')" style="grid-column:1/-1;"><div class="m-icon">🃏</div><div class="m-info"><div class="m-name">MEMORY MATCH</div><div class="m-desc">16 cartas Neo Pisk · 3 vidas</div></div><div class="m-reward"><div class="m-pts">100</div><div class="m-lbl">PTS</div></div><div class="m-check" id="gcd-memory"></div></div>
+    <div class="mission-card" id="gc-simon" onclick="abrirJuego('simon')"><div class="m-icon">🔴</div><div class="m-info"><div class="m-name">SIMÓN DICE</div><div class="m-desc">Nivel 10→50pts · Nivel 20→100pts</div></div><div class="m-reward"><div class="m-pts">100</div><div class="m-lbl">PTS</div></div><div class="m-check" id="gcd-simon"></div></div>
+    <div class="mission-card" id="gc-puzzle" onclick="abrirJuego('puzzle')"><div class="m-icon">🧩</div><div class="m-info"><div class="m-name">PUZZLE 3×3</div><div class="m-desc">Arma el rompecabezas Neo Pisk</div></div><div class="m-reward"><div class="m-pts">100</div><div class="m-lbl">PTS</div></div><div class="m-check" id="gcd-puzzle"></div></div>
   </div>
 </div>
 
@@ -239,8 +242,54 @@
   </div>
 </div>
 
-<!-- RESULT -->
-<div id="gameResult" style="display:none;position:fixed;inset:0;background:rgba(7,9,12,0.96);z-index:400;flex-direction:column;align-items:center;justify-content:center;gap:16px;">
+<!-- MEMORY MATCH -->
+<div class="overlay" id="gov-memory">
+  <div class="game-header">
+    <div class="title">🃏 MEMORY MATCH</div>
+    <div class="score-item"><div class="score-val" id="memPairs">0/8</div><div class="score-lbl">PARES</div></div>
+    <div class="score-item" id="memHeartsDisplay" style="font-size:20px;letter-spacing:2px;">❤️❤️❤️</div>
+    <button class="close-btn" onclick="cerrarJuego('memory')">✕</button>
+  </div>
+  <div class="game-area" style="flex-direction:column;padding:12px;overflow-y:auto;">
+    <div id="memBoard" style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;width:100%;max-width:380px;margin:0 auto;"></div>
+  </div>
+</div>
+
+<!-- SIMÓN DICE -->
+<div class="overlay" id="gov-simon">
+  <div class="game-header">
+    <div class="title">🔴 SIMÓN DICE</div>
+    <div class="score-item"><div class="score-val" id="simonLevel">1</div><div class="score-lbl">NIVEL</div></div>
+    <div class="score-item"><div class="score-val" id="simonStatus" style="font-size:11px;letter-spacing:1px;">LISTO</div><div class="score-lbl">ESTADO</div></div>
+    <button class="close-btn" onclick="cerrarJuego('simon')">✕</button>
+  </div>
+  <div class="game-area" style="flex-direction:column;gap:16px;padding:16px;">
+    <div style="text-align:center;font-size:11px;letter-spacing:3px;color:var(--muted);">REPITE LA SECUENCIA</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;width:100%;max-width:300px;margin:0 auto;">
+      <div id="sb0" onclick="simonPress(0)" style="height:130px;border-radius:12px 0 0 0;background:#1A4A1A;border:3px solid #2ECC40;cursor:pointer;transition:all 0.1s;"></div>
+      <div id="sb1" onclick="simonPress(1)" style="height:130px;border-radius:0 12px 0 0;background:#4A1A1A;border:3px solid #FF4136;cursor:pointer;transition:all 0.1s;"></div>
+      <div id="sb2" onclick="simonPress(2)" style="height:130px;border-radius:0 0 0 12px;background:#1A1A4A;border:3px solid #1A6EFF;cursor:pointer;transition:all 0.1s;"></div>
+      <div id="sb3" onclick="simonPress(3)" style="height:130px;border-radius:0 0 12px 0;background:#4A3A00;border:3px solid #FFD700;cursor:pointer;transition:all 0.1s;"></div>
+    </div>
+    <button id="simonStartBtn" onclick="simonStart()" style="background:linear-gradient(135deg,var(--gold),#8B6914);color:var(--dark);border:none;padding:14px 32px;font-family:'Bebas Neue';font-size:18px;letter-spacing:3px;cursor:pointer;">▶ INICIAR</button>
+    <div style="font-size:11px;color:var(--muted);text-align:center;">Nivel 10 → 50 PTS &nbsp;|&nbsp; Nivel 20 → 100 PTS</div>
+  </div>
+</div>
+
+<!-- PUZZLE 3×3 -->
+<div class="overlay" id="gov-puzzle">
+  <div class="game-header">
+    <div class="title">🧩 PUZZLE NEO PISK</div>
+    <div class="score-item"><div class="score-val" id="puzzleMoves">0</div><div class="score-lbl">MOV</div></div>
+    <button class="close-btn" onclick="cerrarJuego('puzzle')">✕</button>
+  </div>
+  <div class="game-area" style="flex-direction:column;gap:12px;padding:12px;">
+    <div id="puzzleImgSelect" style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:8px;"></div>
+    <div id="puzzleBoard" style="display:grid;grid-template-columns:repeat(3,1fr);gap:3px;width:100%;max-width:330px;margin:0 auto;"></div>
+    <div style="text-align:center;font-size:10px;color:var(--muted);letter-spacing:2px;">TOCA UNA PIEZA JUNTO AL ESPACIO VACÍO</div>
+    <button onclick="initPuzzle()" style="background:rgba(212,160,23,0.1);border:1px solid var(--border);color:var(--gold);padding:8px 20px;font-family:'Bebas Neue';font-size:14px;letter-spacing:2px;cursor:pointer;">↻ MEZCLAR</button>
+  </div>
+</div> style="display:none;position:fixed;inset:0;background:rgba(7,9,12,0.96);z-index:400;flex-direction:column;align-items:center;justify-content:center;gap:16px;">
   <div id="grIcon" style="font-size:64px;"></div>
   <div style="font-family:'Bebas Neue';font-size:36px;letter-spacing:4px;color:var(--gold);">¡GANASTE!</div>
   <div id="grPts" style="font-family:'Bebas Neue';font-size:56px;color:var(--gold2);line-height:1;"></div>
@@ -264,42 +313,39 @@ const TX = {
   es: {
     sec: 'MISIONES DISPONIBLES', done: '✓', claim: 'RECLAMAR', cancel: 'CANCELAR', send: 'ENVIAR',
     m: [
-      {id:'registro',  icon:'📝', n:'Registro Completo',    d:'Completa tu perfil y recibe tokens',            r:5,   a:'form'},
-      {id:'viral',     icon:'🦠', n:'Misión Viral 5x5',     d:'Invita 5 amigos a Karla por WS o Telegram',     r:20,  a:'viral'},
-      {id:'redes',     icon:'📱', n:'Seguir Redes',         d:'Sigue TikTok, X, Telegram y YouTube',           r:10,  a:'redes'},
-      {id:'voucher',   icon:'💰', n:'Voucher Inversión',    d:'Compra $PISK y sube tu comprobante',            r:250, a:'upload'},
-      {id:'influencer',icon:'🎬', n:'Misión Influencer',    d:'Publica video en TikTok/Reels sobre $PISK',     r:40,  a:'link'},
-      {id:'comunidad', icon:'👥', n:'Unirse Comunidad',     d:'Únete al grupo oficial de Telegram',            r:10,  a:'comunidad'},
-      {id:'wallet',    icon:'💳', n:'Registrar Wallet',     d:'Registra tu wallet USDT (BEP20/TRC20)',         r:5,   a:'wallet'},
-      {id:'humanidad', icon:'🤖', n:'Prueba Humanidad',     d:'Demuestra que no eres un bot',                  r:5,   a:'captcha'},
+      {id:'registro',  icon:'📝', n:'Registro Completo',    d:'Completa tu perfil y recibe tokens',            r:1,   a:'form'},
+      {id:'viral',     icon:'🦠', n:'Misión Viral 5x5',     d:'Invita 5 amigos a Karla por WS o Telegram',     r:2,   a:'viral'},
+      {id:'redes',     icon:'📱', n:'Seguir Redes',         d:'Sigue TikTok, X, Telegram y YouTube',           r:1,   a:'redes'},
+      {id:'influencer',icon:'🎬', n:'Misión Influencer',    d:'Publica video en TikTok/Reels sobre $PISK',     r:2,   a:'link'},
+      {id:'comunidad', icon:'👥', n:'Unirse Comunidad',     d:'Únete al grupo oficial de Telegram',            r:1,   a:'comunidad'},
+      {id:'wallet',    icon:'💳', n:'Registrar Wallet',     d:'Registra tu wallet USDT (BEP20/TRC20)',         r:1,   a:'wallet'},
+      {id:'humanidad', icon:'🤖', n:'Prueba Humanidad',     d:'Demuestra que no eres un bot',                  r:1,   a:'captcha'},
       {id:'diario',    icon:'🔥', n:'Fidelidad Diaria',     d:'Reclama +1 $PISK cada 24 horas',               r:1,   a:'diario'},
     ]
   },
   en: {
     sec:'AVAILABLE MISSIONS', done:'✓', claim:'CLAIM', cancel:'CANCEL', send:'SEND',
     m:[
-      {id:'registro',  icon:'📝', n:'Full Registration',   d:'Complete your profile and earn tokens',         r:5,   a:'form'},
-      {id:'viral',     icon:'🦠', n:'Viral 5x5 Mission',   d:'Invite 5 friends to Karla on WS or Telegram',   r:20,  a:'viral'},
-      {id:'redes',     icon:'📱', n:'Follow Social Media', d:'Follow TikTok, X, Telegram and YouTube',        r:10,  a:'redes'},
-      {id:'voucher',   icon:'💰', n:'Investment Voucher',  d:'Buy $PISK and upload your receipt',             r:250, a:'upload'},
-      {id:'influencer',icon:'🎬', n:'Influencer Mission',  d:'Post a TikTok/Reels video about $PISK',         r:40,  a:'link'},
-      {id:'comunidad', icon:'👥', n:'Join Community',      d:'Join the official Telegram group',              r:10,  a:'comunidad'},
-      {id:'wallet',    icon:'💳', n:'Register Wallet',     d:'Register your USDT wallet (BEP20/TRC20)',       r:5,   a:'wallet'},
-      {id:'humanidad', icon:'🤖', n:'Humanity Proof',      d:'Prove you are not a bot',                       r:5,   a:'captcha'},
+      {id:'registro',  icon:'📝', n:'Full Registration',   d:'Complete your profile and earn tokens',         r:1,   a:'form'},
+      {id:'viral',     icon:'🦠', n:'Viral 5x5 Mission',   d:'Invite 5 friends to Karla on WS or Telegram',   r:2,   a:'viral'},
+      {id:'redes',     icon:'📱', n:'Follow Social Media', d:'Follow TikTok, X, Telegram and YouTube',        r:1,   a:'redes'},
+      {id:'influencer',icon:'🎬', n:'Influencer Mission',  d:'Post a TikTok/Reels video about $PISK',         r:2,   a:'link'},
+      {id:'comunidad', icon:'👥', n:'Join Community',      d:'Join the official Telegram group',              r:1,   a:'comunidad'},
+      {id:'wallet',    icon:'💳', n:'Register Wallet',     d:'Register your USDT wallet (BEP20/TRC20)',       r:1,   a:'wallet'},
+      {id:'humanidad', icon:'🤖', n:'Humanity Proof',      d:'Prove you are not a bot',                       r:1,   a:'captcha'},
       {id:'diario',    icon:'🔥', n:'Daily Loyalty',       d:'Claim +1 $PISK every 24 hours',                r:1,   a:'diario'},
     ]
   },
   pt: {
     sec:'MISSÕES DISPONÍVEIS', done:'✓', claim:'RESGATAR', cancel:'CANCELAR', send:'ENVIAR',
     m:[
-      {id:'registro',  icon:'📝', n:'Registro Completo',   d:'Complete seu perfil e ganhe tokens',            r:5,   a:'form'},
-      {id:'viral',     icon:'🦠', n:'Missão Viral 5x5',    d:'Convide 5 amigos para Karla no WS ou Telegram', r:20,  a:'viral'},
-      {id:'redes',     icon:'📱', n:'Seguir Redes',        d:'Siga TikTok, X, Telegram e YouTube',            r:10,  a:'redes'},
-      {id:'voucher',   icon:'💰', n:'Comprovante',         d:'Compre $PISK e envie seu comprovante',          r:250, a:'upload'},
-      {id:'influencer',icon:'🎬', n:'Missão Influencer',   d:'Publique vídeo no TikTok/Reels sobre $PISK',    r:40,  a:'link'},
-      {id:'comunidad', icon:'👥', n:'Entrar Comunidade',   d:'Entre no grupo oficial do Telegram',            r:10,  a:'comunidad'},
-      {id:'wallet',    icon:'💳', n:'Registrar Carteira',  d:'Registre sua carteira USDT (BEP20/TRC20)',      r:5,   a:'wallet'},
-      {id:'humanidade',icon:'🤖', n:'Prova Humanidade',    d:'Prove que você não é um bot',                   r:5,   a:'captcha'},
+      {id:'registro',  icon:'📝', n:'Registro Completo',   d:'Complete seu perfil e ganhe tokens',            r:1,   a:'form'},
+      {id:'viral',     icon:'🦠', n:'Missão Viral 5x5',    d:'Convide 5 amigos para Karla no WS ou Telegram', r:2,   a:'viral'},
+      {id:'redes',     icon:'📱', n:'Seguir Redes',        d:'Siga TikTok, X, Telegram e YouTube',            r:1,   a:'redes'},
+      {id:'influencer',icon:'🎬', n:'Missão Influencer',   d:'Publique vídeo no TikTok/Reels sobre $PISK',    r:2,   a:'link'},
+      {id:'comunidad', icon:'👥', n:'Entrar Comunidade',   d:'Entre no grupo oficial do Telegram',            r:1,   a:'comunidad'},
+      {id:'wallet',    icon:'💳', n:'Registrar Carteira',  d:'Registre sua carteira USDT (BEP20/TRC20)',      r:1,   a:'wallet'},
+      {id:'humanidade',icon:'🤖', n:'Prova Humanidade',    d:'Prove que você não é um bot',                   r:1,   a:'captcha'},
       {id:'diario',    icon:'🔥', n:'Fidelidade Diária',   d:'Resgate +1 $PISK a cada 24 horas',             r:1,   a:'diario'},
     ]
   }
@@ -391,10 +437,7 @@ function openM(id) {
     <a class="social-row" href="https://t.me/NeoPisk_bot" target="_blank"><span class="si">✈️</span><div><div class="sn">Telegram</div></div></a>
     <a class="social-row" href="https://youtube.com/@neopisk" target="_blank"><span class="si">▶️</span><div><div class="sn">YouTube</div></div></a>
     <button class="btn-full btn-gold" onclick="doMision('redes')">${t.claim}</button>`;
-  else if(m.a==='upload') html+=`<div class="modal-desc">Compra tokens $PISK y sube tu comprobante.</div>
-    <div style="padding:10px;background:var(--dark3);border:1px solid var(--border);font-size:12px;margin-bottom:10px">💳 Yape: 51948115030<br>🌐 <a href="https://neopisk.lat/invertir.html" style="color:var(--gold)">neopisk.lat/invertir.html</a></div>
-    <input type="file" id="vFile" accept="image/*" style="display:none" onchange="subirVoucher()">
-    <button class="btn-full btn-gold" onclick="document.getElementById('vFile').click()">📷 SUBIR COMPROBANTE</button>`;
+
   else if(m.a==='link') html+=`<input class="m-input" id="iVideo" placeholder="https://tiktok.com/..."><button class="btn-full btn-gold" onclick="enviarVideo()">${t.send}</button>`;
   else if(m.a==='comunidad') html+=`<div class="modal-desc">Únete al grupo oficial y confirma.</div>
     <a class="social-row" href="https://t.me/NeoPisk_bot" target="_blank"><span class="si">✈️</span><div><div class="sn">Abrir Telegram</div></div></a>
@@ -417,7 +460,7 @@ async function doMision(id) {
   }
   if(id==='humanidad'){
     if(!user.misiones)user.misiones={};
-    user.misiones['humanidad']=true; user.pisk_balance=(user.pisk_balance||0)+5;
+    user.misiones['humanidad']=true; user.pisk_balance=(user.pisk_balance||0)+1;
     closeModal();updateUI();renderMisiones();toast('🎉 +5 $PISK ganados!');tg?.HapticFeedback?.notificationOccurred('success');return;
   }
   const body={userId:user.id,mision:id};
@@ -426,10 +469,10 @@ async function doMision(id) {
     const w=document.getElementById('iWallet')?.value?.trim();
     if(!w||w.length<20){toast('⚠️ Wallet inválida');return;}
     body.wallet=w; if(!user.misiones)user.misiones={};
-    if(!user.misiones['wallet']){user.wallet=w;user.misiones['wallet']=true;user.pisk_balance=(user.pisk_balance||0)+5;closeModal();updateUI();renderMisiones();toast('🎉 +5 $PISK! Wallet guardada');tg?.HapticFeedback?.notificationOccurred('success');fetch(`${API}/mision`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}).catch(()=>{});}
+    if(!user.misiones['wallet']){user.wallet=w;user.misiones['wallet']=true;user.pisk_balance=(user.pisk_balance||0)+1;closeModal();updateUI();renderMisiones();toast('🎉 +1 $PISK! Wallet guardada');tg?.HapticFeedback?.notificationOccurred('success');fetch(`${API}/mision`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}).catch(()=>{});}
     else{toast('⚠️ Wallet ya registrada');closeModal();}return;
   }
-  const REWARDS_LOCAL={registro:5,viral:20,redes:10,comunidad:10,humanidad:5,diario:1};
+  const REWARDS_LOCAL={registro:1,viral:2,redes:1,comunidad:1,humanidad:1,diario:1};
   try {
     const r=await fetch(`${API}/mision`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body),signal:AbortSignal.timeout(6000)});
     const d=await r.json();
@@ -447,7 +490,7 @@ async function doMision(id) {
 function checkCaptcha(){parseInt(document.getElementById('iCaptcha')?.value)===56?doMision('humanidad'):toast('❌ Incorrecto');}
 async function guardarWallet(){const w=document.getElementById('iWallet')?.value?.trim();if(!w||w.length<20){toast('⚠️ Wallet inválida');return;}doMision('wallet');}
 async function enviarVideo(){const l=document.getElementById('iVideo')?.value?.trim();if(!l||!l.startsWith('http')){toast('⚠️ Link inválido');return;}try{await fetch(`${API}/video-link`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({userId:user.id,link:l})});closeModal();toast('✅ Enviado al admin');}catch(e){toast('❌ Error');}}
-async function subirVoucher(){const f=document.getElementById('vFile').files[0];if(!f)return;const fd=new FormData();fd.append('voucher',f);fd.append('userId',user.id);try{await fetch(`${API}/voucher`,{method:'POST',body:fd});closeModal();toast('✅ Comprobante enviado');}catch(e){toast('❌ Error');}}
+
 
 function copiarCodigo(){
   const codigo=user?.codigo_ref||'—';
@@ -509,7 +552,7 @@ function updateGameUI(){
   const el=document.getElementById('gPtsDisplay'); const btn=document.getElementById('gCanjeBtn');
   if(el)el.textContent=gState.pts.toLocaleString();
   if(btn){
-    const balance=user?.pisk_balance||0, ext=balance-contarPiskMisionesSimple(), bloqueado=balance<10||ext<2;
+    const balance=user?.pisk_balance||0, ext=balance-contarPiskMisionesSimple(), bloqueado=balance<8||ext<2;
     btn.disabled=gState.pts<PPK||bloqueado;
     if(gState.pts>=PPK&&bloqueado){btn.textContent='🔒 BLOQUEADO';btn.style.background='rgba(255,61,61,0.2)';btn.style.color='#FF3D3D';}
     else if(gState.pts>=PPK){btn.textContent='CANJEAR';btn.style.background='linear-gradient(135deg,var(--gold),#8B6914)';btn.style.color='var(--dark)';}
@@ -517,7 +560,7 @@ function updateGameUI(){
 }
 
 function updateGameCooldowns(){
-  ['tap','trivia','ruleta','changan','tetris'].forEach(g=>{
+  ['tap','trivia','ruleta','changan','tetris','memory','simon','puzzle'].forEach(g=>{
     const el=document.getElementById('gcd-'+g); const card=document.getElementById('gc-'+g); if(!el||!card)return;
     const cd=gState.cooldowns[g];
     if(cd&&(Date.now()-cd)<CD_24H){const rem=CD_24H-(Date.now()-cd);el.textContent='⏰';el.style.color='#FF3D3D';card.style.opacity='0.5';card.style.cursor='default';}
@@ -534,6 +577,7 @@ function abrirJuego(g){
   ov.classList.add('show');
   if(g==='tap'){tapRunning=false;clearInterval(window.coinMoveInt);clearInterval(window['gi_tap']);initTap();}
   if(g==='trivia')initTrivia(); if(g==='ruleta')initRuleta(); if(g==='changan')initChangan(); if(g==='tetris')initTetris();
+  if(g==='memory')initMemory(); if(g==='simon')initSimon(); if(g==='puzzle')initPuzzle();
 }
 
 function cerrarJuego(g){
@@ -541,6 +585,7 @@ function cerrarJuego(g){
   clearInterval(window['gi_'+g]);
   if(g==='tap'){clearInterval(window.coinMoveInt);tapRunning=false;}
   if(g==='tetris'&&window.tetrisLoop){clearInterval(window.tetrisLoop);window.tetrisLoop=null;}
+  if(g==='simon'){simonRunning=false;clearTimeout(window.simonTO);}
   document.getElementById('gameResult').style.display='none';
 }
 
@@ -558,7 +603,7 @@ function showGameResult(g,pts,icon){
 function canjearPuntos(){
   const pisk=Math.floor(gState.pts/PPK); if(pisk<1)return;
   const balance=user?.pisk_balance||0, piskMis=contarPiskMisiones(), ext=balance-piskMis;
-  if(balance<10){showLockModal('🔒 Te faltan '+(10-balance)+' $PISK.\n\nNecesitas 2 $PISK de:\n• Traer un referido que compre\n• Comprar $PISK con MetaMask');return;}
+  if(balance<8){showLockModal('🔒 Te faltan '+(8-balance)+' $PISK.\n\nNecesitas 2 $PISK de:\n• Traer un referido que compre\n• Comprar $PISK con MetaMask');return;}
   if(ext<2){showLockModal('🔒 ¡Casi listo!\n\nNecesitas al menos 2 $PISK de:\n• 🤝 Traer un referido que compre\n• 🦊 Comprar $PISK con MetaMask');return;}
   gState.pts-=pisk*PPK;saveGameState();updateGameUI();
   if(user){user.pisk_balance=(user.pisk_balance||0)+pisk;updateUI();}
@@ -568,7 +613,7 @@ function canjearPuntos(){
 
 function contarPiskMisionesSimple(){return user?contarPiskMisiones():0;}
 function contarPiskMisiones(){
-  const mis=user?.misiones||{}, rw={registro:5,viral:20,redes:10,comunidad:10,humanidad:5,diario:1,wallet:5};
+  const mis=user?.misiones||{}, rw={registro:1,viral:2,redes:1,comunidad:1,humanidad:1,diario:1,wallet:1,influencer:2};
   let t=0; Object.entries(mis).forEach(([k,v])=>{if(v&&rw[k])t+=rw[k];}); return Math.min(t,8);
 }
 
@@ -629,6 +674,256 @@ function tetrisRotate(){if(tOver)return;const r=tCur[0].map((_,i)=>tCur.map(row=
 function tetrisDrop(){if(tOver)return;while(tCan(tX,tY+1,tCur))tY++;tPlace();drawTetris();}
 function tEnd(){clearInterval(window.tetrisLoop);window.tetrisLoop=null;if(tLines===0){toast('💀 Game Over');cerrarJuego('tetris');return;}showGameResult('tetris',Math.min(tLines*80,480),tLines>=6?'💎':'🎮');}
 function drawTetris(){const cv=document.getElementById('tetrisCanvas');if(!cv)return;const ctx=cv.getContext('2d');ctx.fillStyle='#07090C';ctx.fillRect(0,0,cv.width,cv.height);tBoard.forEach((row,r)=>row.forEach((col,c)=>{if(col){ctx.fillStyle=col;ctx.fillRect(c*TB+1,r*TB+1,TB-2,TB-2);}}));if(tCur)tCur.forEach((row,dy)=>row.forEach((v,dx)=>{if(v){ctx.fillStyle=tColor;ctx.fillRect((tX+dx)*TB+1,(tY+dy)*TB+1,TB-2,TB-2);}}));}
+
+// ── MEMORY MATCH ──────────────────────────────────────
+const MEM_IMGS = [
+  {e:'🚗', l:'Changan',  src:'https://res.cloudinary.com/dfmqybaac/image/upload/v1772308696/alsvin-web-1700x830-exterior-5_dz0dkv.jpg'},
+  {e:'🌄', l:'Machu',    src:'https://upload.wikimedia.org/wikipedia/commons/thumb/e/eb/Machu_Picchu%2C_Peru.jpg/640px-Machu_Picchu%2C_Peru.jpg'},
+  {e:'💰', l:'Token',    src:'https://raw.githubusercontent.com/ernestopisk2015-arch/Neopisk/main/asset/IMG-20260126-WA0020.jpg'},
+  {e:'🌿', l:'Cacao',    src:'https://raw.githubusercontent.com/ernestopisk2015-arch/Eco-Pisk-Park/main/Tokenizacioncacao.jpg'},
+  {e:'🤖', l:'Robot',    src:'https://i.postimg.cc/Pq3j58dn/the-noetix-robotics-n2-humanoid-robot-displayed-at-the-companys-offices-in-beijing-china-on.jpg'},
+  {e:'⚡', l:'BYD',      src:'https://i.postimg.cc/Js4BXv4X/byd.jpg'},
+  {e:'🛵', l:'Torito',   src:'https://i.postimg.cc/mtcrG4DY/torito.jpg'},
+  {e:'🌱', l:'EcoPisk',  src:'https://raw.githubusercontent.com/ernestopisk2015-arch/Neopisk/main/asset/Eco%20Pisk.jpg'},
+];
+let memCards=[], memFlipped=[], memMatched=0, memLives=3, memLocked=false;
+
+function initMemory(){
+  memFlipped=[]; memMatched=0; memLives=3; memLocked=false;
+  document.getElementById('memPairs').textContent='0/8';
+  document.getElementById('memHeartsDisplay').textContent='❤️❤️❤️';
+  const deck=[...MEM_IMGS,...MEM_IMGS].map((img,i)=>({...img,id:i}));
+  for(let i=deck.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[deck[i],deck[j]]=[deck[j],deck[i]];}
+  memCards=deck;
+  const board=document.getElementById('memBoard');
+  board.innerHTML=deck.map((c,i)=>`
+    <div id="mc-${i}" onclick="memFlip(${i})" style="
+      aspect-ratio:1;border:2px solid var(--border);border-radius:8px;cursor:pointer;
+      position:relative;transform-style:preserve-3d;transition:transform 0.4s;
+      background:var(--dark3);">
+      <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+        font-size:28px;backface-visibility:hidden;border-radius:6px;background:var(--dark3);">
+        <span style="font-family:'Bebas Neue';font-size:24px;color:var(--gold);">$</span>
+      </div>
+      <div style="position:absolute;inset:0;backface-visibility:hidden;transform:rotateY(180deg);
+        border-radius:6px;overflow:hidden;background:var(--dark4);">
+        <img src="${c.src}" style="width:100%;height:100%;object-fit:cover;" onerror="this.parentElement.innerHTML='<div style=font-size:32px;display:flex;align-items:center;justify-content:center;height:100%;>${c.e}</div>'">
+      </div>
+    </div>`).join('');
+}
+
+function memFlip(i){
+  if(memLocked||memFlipped.includes(i)||memCards[i].matched)return;
+  const el=document.getElementById('mc-'+i);
+  el.style.transform='rotateY(180deg)';
+  el.style.borderColor='var(--gold)';
+  memFlipped.push(i);
+  if(memFlipped.length===2){
+    memLocked=true;
+    const [a,b]=memFlipped;
+    if(memCards[a].l===memCards[b].l){
+      // Match!
+      setTimeout(()=>{
+        [a,b].forEach(idx=>{
+          const e=document.getElementById('mc-'+idx);
+          e.style.borderColor='var(--green)';
+          e.style.boxShadow='0 0 12px rgba(0,230,118,0.5)';
+          memCards[idx].matched=true;
+        });
+        memMatched++;
+        document.getElementById('memPairs').textContent=memMatched+'/8';
+        memFlipped=[]; memLocked=false;
+        tg?.HapticFeedback?.notificationOccurred('success');
+        if(memMatched===8)setTimeout(()=>showGameResult('memory',100,'🃏'),400);
+      },500);
+    } else {
+      // No match
+      setTimeout(()=>{
+        [a,b].forEach(idx=>{
+          const e=document.getElementById('mc-'+idx);
+          e.style.transform='';
+          e.style.borderColor='rgba(255,61,61,0.6)';
+          setTimeout(()=>e.style.borderColor='var(--border)',600);
+        });
+        memLives--;
+        const hearts=['','❤️','❤️❤️','❤️❤️❤️'][memLives]||'';
+        document.getElementById('memHeartsDisplay').textContent=hearts;
+        memFlipped=[]; memLocked=false;
+        tg?.HapticFeedback?.notificationOccurred('error');
+        if(memLives<=0){
+          setTimeout(()=>{cerrarJuego('memory');toast('💀 Game Over — Sin vidas');},400);
+        }
+      },900);
+    }
+  }
+}
+
+// ── SIMÓN DICE ─────────────────────────────────────────
+const SIMON_COLORS=[
+  {bg:'#2ECC40',dark:'#1A4A1A',id:0},
+  {bg:'#FF4136',dark:'#4A1A1A',id:1},
+  {bg:'#1A6EFF',dark:'#1A1A4A',id:2},
+  {bg:'#FFD700',dark:'#4A3A00',id:3},
+];
+let simonSeq=[], simonInput=[], simonLevel=0, simonRunning=false, simonAccepting=false, simonPtsEarned=0;
+
+function initSimon(){
+  simonSeq=[]; simonInput=[]; simonLevel=0; simonRunning=false; simonAccepting=false; simonPtsEarned=0;
+  document.getElementById('simonLevel').textContent='1';
+  document.getElementById('simonStatus').textContent='LISTO';
+  document.getElementById('simonStartBtn').style.display='block';
+  simonResetBtns();
+}
+
+function simonResetBtns(){
+  SIMON_COLORS.forEach(c=>{
+    const el=document.getElementById('sb'+c.id);
+    el.style.background=c.dark; el.style.opacity='1';
+  });
+}
+
+function simonStart(){
+  document.getElementById('simonStartBtn').style.display='none';
+  simonRunning=true; simonNextRound();
+}
+
+function simonNextRound(){
+  simonInput=[];
+  const next=Math.floor(Math.random()*4);
+  simonSeq.push(next);
+  simonLevel=simonSeq.length;
+  document.getElementById('simonLevel').textContent=simonLevel;
+  document.getElementById('simonStatus').textContent='MIRA...';
+  simonAccepting=false;
+  simonPlaySeq(0);
+}
+
+function simonPlaySeq(idx){
+  if(idx>=simonSeq.length){simonAccepting=true;document.getElementById('simonStatus').textContent='TU TURNO';return;}
+  const c=SIMON_COLORS[simonSeq[idx]];
+  const el=document.getElementById('sb'+c.id);
+  window.simonTO=setTimeout(()=>{
+    el.style.background=c.bg; el.style.opacity='1';
+    setTimeout(()=>{el.style.background=c.dark; simonPlaySeq(idx+1);},500);
+  },300*idx+200);
+}
+
+function simonPress(id){
+  if(!simonAccepting||!simonRunning)return;
+  const c=SIMON_COLORS[id]; const el=document.getElementById('sb'+id);
+  el.style.background=c.bg;
+  setTimeout(()=>el.style.background=c.dark,200);
+  tg?.HapticFeedback?.impactOccurred('light');
+  simonInput.push(id);
+  const pos=simonInput.length-1;
+  if(simonInput[pos]!==simonSeq[pos]){
+    // Error
+    simonAccepting=false; simonRunning=false;
+    document.getElementById('simonStatus').textContent='❌ ERROR';
+    tg?.HapticFeedback?.notificationOccurred('error');
+    setTimeout(()=>{
+      const pts=simonPtsEarned;
+      if(pts>0)showGameResult('simon',pts,'🔴');
+      else{cerrarJuego('simon');toast('💀 Game Over — Nivel '+simonLevel);}
+    },600);
+    return;
+  }
+  if(simonInput.length===simonSeq.length){
+    simonAccepting=false;
+    // Reached milestone?
+    if(simonLevel===10&&simonPtsEarned===0){simonPtsEarned=50;toast('🎉 ¡Nivel 10! +50 PTS desbloqueados');}
+    if(simonLevel===20){simonPtsEarned=100;setTimeout(()=>showGameResult('simon',100,'🔴'),400);return;}
+    document.getElementById('simonStatus').textContent='✅ BIEN!';
+    setTimeout(()=>simonNextRound(),700);
+  }
+}
+
+// ── PUZZLE 3×3 ─────────────────────────────────────────
+const PUZZLE_IMGS=[
+  'https://res.cloudinary.com/dfmqybaac/image/upload/v1772308696/alsvin-web-1700x830-exterior-5_dz0dkv.jpg',
+  'https://upload.wikimedia.org/wikipedia/commons/thumb/e/eb/Machu_Picchu%2C_Peru.jpg/640px-Machu_Picchu%2C_Peru.jpg',
+  'https://i.postimg.cc/Js4BXv4X/byd.jpg',
+];
+let puzzlePieces=[], puzzleEmpty=8, puzzleMoves=0, puzzleSolved=false, puzzleImg=0, puzzleSize=3;
+
+function initPuzzle(){
+  puzzleMoves=0; puzzleSolved=false;
+  document.getElementById('puzzleMoves').textContent=0;
+  // Image selector
+  const sel=document.getElementById('puzzleImgSelect');
+  sel.innerHTML=PUZZLE_IMGS.map((src,i)=>`
+    <img src="${src}" onclick="setPuzzleImg(${i})" style="width:60px;height:40px;object-fit:cover;border:2px solid ${i===puzzleImg?'var(--gold)':'var(--border)'};cursor:pointer;border-radius:4px;transition:border 0.2s;">`
+  ).join('');
+  buildPuzzle();
+}
+
+function setPuzzleImg(i){
+  puzzleImg=i;
+  document.querySelectorAll('#puzzleImgSelect img').forEach((el,idx)=>{
+    el.style.border=`2px solid ${idx===i?'var(--gold)':'var(--border)'}`;
+  });
+  buildPuzzle();
+}
+
+function buildPuzzle(){
+  // Start solved then shuffle with valid moves
+  puzzlePieces=Array.from({length:9},(_,i)=>i); // 8=empty
+  puzzleEmpty=8;
+  // Shuffle with 100 random valid moves
+  for(let k=0;k<100;k++){
+    const neighbors=getPuzzleNeighbors(puzzleEmpty);
+    const n=neighbors[Math.floor(Math.random()*neighbors.length)];
+    puzzlePieces[puzzleEmpty]=puzzlePieces[n];
+    puzzlePieces[n]=8;
+    puzzleEmpty=n;
+  }
+  puzzleMoves=0; puzzleSolved=false;
+  document.getElementById('puzzleMoves').textContent=0;
+  renderPuzzle();
+}
+
+function getPuzzleNeighbors(pos){
+  const r=Math.floor(pos/3), c=pos%3, nb=[];
+  if(r>0)nb.push(pos-3); if(r<2)nb.push(pos+3);
+  if(c>0)nb.push(pos-1); if(c<2)nb.push(pos+1);
+  return nb;
+}
+
+function renderPuzzle(){
+  const board=document.getElementById('puzzleBoard');
+  const src=PUZZLE_IMGS[puzzleImg];
+  board.innerHTML=puzzlePieces.map((piece,pos)=>{
+    if(piece===8) return `<div style="aspect-ratio:1;background:var(--dark);border-radius:4px;"></div>`;
+    const or=Math.floor(piece/3), oc=piece%3;
+    return `<div onclick="puzzleTap(${pos})" style="
+      aspect-ratio:1;border-radius:4px;overflow:hidden;cursor:pointer;
+      border:2px solid ${piece===pos?'rgba(0,230,118,0.4)':'var(--border)'};
+      position:relative;transition:transform 0.1s;background:var(--dark4);">
+      <div style="width:100%;height:100%;
+        background-image:url('${src}');
+        background-size:300% 300%;
+        background-position:${oc*50}% ${or*50}%;"></div>
+      <div style="position:absolute;bottom:2px;right:3px;font-size:9px;color:rgba(255,255,255,0.3);font-family:'Bebas Neue';">${piece+1}</div>
+    </div>`;
+  }).join('');
+}
+
+function puzzleTap(pos){
+  if(puzzleSolved)return;
+  const neighbors=getPuzzleNeighbors(puzzleEmpty);
+  if(!neighbors.includes(pos))return;
+  puzzlePieces[puzzleEmpty]=puzzlePieces[pos];
+  puzzlePieces[pos]=8;
+  puzzleEmpty=pos;
+  puzzleMoves++;
+  document.getElementById('puzzleMoves').textContent=puzzleMoves;
+  tg?.HapticFeedback?.impactOccurred('light');
+  renderPuzzle();
+  if(puzzlePieces.every((v,i)=>v===i)){
+    puzzleSolved=true;
+    setTimeout(()=>showGameResult('puzzle',100,'🧩'),400);
+  }
+}
 
 setTimeout(()=>{loadGameState();},2000);
 </script>
