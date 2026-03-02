@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Roadmap — Ecosistema AgroTec RWA · Neo Pisk Tech</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,600;0,700;1,400&family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #0C0F0A;
+  --paper: #F7F4EE;
+  --paper2: #EDE9E1;
+  --gold: #B8860B;
+  --gold-light: #D4AF37;
+  --green: #1E4D2B;
+  --green-mid: #2D6A4F;
+  --green-light: #52B788;
+  --accent: #C0392B;
+  --muted: #6B6B5E;
+  --border: #D4CFC4;
+  --white: #FFFFFF;
+}
+
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: 'Outfit', sans-serif;
+  font-weight: 400;
+  overflow-x: hidden;
+}
+
+/* ─── HEADER ─── */
+.doc-header {
+  background: var(--green);
+  color: white;
+  padding: 3rem 4rem;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 2rem;
+  position: relative;
+  overflow: hidden;
+}
+.doc-header::before {
+  content: '';
+  position: absolute;
+  top: -60px; right: -60px;
+  width: 250px; height: 250px;
+  border: 40px solid rgba(255,255,255,0.05);
+  border-radius: 50%;
+}
+.doc-header::after {
+  content: '';
+  position: absolute;
+  bottom: -80px; left: 30%;
+  width: 300px; height: 300px;
+  border: 50px solid rgba(212,175,55,0.08);
+  border-radius: 50%;
+}
+.header-left { position: relative; z-index: 1; }
+.header-eyebrow {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.55);
+  margin-bottom: 0.75rem;
+}
+.header-title {
+  font-family: 'Fraunces', serif;
+  font-size: clamp(1.8rem, 4vw, 3rem);
+  font-weight: 700;
+  line-height: 1.1;
+  margin-bottom: 0.75rem;
+}
+.header-title span { color: var(--gold-light); }
+.header-subtitle {
+  font-size: 1rem;
+  color: rgba(255,255,255,0.7);
+  font-weight: 300;
+  max-width: 500px;
+}
+.header-right { position: relative; z-index: 1; text-align: right; }
+.doc-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.7rem;
+  color: rgba(255,255,255,0.5);
+  letter-spacing: 1px;
+}
+.doc-meta strong { color: var(--gold-light); }
+.version-badge {
+  display: inline-block;
+  background: rgba(212,175,55,0.2);
+  border: 1px solid rgba(212,175,55,0.4);
+  color: var(--gold-light);
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 0.4rem 1rem;
+  border-radius: 4px;
+  margin-top: 1rem;
+}
+
+/* ─── STATUS BAR ─── */
+.status-bar {
+  background: var(--ink);
+  padding: 1rem 4rem;
+  display: flex;
+  align-items: center;
+  gap: 3rem;
+  flex-wrap: wrap;
+}
+.status-item {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 1px;
+  color: rgba(255,255,255,0.5);
+}
+.status-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.dot-amber { background: #F59E0B; animation: pulse-dot 2s infinite; }
+.dot-green { background: #10B981; }
+.dot-blue  { background: #3B82F6; }
+.dot-gray  { background: #6B7280; }
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+.status-item strong { color: rgba(255,255,255,0.85); }
+
+/* ─── MAIN ─── */
+.main {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 4rem 2rem 6rem;
+}
+
+/* ─── INTRO BANNER ─── */
+.intro-banner {
+  background: linear-gradient(135deg, var(--green), #1a3d24);
+  border-radius: 16px;
+  padding: 2.5rem 3rem;
+  color: white;
+  margin-bottom: 4rem;
+  position: relative;
+  overflow: hidden;
+}
+.intro-banner::before {
+  content: 'RWA';
+  position: absolute;
+  right: 3rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 7rem;
+  font-family: 'Fraunces', serif;
+  font-weight: 700;
+  color: rgba(255,255,255,0.04);
+  pointer-events: none;
+}
+.intro-banner h2 {
+  font-family: 'Fraunces', serif;
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+}
+.intro-banner p {
+  font-size: 0.95rem;
+  color: rgba(255,255,255,0.7);
+  line-height: 1.7;
+  max-width: 700px;
+}
+.intro-tokens {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  flex-wrap: wrap;
+}
+.token-pill {
+  background: rgba(212,175,55,0.15);
+  border: 1px solid rgba(212,175,55,0.4);
+  color: var(--gold-light);
+  font-family: 'DM Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 2px;
+  padding: 0.4rem 1rem;
+  border-radius: 20px;
+}
+
+/* ─── TIMELINE ROADMAP ─── */
+.roadmap-container {
+  position: relative;
+  margin-bottom: 5rem;
+}
+
+/* Línea central vertical en desktop */
+.roadmap-container::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0; bottom: 0;
+  width: 2px;
+  background: linear-gradient(to bottom, var(--green), var(--green-light), rgba(82,183,136,0.1));
+  transform: translateX(-50%);
+}
+
+.phase-row {
+  display: grid;
+  grid-template-columns: 1fr 80px 1fr;
+  gap: 0;
+  margin-bottom: 3rem;
+  position: relative;
+}
+
+/* Filas pares: card izquierda, nodo central, espacio derecha */
+/* Filas impares: espacio izquierda, nodo central, card derecha */
+
+.phase-row.left .phase-card { grid-column: 1; }
+.phase-row.left .phase-node { grid-column: 2; }
+.phase-row.left .phase-empty { grid-column: 3; }
+
+.phase-row.right .phase-empty { grid-column: 1; }
+.phase-row.right .phase-node { grid-column: 2; }
+.phase-row.right .phase-card { grid-column: 3; }
+
+.phase-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding-top: 1.5rem;
+  position: relative;
+  z-index: 2;
+}
+
+.node-circle {
+  width: 52px; height: 52px;
+  border-radius: 50%;
+  background: var(--green);
+  border: 4px solid var(--paper);
+  box-shadow: 0 0 0 3px var(--green-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Fraunces', serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--gold-light);
+  flex-shrink: 0;
+  transition: all 0.3s ease;
+}
+
+.phase-row:hover .node-circle {
+  box-shadow: 0 0 0 5px var(--green-light);
+  background: var(--green-mid);
+}
+
+.node-line {
+  width: 2px;
+  flex: 1;
+  min-height: 20px;
+  background: var(--border);
+  margin-top: 0.5rem;
+}
+
+.phase-card {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 2rem;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  margin: 1rem 1.5rem;
+}
+
+.phase-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 40px rgba(0,0,0,0.1);
+  border-color: var(--green-light);
+}
+
+/* Barra de color superior por fase */
+.phase-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 4px;
+}
+.phase-card.f1::before { background: linear-gradient(90deg, var(--green), var(--green-light)); }
+.phase-card.f2::before { background: linear-gradient(90deg, var(--gold), var(--gold-light)); }
+.phase-card.f3::before { background: linear-gradient(90deg, #2563EB, #60A5FA); }
+.phase-card.f4::before { background: linear-gradient(90deg, #7C3AED, #A78BFA); }
+
+.phase-tag {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 0.25rem 0.6rem;
+  border-radius: 4px;
+  display: inline-block;
+  margin-bottom: 0.75rem;
+}
+.tag-f1 { background: rgba(30,77,43,0.1); color: var(--green); border: 1px solid rgba(30,77,43,0.2); }
+.tag-f2 { background: rgba(184,134,11,0.1); color: var(--gold); border: 1px solid rgba(184,134,11,0.2); }
+.tag-f3 { background: rgba(37,99,235,0.1); color: #2563EB; border: 1px solid rgba(37,99,235,0.2); }
+.tag-f4 { background: rgba(124,58,237,0.1); color: #7C3AED; border: 1px solid rgba(124,58,237,0.2); }
+
+.phase-title {
+  font-family: 'Fraunces', serif;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--green);
+  margin-bottom: 0.3rem;
+  line-height: 1.2;
+}
+
+.phase-subtitle {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.7rem;
+  color: var(--gold);
+  letter-spacing: 1px;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--paper2);
+}
+
+.phase-desc {
+  font-size: 0.875rem;
+  color: var(--muted);
+  line-height: 1.6;
+  margin-bottom: 1.25rem;
+}
+
+.hitos-title {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 0.75rem;
+}
+
+.hitos-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.hitos-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  font-size: 0.85rem;
+  color: var(--ink);
+  line-height: 1.5;
+}
+
+.hito-check {
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.6rem;
+  flex-shrink: 0;
+  margin-top: 0.15rem;
+}
+.check-f1 { background: rgba(30,77,43,0.12); color: var(--green); }
+.check-f2 { background: rgba(184,134,11,0.12); color: var(--gold); }
+.check-f3 { background: rgba(37,99,235,0.12); color: #2563EB; }
+.check-f4 { background: rgba(124,58,237,0.12); color: #7C3AED; }
+
+.phase-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 1.25rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--paper2);
+}
+
+.phase-badge {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.6rem;
+  padding: 0.2rem 0.6rem;
+  background: var(--paper);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  color: var(--muted);
+  letter-spacing: 1px;
+}
+
+.phase-empty { }
+
+/* ─── NODO FINAL ─── */
+.final-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 2rem 0 4rem;
+  position: relative;
+}
+
+.final-node::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: 100%;
+  height: 2rem;
+  width: 2px;
+  background: var(--green-light);
+  transform: translateX(-50%);
+}
+
+.final-circle {
+  width: 80px; height: 80px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--green), var(--green-mid));
+  border: 4px solid var(--paper);
+  box-shadow: 0 0 0 4px var(--gold-light), 0 8px 30px rgba(30,77,43,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.final-label {
+  font-family: 'Fraunces', serif;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--green);
+  text-align: center;
+}
+
+.final-sub {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  color: var(--muted);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-top: 0.3rem;
+  text-align: center;
+}
+
+/* ─── MÉTRICAS CLAVE ─── */
+.metrics-section {
+  margin-bottom: 4rem;
+}
+
+.metrics-title {
+  font-family: 'Fraunces', serif;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--green);
+  margin-bottom: 1.5rem;
+}
+
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.2rem;
+}
+
+.metric-card {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.5rem;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.metric-card:hover {
+  border-color: var(--gold);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+}
+
+.metric-icon { font-size: 2rem; margin-bottom: 0.75rem; }
+.metric-value {
+  font-family: 'DM Mono', monospace;
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: var(--green);
+  margin-bottom: 0.3rem;
+}
+.metric-label { font-size: 0.8rem; color: var(--muted); line-height: 1.4; }
+
+/* ─── BLINDAJE JURÍDICO ─── */
+.blindaje-box {
+  background: var(--ink);
+  color: white;
+  border-radius: 16px;
+  padding: 2.5rem 3rem;
+  margin-bottom: 4rem;
+}
+.blindaje-box h3 {
+  font-family: 'Fraunces', serif;
+  font-size: 1.5rem;
+  color: var(--gold-light);
+  margin-bottom: 0.75rem;
+}
+.blindaje-box p {
+  font-size: 0.9rem;
+  color: rgba(255,255,255,0.65);
+  line-height: 1.7;
+  margin-bottom: 1.5rem;
+  max-width: 700px;
+}
+.blindaje-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+}
+.blindaje-item {
+  border-left: 2px solid rgba(212,175,55,0.3);
+  padding-left: 1.25rem;
+}
+.blindaje-num {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 2px;
+  color: var(--gold-light);
+  margin-bottom: 0.4rem;
+  text-transform: uppercase;
+}
+.blindaje-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: white;
+  margin-bottom: 0.4rem;
+}
+.blindaje-desc {
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.55);
+  line-height: 1.6;
+}
+
+/* ─── QUOTE ─── */
+.quote-block {
+  border-left: 4px solid var(--gold);
+  background: white;
+  padding: 2rem 2.5rem;
+  border-radius: 0 12px 12px 0;
+  margin: 3rem 0;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.05);
+}
+.quote-text {
+  font-family: 'Fraunces', serif;
+  font-size: 1.1rem;
+  font-style: italic;
+  color: var(--ink);
+  line-height: 1.7;
+  margin-bottom: 0.75rem;
+}
+.quote-attr {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 2px;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+
+/* ─── FOOTER ─── */
+.doc-footer {
+  background: var(--ink);
+  color: rgba(255,255,255,0.5);
+  padding: 2rem 4rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 1px;
+}
+.footer-brand {
+  font-family: 'Fraunces', serif;
+  font-size: 1rem;
+  color: var(--gold-light);
+  font-weight: 600;
+  letter-spacing: 0;
+}
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 768px) {
+  .doc-header { grid-template-columns: 1fr; padding: 2rem; }
+  .header-right { text-align: left; }
+  .status-bar { padding: 1rem 1.5rem; gap: 1.5rem; }
+  .main { padding: 2rem 1rem 4rem; }
+
+  .roadmap-container::before { left: 24px; transform: none; }
+
+  .phase-row,
+  .phase-row.left,
+  .phase-row.right {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 0;
+    margin-bottom: 2rem;
+  }
+  .phase-node { padding-top: 1.5rem; flex-shrink: 0; }
+  .node-circle { width: 42px; height: 42px; font-size: 0.9rem; }
+  .phase-card { margin: 1rem 0 1rem 1rem; flex: 1; }
+  .phase-empty { display: none; }
+
+  .blindaje-box { padding: 1.5rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- ─── HEADER ─── -->
+<header class="doc-header">
+  <div class="header-left">
+    <div class="header-eyebrow">Documento Estratégico · Ecosistema RWA</div>
+    <h1 class="header-title">Roadmap de Implementación<br><span>Agrotec Perú × Neo Pisk Tech</span></h1>
+    <p class="header-subtitle">Plan de ejecución por fases para la tokenización de activos reales agrícolas: tierra, producción de cacao y eco-viviendas.</p>
+    <div class="version-badge">Versión 1.0 · Marzo 2026</div>
+  </div>
+  <div class="header-right">
+    <div class="doc-meta">
+      <div><strong>Proyecto:</strong> Tokens $CACAO · $SOW</div>
+      <div><strong>CEO:</strong> Ernesto Piskulich — Neo Pisk Tech</div>
+      <div><strong>Socio:</strong> Willy Toro — Agrotec Perú</div>
+      <div><strong>Clasificación:</strong> Confidencial</div>
+    </div>
+  </div>
+</header>
+
+<!-- ─── STATUS BAR ─── -->
+<div class="status-bar">
+  <div class="status-item"><div class="status-dot dot-amber"></div> <span>FASE 1: <strong>Blindaje y Tokenomics</strong></span></div>
+  <div class="status-item"><div class="status-dot dot-amber"></div> <span>FASE 2: <strong>Infraestructura y Paneles</strong></span></div>
+  <div class="status-item"><div class="status-dot dot-gray"></div> <span>FASE 3: <strong>Emisión y Venta $SOW</strong></span></div>
+  <div class="status-item"><div class="status-dot dot-gray"></div> <span>FASE 4: <strong>Comercialización $CACAO</strong></span></div>
+</div>
+
+<main class="main">
+
+  <!-- INTRO BANNER -->
+  <div class="intro-banner">
+    <h2>De Activo Físico a Liquidez Global</h2>
+    <p>
+      Este roadmap convierte las tierras de Agrotec Perú en instrumentos financieros digitales accesibles 
+      desde cualquier parte del mundo. Cada fase construye sobre la anterior: primero el blindaje legal, 
+      luego la infraestructura, después la emisión y finalmente la venta al mercado global.
+    </p>
+    <div class="intro-tokens">
+      <span class="token-pill">$SOW — Gestión Agrícola</span>
+      <span class="token-pill">$CACAO — Activo Tierra</span>
+      <span class="token-pill">20M $SOW · 20M $CACAO · Por Token</span>
+    </div>
+  </div>
+
+  <!-- ─── ROADMAP TIMELINE ─── -->
+  <div class="roadmap-container">
+
+    <!-- FASE 1 — izquierda -->
+    <div class="phase-row left">
+      <div class="phase-card f1">
+        <span class="phase-tag tag-f1">Fase 1 · Meses 1–2</span>
+        <div class="phase-title">Blindaje Legal y Tokenomics</div>
+        <div class="phase-subtitle">Fideicomiso · Smart Contracts · Estructura Jurídica</div>
+        <p class="phase-desc">
+          La base de todo el ecosistema. Sin un blindaje jurídico sólido, ningún inversor serio pondrá capital. 
+          Aquí construimos el Fideicomiso de Activos y definimos exactamente cuántos tokens existen, para qué sirve cada uno y qué derechos representan.
+        </p>
+        <div class="hitos-title">Hitos Clave</div>
+        <ul class="hitos-list">
+          <li><span class="hito-check check-f1">◆</span> Constitución del Fideicomiso de Titulación — tierras blindadas e inembargables</li>
+          <li><span class="hito-check check-f1">◆</span> Definición de suministro total: $CACAO (tierra) y $SOW (gestión)</li>
+          <li><span class="hito-check check-f1">◆</span> Vinculación de cada token a partida registral SUNARP (coordenadas GPS)</li>
+          <li><span class="hito-check check-f1">◆</span> Contratos marco de usufructo y participación firmados a nivel corporativo — cada venta individual genera un Certificado de Participación digital automático</li>
+          <li><span class="hito-check check-f1">◆</span> Auditoría legal externa del modelo tokenizado</li>
+        </ul>
+        <div class="phase-badges">
+          <span class="phase-badge">Fideicomiso</span>
+          <span class="phase-badge">SUNARP</span>
+          <span class="phase-badge">Cert. Participación</span>
+          <span class="phase-badge">Tokenomics</span>
+        </div>
+      </div>
+      <div class="phase-node">
+        <div class="node-circle">1</div>
+        <div class="node-line"></div>
+      </div>
+      <div class="phase-empty"></div>
+    </div>
+
+    <!-- FASE 2 — derecha -->
+    <div class="phase-row right">
+      <div class="phase-empty"></div>
+      <div class="phase-node">
+        <div class="node-circle">2</div>
+        <div class="node-line"></div>
+      </div>
+      <div class="phase-card f2">
+        <span class="phase-tag tag-f2">Fase 2 · Meses 2–3</span>
+        <div class="phase-title">Infraestructura y Paneles</div>
+        <div class="phase-subtitle">Dashboard Admin · Monitoreo Preventa · Panel Inversor</div>
+        <p class="phase-desc">
+          Construimos los 3 paneles que dan transparencia total al ecosistema. Willy ve todo desde su panel. 
+          Los inversores ven sus tokens y rendimientos. El sistema monitorea la preventa en tiempo real.
+        </p>
+        <div class="hitos-title">Hitos Clave</div>
+        <ul class="hitos-list">
+          <li><span class="hito-check check-f2">◆</span> Dashboard de administración exclusivo para Corporación Agrotec</li>
+          <li><span class="hito-check check-f2">◆</span> Sistema de monitoreo de preventa en tiempo real (KPIs de colocación)</li>
+          <li><span class="hito-check check-f2">◆</span> Panel para inversionistas: participación, rendimiento y estado del activo on-chain</li>
+          <li><span class="hito-check check-f2">◆</span> IA Karla activada en WhatsApp: calificación y cierre de leads 24/7</li>
+          <li><span class="hito-check check-f2">◆</span> Implementación del módulo KYC: verificación de identidad antes de permitir cualquier compra de tokens</li>
+          <li><span class="hito-check check-f2">◆</span> Repositorio GitHub con acceso admin de Agrotec desde Día 1</li>
+        </ul>
+        <div class="phase-badges">
+          <span class="phase-badge">React</span>
+          <span class="phase-badge">Web3.js</span>
+          <span class="phase-badge">KYC/AML</span>
+          <span class="phase-badge">WhatsApp API</span>
+          <span class="phase-badge">IA Karla</span>
+          <span class="phase-badge">Google Sheets</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- FASE 3 — izquierda -->
+    <div class="phase-row left">
+      <div class="phase-card f3">
+        <span class="phase-tag tag-f3">Fase 3 · Meses 3–5</span>
+        <div class="phase-title">Emisión y Venta $SOW</div>
+        <div class="phase-subtitle">Smart Contracts Desplegados · Preventa · Capital Recibido</div>
+        <p class="phase-desc">
+          Lanzamos los Smart Contracts de $SOW (gestión agrícola) y abrimos la preventa al mercado. 
+          Los primeros inversores entran y el capital empieza a fluir. 
+          Solo usuarios validados con KYC pueden participar.
+        </p>
+        <div class="hitos-title">Hitos Clave</div>
+        <ul class="hitos-list">
+          <li><span class="hito-check check-f3">◆</span> Despliegue de Smart Contracts $SOW auditados en Polygon o BSC</li>
+          <li><span class="hito-check check-f3">◆</span> Apertura de preventa con pasarela USDT/USDC + fiat (PEN/USD)</li>
+          <li><span class="hito-check check-f3">◆</span> Primer tramo de capital recibido y registrado on-chain</li>
+          <li><span class="hito-check check-f3">◆</span> Activación de oráculos agrícolas: datos reales de producción en blockchain</li>
+          <li><span class="hito-check check-f3">◆</span> Reporte de tesorería automático para Agrotec — primer cierre mensual</li>
+        </ul>
+        <div class="phase-badges">
+          <span class="phase-badge">Solidity</span>
+          <span class="phase-badge">Polygon</span>
+          <span class="phase-badge">KYC/AML</span>
+          <span class="phase-badge">USDT</span>
+          <span class="phase-badge">Oráculos</span>
+        </div>
+      </div>
+      <div class="phase-node">
+        <div class="node-circle">3</div>
+        <div class="node-line"></div>
+      </div>
+      <div class="phase-empty"></div>
+    </div>
+
+    <!-- FASE 4 — derecha -->
+    <div class="phase-row right">
+      <div class="phase-empty"></div>
+      <div class="phase-node">
+        <div class="node-circle">4</div>
+      </div>
+      <div class="phase-card f4">
+        <span class="phase-tag tag-f4">Fase 4 · Meses 5–8</span>
+        <div class="phase-title">Comercialización Global $CACAO</div>
+        <div class="phase-subtitle">KYC Internacional · Mercado Global · Escala Total</div>
+        <p class="phase-desc">
+          El activo real llega al mercado global. Un inversor en Dubái, Tokio o Miami puede comprar 
+          su token $CACAO en segundos, ver el estado del cultivo en tiempo real y recibir sus dividendos 
+          automáticamente vía smart contract.
+        </p>
+        <div class="hitos-title">Hitos Clave</div>
+        <ul class="hitos-list">
+          <li><span class="hito-check check-f4">◆</span> Implementación completa de KYC internacional (acceso global cumplimiento legal)</li>
+          <li><span class="hito-check check-f4">◆</span> Lanzamiento de $CACAO al mercado global con listing en exchanges descentralizados</li>
+          <li><span class="hito-check check-f4">◆</span> Distribución automática de royalties a holders de $CACAO vía smart contract</li>
+          <li><span class="hito-check check-f4">◆</span> Escala del sistema de referidos para adquisición de nuevos inversores</li>
+          <li><span class="hito-check check-f4">◆</span> Primer cierre de colocación total — liberación de vesting Neo Pisk (Hito 2)</li>
+        </ul>
+        <div class="phase-badges">
+          <span class="phase-badge">KYC Global</span>
+          <span class="phase-badge">DEX Listing</span>
+          <span class="phase-badge">Royalties Auto</span>
+          <span class="phase-badge">Referidos</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- NODO FINAL -->
+  <div class="final-node">
+    <div class="final-circle">🌱</div>
+    <div class="final-label">Ecosistema RWA Operativo</div>
+    <div class="final-sub">Activos físicos · liquidez digital · inversores globales</div>
+  </div>
+
+  <!-- ─── MÉTRICAS OBJETIVO ─── -->
+  <div class="metrics-section">
+    <div class="metrics-title">Métricas Objetivo del Ecosistema</div>
+    <div class="metrics-grid">
+      <div class="metric-card">
+        <div class="metric-icon">🌾</div>
+        <div class="metric-value">20M c/u</div>
+        <div class="metric-label">20M tokens por cada emisión: $SOW y $CACAO</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-icon">⚡</div>
+        <div class="metric-value">99.9%</div>
+        <div class="metric-label">Uptime garantizado de la plataforma</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-icon">🔧</div>
+        <div class="metric-value">&lt; 4h</div>
+        <div class="metric-label">Respuesta ante incidentes críticos</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-icon">🌍</div>
+        <div class="metric-value">Global</div>
+        <div class="metric-label">Mercado accesible desde cualquier país</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-icon">🛡️</div>
+        <div class="metric-value">24 meses</div>
+        <div class="metric-label">SLA técnico garantizado en contrato</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-icon">📈</div>
+        <div class="metric-value">4%</div>
+        <div class="metric-label">Fee de comercialización Neo Pisk</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── BLINDAJE JURÍDICO ─── -->
+  <div class="blindaje-box">
+    <h3>Los 4 Pilares del Blindaje Jurídico</h3>
+    <p>Esto es lo que diferencia a un token de "aire" de un activo digital con respaldo real. Cada token $CACAO representa un derecho verificable y protegido por ley peruana e internacional.</p>
+    <div class="blindaje-grid">
+      <div class="blindaje-item">
+        <div class="blindaje-num">Pilar 01</div>
+        <div class="blindaje-title">Fideicomiso de Titulación</div>
+        <div class="blindaje-desc">Las tierras pasan a un fideicomiso autónomo. Si algo le pasa a la empresa, las tierras están blindadas. Es inembargable y pertenece a los holders de tokens.</div>
+      </div>
+      <div class="blindaje-item">
+        <div class="blindaje-num">Pilar 02</div>
+        <div class="blindaje-title">Derechos de Superficie y Usufructo</div>
+        <div class="blindaje-desc">Cada token vincula su ID al lote específico de tierra con coordenadas GPS en la partida registral SUNARP. El inversor sabe exactamente qué tierra posee.</div>
+      </div>
+      <div class="blindaje-item">
+        <div class="blindaje-num">Pilar 03</div>
+        <div class="blindaje-title">Certificado de Participación Privado</div>
+        <div class="blindaje-desc">Para eco-viviendas y tierra, cada compra genera automáticamente un Certificado de Participación privado vinculado al token. No requiere escritura pública — el certificado es el instrumento legal que acredita el derecho del inversor y se emite al instante vía smart contract.</div>
+      </div>
+      <div class="blindaje-item">
+        <div class="blindaje-num">Pilar 04</div>
+        <div class="blindaje-title">Smart Contracts con Oráculos</div>
+        <div class="blindaje-desc">El contrato recibe datos reales de producción (toneladas de cacao). El inversor verifica en blockchain que la tierra produjo y que su dividendo es real. Sin manipulación.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- QUOTE -->
+  <div class="quote-block">
+    <p class="quote-text">
+      "Willy, para tus proyectos de Cacao y Viviendas, el blindaje consiste en un Fideicomiso de Activos. 
+      Vinculamos legalmente cada token a una partida registral específica (SUNARP) o a un contrato de usufructo de cosecha. 
+      Así, el inversor no compra una promesa, sino un derecho real sobre la tierra y su producción, respaldado por un Certificado de Participación digital emitido automáticamente al momento de la compra."
+    </p>
+    <div class="quote-attr">— Ernesto Piskulich, CEO Neo Pisk Tech · Mensaje para Willy Toro</div>
+  </div>
+
+</main>
+
+<!-- ─── FOOTER ─── -->
+<footer class="doc-footer">
+  <div>
+    <div class="footer-brand">Neo Pisk Tech</div>
+    <div style="margin-top: 0.3rem;">Ernesto Alejandro Piskulich Ceel · CEO Fundador</div>
+  </div>
+  <div style="text-align: center;">
+    Roadmap Estratégico — Ecosistema AgroTec RWA · Marzo 2026
+  </div>
+  <div style="text-align: right;">
+    <div>Confidencial · Solo para uso interno</div>
+    <div style="margin-top: 0.3rem;">© 2026 Neo Pisk Tech — Todos los derechos reservados</div>
+  </div>
+</footer>
+
+</body>
+</html>
