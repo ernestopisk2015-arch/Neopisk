@@ -104,6 +104,7 @@ tr:last-child td{border-bottom:none;}
       <div class="nav-item" onclick="showPage('referidos',this)"><span class="nav-icon">🤝</span><span>Referidos</span></div>
       <div class="nav-item" onclick="showPage('pendientes',this)"><span class="nav-icon">⏳</span><span>Pendientes</span></div>
       <div class="nav-item" onclick="showPage('juegos',this)"><span class="nav-icon">🎮</span><span>Juegos</span></div>
+      <div class="nav-item" onclick="showPage('comisiones',this)"><span class="nav-icon">💰</span><span>Comisiones</span></div>
     </nav>
     <div class="sidebar-bottom">
       <div class="api-status"><div class="api-dot" id="apiDot"></div><span id="apiStatusTxt">Verificando...</span></div>
@@ -170,6 +171,34 @@ tr:last-child td{border-bottom:none;}
         <table><thead><tr><th>#</th><th>JUGADOR</th><th>PUNTOS</th><th>$PISK CANJEADOS</th></tr></thead><tbody id="jugadoresBody"></tbody></table>
       </div>
     </div>
+
+    <div class="page" id="page-comisiones">
+      <div class="page-title">💰 COMISIONES Y PAGOS</div>
+      <div class="stats-grid" style="grid-template-columns:repeat(3,1fr)">
+        <div class="stat-card"><div class="stat-icon">⏳</div><div class="stat-num" id="c-pendiente">—</div><div class="stat-lbl">USDT PENDIENTE</div></div>
+        <div class="stat-card"><div class="stat-icon">✅</div><div class="stat-num" id="c-pagado">—</div><div class="stat-lbl">USDT PAGADO</div></div>
+        <div class="stat-card"><div class="stat-icon">🛒</div><div class="stat-num" id="c-compras">—</div><div class="stat-lbl">COMPRAS TOTALES</div></div>
+      </div>
+
+      <div class="table-wrap">
+        <div class="table-header">
+          <div class="table-title">⏳ COMISIONES PENDIENTES</div>
+          <button class="btn btn-ghost" onclick="cargarComisiones()">↻ ACTUALIZAR</button>
+        </div>
+        <table>
+          <thead><tr><th>SOCIO</th><th>WALLET</th><th>REFS</th><th>USDT A PAGAR</th><th>$PISK</th><th>ESTADO</th><th>ACCIÓN</th></tr></thead>
+          <tbody id="comisionesPendBody"></tbody>
+        </table>
+      </div>
+
+      <div class="table-wrap">
+        <div class="table-header"><div class="table-title">🛒 HISTORIAL DE COMPRAS</div></div>
+        <table>
+          <thead><tr><th>COMPRADOR</th><th>USDT</th><th>$PISK</th><th>FECHA</th><th>TX</th></tr></thead>
+          <tbody id="comprasBody"></tbody>
+        </table>
+      </div>
+    </div>
   </div>
 </div>
 <div class="modal-bg" id="modalBg" onclick="if(event.target===this)cerrarModal()">
@@ -224,6 +253,7 @@ function showPage(page, el) {
   if(el) el.classList.add('active');
   if(page==='referidos') cargarTopRefs();
   if(page==='juegos') cargarJuegos();
+  if(page==='comisiones') cargarComisiones();
   if(page==='pendientes') cargarPendientes();
   if(page==='usuarios') cargarUsuariosCompleto();
 }
@@ -394,6 +424,54 @@ function toast(msg) {
   const t=document.getElementById('toast');
   t.textContent=msg; t.classList.add('show');
   setTimeout(()=>t.classList.remove('show'),3500);
+}
+
+
+async function cargarComisiones() {
+  try {
+    const r = await fetch(API+'/comisiones');
+    const d = await r.json();
+
+    document.getElementById('c-pendiente').textContent = '$'+Number(d.totalPendiente||0).toFixed(4);
+    document.getElementById('c-pagado').textContent    = '$'+Number(d.totalPagado||0).toFixed(4);
+    document.getElementById('c-compras').textContent   = (d.compras||[]).length;
+
+    // Pendientes
+    document.getElementById('comisionesPendBody').innerHTML = (d.pendientes||[]).map(u => `
+      <tr>
+        <td style="font-weight:700;font-family:'Rajdhani';font-size:14px">${u.nombre}</td>
+        <td style="font-size:11px;color:#6B7280">${u.wallet ? u.wallet.slice(0,16)+'...' : '<span style="color:#DC2626">SIN WALLET</span>'}</td>
+        <td>${u.refs}</td>
+        <td style="color:#059669;font-family:'Bebas Neue';font-size:16px">$${Number(u.comisiones_usdt).toFixed(4)}</td>
+        <td style="color:#8B6914">${Number(u.comisiones_pisk).toFixed(2)} $PISK</td>
+        <td>${u.pagado ? '<span class="badge badge-green">PAGADO</span>' : '<span class="badge badge-red">PENDIENTE</span>'}</td>
+        <td>${!u.pagado ? `<button class="btn btn-green" onclick="marcarPagado(${u.id},'${u.nombre}')">✅ PAGADO</button>` : '—'}</td>
+      </tr>`).join('') || '<tr><td colspan="7" style="text-align:center;color:#6B7280;padding:24px">Sin comisiones pendientes</td></tr>';
+
+    // Compras
+    document.getElementById('comprasBody').innerHTML = (d.compras||[]).map(c => `
+      <tr>
+        <td style="font-weight:700">${c.compradorNombre||'—'}</td>
+        <td style="color:#059669">$${Number(c.usdt||0).toFixed(4)}</td>
+        <td style="color:#8B6914">${c.pisk||0} $PISK</td>
+        <td style="font-size:12px;color:#6B7280">${c.fecha ? new Date(c.fecha).toLocaleDateString('es-PE') : '—'}</td>
+        <td><a href="https://polygonscan.com/tx/${c.txHash}" target="_blank" style="color:#B8860B;font-family:'JetBrains Mono';font-size:11px">${c.txHash ? c.txHash.slice(0,14)+'...' : '—'}</a></td>
+      </tr>`).join('') || '<tr><td colspan="5" style="text-align:center;color:#6B7280;padding:24px">Sin compras registradas</td></tr>';
+
+  } catch(e) { toast('❌ Error cargando comisiones'); }
+}
+
+async function marcarPagado(userId, nombre) {
+  if (!confirm(`¿Confirmas que ya pagaste la comisión a ${nombre}?`)) return;
+  try {
+    const r = await fetch(API+'/marcar-pagado', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ userId })
+    });
+    const d = await r.json();
+    if (d.ok) { toast('✅ Marcado como pagado'); cargarComisiones(); }
+    else { toast('❌ Error al actualizar'); }
+  } catch(e) { toast('❌ Error de conexión'); }
 }
 
 setInterval(()=>{
