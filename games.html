@@ -165,9 +165,10 @@ body{background:var(--dark);color:var(--text);font-family:'Rajdhani',sans-serif;
   <div class="canje-card">
     <div class="canje-info">
       <div class="canje-rate">1,000 PTS = 1 $PISK</div>
+      <div style="font-size:11px;color:#FF3D3D;margin-top:6px;line-height:1.5;letter-spacing:1px;">🔒 PARA DESBLOQUEAR NECESITAS:<br>✅ 8 tokens de misiones<br>✅ 2 tokens por referidos o comisiones<br>= 10 tokens mínimo (liberado por admin)</div>
       <div class="canje-sub">Tienes: <span id="ptsDisplay" class="pts-total">0</span> puntos</div>
     </div>
-    <button class="canje-btn" id="canjeBtn" onclick="canjear()" disabled>CANJEAR</button>
+    <button class="canje-btn" id="canjeBtn" onclick="canjear()">SOLICITAR LIBERACIÓN</button>
   </div>
 </div>
 
@@ -316,9 +317,10 @@ body{background:var(--dark);color:var(--text);font-family:'Rajdhani',sans-serif;
 <div class="gate-screen" id="gateScreen">
   <div class="gate-icon">🔒</div>
   <div class="gate-title">ACCESO BLOQUEADO</div>
-  <div class="gate-desc">Para seguir jugando necesitas traer <strong style="color:var(--gold)">3 personas nuevas</strong> que le escriban "Hola" a Karla directamente en:<br><br>
-  ✈️ <strong style="color:var(--gold)">@NeoPisk_bot</strong> en Telegram<br>
-  💬 <strong style="color:var(--gold)">WhatsApp 51948115030</strong></div>
+  <div class="gate-desc">Para desbloquear tus tokens $PISK necesitas:<br><br>
+  ✅ <strong style="color:var(--gold)">8 tokens</strong> de misiones completadas<br>
+  ✅ <strong style="color:var(--gold)">2 tokens</strong> por referidos o comisiones<br><br>
+  Cuando alcances los <strong style="color:var(--gold)">10 tokens mínimos</strong>, el admin los libera desde el panel.</div>
 
   <div class="gate-progress">
     <div class="gate-prog-label">
@@ -335,9 +337,9 @@ body{background:var(--dark);color:var(--text);font-family:'Rajdhani',sans-serif;
   </div>
 
   <div class="gate-links">
-    <a class="gate-link" href="https://t.me/NeoPisk_bot" target="_blank">
+    <a class="gate-link" href="https://t.me/Neo_Pisk_Airdrop_bot" target="_blank">
       <span class="gl-icon">✈️</span>
-      <div><div class="gl-text">Karla en Telegram</div><div class="gl-sub">t.me/NeoPisk_bot → enviar "Hola"</div></div>
+      <div><div class="gl-text">Karla en Telegram</div><div class="gl-sub">t.me/Neo_Pisk_Airdrop_bot → enviar "Hola"</div></div>
     </a>
     <a class="gate-link" href="https://wa.me/51948115030?text=Hola" target="_blank">
       <span class="gl-icon">💬</span>
@@ -427,7 +429,7 @@ function addPoints(pts) {
 function updatePtsUI() {
   document.getElementById('totalPts').textContent  = state.totalPts.toLocaleString();
   document.getElementById('ptsDisplay').textContent = state.totalPts.toLocaleString();
-  document.getElementById('canjeBtn').disabled = state.totalPts < POINTS_PER_PISK;
+  // canjeBtn siempre activo — liberación manual por admin
 }
 
 const CD_24H = 24 * 60 * 60 * 1000;
@@ -944,6 +946,7 @@ function endTetris() {
 
 // ── CANJE ─────────────────────────────────────────────
 async function canjear() {
+  toast("⚠️ Los tokens $PISK solo pueden ser liberados por el administrador desde el panel. Acumula 10 tokens (8 misiones + 2 por referidos) para solicitar tu liberación."); return;
   const piskToEarn = Math.floor(state.totalPts / POINTS_PER_PISK);
   if (piskToEarn < 1) { toast('⚠️ Necesitas 1,000 puntos mínimo'); return; }
   const ptsUsados = piskToEarn * POINTS_PER_PISK;
