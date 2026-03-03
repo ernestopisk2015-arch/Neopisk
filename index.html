@@ -12,7 +12,6 @@
     <meta property="og:image" content="https://i.postimg.cc/Js4BXv4X/byd.jpg">
     <meta property="og:url" content="https://ernestopisk2015-arch.github.io/Neopisk/">
     
-    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
@@ -30,11 +29,53 @@
             --neopisk-error: #E63946;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        /* ══════════════════════════════════
+           SISTEMA DE IDIOMAS
+        ══════════════════════════════════ */
+        .lang-en,
+        .lang-pt { display: none; }
+        .lang-es { display: inline; }
+
+        /* Barra de idiomas */
+        #lang-bar {
+            background: #0B1A30;
+            padding: 0.5rem 1.4rem;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 0.6rem;
+            border-bottom: 1px solid rgba(212,175,55,0.2);
+            position: sticky;
+            top: 0;
+            z-index: 9999;
         }
+
+        .lang-btn {
+            background: none;
+            border: 3px solid rgba(255,255,255,0.2);
+            border-radius: 20px;
+            padding: 0;
+            cursor: pointer;
+            width: 76px;
+            height: 30px;
+            overflow: hidden;
+            transition: all 0.25s ease;
+            opacity: 0.45;
+        }
+        .lang-btn img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            pointer-events: none;
+        }
+        .lang-btn.active {
+            border-color: #D4AF37;
+            opacity: 1;
+            box-shadow: 0 0 12px rgba(212,175,55,0.55);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Inter', sans-serif;
@@ -44,15 +85,9 @@
             overflow-x: hidden;
         }
 
-        .font-display {
-            font-family: 'Space Grotesk', sans-serif;
-        }
+        .font-display { font-family: 'Space Grotesk', sans-serif; }
+        .font-mono    { font-family: 'IBM Plex Mono', monospace; }
 
-        .font-mono {
-            font-family: 'IBM Plex Mono', monospace;
-        }
-
-        /* Hero Section with Parallax Effect */
         .hero-section {
             position: relative;
             height: 100vh;
@@ -65,23 +100,17 @@
         }
 
         .hero-bg {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            position: absolute; top: 0; left: 0;
+            width: 100%; height: 100%;
             opacity: 0.15;
             background: url('https://i.postimg.cc/wMvXhZN1/Llama-en-Machu-Picchu-pc-jpg.webp') center/cover;
             filter: grayscale(100%);
         }
 
         .hero-grid {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: 
+            position: absolute; top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-image:
                 linear-gradient(var(--neopisk-gold) 1px, transparent 1px),
                 linear-gradient(90deg, var(--neopisk-gold) 1px, transparent 1px);
             background-size: 100px 100px;
@@ -89,795 +118,483 @@
         }
 
         .hero-content {
-            position: relative;
-            z-index: 10;
-            text-align: center;
-            padding: 2rem;
+            position: relative; z-index: 10;
+            text-align: center; padding: 2rem;
             max-width: 1200px;
         }
 
         .hero-badge {
             display: inline-block;
             padding: 0.5rem 1.5rem;
-            background: rgba(212, 175, 55, 0.15);
+            background: rgba(212,175,55,0.15);
             border: 1px solid var(--neopisk-gold);
             border-radius: 50px;
             color: var(--neopisk-gold);
-            font-size: 0.875rem;
-            font-weight: 600;
-            letter-spacing: 2px;
-            text-transform: uppercase;
+            font-size: 0.875rem; font-weight: 600;
+            letter-spacing: 2px; text-transform: uppercase;
             margin-bottom: 2rem;
             backdrop-filter: blur(10px);
         }
 
         .hero-title {
             font-size: clamp(2.5rem, 10vw, 7rem);
-            font-weight: 700;
-            color: white;
+            font-weight: 700; color: white;
             margin-bottom: 1.5rem;
-            letter-spacing: -0.02em;
-            line-height: 1.1;
+            letter-spacing: -0.02em; line-height: 1.1;
         }
 
         .hero-subtitle {
             font-size: clamp(1rem, 3vw, 2rem);
-            color: rgba(255, 255, 255, 0.8);
-            margin-bottom: 3rem;
-            font-weight: 300;
-            max-width: 800px;
-            margin-left: auto;
-            margin-right: auto;
+            color: rgba(255,255,255,0.8);
+            margin-bottom: 3rem; font-weight: 300;
+            max-width: 800px; margin-left: auto; margin-right: auto;
         }
 
         .hero-stats {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-            gap: 1.5rem;
-            margin-top: 4rem;
-            padding: 2rem;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 20px;
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            gap: 1.5rem; margin-top: 4rem; padding: 2rem;
+            background: rgba(255,255,255,0.05);
+            border-radius: 20px; backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.1);
         }
 
-        .stat-item {
-            text-align: center;
-        }
-
+        .stat-item { text-align: center; }
         .stat-value {
             display: block;
             font-size: clamp(1.5rem, 4vw, 2.5rem);
-            font-weight: 700;
-            color: var(--neopisk-gold);
-            margin-bottom: 0.5rem;
-            line-height: 1.2;
+            font-weight: 700; color: var(--neopisk-gold);
+            margin-bottom: 0.5rem; line-height: 1.2;
         }
-
         .stat-label {
             font-size: clamp(0.7rem, 2vw, 0.875rem);
-            color: rgba(255, 255, 255, 0.7);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            line-height: 1.3;
+            color: rgba(255,255,255,0.7);
+            text-transform: uppercase; letter-spacing: 1px; line-height: 1.3;
         }
 
-        /* Section Styling */
-        .section {
-            padding: 6rem 2rem;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        .section-header {
-            text-align: center;
-            margin-bottom: 4rem;
-        }
+        .section { padding: 6rem 2rem; max-width: 1400px; margin: 0 auto; }
+        .section-header { text-align: center; margin-bottom: 4rem; }
 
         .section-badge {
-            display: inline-block;
-            padding: 0.5rem 1rem;
-            background: rgba(212, 175, 55, 0.1);
-            color: var(--neopisk-gold);
-            border-radius: 50px;
-            font-size: 0.75rem;
-            font-weight: 700;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            margin-bottom: 1rem;
+            display: inline-block; padding: 0.5rem 1rem;
+            background: rgba(212,175,55,0.1); color: var(--neopisk-gold);
+            border-radius: 50px; font-size: 0.75rem; font-weight: 700;
+            letter-spacing: 2px; text-transform: uppercase; margin-bottom: 1rem;
         }
 
         .section-title {
-            font-size: clamp(2rem, 5vw, 3.5rem);
-            font-weight: 700;
-            color: var(--neopisk-navy);
-            margin-bottom: 1rem;
-            letter-spacing: -0.02em;
+            font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 700;
+            color: var(--neopisk-navy); margin-bottom: 1rem; letter-spacing: -0.02em;
         }
 
         .section-description {
-            font-size: 1.125rem;
-            color: var(--neopisk-slate);
-            max-width: 700px;
-            margin: 0 auto;
-            line-height: 1.8;
+            font-size: 1.125rem; color: var(--neopisk-slate);
+            max-width: 700px; margin: 0 auto; line-height: 1.8;
         }
 
-        /* Card Components */
         .card {
-            background: white;
-            border-radius: 20px;
-            padding: 2.5rem;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
-            border: 1px solid rgba(0, 0, 0, 0.05);
-            transition: all 0.3s ease;
-            height: 100%;
+            background: white; border-radius: 20px; padding: 2.5rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+            border: 1px solid rgba(0,0,0,0.05);
+            transition: all 0.3s ease; height: 100%;
         }
-
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-        }
+        .card:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
 
         .card-icon {
-            width: 60px;
-            height: 60px;
+            width: 60px; height: 60px;
             background: linear-gradient(135deg, var(--neopisk-gold), #f4d03f);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 1.5rem;
-            font-size: 1.75rem;
-            color: white;
+            border-radius: 12px; display: flex; align-items: center;
+            justify-content: center; margin-bottom: 1.5rem;
+            font-size: 1.75rem; color: white;
         }
 
-        .card-title {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--neopisk-navy);
-            margin-bottom: 1rem;
-        }
+        .card-title { font-size: 1.5rem; font-weight: 700; color: var(--neopisk-navy); margin-bottom: 1rem; }
+        .card-description { color: var(--neopisk-slate); line-height: 1.7; }
 
-        .card-description {
-            color: var(--neopisk-slate);
-            line-height: 1.7;
-        }
-
-        /* Proof Section */
         .proof-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-top: 3rem;
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem; margin-top: 3rem;
         }
-
         .proof-card {
-            position: relative;
-            border-radius: 20px;
-            overflow: hidden;
-            aspect-ratio: 16/9;
-            cursor: pointer;
-            transition: transform 0.3s ease;
+            position: relative; border-radius: 20px; overflow: hidden;
+            aspect-ratio: 16/9; cursor: pointer; transition: transform 0.3s ease;
         }
-
-        .proof-card:hover {
-            transform: scale(1.02);
-        }
-
-        .proof-card img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
+        .proof-card:hover { transform: scale(1.02); }
+        .proof-card img { width: 100%; height: 100%; object-fit: cover; }
         .proof-overlay {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            padding: 1.5rem;
-            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
-            color: white;
+            position: absolute; bottom: 0; left: 0; right: 0; padding: 1.5rem;
+            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent); color: white;
         }
+        .proof-title { font-size: 1.125rem; font-weight: 700; margin-bottom: 0.5rem; }
+        .proof-meta  { font-size: 0.875rem; opacity: 0.8; }
 
-        .proof-title {
-            font-size: 1.125rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-        }
-
-        .proof-meta {
-            font-size: 0.875rem;
-            opacity: 0.8;
-        }
-
-        /* Ecosystem Grid */
         .ecosystem-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
-            margin-top: 3rem;
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem; margin-top: 3rem;
         }
-
         .ecosystem-card {
-            background: white;
-            border-radius: 20px;
-            padding: 2rem;
-            border: 2px solid transparent;
-            transition: all 0.3s ease;
-            text-align: center;
+            background: white; border-radius: 20px; padding: 2rem;
+            border: 2px solid transparent; transition: all 0.3s ease; text-align: center;
         }
-
         .ecosystem-card:hover {
-            border-color: var(--neopisk-gold);
-            transform: translateY(-5px);
-            box-shadow: 0 20px 40px rgba(212, 175, 55, 0.2);
+            border-color: var(--neopisk-gold); transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(212,175,55,0.2);
         }
-
         .ecosystem-icon {
-            width: 80px;
-            height: 80px;
-            margin: 0 auto 1.5rem;
+            width: 80px; height: 80px; margin: 0 auto 1.5rem;
             background: linear-gradient(135deg, var(--neopisk-navy), var(--neopisk-slate));
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2rem;
-            color: var(--neopisk-gold);
+            border-radius: 50%; display: flex; align-items: center;
+            justify-content: center; font-size: 2rem; color: var(--neopisk-gold);
         }
 
-        /* Partners Section */
         .partners-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 2rem;
-            align-items: center;
-            margin-top: 3rem;
-            padding: 2rem;
-            background: rgba(212, 175, 55, 0.03);
-            border-radius: 20px;
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 2rem; align-items: center; margin-top: 3rem; padding: 2rem;
+            background: rgba(212,175,55,0.03); border-radius: 20px;
         }
-
         .partner-logo {
-            text-align: center;
-            font-weight: 900;
-            font-size: 1.5rem;
-            color: var(--neopisk-slate);
-            opacity: 0.7;
-            transition: opacity 0.3s ease;
+            text-align: center; font-weight: 900; font-size: 1.5rem;
+            color: var(--neopisk-slate); opacity: 0.7; transition: opacity 0.3s ease;
         }
+        .partner-logo:hover { opacity: 1; }
 
-        .partner-logo:hover {
-            opacity: 1;
-        }
-
-        /* Investment Calculator */
         .calculator {
             background: linear-gradient(135deg, var(--neopisk-navy), #1a2942);
-            border-radius: 30px;
-            padding: 3rem;
-            color: white;
-            margin-top: 3rem;
+            border-radius: 30px; padding: 3rem; color: white; margin-top: 3rem;
         }
-
         .calculator-input {
-            width: 100%;
-            padding: 1.5rem;
-            font-size: 2rem;
-            font-weight: 700;
-            border: 2px solid var(--neopisk-gold);
-            border-radius: 15px;
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-            text-align: center;
-            margin-bottom: 2rem;
-            outline: none;
-            backdrop-filter: blur(10px);
+            width: 100%; padding: 1.5rem; font-size: 2rem; font-weight: 700;
+            border: 2px solid var(--neopisk-gold); border-radius: 15px;
+            background: rgba(255,255,255,0.1); color: white; text-align: center;
+            margin-bottom: 2rem; outline: none; backdrop-filter: blur(10px);
         }
+        .calculator-input::placeholder { color: rgba(255,255,255,0.5); }
+        .calculator-result { background: var(--neopisk-gold); padding: 2rem; border-radius: 15px; text-align: center; }
+        .calculator-result-value { font-size: 3rem; font-weight: 900; color: var(--neopisk-navy); font-family: 'IBM Plex Mono', monospace; }
+        .calculator-result-label { font-size: 0.875rem; color: var(--neopisk-navy); opacity: 0.7; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 0.5rem; }
 
-        .calculator-input::placeholder {
-            color: rgba(255, 255, 255, 0.5);
-        }
-
-        .calculator-result {
-            background: var(--neopisk-gold);
-            padding: 2rem;
-            border-radius: 15px;
-            text-align: center;
-        }
-
-        .calculator-result-value {
-            font-size: 3rem;
-            font-weight: 900;
-            color: var(--neopisk-navy);
-            font-family: 'IBM Plex Mono', monospace;
-        }
-
-        .calculator-result-label {
-            font-size: 0.875rem;
-            color: var(--neopisk-navy);
-            opacity: 0.7;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: 0.5rem;
-        }
-
-        /* Team Section */
         .team-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
-            margin-top: 3rem;
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem; margin-top: 3rem;
         }
-
         .team-card {
-            background: white;
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-            transition: transform 0.3s ease;
+            background: white; border-radius: 20px; overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05); transition: transform 0.3s ease;
         }
-
-        .team-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-        }
-
-        .team-image {
-            width: 100%;
-            height: 320px;
-            object-fit: cover;
-        }
-
-        .team-info {
-            padding: 2rem;
-            text-align: center;
-        }
-
-        .team-name {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--neopisk-navy);
-            margin-bottom: 0.5rem;
-        }
-
-        .team-role {
-            color: var(--neopisk-gold);
-            font-weight: 600;
-            text-transform: uppercase;
-            font-size: 0.875rem;
-            letter-spacing: 1px;
-            margin-bottom: 1rem;
-        }
-
-        .team-bio {
-            color: var(--neopisk-slate);
-            font-size: 0.95rem;
-            line-height: 1.6;
-            margin-bottom: 1.5rem;
-        }
-
+        .team-card:hover { transform: translateY(-10px); box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
+        .team-image { width: 100%; height: 320px; object-fit: cover; }
+        .team-info { padding: 2rem; text-align: center; }
+        .team-name { font-size: 1.5rem; font-weight: 700; color: var(--neopisk-navy); margin-bottom: 0.5rem; }
+        .team-role { color: var(--neopisk-gold); font-weight: 600; text-transform: uppercase; font-size: 0.875rem; letter-spacing: 1px; margin-bottom: 1rem; }
+        .team-bio { color: var(--neopisk-slate); font-size: 0.95rem; line-height: 1.6; margin-bottom: 1.5rem; }
         .team-social {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.75rem 1.5rem;
-            background: #1877F2;
-            color: white;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 0.875rem;
-            transition: transform 0.2s ease;
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            padding: 0.75rem 1.5rem; background: #1877F2; color: white;
+            border-radius: 50px; text-decoration: none; font-weight: 600;
+            font-size: 0.875rem; transition: transform 0.2s ease;
         }
+        .team-social:hover { transform: scale(1.05); }
 
-        .team-social:hover {
-            transform: scale(1.05);
-        }
-
-        /* CTA Buttons */
         .btn {
-            display: inline-block;
-            padding: 1.25rem 2.5rem;
-            border-radius: 50px;
-            font-weight: 700;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-size: 0.875rem;
+            display: inline-block; padding: 1.25rem 2.5rem; border-radius: 50px;
+            font-weight: 700; text-decoration: none; transition: all 0.3s ease;
+            text-transform: uppercase; letter-spacing: 1px; font-size: 0.875rem;
         }
-
         .btn-primary {
-            background: var(--neopisk-gold);
-            color: var(--neopisk-navy);
-            box-shadow: 0 4px 20px rgba(212, 175, 55, 0.4);
+            background: var(--neopisk-gold); color: var(--neopisk-navy);
+            box-shadow: 0 4px 20px rgba(212,175,55,0.4);
         }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(212,175,55,0.6); }
+        .btn-secondary { background: transparent; color: white; border: 2px solid white; }
+        .btn-secondary:hover { background: white; color: var(--neopisk-navy); }
 
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(212, 175, 55, 0.6);
-        }
-
-        .btn-secondary {
-            background: transparent;
-            color: white;
-            border: 2px solid white;
-        }
-
-        .btn-secondary:hover {
-            background: white;
-            color: var(--neopisk-navy);
-        }
-
-        /* Floating Action Buttons */
         .fab-container {
-            position: fixed;
-            bottom: 2rem;
-            right: 2rem;
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-            z-index: 1000;
+            position: fixed; bottom: 2rem; right: 2rem;
+            display: flex; flex-direction: column; gap: 1rem; z-index: 1000;
         }
-
         .fab {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 1.75rem;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-            transition: transform 0.3s ease;
-            text-decoration: none;
+            width: 60px; height: 60px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            color: white; font-size: 1.75rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            transition: transform 0.3s ease; text-decoration: none;
         }
+        .fab:hover { transform: scale(1.1); }
+        .fab-whatsapp { background: #25d366; }
+        .fab-telegram  { background: #0088cc; }
 
-        .fab:hover {
-            transform: scale(1.1);
-        }
-
-        .fab-whatsapp {
-            background: #25d366;
-        }
-
-        .fab-telegram {
-            background: #0088cc;
-        }
-
-        /* Roadmap */
-        .roadmap {
-            position: relative;
-            padding: 3rem 0;
-        }
-
+        .roadmap { position: relative; padding: 3rem 0; }
         .roadmap::before {
-            content: '';
-            position: absolute;
-            left: 50%;
-            top: 0;
-            bottom: 0;
-            width: 2px;
+            content: ''; position: absolute;
+            left: 50%; top: 0; bottom: 0; width: 2px;
             background: linear-gradient(to bottom, var(--neopisk-gold), transparent);
             transform: translateX(-50%);
         }
-
         .roadmap-item {
-            position: relative;
-            margin-bottom: 4rem;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 4rem;
+            position: relative; margin-bottom: 4rem;
+            display: grid; grid-template-columns: 1fr 1fr; gap: 4rem;
         }
-
-        .roadmap-item:nth-child(even) .roadmap-content {
-            grid-column: 2;
-        }
-
-        .roadmap-item:nth-child(even) .roadmap-date {
-            grid-column: 1;
-            grid-row: 1;
-            text-align: right;
-        }
-
+        .roadmap-item:nth-child(even) .roadmap-content { grid-column: 2; }
+        .roadmap-item:nth-child(even) .roadmap-date   { grid-column: 1; grid-row: 1; text-align: right; }
         .roadmap-dot {
-            position: absolute;
-            left: 50%;
-            top: 50%;
+            position: absolute; left: 50%; top: 50%;
             transform: translate(-50%, -50%);
-            width: 20px;
-            height: 20px;
-            background: var(--neopisk-gold);
-            border-radius: 50%;
-            border: 4px solid white;
-            box-shadow: 0 0 0 4px var(--neopisk-gold);
-            z-index: 10;
+            width: 20px; height: 20px; background: var(--neopisk-gold);
+            border-radius: 50%; border: 4px solid white;
+            box-shadow: 0 0 0 4px var(--neopisk-gold); z-index: 10;
         }
-
         .roadmap-content {
-            background: white;
-            padding: 2rem;
-            border-radius: 15px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            background: white; padding: 2rem; border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
         }
+        .roadmap-quarter { font-size: 2rem; font-weight: 700; color: var(--neopisk-gold); margin-bottom: 0.5rem; }
+        .roadmap-title   { font-size: 1.25rem; font-weight: 700; color: var(--neopisk-navy); margin-bottom: 1rem; }
+        .roadmap-description { color: var(--neopisk-slate); line-height: 1.6; }
 
-        .roadmap-quarter {
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--neopisk-gold);
-            margin-bottom: 0.5rem;
-        }
-
-        .roadmap-title {
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: var(--neopisk-navy);
-            margin-bottom: 1rem;
-        }
-
-        .roadmap-description {
-            color: var(--neopisk-slate);
-            line-height: 1.6;
-        }
-
-        /* Responsive */
         @media (max-width: 768px) {
-            .roadmap::before {
-                left: 20px;
-            }
-
-            .roadmap-item {
-                grid-template-columns: 1fr;
-                padding-left: 60px;
-            }
-
+            .roadmap::before { left: 20px; }
+            .roadmap-item { grid-template-columns: 1fr; padding-left: 60px; }
             .roadmap-item:nth-child(even) .roadmap-content,
-            .roadmap-item:nth-child(even) .roadmap-date {
-                grid-column: 1;
-                grid-row: auto;
-                text-align: left;
-            }
-
-            .roadmap-dot {
-                left: 20px;
-            }
-
-            .hero-stats {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 1rem;
-                padding: 1.5rem;
-                margin-top: 2rem;
-            }
-            
-            .hero-section {
-                min-height: 600px;
-                height: auto;
-                padding: 2rem 0;
-            }
-            
-            .hero-content {
-                padding: 1rem;
-            }
-            
-            .stat-value {
-                font-size: 1.25rem !important;
-            }
-            
-            .stat-label {
-                font-size: 0.65rem !important;
-            }
+            .roadmap-item:nth-child(even) .roadmap-date { grid-column: 1; grid-row: auto; text-align: left; }
+            .roadmap-dot { left: 20px; }
+            .hero-stats { grid-template-columns: repeat(2, 1fr); gap: 1rem; padding: 1.5rem; margin-top: 2rem; }
+            .hero-section { min-height: 600px; height: auto; padding: 2rem 0; }
+            .hero-content { padding: 1rem; }
+            .stat-value { font-size: 1.25rem !important; }
+            .stat-label { font-size: 0.65rem !important; }
         }
 
-        /* Loading Animation */
         @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(30px); }
+            to   { opacity: 1; transform: translateY(0); }
         }
+        .fade-in-up { animation: fadeInUp 0.8s ease-out; }
 
-        .fade-in-up {
-            animation: fadeInUp 0.8s ease-out;
-        }
-
-        /* Video Modal */
         .video-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.95);
-            z-index: 9999;
-            padding: 2rem;
+            display: none; position: fixed; top: 0; left: 0;
+            width: 100%; height: 100%; background: rgba(0,0,0,0.95);
+            z-index: 9999; padding: 2rem;
         }
-
-        .video-modal.active {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .video-container {
-            position: relative;
-            width: 100%;
-            max-width: 1200px;
-            aspect-ratio: 16/9;
-        }
-
+        .video-modal.active { display: flex; align-items: center; justify-content: center; }
+        .video-container { position: relative; width: 100%; max-width: 1200px; aspect-ratio: 16/9; }
         .video-close {
-            position: absolute;
-            top: -50px;
-            right: 0;
-            background: white;
-            color: var(--neopisk-navy);
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            font-size: 1.5rem;
-            transition: transform 0.2s ease;
+            position: absolute; top: -50px; right: 0;
+            background: white; color: var(--neopisk-navy);
+            width: 40px; height: 40px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; font-size: 1.5rem; transition: transform 0.2s ease;
         }
+        .video-close:hover { transform: scale(1.1); }
 
-        .video-close:hover {
-            transform: scale(1.1);
-        }
-
-        /* Progress Bar */
         .progress-bar {
-            width: 100%;
-            height: 8px;
-            background: rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
-            overflow: hidden;
-            margin-top: 1rem;
+            width: 100%; height: 8px; background: rgba(0,0,0,0.1);
+            border-radius: 10px; overflow: hidden; margin-top: 1rem;
         }
-
         .progress-fill {
             height: 100%;
             background: linear-gradient(90deg, var(--neopisk-gold), var(--neopisk-mint));
-            border-radius: 10px;
-            transition: width 0.3s ease;
+            border-radius: 10px; transition: width 0.3s ease;
         }
 
-        /* Faith Banner */
         .faith-banner {
-            background: var(--neopisk-navy);
-            color: white;
-            padding: 1rem;
-            text-align: center;
-            font-size: 0.875rem;
-            font-style: italic;
-            opacity: 0.9;
+            background: var(--neopisk-navy); color: white;
+            padding: 1rem; text-align: center;
+            font-size: 0.875rem; font-style: italic; opacity: 0.9;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50%       { transform: scale(1.05); }
         }
     </style>
 </head>
 <body>
-    <!-- Faith Banner -->
-    <div class="faith-banner">
-        "Todo lo puedo en Cristo que me fortalece" — Filipenses 4:13
+
+    <!-- ══════════════ BARRA DE IDIOMAS ══════════════ -->
+    <div id="lang-bar">
+        <button class="lang-btn active" id="btn-es" onclick="setLang('es')" title="Español">
+            <img src="https://flagcdn.com/w80/pe.png" alt="Español">
+        </button>
+        <button class="lang-btn" id="btn-en" onclick="setLang('en')" title="English">
+            <img src="https://flagcdn.com/w80/us.png" alt="English">
+        </button>
+        <button class="lang-btn" id="btn-pt" onclick="setLang('pt')" title="Português">
+            <img src="https://flagcdn.com/w80/br.png" alt="Português">
+        </button>
     </div>
 
-    <!-- Hero Section -->
+    <!-- Faith Banner -->
+    <div class="faith-banner">
+        <span class="lang-es">"Todo lo puedo en Cristo que me fortalece" — Filipenses 4:13</span>
+        <span class="lang-en">"I can do all things through Christ who strengthens me" — Philippians 4:13</span>
+        <span class="lang-pt">"Tudo posso naquele que me fortalece" — Filipenses 4:13</span>
+    </div>
+
+    <!-- ══════════════ HERO ══════════════ -->
     <section class="hero-section">
         <div class="hero-bg"></div>
         <div class="hero-grid"></div>
         
         <div class="hero-content">
-            <div class="hero-badge">Real Asset Investment Platform</div>
+            <div class="hero-badge">
+                <span class="lang-es">Plataforma de Inversión en Activos Reales</span>
+                <span class="lang-en">Real Asset Investment Platform</span>
+                <span class="lang-pt">Plataforma de Investimento em Ativos Reais</span>
+            </div>
             
             <h1 class="hero-title font-display">NEO PISK</h1>
             <p class="hero-subtitle">
-                Inversión respaldada por activos reales operativos. <br>
-                Retornos verificables desde el primer día.
+                <span class="lang-es">Inversión respaldada por activos reales operativos.<br>Retornos verificables desde el primer día.</span>
+                <span class="lang-en">Investment backed by real operating assets.<br>Verifiable returns from day one.</span>
+                <span class="lang-pt">Investimento respaldado por ativos reais operacionais.<br>Retornos verificáveis desde o primeiro dia.</span>
             </p>
             
             <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: 2rem;">
-                <a href="#invertir" class="btn btn-primary">Invertir Ahora</a>
-                <a href="https://docs.google.com/document/d/1FaaZDSKgsv_6CkeuQH1gfRxOpQ-Dlj5vy0Thm7-7tB8/edit?usp=sharing" target="_blank" class="btn btn-secondary">Ver Whitepaper</a>
+                <a href="#invertir" class="btn btn-primary">
+                    <span class="lang-es">Invertir Ahora</span>
+                    <span class="lang-en">Invest Now</span>
+                    <span class="lang-pt">Investir Agora</span>
+                </a>
+                <a href="https://docs.google.com/document/d/1FaaZDSKgsv_6CkeuQH1gfRxOpQ-Dlj5vy0Thm7-7tB8/edit?usp=sharing" target="_blank" class="btn btn-secondary">
+                    <span class="lang-es">Ver Whitepaper</span>
+                    <span class="lang-en">View Whitepaper</span>
+                    <span class="lang-pt">Ver Whitepaper</span>
+                </a>
             </div>
 
             <div class="hero-stats">
                 <div class="stat-item">
                     <span class="stat-value font-mono">PREVENTA</span>
-                    <span class="stat-label">Primeras unidades en venta</span>
+                    <span class="stat-label">
+                        <span class="lang-es">Primeras unidades en venta</span>
+                        <span class="lang-en">First units on sale</span>
+                        <span class="lang-pt">Primeiras unidades à venda</span>
+                    </span>
                 </div>
                 <div class="stat-item">
                     <span class="stat-value font-mono">10 Autos</span>
-                    <span class="stat-label">Meta de flota</span>
+                    <span class="stat-label">
+                        <span class="lang-es">Meta de flota</span>
+                        <span class="lang-en">Fleet goal</span>
+                        <span class="lang-pt">Meta da frota</span>
+                    </span>
                 </div>
                 <div class="stat-item">
                     <span class="stat-value font-mono">S/ 21K</span>
-                    <span class="stat-label">Ingresos meta mensual</span>
+                    <span class="stat-label">
+                        <span class="lang-es">Ingresos meta mensual</span>
+                        <span class="lang-en">Monthly revenue goal</span>
+                        <span class="lang-pt">Meta de receita mensal</span>
+                    </span>
                 </div>
                 <div class="stat-item">
                     <span class="stat-value font-mono">$0.10</span>
-                    <span class="stat-label">Precio token $PISK</span>
+                    <span class="stat-label">
+                        <span class="lang-es">Precio token $PISK</span>
+                        <span class="lang-en">$PISK token price</span>
+                        <span class="lang-pt">Preço do token $PISK</span>
+                    </span>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Value Proposition -->
+    <!-- ══════════════ VALUE PROPOSITION ══════════════ -->
     <section class="section">
         <div class="section-header">
-            <span class="section-badge">Por qué Neo Pisk</span>
-            <h2 class="section-title font-display">Inversión Real, No Promesas</h2>
+            <span class="section-badge">
+                <span class="lang-es">Por qué Neo Pisk</span>
+                <span class="lang-en">Why Neo Pisk</span>
+                <span class="lang-pt">Por que Neo Pisk</span>
+            </span>
+            <h2 class="section-title font-display">
+                <span class="lang-es">Inversión Real, No Promesas</span>
+                <span class="lang-en">Real Investment, Not Promises</span>
+                <span class="lang-pt">Investimento Real, Não Promessas</span>
+            </h2>
             <p class="section-description">
-                Estamos en preventa adquiriendo las primeras unidades de nuestra flota. 
-                Operaremos vehículos generando ingresos diarios en las plataformas de movilidad más grandes del Perú. 
-                Parte de las utilidades se inyecta a liquidez del token, beneficiando a todos los holders.
+                <span class="lang-es">Estamos en preventa adquiriendo las primeras unidades de nuestra flota. Operaremos vehículos generando ingresos diarios en las plataformas de movilidad más grandes del Perú. Parte de las utilidades se inyecta a liquidez del token, beneficiando a todos los holders.</span>
+                <span class="lang-en">We are in presale acquiring the first units of our fleet. We will operate vehicles generating daily income on Peru's largest mobility platforms. Part of the profits are injected into token liquidity, benefiting all holders.</span>
+                <span class="lang-pt">Estamos em pré-venda adquirindo as primeiras unidades da nossa frota. Operaremos veículos gerando receita diária nas maiores plataformas de mobilidade do Peru. Parte dos lucros é injetada na liquidez do token, beneficiando todos os holders.</span>
             </p>
         </div>
 
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
             <div class="card">
-                <div class="card-icon">
-                    <i class="fas fa-check-circle"></i>
-                </div>
-                <h3 class="card-title font-display">Tracción Verificable</h3>
+                <div class="card-icon"><i class="fas fa-check-circle"></i></div>
+                <h3 class="card-title font-display">
+                    <span class="lang-es">Tracción Verificable</span>
+                    <span class="lang-en">Verifiable Traction</span>
+                    <span class="lang-pt">Tração Verificável</span>
+                </h3>
                 <p class="card-description">
-                    Flota operativa generando S/ 70 diarios por vehículo en DIDI, Yango e InDrive. 
-                    Resultados auditables en tiempo real.
+                    <span class="lang-es">Flota operativa generando S/ 70 diarios por vehículo en DIDI, Yango e InDrive. Resultados auditables en tiempo real.</span>
+                    <span class="lang-en">Operating fleet generating S/ 70 daily per vehicle on DIDI, Yango and InDrive. Auditable results in real time.</span>
+                    <span class="lang-pt">Frota operacional gerando S/ 70 diários por veículo no DIDI, Yango e InDrive. Resultados auditáveis em tempo real.</span>
                 </p>
             </div>
 
             <div class="card">
-                <div class="card-icon">
-                    <i class="fas fa-shield-alt"></i>
-                </div>
-                <h3 class="card-title font-display">Respaldo Institucional</h3>
+                <div class="card-icon"><i class="fas fa-shield-alt"></i></div>
+                <h3 class="card-title font-display">
+                    <span class="lang-es">Respaldo Institucional</span>
+                    <span class="lang-en">Institutional Backing</span>
+                    <span class="lang-pt">Respaldo Institucional</span>
+                </h3>
                 <p class="card-description">
-                    Alianza estratégica con VCM Subastas capturando activos de Mapfre, Pacífico e 
-                    Interseguro a precios preferenciales.
+                    <span class="lang-es">Alianza estratégica con VCM Subastas capturando activos de Mapfre, Pacífico e Interseguro a precios preferenciales.</span>
+                    <span class="lang-en">Strategic alliance with VCM Subastas capturing assets from Mapfre, Pacífico and Interseguro at preferential prices.</span>
+                    <span class="lang-pt">Aliança estratégica com VCM Subastas capturando ativos da Mapfre, Pacífico e Interseguro a preços preferenciais.</span>
                 </p>
             </div>
 
             <div class="card">
-                <div class="card-icon">
-                    <i class="fas fa-chart-line"></i>
-                </div>
-                <h3 class="card-title font-display">Modelo Escalable</h3>
+                <div class="card-icon"><i class="fas fa-chart-line"></i></div>
+                <h3 class="card-title font-display">
+                    <span class="lang-es">Modelo Escalable</span>
+                    <span class="lang-en">Scalable Model</span>
+                    <span class="lang-pt">Modelo Escalável</span>
+                </h3>
                 <p class="card-description">
-                    De 1 a 10 vehículos en operación. Próxima fase: Flota BYD eléctrica 
-                    y expansión a robótica comercial.
+                    <span class="lang-es">De 1 a 10 vehículos en operación. Próxima fase: Flota BYD eléctrica y expansión a robótica comercial.</span>
+                    <span class="lang-en">From 1 to 10 vehicles in operation. Next phase: BYD electric fleet and expansion to commercial robotics.</span>
+                    <span class="lang-pt">De 1 a 10 veículos em operação. Próxima fase: Frota elétrica BYD e expansão para robótica comercial.</span>
                 </p>
             </div>
 
             <div class="card">
-                <div class="card-icon">
-                    <i class="fas fa-coins"></i>
-                </div>
-                <h3 class="card-title font-display">Tokenización Web3</h3>
+                <div class="card-icon"><i class="fas fa-coins"></i></div>
+                <h3 class="card-title font-display">
+                    <span class="lang-es">Tokenización Web3</span>
+                    <span class="lang-en">Web3 Tokenization</span>
+                    <span class="lang-pt">Tokenização Web3</span>
+                </h3>
                 <p class="card-description">
-                    Parte de las utilidades operativas se inyectan a liquidez del token $PISK. 
-                    Política de Buyback & Burn para incremento de valor sostenido. Todos ganan cuando sube el precio.
+                    <span class="lang-es">Parte de las utilidades operativas se inyectan a liquidez del token $PISK. Política de Buyback &amp; Burn para incremento de valor sostenido. Todos ganan cuando sube el precio.</span>
+                    <span class="lang-en">Part of operating profits are injected into $PISK token liquidity. Buyback &amp; Burn policy for sustained value increase. Everyone wins when the price rises.</span>
+                    <span class="lang-pt">Parte dos lucros operacionais são injetados na liquidez do token $PISK. Política de Buyback &amp; Burn para aumento sustentado de valor. Todos ganham quando o preço sobe.</span>
                 </p>
             </div>
         </div>
     </section>
 
-    <!-- Proof Section -->
+    <!-- ══════════════ PROOF SECTION ══════════════ -->
     <section class="section" style="background: rgba(212, 175, 55, 0.03);">
         <div class="section-header">
-            <span class="section-badge">Evidencia Real</span>
-            <h2 class="section-title font-display">Probado en las Calles</h2>
+            <span class="section-badge">
+                <span class="lang-es">Evidencia Real</span>
+                <span class="lang-en">Real Evidence</span>
+                <span class="lang-pt">Evidência Real</span>
+            </span>
+            <h2 class="section-title font-display">
+                <span class="lang-es">Probado en las Calles</span>
+                <span class="lang-en">Proven on the Streets</span>
+                <span class="lang-pt">Provado nas Ruas</span>
+            </h2>
             <p class="section-description">
-                Este proyecto nace de la operación diaria de mi propia camioneta. 
-                No es teoría, es experiencia validada en campo.
+                <span class="lang-es">Este proyecto nace de la operación diaria de mi propia camioneta. No es teoría, es experiencia validada en campo.</span>
+                <span class="lang-en">This project was born from the daily operation of my own truck. Not theory — validated field experience.</span>
+                <span class="lang-pt">Este projeto nasceu da operação diária do meu próprio veículo. Não é teoria, é experiência validada em campo.</span>
             </p>
         </div>
 
@@ -885,29 +602,53 @@
             <div class="proof-card" onclick="openVideo('yWqB9RB3cpQ')">
                 <img src="asset/image-1.jpg" alt="Validación Neo Pisk">
                 <div class="proof-overlay">
-                    <div class="proof-title">✅ Validación Real en Operación</div>
-                    <div class="proof-meta">Ver testimonio completo</div>
+                    <div class="proof-title">
+                        <span class="lang-es">✅ Validación Real en Operación</span>
+                        <span class="lang-en">✅ Real Validation in Operation</span>
+                        <span class="lang-pt">✅ Validação Real em Operação</span>
+                    </div>
+                    <div class="proof-meta">
+                        <span class="lang-es">Ver testimonio completo</span>
+                        <span class="lang-en">Watch full testimony</span>
+                        <span class="lang-pt">Ver depoimento completo</span>
+                    </div>
                 </div>
             </div>
 
             <div class="proof-card" onclick="openVideo('SDT_5cG1Nyw')">
                 <img src="https://i.postimg.cc/Js4BXv4X/byd.jpg" alt="BYD Seagull">
                 <div class="proof-overlay">
-                    <div class="proof-title">⚡ Próxima Fase: Flota BYD Eléctrica</div>
-                    <div class="proof-meta">Visión 2026</div>
+                    <div class="proof-title">
+                        <span class="lang-es">⚡ Próxima Fase: Flota BYD Eléctrica</span>
+                        <span class="lang-en">⚡ Next Phase: BYD Electric Fleet</span>
+                        <span class="lang-pt">⚡ Próxima Fase: Frota Elétrica BYD</span>
+                    </div>
+                    <div class="proof-meta">
+                        <span class="lang-es">Visión 2026</span>
+                        <span class="lang-en">Vision 2026</span>
+                        <span class="lang-pt">Visão 2026</span>
+                    </div>
                 </div>
             </div>
 
             <div class="proof-card" onclick="openVideo('0Moim3jc54k')">
                 <img src="https://i.postimg.cc/mtcrG4DY/torito.jpg" alt="Bajaj Retrofit">
                 <div class="proof-overlay">
-                    <div class="proof-title">🛠️ Tecnología Retrofit Bajaj</div>
-                    <div class="proof-meta">Transformación eléctrica</div>
+                    <div class="proof-title">
+                        <span class="lang-es">🛠️ Tecnología Retrofit Bajaj</span>
+                        <span class="lang-en">🛠️ Bajaj Retrofit Technology</span>
+                        <span class="lang-pt">🛠️ Tecnologia Retrofit Bajaj</span>
+                    </div>
+                    <div class="proof-meta">
+                        <span class="lang-es">Transformación eléctrica</span>
+                        <span class="lang-en">Electric transformation</span>
+                        <span class="lang-pt">Transformação elétrica</span>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- LinkXpress Partner Highlight -->
+        <!-- LinkXpress -->
         <div style="max-width: 900px; margin: 4rem auto; background: white; border-radius: 20px; padding: 2.5rem; box-shadow: 0 10px 40px rgba(0,0,0,0.1);">
             <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 2rem; align-items: center;">
                 <div style="text-align: center;">
@@ -915,86 +656,94 @@
                 </div>
                 <div>
                     <h3 style="font-size: 1.75rem; font-weight: 700; color: var(--neopisk-navy); margin-bottom: 0.5rem;">LinkXpress</h3>
-                    <p style="color: var(--neopisk-mint); font-weight: 700; text-transform: uppercase; font-size: 0.875rem; margin-bottom: 1rem;">Agente de Aduana Oficial</p>
+                    <p style="color: var(--neopisk-mint); font-weight: 700; text-transform: uppercase; font-size: 0.875rem; margin-bottom: 1rem;">
+                        <span class="lang-es">Agente de Aduana Oficial</span>
+                        <span class="lang-en">Official Customs Agent</span>
+                        <span class="lang-pt">Agente Alfandegário Oficial</span>
+                    </p>
                     <p style="color: var(--neopisk-slate); line-height: 1.7;">
-                        Aliado estratégico garantizando importación segura de tecnología BYD, 
-                        Neotix y componentes de hidrógeno. Operaciones aduaneras certificadas.
+                        <span class="lang-es">Aliado estratégico garantizando importación segura de tecnología BYD, Neotix y componentes de hidrógeno. Operaciones aduaneras certificadas.</span>
+                        <span class="lang-en">Strategic partner ensuring safe import of BYD, Neotix technology and hydrogen components. Certified customs operations.</span>
+                        <span class="lang-pt">Parceiro estratégico garantindo importação segura de tecnologia BYD, Neotix e componentes de hidrogênio. Operações alfandegárias certificadas.</span>
                     </p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Ecosystem -->
+    <!-- ══════════════ ECOSYSTEM ══════════════ -->
     <section class="section">
         <div class="section-header">
-            <span class="section-badge">Ecosistema Integrado</span>
-            <h2 class="section-title font-display">Múltiples Verticales de Negocio</h2>
+            <span class="section-badge">
+                <span class="lang-es">Ecosistema Integrado</span>
+                <span class="lang-en">Integrated Ecosystem</span>
+                <span class="lang-pt">Ecossistema Integrado</span>
+            </span>
+            <h2 class="section-title font-display">
+                <span class="lang-es">Múltiples Verticales de Negocio</span>
+                <span class="lang-en">Multiple Business Verticals</span>
+                <span class="lang-pt">Múltiplos Verticais de Negócio</span>
+            </h2>
             <p class="section-description">
-                Diversificación estratégica en movilidad, tecnología y energía limpia. 
-                Un ecosistema completo de activos reales tokenizados.
+                <span class="lang-es">Diversificación estratégica en movilidad, tecnología y energía limpia. Un ecosistema completo de activos reales tokenizados.</span>
+                <span class="lang-en">Strategic diversification in mobility, technology and clean energy. A complete ecosystem of tokenized real assets.</span>
+                <span class="lang-pt">Diversificação estratégica em mobilidade, tecnologia e energia limpa. Um ecossistema completo de ativos reais tokenizados.</span>
             </p>
         </div>
 
         <div class="ecosystem-grid">
             <div class="ecosystem-card">
-                <div class="ecosystem-icon">
-                    <i class="fas fa-car"></i>
-                </div>
-                <h3 style="font-size: 1.25rem; font-weight: 700; color: var(--neopisk-navy); margin-bottom: 1rem;">
-                    Motors & Fleet
-                </h3>
+                <div class="ecosystem-icon"><i class="fas fa-car"></i></div>
+                <h3 style="font-size: 1.25rem; font-weight: 700; color: var(--neopisk-navy); margin-bottom: 1rem;">Motors &amp; Fleet</h3>
                 <p style="color: var(--neopisk-slate); margin-bottom: 1.5rem;">
-                    Flota operativa GNV y eléctrica en plataformas de movilidad. 
-                    Generación de ingresos diarios verificables.
+                    <span class="lang-es">Flota operativa GNV y eléctrica en plataformas de movilidad. Generación de ingresos diarios verificables.</span>
+                    <span class="lang-en">GNV and electric operating fleet on mobility platforms. Verifiable daily income generation.</span>
+                    <span class="lang-pt">Frota operacional GNV e elétrica em plataformas de mobilidade. Geração de receita diária verificável.</span>
                 </p>
                 <a href="tec.html" style="color: var(--neopisk-gold); font-weight: 600; text-decoration: none;">
-                    Ver detalles →
+                    <span class="lang-es">Ver detalles →</span>
+                    <span class="lang-en">View details →</span>
+                    <span class="lang-pt">Ver detalhes →</span>
                 </a>
             </div>
 
             <div class="ecosystem-card">
-                <div class="ecosystem-icon">
-                    <i class="fas fa-cube"></i>
-                </div>
-                <h3 style="font-size: 1.25rem; font-weight: 700; color: var(--neopisk-navy); margin-bottom: 1rem;">
-                    Web3 Tokenization
-                </h3>
+                <div class="ecosystem-icon"><i class="fas fa-cube"></i></div>
+                <h3 style="font-size: 1.25rem; font-weight: 700; color: var(--neopisk-navy); margin-bottom: 1rem;">Web3 Tokenization</h3>
                 <p style="color: var(--neopisk-slate); margin-bottom: 1.5rem;">
-                    Transformación de activos reales en tokens digitales. 
-                    Liquidez instantánea y transparencia blockchain.
+                    <span class="lang-es">Transformación de activos reales en tokens digitales. Liquidez instantánea y transparencia blockchain.</span>
+                    <span class="lang-en">Transformation of real assets into digital tokens. Instant liquidity and blockchain transparency.</span>
+                    <span class="lang-pt">Transformação de ativos reais em tokens digitais. Liquidez instantânea e transparência blockchain.</span>
                 </p>
                 <a href="tec.html" style="color: var(--neopisk-gold); font-weight: 600; text-decoration: none;">
-                    Ver portal →
+                    <span class="lang-es">Ver portal →</span>
+                    <span class="lang-en">View portal →</span>
+                    <span class="lang-pt">Ver portal →</span>
                 </a>
             </div>
 
             <div class="ecosystem-card">
-                <div class="ecosystem-icon">
-                    <i class="fas fa-atom"></i>
-                </div>
-                <h3 style="font-size: 1.25rem; font-weight: 700; color: var(--neopisk-navy); margin-bottom: 1rem;">
-                    Hydrogen Tech
-                </h3>
+                <div class="ecosystem-icon"><i class="fas fa-atom"></i></div>
+                <h3 style="font-size: 1.25rem; font-weight: 700; color: var(--neopisk-navy); margin-bottom: 1rem;">Hydrogen Tech</h3>
                 <p style="color: var(--neopisk-slate); margin-bottom: 1.5rem;">
-                    Río Perené Vision: Transformando agua en energía limpia. 
-                    Infraestructura de hidrógeno verde para Perú.
+                    <span class="lang-es">Río Perené Vision: Transformando agua en energía limpia. Infraestructura de hidrógeno verde para Perú.</span>
+                    <span class="lang-en">Río Perené Vision: Transforming water into clean energy. Green hydrogen infrastructure for Peru.</span>
+                    <span class="lang-pt">Río Perené Vision: Transformando água em energia limpa. Infraestrutura de hidrogênio verde para o Peru.</span>
                 </p>
                 <a href="hydrogen.html" style="color: var(--neopisk-gold); font-weight: 600; text-decoration: none;">
-                    Ver proyecto →
+                    <span class="lang-es">Ver proyecto →</span>
+                    <span class="lang-en">View project →</span>
+                    <span class="lang-pt">Ver projeto →</span>
                 </a>
             </div>
 
             <div class="ecosystem-card">
-                <div class="ecosystem-icon">
-                    <i class="fas fa-leaf"></i>
-                </div>
-                <h3 style="font-size: 1.25rem; font-weight: 700; color: var(--neopisk-navy); margin-bottom: 1rem;">
-                    Sustainable Agriculture
-                </h3>
+                <div class="ecosystem-icon"><i class="fas fa-leaf"></i></div>
+                <h3 style="font-size: 1.25rem; font-weight: 700; color: var(--neopisk-navy); margin-bottom: 1rem;">Sustainable Agriculture</h3>
                 <p style="color: var(--neopisk-slate); margin-bottom: 1.5rem;">
-                    Tokenización de cacao y café de Selva Central. 
-                    Blockchain para trazabilidad y comercio justo.
+                    <span class="lang-es">Tokenización de cacao y café de Selva Central. Blockchain para trazabilidad y comercio justo.</span>
+                    <span class="lang-en">Tokenization of cacao and coffee from Central Jungle. Blockchain for traceability and fair trade.</span>
+                    <span class="lang-pt">Tokenização de cacau e café da Selva Central. Blockchain para rastreabilidade e comércio justo.</span>
                 </p>
                 <a href="https://ecopisk.lat" target="_blank" style="color: var(--neopisk-gold); font-weight: 600; text-decoration: none;">
                     Visitar ecopisk.lat →
@@ -1003,16 +752,19 @@
         </div>
     </section>
 
-    <!-- Advanced Robotics -->
+    <!-- ══════════════ ADVANCED ROBOTICS ══════════════ -->
     <section class="section" style="background: linear-gradient(135deg, var(--neopisk-navy), #1a2942); color: white;">
         <div class="section-header">
-            <span class="section-badge" style="background: rgba(255,255,255,0.1); color: var(--neopisk-gold);">
-                Advanced Technology
-            </span>
-            <h2 class="section-title font-display" style="color: white;">Robótica de Próxima Generación</h2>
+            <span class="section-badge" style="background: rgba(255,255,255,0.1); color: var(--neopisk-gold);">Advanced Technology</span>
+            <h2 class="section-title font-display" style="color: white;">
+                <span class="lang-es">Robótica de Próxima Generación</span>
+                <span class="lang-en">Next Generation Robotics</span>
+                <span class="lang-pt">Robótica de Próxima Geração</span>
+            </h2>
             <p class="section-description" style="color: rgba(255,255,255,0.8);">
-                Importación y distribución de robots humanoides de clase mundial. 
-                Soporte técnico certificado en Perú.
+                <span class="lang-es">Importación y distribución de robots humanoides de clase mundial. Soporte técnico certificado en Perú.</span>
+                <span class="lang-en">Import and distribution of world-class humanoid robots. Certified technical support in Peru.</span>
+                <span class="lang-pt">Importação e distribuição de robôs humanoides de classe mundial. Suporte técnico certificado no Peru.</span>
             </p>
         </div>
 
@@ -1020,33 +772,39 @@
             <!-- Neotix N2 -->
             <div style="background: rgba(255,255,255,0.05); border-radius: 20px; padding: 2.5rem; backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.1);">
                 <div style="position: relative; border-radius: 15px; overflow: hidden; margin-bottom: 2rem; cursor: pointer;" onclick="openVideo('Z8xpz9G3628')">
-                    <img src="https://i.postimg.cc/Pq3j58dn/the-noetix-robotics-n2-humanoid-robot-displayed-at-the-companys-offices-in-beijing-china-on.jpg" 
-                         style="width: 100%; border-radius: 15px;">
-                    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 60px; height: 60px; background: rgba(212, 175, 55, 0.9); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem;">
-                        ▶
-                    </div>
+                    <img src="https://i.postimg.cc/Pq3j58dn/the-noetix-robotics-n2-humanoid-robot-displayed-at-the-companys-offices-in-beijing-china-on.jpg" style="width: 100%; border-radius: 15px;">
+                    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 60px; height: 60px; background: rgba(212,175,55,0.9); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem;">▶</div>
                 </div>
                 <h3 style="font-size: 1.75rem; font-weight: 700; margin-bottom: 1rem;">NEOTIX N2</h3>
-                <div style="display: inline-block; padding: 0.5rem 1rem; background: rgba(212, 175, 55, 0.2); border-radius: 50px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; margin-bottom: 1.5rem; color: var(--neopisk-gold);">
-                    Disponible en Perú
+                <div style="display: inline-block; padding: 0.5rem 1rem; background: rgba(212,175,55,0.2); border-radius: 50px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; margin-bottom: 1.5rem; color: var(--neopisk-gold);">
+                    <span class="lang-es">Disponible en Perú</span>
+                    <span class="lang-en">Available in Peru</span>
+                    <span class="lang-pt">Disponível no Peru</span>
                 </div>
                 <ul style="list-style: none; padding: 0; margin: 0 0 2rem 0;">
                     <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; gap: 0.75rem;">
                         <i class="fas fa-check-circle" style="color: var(--neopisk-gold);"></i>
-                        IA integrada para soporte comercial
+                        <span class="lang-es">IA integrada para soporte comercial</span>
+                        <span class="lang-en">Integrated AI for commercial support</span>
+                        <span class="lang-pt">IA integrada para suporte comercial</span>
                     </li>
                     <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; gap: 0.75rem;">
                         <i class="fas fa-check-circle" style="color: var(--neopisk-gold);"></i>
-                        Movilidad humanoide avanzada
+                        <span class="lang-es">Movilidad humanoide avanzada</span>
+                        <span class="lang-en">Advanced humanoid mobility</span>
+                        <span class="lang-pt">Mobilidade humanoide avançada</span>
                     </li>
                     <li style="padding: 0.75rem 0; display: flex; align-items: center; gap: 0.75rem;">
                         <i class="fas fa-check-circle" style="color: var(--neopisk-gold);"></i>
-                        Soporte técnico certificado
+                        <span class="lang-es">Soporte técnico certificado</span>
+                        <span class="lang-en">Certified technical support</span>
+                        <span class="lang-pt">Suporte técnico certificado</span>
                     </li>
                 </ul>
-                <a href="https://wa.me/51948115030" target="_blank" 
-                   style="display: block; width: 100%; padding: 1.25rem; background: var(--neopisk-gold); color: var(--neopisk-navy); text-align: center; border-radius: 50px; font-weight: 700; text-decoration: none; text-transform: uppercase; font-size: 0.875rem;">
-                    Consultar Disponibilidad
+                <a href="https://wa.me/51948115030" target="_blank" style="display: block; width: 100%; padding: 1.25rem; background: var(--neopisk-gold); color: var(--neopisk-navy); text-align: center; border-radius: 50px; font-weight: 700; text-decoration: none; text-transform: uppercase; font-size: 0.875rem;">
+                    <span class="lang-es">Consultar Disponibilidad</span>
+                    <span class="lang-en">Check Availability</span>
+                    <span class="lang-pt">Consultar Disponibilidade</span>
                 </a>
             </div>
 
@@ -1055,64 +813,80 @@
                 <div style="position: absolute; top: 1rem; right: 1rem; background: var(--neopisk-error); color: white; padding: 0.5rem 1rem; border-radius: 50px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; animation: pulse 2s infinite;">
                     15% OFF con $PISK
                 </div>
-                
                 <div style="position: relative; border-radius: 15px; overflow: hidden; margin-bottom: 2rem; cursor: pointer;" onclick="openVideo('54EjUHhdgls')">
-                    <img src="https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=800" 
-                         style="width: 100%; border-radius: 15px; aspect-ratio: 16/9; object-fit: cover;">
-                    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 60px; height: 60px; background: rgba(212, 175, 55, 0.9); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem;">
-                        ▶
-                    </div>
+                    <img src="https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=800" style="width: 100%; border-radius: 15px; aspect-ratio: 16/9; object-fit: cover;">
+                    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 60px; height: 60px; background: rgba(212,175,55,0.9); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem;">▶</div>
                 </div>
-                
                 <h3 style="font-size: 1.75rem; font-weight: 700; margin-bottom: 1rem;">UNITREE R1</h3>
-                <div style="display: inline-block; padding: 0.5rem 1rem; background: rgba(0, 217, 163, 0.2); border-radius: 50px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; margin-bottom: 1.5rem; color: var(--neopisk-mint);">
-                    Preventa Limitada
+                <div style="display: inline-block; padding: 0.5rem 1rem; background: rgba(0,217,163,0.2); border-radius: 50px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; margin-bottom: 1.5rem; color: var(--neopisk-mint);">
+                    <span class="lang-es">Preventa Limitada</span>
+                    <span class="lang-en">Limited Presale</span>
+                    <span class="lang-pt">Pré-venda Limitada</span>
                 </div>
-                
                 <ul style="list-style: none; padding: 0; margin: 0 0 2rem 0;">
                     <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; gap: 0.75rem;">
                         <i class="fas fa-check-circle" style="color: var(--neopisk-gold);"></i>
-                        Movilidad autónoma de alto rendimiento
+                        <span class="lang-es">Movilidad autónoma de alto rendimiento</span>
+                        <span class="lang-en">High-performance autonomous mobility</span>
+                        <span class="lang-pt">Mobilidade autônoma de alto desempenho</span>
                     </li>
                     <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; gap: 0.75rem;">
                         <i class="fas fa-check-circle" style="color: var(--neopisk-gold);"></i>
-                        Sistema de visión IA integrado
+                        <span class="lang-es">Sistema de visión IA integrado</span>
+                        <span class="lang-en">Integrated AI vision system</span>
+                        <span class="lang-pt">Sistema de visão IA integrado</span>
                     </li>
                     <li style="padding: 0.75rem 0; display: flex; align-items: center; gap: 0.75rem;">
                         <i class="fas fa-check-circle" style="color: var(--neopisk-gold);"></i>
-                        Importación garantizada Q2 2026
+                        <span class="lang-es">Importación garantizada Q2 2026</span>
+                        <span class="lang-en">Guaranteed import Q2 2026</span>
+                        <span class="lang-pt">Importação garantida Q2 2026</span>
                     </li>
                 </ul>
-                
                 <div style="text-align: center; margin-bottom: 1.5rem;">
-                    <div style="font-size: 0.875rem; color: rgba(255,255,255,0.6); text-transform: uppercase; margin-bottom: 0.5rem;">Precio sugerido:</div>
+                    <div style="font-size: 0.875rem; color: rgba(255,255,255,0.6); text-transform: uppercase; margin-bottom: 0.5rem;">
+                        <span class="lang-es">Precio sugerido:</span>
+                        <span class="lang-en">Suggested price:</span>
+                        <span class="lang-pt">Preço sugerido:</span>
+                    </div>
                     <div style="font-size: 3rem; font-weight: 900; color: white; font-family: 'IBM Plex Mono', monospace;">$4,900</div>
                     <div style="font-size: 0.875rem; color: rgba(255,255,255,0.6);">USD</div>
                 </div>
-                
-                <a href="https://wa.me/51948115030" target="_blank" 
-                   style="display: block; width: 100%; padding: 1.25rem; background: var(--neopisk-mint); color: var(--neopisk-navy); text-align: center; border-radius: 50px; font-weight: 700; text-decoration: none; text-transform: uppercase; font-size: 0.875rem;">
-                    Reservar Mi Unidad
+                <a href="https://wa.me/51948115030" target="_blank" style="display: block; width: 100%; padding: 1.25rem; background: var(--neopisk-mint); color: var(--neopisk-navy); text-align: center; border-radius: 50px; font-weight: 700; text-decoration: none; text-transform: uppercase; font-size: 0.875rem;">
+                    <span class="lang-es">Reservar Mi Unidad</span>
+                    <span class="lang-en">Reserve My Unit</span>
+                    <span class="lang-pt">Reservar Minha Unidade</span>
                 </a>
             </div>
         </div>
     </section>
 
-    <!-- Strategic Partners -->
+    <!-- ══════════════ STRATEGIC PARTNERS ══════════════ -->
     <section class="section">
         <div class="section-header">
-            <span class="section-badge">Respaldo Estratégico</span>
-            <h2 class="section-title font-display">Alianzas con las Mejores</h2>
+            <span class="section-badge">
+                <span class="lang-es">Respaldo Estratégico</span>
+                <span class="lang-en">Strategic Backing</span>
+                <span class="lang-pt">Respaldo Estratégico</span>
+            </span>
+            <h2 class="section-title font-display">
+                <span class="lang-es">Alianzas con las Mejores</span>
+                <span class="lang-en">Alliances with the Best</span>
+                <span class="lang-pt">Alianças com os Melhores</span>
+            </h2>
         </div>
 
         <div style="background: white; border-radius: 30px; padding: 3rem; box-shadow: 0 10px 40px rgba(0,0,0,0.05); margin-bottom: 3rem;">
             <h3 style="text-align: center; font-size: 1.75rem; font-weight: 700; color: var(--neopisk-navy); margin-bottom: 2rem;">
-                Alianza VCM Subastas
+                <span class="lang-es">Alianza VCM Subastas</span>
+                <span class="lang-en">VCM Subastas Alliance</span>
+                <span class="lang-pt">Aliança VCM Subastas</span>
             </h3>
             <p style="text-align: center; color: var(--neopisk-slate); max-width: 700px; margin: 0 auto 2rem; line-height: 1.7;">
-                Captura de activos vehiculares adjudicados de las compañías aseguradoras más grandes del Perú
+                <span class="lang-es">Captura de activos vehiculares adjudicados de las compañías aseguradoras más grandes del Perú</span>
+                <span class="lang-en">Capture of vehicle assets awarded by Peru's largest insurance companies</span>
+                <span class="lang-pt">Captura de ativos veiculares adjudicados das maiores seguradoras do Peru</span>
             </p>
-            
             <div class="partners-grid">
                 <div class="partner-logo" style="color: #d32f2f;">MAPFRE</div>
                 <div class="partner-logo" style="color: #0288d1;">PACÍFICO</div>
@@ -1121,10 +895,11 @@
             </div>
         </div>
 
-        <!-- Platform Partners -->
-        <div style="background: rgba(212, 175, 55, 0.03); border-radius: 20px; padding: 2rem;">
+        <div style="background: rgba(212,175,55,0.03); border-radius: 20px; padding: 2rem;">
             <h4 style="text-align: center; font-size: 1.25rem; font-weight: 700; color: var(--neopisk-navy); margin-bottom: 2rem;">
-                Plataformas de Movilidad Activas
+                <span class="lang-es">Plataformas de Movilidad Activas</span>
+                <span class="lang-en">Active Mobility Platforms</span>
+                <span class="lang-pt">Plataformas de Mobilidade Ativas</span>
             </h4>
             <div style="display: flex; justify-content: center; gap: 3rem; flex-wrap: wrap; font-weight: 900; font-size: 1.5rem;">
                 <span style="color: #0066ff;">YANGO</span>
@@ -1134,31 +909,42 @@
         </div>
     </section>
 
-    <!-- Investment Section -->
+    <!-- ══════════════ INVESTMENT SECTION ══════════════ -->
     <section id="invertir" class="section" style="background: rgba(212, 175, 55, 0.03);">
         <div class="section-header">
             <span class="section-badge">Tokenomics</span>
-            <h2 class="section-title font-display">Únete como Socio Fundador</h2>
+            <h2 class="section-title font-display">
+                <span class="lang-es">Únete como Socio Fundador</span>
+                <span class="lang-en">Join as a Founding Partner</span>
+                <span class="lang-pt">Junte-se como Sócio Fundador</span>
+            </h2>
             <p class="section-description">
-                Token $PISK respaldado por flujo de caja real. 100% de utilidades operativas 
-                inyectadas a liquidez con política de Buyback & Burn.
+                <span class="lang-es">Token $PISK respaldado por flujo de caja real. 100% de utilidades operativas inyectadas a liquidez con política de Buyback &amp; Burn.</span>
+                <span class="lang-en">$PISK token backed by real cash flow. 100% of operating profits injected into liquidity with Buyback &amp; Burn policy.</span>
+                <span class="lang-pt">Token $PISK respaldado por fluxo de caixa real. 100% dos lucros operacionais injetados em liquidez com política de Buyback &amp; Burn.</span>
             </p>
         </div>
 
         <div style="max-width: 800px; margin: 0 auto;">
-            <!-- Token Info -->
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 2rem;">
                 <div style="background: white; padding: 2rem; border-radius: 15px; border-left: 4px solid #2d66f7;">
-                    <div style="font-size: 0.75rem; color: #2d66f7; font-weight: 700; text-transform: uppercase; margin-bottom: 0.5rem;">Emisión Total</div>
+                    <div style="font-size: 0.75rem; color: #2d66f7; font-weight: 700; text-transform: uppercase; margin-bottom: 0.5rem;">
+                        <span class="lang-es">Emisión Total</span>
+                        <span class="lang-en">Total Supply</span>
+                        <span class="lang-pt">Emissão Total</span>
+                    </div>
                     <div style="font-size: 1.75rem; font-weight: 900; color: var(--neopisk-navy); font-family: 'IBM Plex Mono', monospace;">100,000,000 $PISK</div>
                 </div>
                 <div style="background: white; padding: 2rem; border-radius: 15px; border-left: 4px solid var(--neopisk-error);">
-                    <div style="font-size: 0.75rem; color: var(--neopisk-error); font-weight: 700; text-transform: uppercase; margin-bottom: 0.5rem;">Política</div>
-                    <div style="font-size: 1.75rem; font-weight: 900; color: var(--neopisk-navy);">BUYBACK & BURN</div>
+                    <div style="font-size: 0.75rem; color: var(--neopisk-error); font-weight: 700; text-transform: uppercase; margin-bottom: 0.5rem;">
+                        <span class="lang-es">Política</span>
+                        <span class="lang-en">Policy</span>
+                        <span class="lang-pt">Política</span>
+                    </div>
+                    <div style="font-size: 1.75rem; font-weight: 900; color: var(--neopisk-navy);">BUYBACK &amp; BURN</div>
                 </div>
             </div>
 
-            <!-- Phase Progress -->
             <div style="background: white; padding: 2rem; border-radius: 20px; margin-bottom: 2rem;">
                 <div style="margin-bottom: 1.5rem;">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
@@ -1169,11 +955,18 @@
                         <div class="progress-fill" style="width: 100%; background: var(--neopisk-error);"></div>
                     </div>
                 </div>
-
                 <div>
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-                        <span style="font-size: 0.875rem; font-weight: 700; color: var(--neopisk-navy);">FASE 2 ($0.10 USD) - ACTUAL</span>
-                        <span style="font-size: 0.875rem; font-weight: 900; color: var(--neopisk-mint);">15% COMPLETADO</span>
+                        <span style="font-size: 0.875rem; font-weight: 700; color: var(--neopisk-navy);">FASE 2 ($0.10 USD) —
+                            <span class="lang-es">ACTUAL</span>
+                            <span class="lang-en">CURRENT</span>
+                            <span class="lang-pt">ATUAL</span>
+                        </span>
+                        <span style="font-size: 0.875rem; font-weight: 900; color: var(--neopisk-mint);">15%
+                            <span class="lang-es">COMPLETADO</span>
+                            <span class="lang-en">COMPLETED</span>
+                            <span class="lang-pt">CONCLUÍDO</span>
+                        </span>
                     </div>
                     <div class="progress-bar">
                         <div class="progress-fill" style="width: 15%;"></div>
@@ -1181,46 +974,54 @@
                 </div>
             </div>
 
-            <!-- Calculator -->
             <div class="calculator">
                 <h3 style="text-align: center; font-size: 1.5rem; font-weight: 700; color: var(--neopisk-gold); margin-bottom: 2rem; text-transform: uppercase; letter-spacing: 2px;">
-                    Calculadora de Inversión
+                    <span class="lang-es">Calculadora de Inversión</span>
+                    <span class="lang-en">Investment Calculator</span>
+                    <span class="lang-pt">Calculadora de Investimento</span>
                 </h3>
-                
-                <input type="number" 
-                       id="usdInput" 
-                       class="calculator-input" 
-                       placeholder="$ 0.00 USD" 
-                       oninput="calcularPiskUSD()">
-                
+                <input type="number" id="usdInput" class="calculator-input" placeholder="$ 0.00 USD" oninput="calcularPiskUSD()">
                 <div class="calculator-result">
-                    <div class="calculator-result-label">Recibirás:</div>
-                    <div class="calculator-result-value">
-                        <span id="piskResult">0</span> $PISK
+                    <div class="calculator-result-label">
+                        <span class="lang-es">Recibirás:</span>
+                        <span class="lang-en">You'll receive:</span>
+                        <span class="lang-pt">Você receberá:</span>
                     </div>
+                    <div class="calculator-result-value"><span id="piskResult">0</span> $PISK</div>
                 </div>
-
                 <div style="display: grid; gap: 1rem; margin-top: 2rem;">
-                    <a href="https://neopisk.lat/invertir.html" target="_blank" 
-                       style="background: var(--neopisk-gold); color: var(--neopisk-navy); padding: 1.5rem; border-radius: 50px; text-align: center; text-decoration: none; font-weight: 900; text-transform: uppercase; font-size: 1.125rem; box-shadow: 0 10px 30px rgba(212, 175, 55, 0.4); transition: transform 0.3s ease;">
-                        Comprar $PISK Ahora
+                    <a href="https://neopisk.lat/invertir.html" target="_blank" style="background: var(--neopisk-gold); color: var(--neopisk-navy); padding: 1.5rem; border-radius: 50px; text-align: center; text-decoration: none; font-weight: 900; text-transform: uppercase; font-size: 1.125rem; box-shadow: 0 10px 30px rgba(212,175,55,0.4); transition: transform 0.3s ease;">
+                        <span class="lang-es">Comprar $PISK Ahora</span>
+                        <span class="lang-en">Buy $PISK Now</span>
+                        <span class="lang-pt">Comprar $PISK Agora</span>
                     </a>
-                    <a href="https://docs.google.com/document/d/1FaaZDSKgsv_6CkeuQH1gfRxOpQ-Dlj5vy0Thm7-7tB8/edit?usp=sharing" target="_blank" 
-                       style="background: transparent; color: white; padding: 1.5rem; border-radius: 50px; text-align: center; text-decoration: none; font-weight: 700; text-transform: uppercase; font-size: 1rem; border: 2px solid white; transition: all 0.3s ease;">
-                        Leer Whitepaper Completo
+                    <a href="https://docs.google.com/document/d/1FaaZDSKgsv_6CkeuQH1gfRxOpQ-Dlj5vy0Thm7-7tB8/edit?usp=sharing" target="_blank" style="background: transparent; color: white; padding: 1.5rem; border-radius: 50px; text-align: center; text-decoration: none; font-weight: 700; text-transform: uppercase; font-size: 1rem; border: 2px solid white; transition: all 0.3s ease;">
+                        <span class="lang-es">Leer Whitepaper Completo</span>
+                        <span class="lang-en">Read Full Whitepaper</span>
+                        <span class="lang-pt">Ler Whitepaper Completo</span>
                     </a>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Roadmap -->
+    <!-- ══════════════ ROADMAP ══════════════ -->
     <section class="section">
         <div class="section-header">
-            <span class="section-badge">Visión 2026</span>
-            <h2 class="section-title font-display">Roadmap Estratégico</h2>
+            <span class="section-badge">
+                <span class="lang-es">Visión 2026</span>
+                <span class="lang-en">2026 Vision</span>
+                <span class="lang-pt">Visão 2026</span>
+            </span>
+            <h2 class="section-title font-display">
+                <span class="lang-es">Roadmap Estratégico</span>
+                <span class="lang-en">Strategic Roadmap</span>
+                <span class="lang-pt">Roadmap Estratégico</span>
+            </h2>
             <p class="section-description">
-                Plan de ejecución trimestral con hitos verificables y métricas claras de progreso.
+                <span class="lang-es">Plan de ejecución trimestral con hitos verificables y métricas claras de progreso.</span>
+                <span class="lang-en">Quarterly execution plan with verifiable milestones and clear progress metrics.</span>
+                <span class="lang-pt">Plano de execução trimestral com marcos verificáveis e métricas claras de progresso.</span>
             </p>
         </div>
 
@@ -1229,12 +1030,15 @@
                 <div class="roadmap-dot"></div>
                 <div class="roadmap-content">
                     <div class="roadmap-quarter font-display">Q1 2026</div>
-                    <div class="roadmap-title">Lanzamiento Operativo</div>
+                    <div class="roadmap-title">
+                        <span class="lang-es">Lanzamiento Operativo</span>
+                        <span class="lang-en">Operational Launch</span>
+                        <span class="lang-pt">Lançamento Operacional</span>
+                    </div>
                     <div class="roadmap-description">
-                        • Consolidación flota GNV 10 unidades<br>
-                        • Inauguración Búnker de operaciones<br>
-                        • Inicio fase BYD Seagull eléctrica<br>
-                        • Integración completa VCM Subastas
+                        <span class="lang-es">• Consolidación flota GNV 10 unidades<br>• Inauguración Búnker de operaciones<br>• Inicio fase BYD Seagull eléctrica<br>• Integración completa VCM Subastas</span>
+                        <span class="lang-en">• GNV fleet consolidation 10 units<br>• Operations Bunker inauguration<br>• BYD Seagull electric phase start<br>• Full VCM Subastas integration</span>
+                        <span class="lang-pt">• Consolidação frota GNV 10 unidades<br>• Inauguração Bunker de operações<br>• Início fase BYD Seagull elétrica<br>• Integração completa VCM Subastas</span>
                     </div>
                 </div>
             </div>
@@ -1243,12 +1047,15 @@
                 <div class="roadmap-dot"></div>
                 <div class="roadmap-content">
                     <div class="roadmap-quarter font-display">Q2 2026</div>
-                    <div class="roadmap-title">Expansión Tecnológica</div>
+                    <div class="roadmap-title">
+                        <span class="lang-es">Expansión Tecnológica</span>
+                        <span class="lang-en">Technology Expansion</span>
+                        <span class="lang-pt">Expansão Tecnológica</span>
+                    </div>
                     <div class="roadmap-description">
-                        • Producción Bajaj Retrofit eléctrico<br>
-                        • Primera importación robots Neotix N2<br>
-                        • Apertura centro de servicio técnico<br>
-                        • Lanzamiento programa de franquicias
+                        <span class="lang-es">• Producción Bajaj Retrofit eléctrico<br>• Primera importación robots Neotix N2<br>• Apertura centro de servicio técnico<br>• Lanzamiento programa de franquicias</span>
+                        <span class="lang-en">• Bajaj electric Retrofit production<br>• First Neotix N2 robot import<br>• Technical service center opening<br>• Franchise program launch</span>
+                        <span class="lang-pt">• Produção Bajaj Retrofit elétrico<br>• Primeira importação robôs Neotix N2<br>• Abertura centro de serviço técnico<br>• Lançamento programa de franquias</span>
                     </div>
                 </div>
             </div>
@@ -1257,12 +1064,15 @@
                 <div class="roadmap-dot"></div>
                 <div class="roadmap-content">
                     <div class="roadmap-quarter font-display">Q3 2026</div>
-                    <div class="roadmap-title">Diversificación</div>
+                    <div class="roadmap-title">
+                        <span class="lang-es">Diversificación</span>
+                        <span class="lang-en">Diversification</span>
+                        <span class="lang-pt">Diversificação</span>
+                    </div>
                     <div class="roadmap-description">
-                        • Despliegue robótica comercial nacional<br>
-                        • Integración Unitree R1<br>
-                        • Fase piloto hidrógeno Río Perené<br>
-                        • Expansión ecopisk.lat en blockchain
+                        <span class="lang-es">• Despliegue robótica comercial nacional<br>• Integración Unitree R1<br>• Fase piloto hidrógeno Río Perené<br>• Expansión ecopisk.lat en blockchain</span>
+                        <span class="lang-en">• National commercial robotics deployment<br>• Unitree R1 integration<br>• Río Perené hydrogen pilot phase<br>• ecopisk.lat blockchain expansion</span>
+                        <span class="lang-pt">• Implantação robótica comercial nacional<br>• Integração Unitree R1<br>• Fase piloto hidrogênio Rio Perené<br>• Expansão ecopisk.lat em blockchain</span>
                     </div>
                 </div>
             </div>
@@ -1271,26 +1081,38 @@
                 <div class="roadmap-dot"></div>
                 <div class="roadmap-content">
                     <div class="roadmap-quarter font-display">Q4 2026</div>
-                    <div class="roadmap-title">Infraestructura Energética</div>
+                    <div class="roadmap-title">
+                        <span class="lang-es">Infraestructura Energética</span>
+                        <span class="lang-en">Energy Infrastructure</span>
+                        <span class="lang-pt">Infraestrutura Energética</span>
+                    </div>
                     <div class="roadmap-description">
-                        • Inauguración red de carga nacional<br>
-                        • Primera estación hidrógeno verde<br>
-                        • Integración drones Joby S4 regional<br>
-                        • Auditoría financiera independiente
+                        <span class="lang-es">• Inauguración red de carga nacional<br>• Primera estación hidrógeno verde<br>• Integración drones Joby S4 regional<br>• Auditoría financiera independiente</span>
+                        <span class="lang-en">• National charging network inauguration<br>• First green hydrogen station<br>• Regional Joby S4 drone integration<br>• Independent financial audit</span>
+                        <span class="lang-pt">• Inauguração rede de carregamento nacional<br>• Primeira estação de hidrogênio verde<br>• Integração drones Joby S4 regional<br>• Auditoria financeira independente</span>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Team Section -->
+    <!-- ══════════════ TEAM ══════════════ -->
     <section class="section" style="background: rgba(212, 175, 55, 0.03);">
         <div class="section-header">
-            <span class="section-badge">Liderazgo</span>
-            <h2 class="section-title font-display">Equipo Ejecutivo</h2>
+            <span class="section-badge">
+                <span class="lang-es">Liderazgo</span>
+                <span class="lang-en">Leadership</span>
+                <span class="lang-pt">Liderança</span>
+            </span>
+            <h2 class="section-title font-display">
+                <span class="lang-es">Equipo Ejecutivo</span>
+                <span class="lang-en">Executive Team</span>
+                <span class="lang-pt">Equipe Executiva</span>
+            </h2>
             <p class="section-description">
-                Experiencia comprobada en operaciones, tecnología y gestión financiera. 
-                Comprometidos con la transparencia y excelencia operativa.
+                <span class="lang-es">Experiencia comprobada en operaciones, tecnología y gestión financiera. Comprometidos con la transparencia y excelencia operativa.</span>
+                <span class="lang-en">Proven experience in operations, technology and financial management. Committed to transparency and operational excellence.</span>
+                <span class="lang-pt">Experiência comprovada em operações, tecnologia e gestão financeira. Comprometidos com transparência e excelência operacional.</span>
             </p>
         </div>
 
@@ -1299,10 +1121,15 @@
                 <img src="asset/IMG_20260119_091506939.jpg" alt="Ernesto Piskulich" class="team-image">
                 <div class="team-info">
                     <div class="team-name font-display">Ernesto Piskulich</div>
-                    <div class="team-role">CEO & Fundador</div>
+                    <div class="team-role">
+                        <span class="lang-es">CEO &amp; Fundador</span>
+                        <span class="lang-en">CEO &amp; Founder</span>
+                        <span class="lang-pt">CEO &amp; Fundador</span>
+                    </div>
                     <div class="team-bio">
-                        Estratega en adquisición de activos reales y arquitectura financiera blockchain. 
-                        Experiencia directa en operación de flota y tokenización Web3.
+                        <span class="lang-es">Estratega en adquisición de activos reales y arquitectura financiera blockchain. Experiencia directa en operación de flota y tokenización Web3.</span>
+                        <span class="lang-en">Strategist in real asset acquisition and blockchain financial architecture. Direct experience in fleet operation and Web3 tokenization.</span>
+                        <span class="lang-pt">Estrategista em aquisição de ativos reais e arquitetura financeira blockchain. Experiência direta em operação de frota e tokenização Web3.</span>
                     </div>
                     <a href="https://www.facebook.com/share/1ArekGRGgE/" target="_blank" class="team-social">
                         <i class="fab fa-facebook"></i> Ver Perfil
@@ -1314,10 +1141,15 @@
                 <img src="https://raw.githubusercontent.com/ernestopisk2015-arch/Neopisk/main/asset/Luis%20Gavilan.jpg" alt="Luis Gavilán" class="team-image">
                 <div class="team-info">
                     <div class="team-name font-display">Luis Gavilán</div>
-                    <div class="team-role">Gerente de Flota</div>
+                    <div class="team-role">
+                        <span class="lang-es">Gerente de Flota</span>
+                        <span class="lang-en">Fleet Manager</span>
+                        <span class="lang-pt">Gerente de Frota</span>
+                    </div>
                     <div class="team-bio">
-                        Experto en optimización de rutas, mantenimiento preventivo y gestión de transporte pesado. 
-                        15+ años en logística operativa.
+                        <span class="lang-es">Experto en optimización de rutas, mantenimiento preventivo y gestión de transporte pesado. 15+ años en logística operativa.</span>
+                        <span class="lang-en">Expert in route optimization, preventive maintenance and heavy transport management. 15+ years in operational logistics.</span>
+                        <span class="lang-pt">Especialista em otimização de rotas, manutenção preventiva e gestão de transporte pesado. 15+ anos em logística operacional.</span>
                     </div>
                     <a href="https://www.facebook.com/share/1ATjUgWrbp/" target="_blank" class="team-social">
                         <i class="fab fa-facebook"></i> Ver Perfil
@@ -1329,10 +1161,15 @@
                 <img src="asset/Jefferson Avalos.jpg" alt="Jefferson Ávalos" class="team-image" style="object-position: center 20%;">
                 <div class="team-info">
                     <div class="team-name font-display">Jefferson Ávalos</div>
-                    <div class="team-role">Gerente de Operaciones</div>
+                    <div class="team-role">
+                        <span class="lang-es">Gerente de Operaciones</span>
+                        <span class="lang-en">Operations Manager</span>
+                        <span class="lang-pt">Gerente de Operações</span>
+                    </div>
                     <div class="team-bio">
-                        Líder en logística operativa y optimización de rendimientos en campo. 
-                        Implementación de sistemas de gestión eficiente.
+                        <span class="lang-es">Líder en logística operativa y optimización de rendimientos en campo. Implementación de sistemas de gestión eficiente.</span>
+                        <span class="lang-en">Leader in operational logistics and field performance optimization. Implementation of efficient management systems.</span>
+                        <span class="lang-pt">Líder em logística operacional e otimização de desempenho em campo. Implementação de sistemas de gestão eficientes.</span>
                     </div>
                     <a href="https://www.facebook.com/share/1K1u1x6YJy/" target="_blank" class="team-social">
                         <i class="fab fa-facebook"></i> Ver Perfil
@@ -1344,10 +1181,15 @@
                 <img src="https://raw.githubusercontent.com/ernestopisk2015-arch/Neopisk/refs/heads/main/asset/Rosmey.png" alt="Rosmeri Cabanillas" class="team-image">
                 <div class="team-info">
                     <div class="team-name font-display">Rosmeri Cabanillas</div>
-                    <div class="team-role">Gerente de Relaciones Públicas</div>
+                    <div class="team-role">
+                        <span class="lang-es">Gerente de Relaciones Públicas</span>
+                        <span class="lang-en">Public Relations Manager</span>
+                        <span class="lang-pt">Gerente de Relações Públicas</span>
+                    </div>
                     <div class="team-bio">
-                        Especialista en comunicación estratégica y gestión de imagen corporativa. 
-                        Construcción de alianzas institucionales clave.
+                        <span class="lang-es">Especialista en comunicación estratégica y gestión de imagen corporativa. Construcción de alianzas institucionales clave.</span>
+                        <span class="lang-en">Specialist in strategic communication and corporate image management. Building key institutional alliances.</span>
+                        <span class="lang-pt">Especialista em comunicação estratégica e gestão de imagem corporativa. Construção de alianças institucionais chave.</span>
                     </div>
                     <a href="https://www.facebook.com/rOvZiita?locale=es_LA" target="_blank" class="team-social">
                         <i class="fab fa-facebook"></i> Ver Perfil
@@ -1357,28 +1199,38 @@
         </div>
     </section>
 
-    <!-- Final CTA -->
+    <!-- ══════════════ FINAL CTA ══════════════ -->
     <section class="section" style="background: linear-gradient(135deg, var(--neopisk-navy), #1a2942); color: white; text-align: center;">
         <div style="max-width: 800px; margin: 0 auto;">
             <h2 style="font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 700; margin-bottom: 1.5rem; color: white;" class="font-display">
-                ¿Listo para Invertir en Activos Reales?
+                <span class="lang-es">¿Listo para Invertir en Activos Reales?</span>
+                <span class="lang-en">Ready to Invest in Real Assets?</span>
+                <span class="lang-pt">Pronto para Investir em Ativos Reais?</span>
             </h2>
             <p style="font-size: 1.25rem; color: rgba(255,255,255,0.8); margin-bottom: 3rem; line-height: 1.8;">
-                Únete a los socios fundadores de Neo Pisk y construye patrimonio respaldado 
-                por operaciones verificables y tecnología de punta.
+                <span class="lang-es">Únete a los socios fundadores de Neo Pisk y construye patrimonio respaldado por operaciones verificables y tecnología de punta.</span>
+                <span class="lang-en">Join Neo Pisk founding partners and build wealth backed by verifiable operations and cutting-edge technology.</span>
+                <span class="lang-pt">Junte-se aos sócios fundadores da Neo Pisk e construa patrimônio respaldado por operações verificáveis e tecnologia de ponta.</span>
             </p>
-            
             <div style="display: flex; gap: 1.5rem; justify-content: center; flex-wrap: wrap;">
                 <a href="https://neopisk.lat/invertir.html" target="_blank" class="btn btn-primary" style="font-size: 1rem; padding: 1.5rem 3rem;">
-                    Invertir Ahora
+                    <span class="lang-es">Invertir Ahora</span>
+                    <span class="lang-en">Invest Now</span>
+                    <span class="lang-pt">Investir Agora</span>
                 </a>
                 <a href="https://wa.me/51948115030" target="_blank" class="btn btn-secondary" style="font-size: 1rem; padding: 1.5rem 3rem;">
-                    Agendar Llamada
+                    <span class="lang-es">Agendar Llamada</span>
+                    <span class="lang-en">Schedule a Call</span>
+                    <span class="lang-pt">Agendar Chamada</span>
                 </a>
             </div>
 
             <div style="margin-top: 4rem; padding-top: 3rem; border-top: 1px solid rgba(255,255,255,0.1);">
-                <p style="font-size: 0.875rem; color: rgba(255,255,255,0.6); margin-bottom: 2rem;">Síguenos en redes sociales</p>
+                <p style="font-size: 0.875rem; color: rgba(255,255,255,0.6); margin-bottom: 2rem;">
+                    <span class="lang-es">Síguenos en redes sociales</span>
+                    <span class="lang-en">Follow us on social media</span>
+                    <span class="lang-pt">Siga-nos nas redes sociais</span>
+                </p>
                 <div style="display: flex; gap: 2rem; justify-content: center;">
                     <a href="https://www.facebook.com/ernest.pisk" target="_blank" style="color: white; font-size: 2rem; transition: transform 0.2s ease;" onmouseover="this.style.transform='scale(1.2)'" onmouseout="this.style.transform='scale(1)'">
                         <i class="fab fa-facebook"></i>
@@ -1397,22 +1249,25 @@
     <!-- Footer -->
     <footer style="background: var(--neopisk-navy); color: white; padding: 3rem 2rem; text-align: center;">
         <div style="max-width: 1200px; margin: 0 auto;">
-            <div class="font-display" style="font-size: 2rem; font-weight: 700; color: var(--neopisk-gold); margin-bottom: 1rem;">
-                NEO PISK
-            </div>
+            <div class="font-display" style="font-size: 2rem; font-weight: 700; color: var(--neopisk-gold); margin-bottom: 1rem;">NEO PISK</div>
             <p style="color: rgba(255,255,255,0.6); margin-bottom: 1.5rem;">
-                Real Asset Investment Platform
+                <span class="lang-es">Plataforma de Inversión en Activos Reales</span>
+                <span class="lang-en">Real Asset Investment Platform</span>
+                <span class="lang-pt">Plataforma de Investimento em Ativos Reais</span>
             </p>
             <p style="font-size: 0.875rem; color: rgba(255,255,255,0.5);">
-                Ernesto Alejandro Piskulich Ceel - CEO Fundador<br>
-                © 2026 Neo Pisk. Todos los derechos reservados.
+                Ernesto Alejandro Piskulich Ceel — CEO Fundador<br>
+                © 2026 Neo Pisk.
+                <span class="lang-es">Todos los derechos reservados.</span>
+                <span class="lang-en">All rights reserved.</span>
+                <span class="lang-pt">Todos os direitos reservados.</span>
             </p>
         </div>
     </footer>
 
-    <!-- Floating Action Buttons -->
+    <!-- ══════════════ BOTONES FLOTANTES — número corregido +51948115030 ══════════════ -->
     <div class="fab-container">
-        <a href="https://wa.me/5194811503" target="_blank" class="fab fab-whatsapp">
+        <a href="https://wa.me/51948115030" target="_blank" class="fab fab-whatsapp">
             <i class="fab fa-whatsapp"></i>
         </a>
         <a href="https://t.me/NeoPisk_bot" target="_blank" class="fab fab-telegram">
@@ -1429,86 +1284,80 @@
     </div>
 
     <script>
-        // Calculator
-        function calcularPiskUSD() {
-            const usd = document.getElementById('usdInput').value;
-            const precioTokenUSD = 0.10; 
-            if (usd > 0) {
-                const tokens = (usd / precioTokenUSD).toLocaleString('en-US', {
-                    minimumFractionDigits: 0, 
-                    maximumFractionDigits: 0
+        /* ══════════════════════════════════
+           SISTEMA DE IDIOMAS ES / EN / PT
+        ══════════════════════════════════ */
+        function setLang(lang) {
+            // Mostrar / ocultar elementos según idioma
+            ['es', 'en', 'pt'].forEach(function(l) {
+                document.querySelectorAll('.lang-' + l).forEach(function(el) {
+                    el.style.display = (l === lang) ? 'inline' : 'none';
                 });
-                document.getElementById('piskResult').innerText = tokens;
+                var btn = document.getElementById('btn-' + l);
+                if (btn) {
+                    if (l === lang) btn.classList.add('active');
+                    else btn.classList.remove('active');
+                }
+            });
+            document.documentElement.lang = lang;
+            localStorage.setItem('neopisk-lang', lang);
+        }
+
+        window.addEventListener('DOMContentLoaded', function () {
+            var saved = localStorage.getItem('neopisk-lang') || 'es';
+            setLang(saved);
+        });
+
+        /* ══════════════════════════════════
+           CALCULADORA
+        ══════════════════════════════════ */
+        function calcularPiskUSD() {
+            var usd = document.getElementById('usdInput').value;
+            var precio = 0.10;
+            if (usd > 0) {
+                document.getElementById('piskResult').innerText =
+                    (usd / precio).toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
             } else {
-                document.getElementById('piskResult').innerText = "0";
+                document.getElementById('piskResult').innerText = '0';
             }
         }
 
-        // Video Modal
+        /* ══════════════════════════════════
+           VIDEO MODAL
+        ══════════════════════════════════ */
         function openVideo(videoId) {
-            const modal = document.getElementById('videoModal');
-            const iframe = document.getElementById('videoFrame');
-            iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
-            modal.classList.add('active');
+            document.getElementById('videoFrame').src = 'https://www.youtube.com/embed/' + videoId + '?autoplay=1';
+            document.getElementById('videoModal').classList.add('active');
             document.body.style.overflow = 'hidden';
         }
-
         function closeVideo() {
-            const modal = document.getElementById('videoModal');
-            const iframe = document.getElementById('videoFrame');
-            iframe.src = '';
-            modal.classList.remove('active');
+            document.getElementById('videoFrame').src = '';
+            document.getElementById('videoModal').classList.remove('active');
             document.body.style.overflow = 'auto';
         }
+        document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeVideo(); });
 
-        // Close modal on escape key
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                closeVideo();
-            }
-        });
-
-        // Smooth scroll
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        /* ══════════════════════════════════
+           SMOOTH SCROLL
+        ══════════════════════════════════ */
+        document.querySelectorAll('a[href^="#"]').forEach(function (anchor) {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
+                var target = document.querySelector(this.getAttribute('href'));
+                if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
             });
         });
 
-        // Fade in on scroll
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -100px 0px'
-        };
-
-        const observer = new IntersectionObserver(function(entries) {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('fade-in-up');
-                }
+        /* ══════════════════════════════════
+           FADE IN ON SCROLL
+        ══════════════════════════════════ */
+        var observer = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
+                if (entry.isIntersecting) entry.target.classList.add('fade-in-up');
             });
-        }, observerOptions);
+        }, { threshold: 0.1, rootMargin: '0px 0px -100px 0px' });
 
-        document.querySelectorAll('.section').forEach(section => {
-            observer.observe(section);
-        });
-
-        // Pulse animation for discount badge
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes pulse {
-                0%, 100% { transform: scale(1); }
-                50% { transform: scale(1.05); }
-            }
-        `;
-        document.head.appendChild(style);
+        document.querySelectorAll('.section').forEach(function (s) { observer.observe(s); });
     </script>
 </body>
 </html>
