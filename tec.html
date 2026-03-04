@@ -1,409 +1,415 @@
-
-Invertir mejorado · HTML
-Copiar
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Neo Pisk - Founder Portal</title>
-    
-    <link rel="icon" type="image/jpg" href="asset/IMG-20260126-WA0020.jpg">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.7.4/web3.min.js"></script>
-
+    <title>Neo Pisk Tech | Web3 & Tokenización</title>
+    <link rel="icon" type="image/jpeg" href="asset/IMG-20260126-WA0020.jpg">
+    <meta property="og:title" content="Neo Pisk - Inversión con Activos Reales Tokenizados">
+    <meta property="og:description" content="Ecosistema de inversión respaldado por flota operativa, tecnología robótica y energía limpia.">
+    <meta property="og:image" content="https://i.postimg.cc/Js4BXv4X/byd.jpg">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;600;700;800;900&family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
-            --gold: #d4af37;
-            --gold-light: #f9e2af;
-            --cyan: #00d2ff;
-            --bg-dark: #080808;
-            --panel-bg: #121212;
+            --gold: #D4AF37; --gold2: #F0C040; --navy: #0B1A30;
+            --slate: #2C3E50; --mint: #00D9A3; --white: #FAFAFA;
+            --cyan: #00f2ff; --pink: #ff007a; --dark: #010204;
+            --green: #00E676;
         }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Inter', sans-serif; background: var(--dark); color: #fff; overflow-x: hidden; }
 
-        body { 
-            font-family: 'Segoe UI', sans-serif; 
-            margin: 0; 
-            padding: 10px; 
-            background: radial-gradient(circle at center, #1a1a1a 0%, #000 100%);
-            color: white;
-            min-height: 100vh;
-        }
+        /* SCANNER */
+        body::after { content:""; position:fixed; top:-100%; left:0; width:100%; height:10px; background:var(--cyan); opacity:0.08; box-shadow:0 0 20px var(--cyan); animation:scan 8s linear infinite; z-index:999; pointer-events:none; }
+        @keyframes scan { 0%{top:-10%} 100%{top:110%} }
 
-        .main-container { max-width: 1000px; margin: 0 auto; padding-bottom: 50px; }
+        /* NAV */
+        nav { position:fixed; top:0; left:0; right:0; z-index:100; padding:16px 32px; display:flex; align-items:center; justify-content:space-between; background:rgba(1,2,4,0.85); backdrop-filter:blur(20px); border-bottom:1px solid rgba(0,242,255,0.1); }
+        .nav-logo { font-family:'Orbitron',sans-serif; font-size:18px; font-weight:900; color:var(--cyan); letter-spacing:3px; text-decoration:none; }
+        .nav-links { display:flex; gap:24px; align-items:center; }
+        .nav-links a { color:rgba(255,255,255,0.7); text-decoration:none; font-size:13px; font-weight:600; letter-spacing:1px; text-transform:uppercase; transition:color 0.2s; }
+        .nav-links a:hover { color:var(--cyan); }
+        .nav-cta { background:var(--cyan); color:var(--dark) !important; padding:10px 20px; border-radius:50px; font-weight:700 !important; }
 
-        /* CABECERA */
-        .header { text-align: center; border-bottom: 1px solid var(--gold); padding: 30px 0; margin-bottom: 30px; }
-        .logo-row img { width: 90px; filter: drop-shadow(0 0 10px var(--gold)); margin: 0 15px; border-radius: 50%; }
-        h1 { color: var(--gold); letter-spacing: 4px; font-size: 2.2em; margin: 15px 0 5px 0; }
+        /* HERO */
+        .hero { position:relative; min-height:100vh; display:flex; align-items:center; justify-content:center; overflow:hidden;
+            background:linear-gradient(135deg, var(--navy) 0%, #0d1f3c 50%, #010204 100%); }
+        .hero-bg { position:absolute; inset:0; opacity:0.12; background:url('https://i.postimg.cc/wMvXhZN1/Llama-en-Machu-Picchu-pc-jpg.webp') center/cover; filter:grayscale(60%); }
+        .hero-grid { position:absolute; inset:0; background-image:linear-gradient(var(--gold) 1px,transparent 1px),linear-gradient(90deg,var(--gold) 1px,transparent 1px); background-size:80px 80px; opacity:0.025; }
+        .hero-content { position:relative; z-index:10; text-align:center; padding:120px 20px 60px; max-width:1000px; }
+        .hero-badge { display:inline-block; padding:8px 24px; background:rgba(212,175,55,0.15); border:1px solid var(--gold); border-radius:50px; color:var(--gold); font-size:11px; font-weight:700; letter-spacing:3px; text-transform:uppercase; margin-bottom:28px; }
+        .hero-title { font-family:'Orbitron',sans-serif; font-size:clamp(2.8rem,10vw,6rem); font-weight:900; line-height:1.05; margin-bottom:20px;
+            background:linear-gradient(135deg,#fff 0%,var(--cyan) 50%,var(--gold) 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+        .hero-sub { font-family:'Orbitron',sans-serif; font-size:clamp(1rem,3vw,1.8rem); color:var(--cyan); letter-spacing:5px; margin-bottom:16px; }
+        .hero-desc { font-size:clamp(1rem,2vw,1.2rem); color:rgba(255,255,255,0.7); max-width:700px; margin:0 auto 40px; line-height:1.8; }
 
-        /* PANEL CENTRAL DE COMPRA */
-        .center-panel {
-            background: rgba(0, 0, 0, 0.8);
-            border: 2px solid var(--cyan);
-            border-radius: 30px;
-            padding: 40px 20px;
-            text-align: center;
-            box-shadow: 0 0 30px rgba(0, 210, 255, 0.2);
-            margin-bottom: 40px;
-        }
+        /* BOTÓN PRINCIPAL GRANDE */
+        .hero-cta { display:inline-block; padding:22px 56px; background:linear-gradient(135deg,var(--cyan),#0088cc); color:#000; font-family:'Orbitron',sans-serif; font-size:clamp(1rem,2.5vw,1.3rem); font-weight:900; letter-spacing:3px; text-decoration:none; border-radius:60px; box-shadow:0 0 40px rgba(0,242,255,0.4),0 0 80px rgba(0,242,255,0.15); transition:all 0.3s; margin-bottom:16px; }
+        .hero-cta:hover { transform:translateY(-4px) scale(1.03); box-shadow:0 0 60px rgba(0,242,255,0.6); }
+        .hero-cta-secondary { display:inline-block; margin-left:16px; padding:22px 40px; border:2px solid rgba(255,255,255,0.3); color:#fff; font-family:'Orbitron',sans-serif; font-size:clamp(0.85rem,2vw,1rem); font-weight:700; letter-spacing:2px; text-decoration:none; border-radius:60px; transition:all 0.3s; }
+        .hero-cta-secondary:hover { border-color:var(--gold); color:var(--gold); }
 
-        .balance-box { background: #000; padding: 15px; border-radius: 15px; border: 1px solid #222; margin-bottom: 25px; }
-        #saldoDisplay { font-size: 38px; color: var(--cyan); font-weight: bold; }
+        /* STATS */
+        .hero-stats { display:grid; grid-template-columns:repeat(auto-fit,minmax(130px,1fr)); gap:16px; margin-top:56px; padding:28px; background:rgba(255,255,255,0.04); border-radius:20px; border:1px solid rgba(255,255,255,0.08); backdrop-filter:blur(20px); }
+        .stat-value { display:block; font-family:'IBM Plex Mono',monospace; font-size:clamp(1.3rem,3vw,2.2rem); font-weight:700; color:var(--gold); margin-bottom:6px; }
+        .stat-label { font-size:clamp(0.65rem,1.5vw,0.8rem); color:rgba(255,255,255,0.6); text-transform:uppercase; letter-spacing:1px; line-height:1.3; }
 
-        input { 
-            width: 80%; padding: 15px; border-radius: 12px; border: 1px solid #333; 
-            background: #000; color: var(--cyan); font-size: 22px; text-align: center; margin-bottom: 20px; outline: none;
-        }
+        /* SECTION BASE */
+        .section { padding:80px 20px; max-width:1200px; margin:0 auto; }
+        .section-dark { background:rgba(255,255,255,0.02); border-top:1px solid rgba(0,242,255,0.06); border-bottom:1px solid rgba(0,242,255,0.06); }
+        .section-header { text-align:center; margin-bottom:48px; }
+        .section-badge { display:inline-block; padding:6px 16px; background:rgba(212,175,55,0.12); color:var(--gold); border-radius:50px; font-size:10px; font-weight:700; letter-spacing:3px; text-transform:uppercase; margin-bottom:12px; border:1px solid rgba(212,175,55,0.3); }
+        .section-title { font-family:'Orbitron',sans-serif; font-size:clamp(1.8rem,5vw,3rem); font-weight:700; margin-bottom:12px; background:linear-gradient(135deg,#fff,var(--cyan)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+        .section-desc { color:rgba(255,255,255,0.6); max-width:650px; margin:0 auto; font-size:1.05rem; line-height:1.8; }
 
-        button { 
-            width: 85%; padding: 16px; margin: 8px 0; border-radius: 12px; border: none; 
-            font-weight: bold; cursor: pointer; transition: 0.3s; text-transform: uppercase; 
-        }
-        .btn-buy { background: var(--cyan); color: #000; box-shadow: 0 4px 15px rgba(0,210,255,0.4); font-size: 16px; }
-        .btn-approve { background: #333; color: #fff; }
+        /* CARDS */
+        .cards-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:24px; }
+        .card { background:rgba(255,255,255,0.03); border:1px solid rgba(0,242,255,0.12); border-radius:20px; padding:36px 28px; transition:all 0.3s; }
+        .card:hover { transform:translateY(-8px); border-color:var(--cyan); box-shadow:0 0 30px rgba(0,242,255,0.15); }
+        .card-icon { width:56px; height:56px; background:linear-gradient(135deg,rgba(0,242,255,0.2),rgba(212,175,55,0.2)); border-radius:14px; display:flex; align-items:center; justify-content:center; font-size:1.6rem; margin-bottom:20px; border:1px solid rgba(0,242,255,0.2); }
+        .card-title { font-family:'Space Grotesk',sans-serif; font-size:1.3rem; font-weight:700; color:#fff; margin-bottom:12px; }
+        .card-desc { color:rgba(255,255,255,0.6); line-height:1.7; font-size:0.95rem; }
+        .card-list { list-style:none; margin-top:14px; }
+        .card-list li { color:var(--cyan); font-size:0.9rem; padding:4px 0; }
+        .card-list li::before { content:"→ "; opacity:0.6; }
 
-        /* PREVENTA ESTILIZADA */
-        .presale-container {
-            background: linear-gradient(145deg, #151515, #0a0a0a);
-            border: 1px solid var(--gold);
-            border-radius: 20px;
-            padding: 30px;
-            margin-bottom: 40px;
-        }
-        .presale-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
-        .phase-badge { background: var(--gold); color: #000; padding: 4px 12px; border-radius: 5px; font-size: 12px; font-weight: bold; }
-        .progress-bar { background: #222; height: 10px; border-radius: 10px; margin: 10px 0; overflow: hidden; }
-        .progress-fill { background: var(--gold); height: 100%; width: 15%; border-radius: 10px; box-shadow: 0 0 10px var(--gold); }
+        /* PROOF / GALLERY */
+        .proof-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:20px; }
+        .proof-card { position:relative; border-radius:16px; overflow:hidden; aspect-ratio:16/10; cursor:pointer; border:1px solid rgba(0,242,255,0.1); transition:transform 0.3s; }
+        .proof-card:hover { transform:scale(1.02); box-shadow:0 0 30px rgba(0,242,255,0.2); }
+        .proof-card img { width:100%; height:100%; object-fit:cover; }
+        .proof-overlay { position:absolute; bottom:0; left:0; right:0; padding:20px; background:linear-gradient(to top,rgba(0,0,0,0.95),transparent); }
+        .proof-title { font-weight:700; font-size:1rem; margin-bottom:4px; }
+        .proof-meta { font-size:0.8rem; color:var(--cyan); }
 
-        /* SECCIÓN DE INSTRUCCIONES DUAL */
-        .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 30px; }
-        .info-card { background: var(--panel-bg); padding: 25px; border-radius: 20px; border: 1px solid #333; text-align: center; }
-        .flag-icon { width: 45px; height: 45px; border-radius: 50%; border: 2px solid var(--gold); margin-bottom: 15px; object-fit: cover; }
-        
-        .btn-metamask {
-            background-image: linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.65)), url('asset/metamasklogo.jpg');
-            background-size: cover; height: 50px; border: 1px solid var(--gold); color: #fff; 
-            border-radius: 10px; width: 100%; cursor: pointer; font-size: 11px; font-weight: bold; margin-bottom: 10px;
-        }
+        /* CALCULATOR */
+        .calc-box { background:linear-gradient(135deg,rgba(11,26,48,0.9),rgba(13,31,60,0.9)); border:1px solid rgba(212,175,55,0.3); border-radius:24px; padding:40px; }
+        .calc-input { width:100%; padding:20px; font-size:2rem; font-weight:700; border:2px solid var(--gold); border-radius:14px; background:rgba(255,255,255,0.06); color:#fff; text-align:center; margin-bottom:20px; outline:none; font-family:'IBM Plex Mono',monospace; }
+        .calc-input::placeholder { color:rgba(255,255,255,0.4); font-size:1.2rem; }
+        .calc-result { background:linear-gradient(135deg,var(--gold),#f4d03f); padding:24px; border-radius:14px; text-align:center; }
+        .calc-val { font-family:'IBM Plex Mono',monospace; font-size:clamp(2rem,5vw,3.5rem); font-weight:900; color:var(--navy); }
+        .calc-lbl { font-size:0.8rem; color:var(--navy); opacity:0.7; text-transform:uppercase; letter-spacing:2px; margin-bottom:6px; }
 
-        .btn-support-ws {
-            display: flex; align-items: center; justify-content: center; gap: 10px;
-            background: #25D366; color: black; padding: 12px; border-radius: 10px; 
-            text-decoration: none; font-weight: bold; font-size: 12px; margin-top: 10px;
-        }
+        /* STEPS */
+        .steps-list { list-style:none; }
+        .step-item { display:flex; gap:20px; padding:20px 0; border-bottom:1px solid rgba(0,242,255,0.07); }
+        .step-item:last-child { border:none; }
+        .step-num { font-family:'Orbitron',sans-serif; font-size:2rem; font-weight:900; color:var(--pink); opacity:0.6; flex-shrink:0; width:32px; }
+        .step-text h3 { color:var(--cyan); font-size:1.1rem; margin-bottom:4px; }
+        .step-text p { color:rgba(255,255,255,0.6); font-size:0.9rem; line-height:1.6; }
 
-        .legal-container { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px; }
-        .legal-box { border: 1px solid rgba(212, 175, 55, 0.3); padding: 15px; border-radius: 10px; font-size: 11px; color: #888; text-align: justify; background: rgba(0,0,0,0.3); }
+        /* TEAM */
+        .team-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:24px; }
+        .team-card { background:rgba(255,255,255,0.03); border:1px solid rgba(212,175,55,0.15); border-radius:20px; overflow:hidden; transition:all 0.3s; }
+        .team-card:hover { transform:translateY(-8px); border-color:var(--gold); box-shadow:0 0 30px rgba(212,175,55,0.15); }
+        .team-img { width:100%; height:280px; object-fit:cover; }
+        .team-info { padding:24px; text-align:center; }
+        .team-name { font-family:'Space Grotesk',sans-serif; font-size:1.3rem; font-weight:700; color:#fff; margin-bottom:4px; }
+        .team-role { color:var(--gold); font-size:0.8rem; font-weight:700; text-transform:uppercase; letter-spacing:2px; margin-bottom:12px; }
+        .team-bio { color:rgba(255,255,255,0.6); font-size:0.9rem; line-height:1.6; margin-bottom:16px; }
+        .team-social { display:inline-flex; align-items:center; gap:8px; padding:10px 20px; background:#1877F2; color:#fff; border-radius:50px; text-decoration:none; font-size:0.85rem; font-weight:600; transition:transform 0.2s; }
+        .team-social:hover { transform:scale(1.05); }
 
-        .footer { text-align: center; padding: 40px 0; border-top: 1px solid #222; font-size: 13px; color: #555; }
-        .footer a { color: var(--gold); text-decoration: none; }
+        /* ROADMAP */
+        .roadmap { position:relative; max-width:800px; margin:0 auto; }
+        .roadmap::before { content:''; position:absolute; left:20px; top:0; bottom:0; width:2px; background:linear-gradient(to bottom,var(--gold),transparent); }
+        .rm-item { display:flex; gap:28px; margin-bottom:36px; padding-left:52px; position:relative; }
+        .rm-dot { position:absolute; left:12px; top:8px; width:18px; height:18px; background:var(--gold); border-radius:50%; border:3px solid var(--dark); box-shadow:0 0 0 3px var(--gold); }
+        .rm-content { background:rgba(255,255,255,0.03); border:1px solid rgba(212,175,55,0.15); border-radius:14px; padding:20px 24px; flex:1; }
+        .rm-quarter { font-family:'Orbitron',sans-serif; font-size:1.3rem; font-weight:700; color:var(--gold); margin-bottom:4px; }
+        .rm-title { font-size:1.1rem; font-weight:700; color:#fff; margin-bottom:8px; }
+        .rm-desc { color:rgba(255,255,255,0.6); font-size:0.9rem; line-height:1.6; }
 
-        .btn-whatsapp-float {
-            position: fixed; bottom: 20px; right: 20px; background: #25D366; color: white; 
-            width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; 
-            justify-content: center; box-shadow: 0 4px 15px rgba(0,0,0,0.5); text-decoration: none; z-index: 1000;
-        }
+        /* BIG CTA SECTION */
+        .cta-section { text-align:center; padding:80px 20px; background:linear-gradient(135deg,rgba(0,242,255,0.05),rgba(212,175,55,0.05)); border-top:1px solid rgba(0,242,255,0.1); border-bottom:1px solid rgba(0,242,255,0.1); }
+        .cta-title { font-family:'Orbitron',sans-serif; font-size:clamp(2rem,5vw,3.5rem); font-weight:900; margin-bottom:16px; background:linear-gradient(135deg,var(--cyan),var(--gold)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+        .cta-desc { color:rgba(255,255,255,0.7); font-size:1.1rem; margin-bottom:40px; max-width:600px; margin-left:auto; margin-right:auto; line-height:1.7; }
+        .cta-btn-big { display:inline-block; padding:24px 64px; background:linear-gradient(135deg,var(--gold),#f4d03f); color:var(--navy); font-family:'Orbitron',sans-serif; font-size:clamp(1rem,2.5vw,1.4rem); font-weight:900; letter-spacing:3px; text-decoration:none; border-radius:60px; box-shadow:0 0 40px rgba(212,175,55,0.5); transition:all 0.3s; }
+        .cta-btn-big:hover { transform:translateY(-4px) scale(1.04); box-shadow:0 0 70px rgba(212,175,55,0.7); }
 
-        /* MODAL PARA MÓVIL */
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.9);
-            z-index: 9999;
-            justify-content: center;
-            align-items: center;
-        }
-        .modal-content {
-            background: #1a1a1a;
-            border: 2px solid var(--gold);
-            border-radius: 20px;
-            padding: 30px;
-            max-width: 90%;
-            text-align: center;
-        }
-        .modal-content h3 {
-            color: var(--gold);
-            margin-top: 0;
-        }
-        .btn-open-metamask {
-            background: linear-gradient(135deg, #f6851b, #e2761b);
-            color: white;
-            padding: 18px 30px;
-            border-radius: 15px;
-            font-size: 18px;
-            font-weight: bold;
-            border: none;
-            cursor: pointer;
-            margin: 15px 0;
-            width: 100%;
-            box-shadow: 0 5px 20px rgba(246, 133, 27, 0.4);
-        }
-        .btn-close-modal {
-            background: #333;
-            color: white;
-            padding: 12px;
-            border-radius: 10px;
-            border: none;
-            cursor: pointer;
-            margin-top: 10px;
-        }
+        /* FAB */
+        .fab-container { position:fixed; bottom:28px; right:20px; display:flex; flex-direction:column; gap:12px; z-index:1000; }
+        .fab { width:58px; height:58px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:1.6rem; box-shadow:0 4px 20px rgba(0,0,0,0.4); transition:transform 0.3s; text-decoration:none; color:#fff; }
+        .fab:hover { transform:scale(1.12); }
+        .fab-wa { background:#25d366; }
+        .fab-tg { background:#0088cc; }
 
-        @media (max-width: 768px) { 
-            .presale-grid, .info-grid, .legal-container { grid-template-columns: 1fr; }
-            h1 { font-size: 1.5em; }
-            #saldoDisplay { font-size: 28px; }
+        /* FOOTER */
+        footer { text-align:center; padding:40px 20px; background:rgba(0,0,0,0.8); border-top:1px solid rgba(0,242,255,0.08); color:rgba(255,255,255,0.4); font-size:0.85rem; letter-spacing:1px; }
+        footer a { color:var(--gold); text-decoration:none; }
+
+        @media(max-width:600px){
+            .nav-links { display:none; }
+            .hero-cta-secondary { display:none; }
+            .hero-stats { grid-template-columns:repeat(2,1fr); }
         }
     </style>
 </head>
 <body>
 
-<!-- MODAL PARA ABRIR METAMASK EN MÓVIL -->
-<div id="modalMetamask" class="modal-overlay">
-    <div class="modal-content">
-        <h3>🦊 Abrir MetaMask</h3>
-        <p>Para conectar tu billetera, abre esta página en el navegador de MetaMask</p>
-        <button class="btn-open-metamask" onclick="abrirEnMetamask()">
-            📱 ABRIR EN METAMASK
-        </button>
-        <button class="btn-close-modal" onclick="cerrarModal()">Cancelar</button>
+<!-- NAV -->
+<nav>
+    <a class="nav-logo" href="#">NEO PISK</a>
+    <div class="nav-links">
+        <a href="#ecosistema">Ecosistema</a>
+        <a href="#pruebas">Pruebas</a>
+        <a href="#equipo">Equipo</a>
+        <a href="#roadmap">Roadmap</a>
+        <a href="https://neopisk.lat/" class="nav-cta">🚀 APP AIRDROP</a>
+    </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-grid"></div>
+    <div class="hero-content">
+        <div class="hero-badge">🇵🇪 Hecho en Perú · Blockchain Polygon</div>
+        <div class="hero-sub">WEB3 & TOKENIZACIÓN</div>
+        <h1 class="hero-title">NEO PISK TECH</h1>
+        <p class="hero-desc">Inversión respaldada por flota eléctrica, robótica e infraestructura real en Lima. Token $PISK con retornos verificables en blockchain.</p>
+
+        <div style="display:flex;flex-wrap:wrap;gap:16px;justify-content:center;margin-bottom:12px;">
+            <a class="hero-cta" href="https://neopisk.lat/" target="_blank">🚀 ENTRAR AL AIRDROP APP</a>
+            <a class="hero-cta-secondary" href="#ecosistema">VER ECOSISTEMA</a>
+        </div>
+        <div style="font-size:11px;color:rgba(255,255,255,0.4);letter-spacing:2px;">AIRDROP ACTIVO · PREVENTA FASE 2 · $0.10 USD</div>
+
+        <div class="hero-stats">
+            <div class="stat-item"><span class="stat-value">$0.10</span><span class="stat-label">Precio Preventa</span></div>
+            <div class="stat-item"><span class="stat-value">100M</span><span class="stat-label">Tokens Totales</span></div>
+            <div class="stat-item"><span class="stat-value">10%</span><span class="stat-label">Comisión Nivel 1</span></div>
+            <div class="stat-item"><span class="stat-value">3 NIV</span><span class="stat-label">Red de Referidos</span></div>
+            <div class="stat-item"><span class="stat-value">POLY</span><span class="stat-label">Red Blockchain</span></div>
+        </div>
     </div>
 </div>
 
-<div class="main-container">
-    <div class="header">
-        <div class="logo-row">
-            <img src="asset/IMG-20260126-WA0020.jpg" alt="Logo Neo">
-            <img src="asset/Eco Pisk.jpg" alt="Logo Eco">
+<!-- ECOSISTEMA -->
+<div id="ecosistema" style="padding:80px 20px;background:rgba(0,0,0,0.4);">
+    <div style="max-width:1200px;margin:0 auto;">
+        <div class="section-header">
+            <div class="section-badge">Ecosistema</div>
+            <div class="section-title">¿EN QUÉ INVERTIMOS?</div>
+            <p class="section-desc">Activos reales que respaldan el valor del token $PISK</p>
         </div>
-        <h1>NEO PISK & ECO PISK</h1>
-        <p style="color: var(--gold); letter-spacing: 5px; font-size: 11px;">FOUNDER PARTNER PORTAL • SOCIO FUNDADOR</p>
-    </div>
-
-    <div class="center-panel">
-        <div class="balance-box">
-            <div style="font-size: 11px; color: #666; margin-bottom: 5px;">TU SALDO / YOUR BALANCE</div>
-            <div id="saldoDisplay">0.00 $PISK</div>
-        </div>
-        <button class="btn-approve" style="background: transparent; border: 1px solid var(--cyan); color: var(--cyan);" onclick="verMiSaldo()">🔍 CONECTAR BILLETERA</button>
-        <input type="number" id="inputUSDT" placeholder="Monto USDT">
-        <button class="btn-approve" onclick="approveUSDT()">1. AUTORIZAR USDT</button>
-        <button class="btn-buy" onclick="buyPisk()">2. ADQUIRIR TOKENS $PISK</button>
-        <div id="status" style="font-size: 12px; margin-top: 15px; color: #d4af37; font-weight: bold;">Listo en Polygon Network</div>
-    </div>
-
-    <div class="presale-container">
-        <h3 style="text-align: center; color: var(--gold); margin-top: 0; letter-spacing: 2px;">💎 TOKENOMICS SOCIO FUNDADOR</h3>
-        <div class="presale-grid">
-            <div style="border-right: 1px solid #222; padding-right: 20px;">
-                <p><b>EMISIÓN TOTAL:</b> 100,000,000 $PISK</p>
-                <p><b>POLÍTICA:</b> BUYBACK & BURN</p>
-                <p><span class="phase-badge">FASE 1</span> <span style="color: #39FF14;">SOLD OUT 100%</span></p>
-                <p><span class="phase-badge">FASE 2</span> ACTUAL: $0.10 USD</p>
-                <div class="progress-bar"><div class="progress-fill"></div></div>
-                <small>15% Completado</small>
+        <div class="cards-grid">
+            <div class="card">
+                <div class="card-icon">🚗</div>
+                <div class="card-title">Flota Eléctrica</div>
+                <p class="card-desc">Vehículos eléctricos BYD y Changan operando en plataformas ride-sharing como Yango e InDriver en Lima.</p>
+                <ul class="card-list"><li>Changan Alsvin EV</li><li>BYD vehicular</li><li>Torito eléctrico</li></ul>
             </div>
-            <div style="padding-left: 10px;">
-                <p><b>TOTAL SUPPLY:</b> 100,000,000 $PISK</p>
-                <p><b>POLICY:</b> BUYBACK & BURN</p>
-                <p><span class="phase-badge">PHASE 1</span> <span style="color: #39FF14;">SOLD OUT 100%</span></p>
-                <p><span class="phase-badge">PHASE 2</span> CURRENT: $0.10 USD</p>
-                <div class="progress-bar"><div class="progress-fill"></div></div>
-                <small>15% Completed</small>
+            <div class="card">
+                <div class="card-icon">🤖</div>
+                <div class="card-title">Robótica & IA</div>
+                <p class="card-desc">Integración de robótica industrial e inteligencia artificial para automatización de procesos y logística.</p>
+                <ul class="card-list"><li>Humanoides Noetix N2</li><li>Automatización logística</li><li>IA de gestión</li></ul>
+            </div>
+            <div class="card">
+                <div class="card-icon">🌱</div>
+                <div class="card-title">Eco Pisk Park</div>
+                <p class="card-desc">Tokenización de cacao premium y proyectos agrícolas sostenibles en la selva peruana.</p>
+                <ul class="card-list"><li>Cacao tokenizado</li><li>Agricultura sostenible</li><li>Impacto social</li></ul>
+            </div>
+            <div class="card">
+                <div class="card-icon">💰</div>
+                <div class="card-title">Tokenización Empresarial</div>
+                <p class="card-desc">Convertimos inventarios y servicios futuros de negocios en activos digitales para obtener capital sin préstamos bancarios.</p>
+                <ul class="card-list"><li>Barberías y salones VIP</li><li>Clínicas estéticas</li><li>Restaurantes y retail</li></ul>
+            </div>
+            <div class="card">
+                <div class="card-icon">🎪</div>
+                <div class="card-title">Eventos & Instituciones</div>
+                <p class="card-desc">Elimina el efectivo en eventos masivos con tickets digitales inteligentes. Seguridad total y cero robos.</p>
+                <ul class="card-list"><li>Conciertos y festivales</li><li>Rifas escolares (APAFAS)</li><li>Kermeses y eventos</li></ul>
+            </div>
+            <div class="card">
+                <div class="card-icon">🤝</div>
+                <div class="card-title">Red de Referidos</div>
+                <p class="card-desc">Gana comisiones en USDT y $PISK por cada compra en tu red de 3 niveles.</p>
+                <ul class="card-list"><li>Nivel 1: 10% USDT</li><li>Nivel 2: 3% USDT</li><li>Nivel 3: 1% USDT</li></ul>
             </div>
         </div>
-    </div>
-
-    <div class="info-grid">
-        <div class="info-card">
-            <img src="https://flagcdn.com/w160/es.png" class="flag-icon" alt="España">
-            <h4 style="color: var(--gold); margin: 0 0 15px 0;">INSTRUCCIONES</h4>
-            <p style="font-size: 13px; text-align: left; margin-bottom: 15px;">
-                1. Conecta tu MetaMask.<br>
-                2. Autoriza USDT para la compra.<br>
-                3. Confirma tu adquisición.<br>
-                <b>Smartphone:</b> Copia la URL abajo.
-            </p>
-            <button onclick="copiarURL()" class="btn-metamask">COPIAR URL PARA METAMASK</button>
-            <button onclick="copyContract()" style="background:#000; color:var(--gold); border:1px dashed var(--gold); font-size:10px; padding:10px; width: 100%; cursor: pointer;">COPIAR CONTRATO $PISK</button>
-            <a href="https://wa.me/51908066095" class="btn-support-ws" target="_blank">💬 SOPORTE WHATSAPP</a>
-        </div>
-
-        <div class="info-card">
-            <img src="https://flagcdn.com/w160/us.png" class="flag-icon" alt="USA">
-            <h4 style="color: var(--gold); margin: 0 0 15px 0;">INSTRUCTIONS</h4>
-            <p style="font-size: 13px; text-align: left; margin-bottom: 15px;">
-                1. Connect your MetaMask wallet.<br>
-                2. Approve USDT for purchase.<br>
-                3. Confirm your acquisition.<br>
-                <b>Smartphone:</b> Copy the URL below.
-            </p>
-            <button onclick="copiarURL()" class="btn-metamask">COPY URL FOR METAMASK</button>
-            <button onclick="copyContract()" style="background:#000; color:var(--gold); border:1px dashed var(--gold); font-size:10px; padding:10px; width: 100%; cursor: pointer;">COPY $PISK CONTRACT</button>
-            <a href="https://wa.me/51908066095" class="btn-support-ws" target="_blank">💬 WHATSAPP SUPPORT</a>
-        </div>
-    </div>
-
-    <div class="legal-container">
-        <div class="legal-box">
-            <b style="color: var(--gold);">⚖️ AVISO LEGAL:</b> La adquisición de $PISK representa utilidad digital diseñada para el ecosistema Neo Pisk. El usuario acepta la gobernanza digital para el desarrollo de infraestructura en Lima Este.
-        </div>
-        <div class="legal-box">
-            <b style="color: var(--gold);">⚖️ LEGAL NOTICE:</b> The acquisition of $PISK represents digital utility for the Neo Pisk ecosystem. The user accepts digital governance for infrastructure development in East Lima.
-        </div>
-    </div>
-
-    <div class="footer">
-        <p>Propiedad Oficial: <b>Neo Pisk & Eco Pisk</b></p>
-        <p>Web: <a href="https://neopisk.lat/" target="_blank">neopisk.lat</a></p>
     </div>
 </div>
 
-<a href="https://wa.me/51908066095" class="btn-whatsapp-float" target="_blank">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" width="35" alt="WhatsApp">
-</a>
+<!-- CALCULADORA -->
+<div style="padding:80px 20px;background:rgba(11,26,48,0.6);">
+    <div style="max-width:700px;margin:0 auto;">
+        <div class="section-header">
+            <div class="section-badge">Calculadora</div>
+            <div class="section-title">¿CUÁNTO RECIBES?</div>
+            <p class="section-desc">10 $PISK por cada $1 USDT invertido</p>
+        </div>
+        <div class="calc-box">
+            <div style="font-size:11px;letter-spacing:3px;color:rgba(255,255,255,0.5);margin-bottom:10px;">¿CUÁNTO USDT QUIERES INVERTIR?</div>
+            <input class="calc-input" type="number" id="calcInput" placeholder="Ej: 100" oninput="calcular()">
+            <div class="calc-result">
+                <div class="calc-lbl">RECIBIRÁS</div>
+                <div class="calc-val" id="calcVal">0 $PISK</div>
+                <div style="font-size:0.85rem;color:var(--navy);opacity:0.7;margin-top:4px;" id="calcUsd">≈ $0.00 USD al precio actual</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- PRUEBAS REALES -->
+<div id="pruebas" style="padding:80px 20px;">
+    <div style="max-width:1200px;margin:0 auto;">
+        <div class="section-header">
+            <div class="section-badge">Evidencia</div>
+            <div class="section-title">ACTIVOS REALES</div>
+            <p class="section-desc">Infraestructura operativa que respalda el valor de $PISK</p>
+        </div>
+        <div class="proof-grid">
+            <div class="proof-card">
+                <img src="https://res.cloudinary.com/dfmqybaac/image/upload/v1772308696/alsvin-web-1700x830-exterior-5_dz0dkv.jpg" alt="Changan">
+                <div class="proof-overlay"><div class="proof-title">Changan Alsvin EV</div><div class="proof-meta">Flota operativa · Lima, Perú</div></div>
+            </div>
+            <div class="proof-card">
+                <img src="https://i.postimg.cc/Js4BXv4X/byd.jpg" alt="BYD">
+                <div class="proof-overlay"><div class="proof-title">BYD Flota Eléctrica</div><div class="proof-meta">Yango & InDriver · Lima</div></div>
+            </div>
+            <div class="proof-card">
+                <img src="https://i.postimg.cc/Pq3j58dn/the-noetix-robotics-n2-humanoid-robot-displayed-at-the-companys-offices-in-beijing-china-on.jpg" alt="Robot">
+                <div class="proof-overlay"><div class="proof-title">Noetix Robotics N2</div><div class="proof-meta">Integración robótica · 2026</div></div>
+            </div>
+            <div class="proof-card">
+                <img src="https://raw.githubusercontent.com/ernestopisk2015-arch/Eco-Pisk-Park/main/Tokenizacioncacao.jpg" alt="Cacao">
+                <div class="proof-overlay"><div class="proof-title">Cacao Tokenizado</div><div class="proof-meta">Eco Pisk Park · Selva Peruana</div></div>
+            </div>
+            <div class="proof-card">
+                <img src="https://i.postimg.cc/mtcrG4DY/torito.jpg" alt="Torito">
+                <div class="proof-overlay"><div class="proof-title">Torito Eléctrico</div><div class="proof-meta">Movilidad urbana · Lima</div></div>
+            </div>
+            <div class="proof-card">
+                <img src="https://raw.githubusercontent.com/ernestopisk2015-arch/Neopisk/main/asset/Eco%20Pisk.jpg" alt="Eco Pisk">
+                <div class="proof-overlay"><div class="proof-title">Eco Pisk Ecosystem</div><div class="proof-meta">Energía limpia & sostenibilidad</div></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- CÓMO FUNCIONA -->
+<div style="padding:80px 20px;background:rgba(0,0,0,0.4);">
+    <div style="max-width:900px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start;" class="how-grid">
+        <div>
+            <div class="section-badge">Proceso</div>
+            <div class="section-title" style="text-align:left;margin-bottom:24px;">¿CÓMO<br>FUNCIONA?</div>
+            <ul class="steps-list">
+                <li class="step-item"><div class="step-num">01</div><div class="step-text"><h3>Diagnóstico Digital</h3><p>Analizamos tu negocio para crear la estrategia de tokens adecuada.</p></div></li>
+                <li class="step-item"><div class="step-num">02</div><div class="step-text"><h3>Emisión de Tokens</h3><p>Lanzamos tu moneda digital bajo el respaldo del ecosistema Neo Pisk.</p></div></li>
+                <li class="step-item"><div class="step-num">03</div><div class="step-text"><h3>Capitalización</h3><p>Tus clientes compran tokens por adelantado. Tú recibes capital y aseguras lealtad.</p></div></li>
+                <li class="step-item"><div class="step-num">04</div><div class="step-text"><h3>Comisiones Automáticas</h3><p>El sistema paga automáticamente las comisiones de tu red de referidos en USDT.</p></div></li>
+            </ul>
+        </div>
+        <div>
+            <div class="section-badge">Tokenomics</div>
+            <div class="section-title" style="text-align:left;margin-bottom:24px;">$PISK<br>TOKEN</div>
+            <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(212,175,55,0.2);border-radius:16px;overflow:hidden;">
+                <div style="padding:16px 20px;border-bottom:1px solid rgba(255,255,255,0.05);display:flex;justify-content:space-between;"><span style="color:rgba(255,255,255,0.5);font-size:11px;letter-spacing:1px;">EMISIÓN TOTAL</span><span style="font-family:'IBM Plex Mono',monospace;color:var(--green);font-weight:700;">100,000,000</span></div>
+                <div style="padding:16px 20px;border-bottom:1px solid rgba(255,255,255,0.05);display:flex;justify-content:space-between;"><span style="color:rgba(255,255,255,0.5);font-size:11px;letter-spacing:1px;">POLÍTICA</span><span style="font-family:'IBM Plex Mono',monospace;color:var(--green);font-weight:700;">BUYBACK & BURN</span></div>
+                <div style="padding:16px 20px;border-bottom:1px solid rgba(255,255,255,0.05);display:flex;justify-content:space-between;"><span style="color:rgba(255,255,255,0.5);font-size:11px;letter-spacing:1px;">FASE 1</span><span style="background:rgba(0,230,118,0.15);color:var(--green);padding:4px 12px;font-size:12px;font-weight:700;">SOLD OUT ✓</span></div>
+                <div style="padding:16px 20px;border-bottom:1px solid rgba(255,255,255,0.05);display:flex;justify-content:space-between;"><span style="color:rgba(255,255,255,0.5);font-size:11px;letter-spacing:1px;">FASE 2 PRECIO</span><span style="font-family:'IBM Plex Mono',monospace;color:var(--gold);font-weight:700;">$0.10 USD</span></div>
+                <div style="padding:16px 20px;display:flex;justify-content:space-between;"><span style="color:rgba(255,255,255,0.5);font-size:11px;letter-spacing:1px;">RED</span><span style="font-family:'IBM Plex Mono',monospace;color:var(--cyan);font-weight:700;">POLYGON</span></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- EQUIPO -->
+<div id="equipo" style="padding:80px 20px;" id="seccion-lideres">
+    <div style="max-width:1200px;margin:0 auto;">
+        <div class="section-header">
+            <div class="section-badge">Líderes</div>
+            <div class="section-title">NUESTRO EQUIPO</div>
+            <p class="section-desc">Emprendedores con trayectoria real en Lima</p>
+        </div>
+        <div class="team-grid">
+            <div class="team-card">
+                <img class="team-img" src="asset/IMG-20260126-WA0020.jpg" alt="Ernesto Piskulich" onerror="this.src='https://via.placeholder.com/400x280/0B1A30/D4AF37?text=EP'">
+                <div class="team-info">
+                    <div class="team-name">Ernesto Piskulich</div>
+                    <div class="team-role">Fundador & CEO</div>
+                    <p class="team-bio">Emprendedor en tecnología de movilidad eléctrica y Web3. Lidera la expansión de flota en Lima con visión blockchain.</p>
+                    <a href="https://facebook.com" class="team-social" target="_blank"><i class="fab fa-facebook"></i> Facebook</a>
+                </div>
+            </div>
+            <div class="team-card">
+                <img class="team-img" src="asset/Eco Pisk.jpg" alt="Eco Pisk" onerror="this.src='https://via.placeholder.com/400x280/0B1A30/00D9A3?text=EP'">
+                <div class="team-info">
+                    <div class="team-name">Eco Pisk Park</div>
+                    <div class="team-role">División Sostenible</div>
+                    <p class="team-bio">Tokenización de cacao premium y proyectos de agricultura sostenible en la selva peruana.</p>
+                    <a href="https://t.me/Neo_Pisk_Airdrop_bot" class="team-social" target="_blank" style="background:#0088cc;"><i class="fab fa-telegram"></i> Telegram</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ROADMAP -->
+<div id="roadmap" style="padding:80px 20px;background:rgba(0,0,0,0.4);">
+    <div style="max-width:800px;margin:0 auto;">
+        <div class="section-header">
+            <div class="section-badge">Hoja de Ruta</div>
+            <div class="section-title">ROADMAP 2026</div>
+        </div>
+        <div class="roadmap">
+            <div class="rm-item"><div class="rm-dot"></div><div class="rm-content"><div class="rm-quarter">Q1 2026</div><div class="rm-title">Airdrop & Preventa Fase 2</div><div class="rm-desc">Lanzamiento del programa de referidos multinivel. Preventa activa a $0.10 USD por token.</div></div></div>
+            <div class="rm-item"><div class="rm-dot"></div><div class="rm-content"><div class="rm-quarter">Q2 2026</div><div class="rm-title">Expansión de Flota</div><div class="rm-desc">Incorporación de 20 vehículos eléctricos adicionales. Integración con 3 nuevas plataformas de ride-sharing.</div></div></div>
+            <div class="rm-item"><div class="rm-dot"></div><div class="rm-content"><div class="rm-quarter">Q3 2026</div><div class="rm-title">Robótica & IA</div><div class="rm-desc">Primer piloto de robótica Noetix N2 en Lima. Plataforma de tokenización empresarial abierta al público.</div></div></div>
+            <div class="rm-item"><div class="rm-dot"></div><div class="rm-content"><div class="rm-quarter">Q4 2026</div><div class="rm-title">Exchange & Liquidez</div><div class="rm-desc">Listado en exchanges descentralizados. Mecanismo buyback & burn activado. Eco Pisk Park en producción.</div></div></div>
+        </div>
+    </div>
+</div>
+
+<!-- GRAN CTA FINAL -->
+<div class="cta-section">
+    <div class="section-badge" style="margin-bottom:20px;">🚀 Únete ahora</div>
+    <div class="cta-title">¿LISTO PARA INVERTIR<br>EN EL FUTURO?</div>
+    <p class="cta-desc">Únete al Airdrop de $PISK, gana tokens y comisiones en USDT por referidos. Preventa activa a $0.10 USD.</p>
+    <a class="cta-btn-big" href="https://neopisk.lat/" target="_blank">🚀 ENTRAR AL AIRDROP APP</a>
+    <div style="margin-top:20px;display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
+        <a href="https://t.me/Neo_Pisk_Airdrop_bot" target="_blank" style="color:var(--cyan);text-decoration:none;font-size:14px;font-weight:600;">✈️ Bot de Telegram</a>
+        <span style="color:rgba(255,255,255,0.3);">·</span>
+        <a href="https://neopisk.lat/comprar.html" target="_blank" style="color:var(--gold);text-decoration:none;font-size:14px;font-weight:600;">💰 Comprar $PISK</a>
+        <span style="color:rgba(255,255,255,0.3);">·</span>
+        <a href="https://www.tiktok.com/@ernestopiskulich" target="_blank" style="color:rgba(255,255,255,0.6);text-decoration:none;font-size:14px;">🎵 TikTok</a>
+    </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+    <p style="margin-bottom:8px;">© 2026 <a href="https://neopisk.lat/">Neo Pisk Tech SAC</a> · San Juan de Lurigancho, Lima, Perú</p>
+    <p>Contrato: <span style="font-family:'IBM Plex Mono',monospace;color:var(--cyan);font-size:0.8rem;">0x07Fc7AC9D681Cdd3D100c68f6f5646970CC7fF60</span> · Red Polygon</p>
+</footer>
+
+<!-- FAB -->
+<div class="fab-container">
+    <a class="fab fab-tg" href="https://t.me/Neo_Pisk_Airdrop_bot" target="_blank" title="Telegram Bot">
+        <svg viewBox="0 0 24 24" fill="white" width="28" height="28"><path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z"/></svg>
+    </a>
+    <a class="fab fab-wa" href="https://wa.me/51948115030" target="_blank" title="WhatsApp">
+        <svg viewBox="0 0 24 24" fill="white" width="28" height="28"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+    </a>
+</div>
 
 <script>
-    // CONFIGURACIÓN DE SMART CONTRACTS
-    const contractAddr = "0x07Fc7AC9D681Cdd3D100c68f6f5646970CC7fF60"; 
-    const usdtAddr = "0xc2132D05D31c914a87C6611C10748AEb04B58e8F"; 
-    const piskAddr = "0x9d5B2A73d16dAF61712BA8527d94F6997a0E6323";
+function calcular() {
+    const usdt = parseFloat(document.getElementById('calcInput').value) || 0;
+    const pisk = usdt * 10;
+    document.getElementById('calcVal').textContent = pisk.toLocaleString() + ' $PISK';
+    document.getElementById('calcUsd').textContent = '≈ $' + (pisk * 0.10).toFixed(2) + ' USD al precio actual de $0.10';
+}
 
-    const minABI = [
-        { "constant": false, "inputs": [{ "name": "_spender", "type": "address" }, { "name": "_value", "type": "uint256" }], "name": "approve", "outputs": [{ "name": "", "type": "bool" }], "type": "function" },
-        { "constant": true, "inputs": [{ "name": "_owner", "type": "address" }], "name": "balanceOf", "outputs": [{ "name": "balance", "type": "uint256" }], "type": "function" },
-        { "constant": true, "inputs": [{ "name": "_owner", "type": "address" }, { "name": "_spender", "type": "address" }], "name": "allowance", "outputs": [{ "name": "", "type": "uint256" }], "type": "function" }
-    ];
-
-    const buyABI = [{ "inputs": [{ "name": "_amountUSDT", "type": "uint256" }], "name": "buyWithUSDT", "outputs": [], "stateMutability": "nonpayable", "type": "function" }];
-
-    // ========== FUNCIONES PARA DETECTAR MÓVIL Y ABRIR METAMASK ==========
-    
-    function esMobil() {
-        return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-    }
-
-    function esMetaMaskInstalado() {
-        return typeof window.ethereum !== 'undefined' && window.ethereum.isMetaMask;
-    }
-
-    function abrirEnMetamask() {
-        const urlActual = window.location.href;
-        const deepLink = `https://metamask.app.link/dapp/${urlActual.replace(/^https?:\/\//, '')}`;
-        window.location.href = deepLink;
-    }
-
-    function mostrarModal() {
-        document.getElementById('modalMetamask').style.display = 'flex';
-    }
-
-    function cerrarModal() {
-        document.getElementById('modalMetamask').style.display = 'none';
-    }
-
-    // ========== FUNCIONES PRINCIPALES ==========
-
-    function copiarURL() { 
-        navigator.clipboard.writeText("https://neopisk.lat/invertir.html"); 
-        alert("URL Copiada"); 
-    }
-    
-    function copyContract() { 
-        navigator.clipboard.writeText(piskAddr); 
-        alert("Contrato $PISK Copiado"); 
-    }
-    
-    async function getSafeGasPrice(web3) {
-        const gasPrice = await web3.eth.getGasPrice();
-        return Math.floor(parseInt(gasPrice) * 1.5).toString();
-    }
-
-    async function verMiSaldo() {
-        // NUEVA LÓGICA: Detectar si está en móvil sin MetaMask
-        if (esMobil() && !esMetaMaskInstalado()) {
-            mostrarModal();
-            return;
-        }
-
-        if (!window.ethereum) {
-            alert("Instala MetaMask para continuar");
-            return;
-        }
-
-        try {
-            const web3 = new Web3(window.ethereum);
-            const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
-            const pisk = new web3.eth.Contract(minABI, piskAddr);
-            const bal = await pisk.methods.balanceOf(accounts[0]).call();
-            const normal = parseFloat(web3.utils.fromWei(bal, 'ether')).toFixed(2);
-            document.getElementById("saldoDisplay").innerText = normal + " $PISK";
-            document.getElementById("status").innerText = "✅ Conectado: " + accounts[0].substring(0,8);
-        } catch (error) {
-            console.error(error);
-            document.getElementById("status").innerText = "❌ Error al conectar";
-        }
-    }
-
-    async function approveUSDT() {
-        const val = document.getElementById("inputUSDT").value;
-        if(!val || val <= 0) return alert("Ingresa un monto válido");
-        try {
-            const web3 = new Web3(window.ethereum);
-            const accounts = await web3.eth.getAccounts();
-            if(accounts.length === 0) return alert("Conecta tu billetera primero");
-            const usdt = new web3.eth.Contract(minABI, usdtAddr);
-            const montoFinal = (parseFloat(val) * 1000000).toFixed(0);
-            const gasPrice = await getSafeGasPrice(web3);
-
-            document.getElementById("status").innerText = "⏳ Verificando permisos...";
-            const allowance = await usdt.methods.allowance(accounts[0], contractAddr).call();
-            
-            if (parseInt(allowance) > 0) {
-                document.getElementById("status").innerText = "⏳ Reseteando permiso anterior...";
-                await usdt.methods.approve(contractAddr, "0").send({ from: accounts[0], gasPrice: gasPrice });
-            }
-
-            document.getElementById("status").innerText = "⏳ Autorizando " + val + " USDT...";
-            await usdt.methods.approve(contractAddr, montoFinal).send({ 
-                from: accounts[0],
-                gasPrice: gasPrice
-            });
-            document.getElementById("status").innerText = "✅ Autorizado. Procede al paso 2.";
-        } catch (e) { 
-            console.error(e);
-            document.getElementById("status").innerText = "❌ Error en Autorización"; 
-        }
-    }
-
-    async function buyPisk() {
-        const val = document.getElementById("inputUSDT").value;
-        if(!val) return alert("Autoriza primero el monto");
-        try {
-            const web3 = new Web3(window.ethereum);
-            const accounts = await web3.eth.getAccounts();
-            if(accounts.length === 0) return alert("Conecta tu billetera primero");
-            const neo = new web3.eth.Contract(buyABI, contractAddr);
-            const montoFinal = (parseFloat(val) * 1000000).toFixed(0);
-            const gasPrice = await getSafeGasPrice(web3);
-
-            document.getElementById("status").innerText = "🚀 Confirmando compra...";
-            await neo.methods.buyWithUSDT(montoFinal).send({ 
-                from: accounts[0],
-                gas: 250000,
-                gasPrice: gasPrice
-            });
-            document.getElementById("status").innerText = "🎉 ¡COMPRA EXITOSA!";
-            verMiSaldo();
-        } catch (e) { 
-            console.error(e);
-            document.getElementById("status").innerText = "❌ Error en la compra"; 
-        }
-    }
+// Responsive how-grid
+const hw = document.querySelector('.how-grid');
+if(hw && window.innerWidth < 700) { hw.style.gridTemplateColumns = '1fr'; }
+window.addEventListener('resize', () => { if(hw) hw.style.gridTemplateColumns = window.innerWidth < 700 ? '1fr' : '1fr 1fr'; });
 </script>
-
 </body>
 </html>
