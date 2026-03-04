@@ -541,8 +541,17 @@ function emptyRow(cols, msg) {
   return `<tr><td colspan="${cols}" style="text-align:center;color:var(--muted);padding:28px;font-family:'Rajdhani'">${msg}</td></tr>`;
 }
 function uniq(arr) {
+  // Primero ordenar: los que tienen codigo_ref van primero
+  const sorted = [...arr].sort((a,b) => (b.codigo_ref?1:0) - (a.codigo_ref?1:0));
   const seen = new Set();
-  return arr.filter(u => { const k = u.codigo_ref||u.nombre; if(seen.has(k))return false; seen.add(k); return true; });
+  return sorted.filter(u => {
+    // Clave: usar nombre en minúsculas para detectar duplicados
+    const k = (u.nombre||'').toLowerCase().trim();
+    if(!k) return false;
+    if(seen.has(k)) return false;
+    seen.add(k);
+    return true;
+  });
 }
 function toast(msg) {
   const t = document.getElementById('toast');
