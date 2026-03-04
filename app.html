@@ -204,6 +204,27 @@ body{background:var(--dark);color:var(--text);font-family:'Rajdhani',sans-serif;
     <strong style="color:var(--gold2);">💡 Después de comprar</strong><br>
     Ve al tab <strong style="color:var(--text)">💳 WALLET</strong> y registra tu dirección Polygon para recibir tus comisiones de referidos.
   </div>
+
+  <!-- CONFIRMAR COMPRA CON HASH -->
+  <div class="divider" style="height:1px;background:var(--border);margin:16px 0;"></div>
+  <div style="font-family:'Bebas Neue';font-size:12px;letter-spacing:4px;color:var(--gold);margin-bottom:10px;">✅ YA COMPRÉ — REGISTRAR MI COMPRA</div>
+
+  <div style="background:var(--dark2);border:1px solid var(--border);padding:14px;margin-bottom:8px;">
+    <div style="font-size:10px;letter-spacing:3px;color:var(--muted);margin-bottom:6px;">TU WALLET (POLYGON)</div>
+    <input class="wallet-input" id="compraWalletInput" placeholder="0x... la misma que usaste en MetaMask">
+  </div>
+
+  <div style="background:var(--dark2);border:1px solid var(--border);padding:14px;margin-bottom:12px;">
+    <div style="font-size:10px;letter-spacing:3px;color:var(--muted);margin-bottom:6px;">HASH DE LA TRANSACCIÓN (TxHash)</div>
+    <input class="wallet-input" id="hashInput" placeholder="0x... copia el TxHash de tu wallet">
+    <div style="font-size:10px;color:var(--muted);">Encuentra el TxHash en el historial de tu MetaMask → toca la transacción → copia el hash.</div>
+  </div>
+
+  <button class="btn-full btn-gold" onclick="enviarHash()" style="font-size:17px;margin-bottom:6px;">
+    📨 ENVIAR COMPROBANTE
+  </button>
+  <div id="hashStatus" style="display:none;background:rgba(0,230,118,0.08);border:1px solid var(--green);padding:12px;text-align:center;font-size:13px;color:var(--green);margin-top:8px;"></div>
+
 </div>
 
 <!-- TAB WALLET -->
@@ -452,11 +473,48 @@ function toast(msg) {
 
 // ── COMPRAR ───────────────────────────────────────
 function abrirCompra() {
-  const uid    = user?.id || '';
-  const ref    = user?.codigo_ref || '';
-  const url    = `https://neopisk.lat/comprar.html?uid=${uid}&ref=${ref}`;
+  const uid = user?.id || '';
+  const ref = user?.codigo_ref || '';
+  const url = `https://neopisk.lat/comprar.html?uid=${uid}&ref=${ref}`;
   if (tg?.openLink) { tg.openLink(url); }
   else { window.open(url, '_blank'); }
+}
+
+async function enviarHash() {
+  const wallet = document.getElementById('compraWalletInput').value.trim();
+  const hash   = document.getElementById('hashInput').value.trim();
+  const status = document.getElementById('hashStatus');
+
+  if (!wallet || wallet.length < 20) { toast('⚠️ Ingresa tu wallet de Polygon'); return; }
+  if (!hash   || hash.length < 20)   { toast('⚠️ Ingresa el TxHash de tu compra'); return; }
+
+  // Guardar wallet en perfil
+  if (user) { user.wallet = wallet; saveLocal(); updateUI(); }
+
+  try {
+    await fetch(`${API}/compra`, {
+      method:  'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({
+        userId:     user?.id || '',
+        nombre:     user?.nombre || '',
+        wallet,
+        hash,
+        codigo_ref: user?.codigo_ref || '',
+        fecha:      new Date().toISOString()
+      }),
+      signal: AbortSignal.timeout(8000)
+    });
+  } catch(_) {}
+
+  status.style.display = 'block';
+  status.innerHTML = `✅ ¡Comprobante enviado!<br><br>
+    Wallet: <strong style="color:var(--gold2)">${wallet.slice(0,10)}…</strong><br>
+    Hash: <strong style="color:var(--gold2)">${hash.slice(0,16)}…</strong><br><br>
+    Verificaremos tu compra en menos de 24 hrs.`;
+  document.getElementById('hashInput').value = '';
+  tg?.HapticFeedback?.notificationOccurred('success');
+  toast('✅ ¡Comprobante enviado!');
 }
 
 function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
