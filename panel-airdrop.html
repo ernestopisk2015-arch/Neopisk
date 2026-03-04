@@ -3,117 +3,176 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Neo Pisk — Panel Airdrop</title>
+<title>Neo Pisk — Panel de Control</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root{--gold:#B8860B;--gold2:#8B6914;--border:rgba(0,0,0,0.12);--text:#111827;--muted:#4B5563;--muted2:#6B7280;--green:#059669;--red:#DC2626;}
+:root {
+  --gold:   #C9960C;
+  --gold2:  #8B6914;
+  --gold3:  #F0C040;
+  --dark:   #111827;
+  --dark2:  #1F2937;
+  --border: rgba(0,0,0,0.10);
+  --text:   #111827;
+  --muted:  #6B7280;
+  --bg:     #F3F4F6;
+  --white:  #FFFFFF;
+  --green:  #059669;
+  --red:    #DC2626;
+  --sidebar:#16213E;
+}
 *{margin:0;padding:0;box-sizing:border-box;}
-body{background:#EEF0F4;color:var(--text);font-family:'Rajdhani',sans-serif;min-height:100vh;}
-#loginScreen{position:fixed;inset:0;background:#EEF0F4;z-index:100;display:flex;align-items:center;justify-content:center;}
-.login-box{background:#fff;border:1px solid rgba(0,0,0,0.12);padding:40px;width:360px;text-align:center;box-shadow:0 8px 32px rgba(0,0,0,0.12);border-radius:4px;}
-.login-logo{font-family:'Bebas Neue';font-size:42px;color:#B8860B;margin-bottom:4px;}
-.login-sub{font-size:11px;letter-spacing:4px;color:var(--muted);margin-bottom:32px;}
-.login-input{width:100%;background:#F9FAFB;border:1px solid rgba(0,0,0,0.15);color:#111827;padding:13px 16px;font-family:'Rajdhani',sans-serif;font-size:16px;outline:none;margin-bottom:12px;border-radius:4px;transition:border-color 0.2s;}
-.login-input:focus{border-color:#B8860B;box-shadow:0 0 0 3px rgba(184,134,11,0.1);}
-.login-btn{width:100%;padding:14px;background:linear-gradient(135deg,#B8860B,#8B6914);color:#fff;border:none;font-family:'Bebas Neue';font-size:20px;letter-spacing:3px;cursor:pointer;border-radius:4px;}
-.login-err{color:var(--red);font-size:13px;margin-top:8px;display:none;}
+body{background:var(--bg);color:var(--text);font-family:'Rajdhani',sans-serif;min-height:100vh;}
+
+/* LOGIN */
+#loginScreen{position:fixed;inset:0;background:var(--sidebar);z-index:100;display:flex;align-items:center;justify-content:center;}
+.login-box{background:#1F2B45;border:1px solid rgba(201,150,12,0.3);padding:48px 40px;width:380px;text-align:center;box-shadow:0 24px 80px rgba(0,0,0,0.5);}
+.login-logo{font-family:'Bebas Neue';font-size:52px;color:var(--gold3);letter-spacing:4px;}
+.login-sub{font-size:10px;letter-spacing:5px;color:rgba(255,255,255,0.35);margin-bottom:36px;}
+.login-input{width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.15);color:#fff;padding:14px 16px;font-family:'Rajdhani';font-size:16px;outline:none;margin-bottom:10px;transition:border-color 0.2s;}
+.login-input::placeholder{color:rgba(255,255,255,0.3);}
+.login-input:focus{border-color:var(--gold);}
+.login-btn{width:100%;padding:15px;background:linear-gradient(135deg,var(--gold),var(--gold2));color:#fff;border:none;font-family:'Bebas Neue';font-size:22px;letter-spacing:4px;cursor:pointer;margin-top:4px;transition:opacity 0.2s;}
+.login-btn:hover{opacity:0.9;}
+.login-err{color:#F87171;font-size:13px;margin-top:10px;display:none;}
+
+/* LAYOUT */
 #app{display:none;min-height:100vh;}
-.sidebar{position:fixed;left:0;top:0;bottom:0;width:220px;background:#1A1A2E;border-right:1px solid rgba(255,255,255,0.1);display:flex;flex-direction:column;z-index:50;}
-.sidebar-logo{padding:20px 16px;border-bottom:1px solid rgba(255,255,255,0.1);}
-.sidebar-logo .logo{font-family:'Bebas Neue';font-size:26px;color:#F0C040;}
-.sidebar-logo .sub{font-size:9px;letter-spacing:3px;color:rgba(255,255,255,0.4);}
-.nav-item{display:flex;align-items:center;gap:10px;padding:12px 16px;cursor:pointer;color:rgba(255,255,255,0.55);transition:all 0.2s;font-weight:600;font-size:15px;letter-spacing:1px;border-left:3px solid transparent;}
-.nav-item:hover{color:#fff;background:rgba(255,255,255,0.08);}
-.nav-item.active{color:#F0C040;background:rgba(240,192,64,0.12);border-left-color:#F0C040;}
-.nav-icon{font-size:18px;width:24px;text-align:center;}
-.sidebar-bottom{margin-top:auto;padding:16px;border-top:1px solid rgba(255,255,255,0.1);}
-.api-status{display:flex;align-items:center;gap:8px;font-size:11px;color:rgba(255,255,255,0.5);}
-.api-dot{width:8px;height:8px;border-radius:50%;background:#DC2626;animation:pulse 2s infinite;}
-.api-dot.online{background:#059669;}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
-.main{margin-left:220px;padding:24px;min-height:100vh;}
+.sidebar{position:fixed;left:0;top:0;bottom:0;width:224px;background:var(--sidebar);border-right:1px solid rgba(255,255,255,0.06);display:flex;flex-direction:column;z-index:50;}
+.sidebar-logo{padding:22px 18px 18px;border-bottom:1px solid rgba(255,255,255,0.07);}
+.sidebar-logo .logo{font-family:'Bebas Neue';font-size:28px;color:var(--gold3);letter-spacing:2px;}
+.sidebar-logo .sub{font-size:9px;letter-spacing:4px;color:rgba(255,255,255,0.3);margin-top:2px;}
+.nav-item{display:flex;align-items:center;gap:12px;padding:13px 18px;cursor:pointer;color:rgba(255,255,255,0.5);transition:all 0.2s;font-weight:600;font-size:14px;letter-spacing:1px;border-left:3px solid transparent;}
+.nav-item:hover{color:#fff;background:rgba(255,255,255,0.06);}
+.nav-item.active{color:var(--gold3);background:rgba(240,192,64,0.1);border-left-color:var(--gold3);}
+.nav-icon{font-size:17px;width:22px;text-align:center;flex-shrink:0;}
+.sidebar-footer{margin-top:auto;padding:14px 18px;border-top:1px solid rgba(255,255,255,0.07);}
+.api-status{display:flex;align-items:center;gap:8px;font-size:11px;color:rgba(255,255,255,0.4);}
+.api-dot{width:7px;height:7px;border-radius:50%;background:var(--red);}
+.api-dot.online{background:var(--green);}
+.main{margin-left:224px;padding:28px;min-height:100vh;}
 .page{display:none;}
 .page.active{display:block;}
-.page-title{font-family:'Bebas Neue';font-size:32px;letter-spacing:4px;color:#111827;margin-bottom:20px;}
+.page-title{font-family:'Bebas Neue';font-size:28px;letter-spacing:4px;color:var(--dark);margin-bottom:20px;}
+
+/* STATS */
 .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px;}
-.stat-card{background:#fff;border:1px solid rgba(0,0,0,0.08);padding:20px 16px;position:relative;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.06);border-radius:4px;}
-.stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#B8860B,transparent);}
-.stat-num{font-family:'Bebas Neue';font-size:48px;line-height:1;color:#B8860B;}
-.stat-lbl{font-size:12px;letter-spacing:2px;color:#6B7280;margin-top:4px;font-weight:600;}
-.stat-icon{position:absolute;right:12px;top:12px;font-size:28px;opacity:0.2;}
-.table-wrap{background:#fff;border:1px solid rgba(0,0,0,0.08);overflow:hidden;margin-bottom:20px;box-shadow:0 2px 8px rgba(0,0,0,0.06);border-radius:4px;}
-.table-header{padding:16px;border-bottom:1px solid rgba(0,0,0,0.08);display:flex;align-items:center;justify-content:space-between;}
-.table-title{font-family:'Bebas Neue';font-size:18px;letter-spacing:3px;color:#111827;}
-.search-input{background:#F9FAFB;border:1px solid rgba(0,0,0,0.12);color:#111827;padding:10px 14px;font-family:'Rajdhani',sans-serif;font-size:15px;outline:none;width:240px;border-radius:4px;}
+.stat-card{background:var(--white);border:1px solid var(--border);padding:20px 18px;position:relative;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.05);}
+.stat-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gold),transparent);}
+.stat-num{font-family:'Bebas Neue';font-size:44px;line-height:1;color:var(--gold);}
+.stat-lbl{font-size:10px;letter-spacing:2px;color:var(--muted);margin-top:4px;font-weight:700;}
+.stat-icon{position:absolute;right:14px;top:14px;font-size:26px;opacity:0.15;}
+
+/* TABLAS */
+.table-wrap{background:var(--white);border:1px solid var(--border);overflow:hidden;margin-bottom:20px;box-shadow:0 2px 8px rgba(0,0,0,0.05);}
+.table-header{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
+.table-title{font-family:'Bebas Neue';font-size:17px;letter-spacing:3px;color:var(--dark);}
+.search-input{background:#F9FAFB;border:1px solid var(--border);color:var(--text);padding:9px 14px;font-family:'Rajdhani';font-size:14px;outline:none;transition:border-color 0.2s;}
+.search-input:focus{border-color:var(--gold);}
 table{width:100%;border-collapse:collapse;}
-th{padding:12px 14px;text-align:left;font-size:12px;letter-spacing:2px;color:#374151;border-bottom:1px solid rgba(0,0,0,0.08);font-weight:700;background:#F9FAFB;}
-td{padding:13px 14px;font-size:14px;border-bottom:1px solid rgba(0,0,0,0.05);font-family:'JetBrains Mono',monospace;color:#111827;}
-tr:hover td{background:rgba(184,134,11,0.04);}
+th{padding:11px 14px;text-align:left;font-size:10px;letter-spacing:2px;color:var(--muted);border-bottom:1px solid var(--border);font-weight:700;background:#FAFAFA;}
+td{padding:12px 14px;font-size:13px;border-bottom:1px solid rgba(0,0,0,0.04);font-family:'JetBrains Mono';}
 tr:last-child td{border-bottom:none;}
+tr:hover td{background:rgba(201,150,12,0.03);}
 .badge{display:inline-block;padding:2px 8px;font-size:10px;letter-spacing:1px;font-family:'Bebas Neue';}
-.badge-green{background:rgba(5,150,105,0.15);color:#059669;border:1px solid rgba(5,150,105,0.3);}
-.badge-red{background:rgba(220,38,38,0.15);color:#DC2626;border:1px solid rgba(220,38,38,0.3);}
-.btn{padding:6px 14px;font-family:'Bebas Neue';font-size:13px;letter-spacing:2px;cursor:pointer;border:none;transition:all 0.2s;border-radius:3px;}
-.btn-gold{background:linear-gradient(135deg,#B8860B,#8B6914);color:#fff;}
-.btn-green{background:rgba(5,150,105,0.15);color:#059669;border:1px solid rgba(5,150,105,0.3);}
-.btn-red{background:rgba(220,38,38,0.15);color:#DC2626;border:1px solid rgba(220,38,38,0.3);}
+.badge-green{background:rgba(5,150,105,0.12);color:var(--green);border:1px solid rgba(5,150,105,0.25);}
+.badge-red{background:rgba(220,38,38,0.12);color:var(--red);border:1px solid rgba(220,38,38,0.25);}
+.badge-gold{background:rgba(201,150,12,0.12);color:var(--gold);border:1px solid rgba(201,150,12,0.25);}
+.btn{padding:7px 16px;font-family:'Bebas Neue';font-size:12px;letter-spacing:2px;cursor:pointer;border:none;transition:all 0.2s;}
+.btn-gold{background:linear-gradient(135deg,var(--gold),var(--gold2));color:#fff;}
 .btn-ghost{background:none;color:var(--muted);border:1px solid var(--border);}
-.btn:hover{opacity:0.85;}
-.mission-bars{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
-.m-bar-item{background:#fff;padding:14px;border:1px solid rgba(0,0,0,0.08);border-radius:4px;}
-.m-bar-top{display:flex;justify-content:space-between;margin-bottom:6px;}
-.m-bar-name{font-size:12px;font-weight:600;}
-.m-bar-count{font-family:'JetBrains Mono';font-size:12px;color:#8B6914;}
-.m-bar-bg{height:6px;background:#E5E7EB;border-radius:3px;overflow:hidden;}
-.m-bar-fill{height:100%;background:linear-gradient(90deg,#B8860B,#8B6914);transition:width 0.5s;}
-.ref-search{display:flex;gap:8px;margin-bottom:16px;}
-.ref-tree{background:#F9FAFB;border:1px solid rgba(0,0,0,0.1);padding:16px;font-family:'JetBrains Mono';font-size:14px;min-height:200px;line-height:2;color:#111827;border-radius:4px;}
-.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:200;display:none;align-items:center;justify-content:center;}
-.modal-bg.show{display:flex;}
-.modal-box{background:#fff;padding:28px;width:440px;max-width:90vw;border-radius:4px;box-shadow:0 16px 48px rgba(0,0,0,0.2);}
-.modal-title{font-family:'Bebas Neue';font-size:24px;letter-spacing:3px;color:#111827;margin-bottom:16px;}
-.modal-field{margin-bottom:12px;}
-.modal-label{font-size:11px;letter-spacing:2px;color:var(--muted);margin-bottom:4px;}
-.modal-val{font-family:'JetBrains Mono';font-size:14px;color:#111827;background:#F9FAFB;padding:8px 12px;border:1px solid rgba(0,0,0,0.1);}
-.modal-btns{display:flex;gap:8px;margin-top:16px;}
-.toast{position:fixed;bottom:24px;right:24px;background:#1A1A2E;color:#fff;border:1px solid #F0C040;padding:12px 20px;font-size:15px;font-weight:600;transition:all 0.3s;z-index:300;transform:translateY(80px);opacity:0;border-radius:4px;}
+.btn:hover{opacity:0.82;}
+
+/* ÁRBOL */
+.tree-controls{display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap;}
+.tree-controls .search-input{flex:1;min-width:200px;}
+.tree-container{background:var(--white);border:1px solid var(--border);padding:28px 24px;min-height:240px;overflow-x:auto;box-shadow:0 2px 8px rgba(0,0,0,0.05);}
+.tree-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;height:180px;color:var(--muted);font-size:14px;gap:10px;font-family:'Rajdhani';}
+.tree-empty span{font-size:40px;}
+
+/* Nodos */
+.tree-node{display:flex;flex-direction:column;}
+.tree-branch{padding-left:44px;position:relative;margin-top:0;}
+.tree-branch::before{content:'';position:absolute;left:20px;top:0;bottom:20px;width:2px;background:linear-gradient(to bottom,rgba(201,150,12,0.4),transparent);}
+.tree-child{position:relative;margin-top:4px;}
+.tree-child::before{content:'';position:absolute;left:-24px;top:24px;width:24px;height:2px;background:rgba(201,150,12,0.35);}
+
+.node-card{display:inline-flex;align-items:center;gap:12px;padding:11px 18px;margin:4px 0;border:1px solid var(--border);background:var(--white);cursor:pointer;transition:all 0.2s;position:relative;min-width:260px;}
+.node-card:hover{border-color:var(--gold);box-shadow:0 4px 16px rgba(201,150,12,0.12);transform:translateX(2px);}
+.node-card.root-card{background:linear-gradient(135deg,rgba(201,150,12,0.07),rgba(201,150,12,0.02));border-color:rgba(201,150,12,0.35);border-width:2px;}
+.node-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold2));display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue';font-size:17px;color:#fff;flex-shrink:0;}
+.node-avatar.lv1{background:linear-gradient(135deg,#374151,#111827);}
+.node-avatar.lv2{background:linear-gradient(135deg,#6B7280,#374151);}
+.node-info{flex:1;}
+.node-name{font-family:'Rajdhani';font-weight:700;font-size:15px;color:var(--dark);line-height:1.2;}
+.node-code{font-family:'JetBrains Mono';font-size:10px;color:var(--muted);margin-top:1px;}
+.node-right{text-align:right;flex-shrink:0;}
+.node-pisk{font-family:'Bebas Neue';font-size:18px;color:var(--gold);line-height:1;}
+.node-pisk-lbl{font-size:9px;letter-spacing:1px;color:var(--muted);}
+.node-tag{display:inline-block;padding:2px 8px;font-size:9px;letter-spacing:1px;font-family:'Bebas Neue';margin-top:4px;}
+.tag-root{background:rgba(201,150,12,0.15);color:var(--gold);border:1px solid rgba(201,150,12,0.3);}
+.tag-lv1{background:rgba(55,65,81,0.1);color:#374151;border:1px solid rgba(55,65,81,0.2);}
+.tag-lv2{background:rgba(107,114,128,0.1);color:#6B7280;border:1px solid rgba(107,114,128,0.2);}
+.node-refs{font-size:10px;color:var(--muted);margin-top:2px;}
+
+/* COMISIONES */
+.comis-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:24px;}
+
+/* TOAST */
+.toast{position:fixed;bottom:24px;right:24px;background:var(--sidebar);color:#fff;border:1px solid var(--gold3);padding:13px 20px;font-size:14px;font-weight:600;transition:all 0.3s;z-index:300;transform:translateY(80px);opacity:0;}
 .toast.show{transform:translateY(0);opacity:1;}
-.spin{width:32px;height:32px;border:3px solid rgba(0,0,0,0.1);border-top-color:#B8860B;border-radius:50%;animation:spin 0.8s linear infinite;margin:40px auto;}
+.spin{width:28px;height:28px;border:3px solid rgba(0,0,0,0.08);border-top-color:var(--gold);border-radius:50%;animation:spin 0.8s linear infinite;margin:40px auto;}
 @keyframes spin{to{transform:rotate(360deg)}}
-@media(max-width:768px){.sidebar{width:60px;}.nav-item span{display:none;}.main{margin-left:60px;padding:16px;}.stats-grid{grid-template-columns:1fr 1fr;}}
+
+@media(max-width:900px){
+  .sidebar{width:60px;}
+  .nav-item span,.sidebar-logo .sub{display:none;}
+  .main{margin-left:60px;padding:16px;}
+  .stats-grid{grid-template-columns:1fr 1fr;}
+  .comis-grid{grid-template-columns:1fr 1fr;}
+}
 </style>
 </head>
 <body>
+
+<!-- LOGIN -->
 <div id="loginScreen">
   <div class="login-box">
     <div class="login-logo">$PISK</div>
-    <div class="login-sub">PANEL DE CONTROL AIRDROP</div>
+    <div class="login-sub">PANEL DE CONTROL</div>
     <input class="login-input" type="text" id="loginUser" placeholder="Usuario" autocomplete="off">
     <input class="login-input" type="password" id="loginPass" placeholder="Contraseña" onkeydown="if(event.key==='Enter')doLogin()">
     <button class="login-btn" onclick="doLogin()">INGRESAR</button>
     <div class="login-err" id="loginErr">❌ Credenciales incorrectas</div>
   </div>
 </div>
+
+<!-- APP -->
 <div id="app">
   <div class="sidebar">
-    <div class="sidebar-logo"><div class="logo">NEO PISK</div><div class="sub">PANEL AIRDROP</div></div>
+    <div class="sidebar-logo">
+      <div class="logo">NEO PISK</div>
+      <div class="sub">PANEL AIRDROP</div>
+    </div>
     <nav>
       <div class="nav-item active" onclick="showPage('dashboard',this)"><span class="nav-icon">📊</span><span>Dashboard</span></div>
       <div class="nav-item" onclick="showPage('usuarios',this)"><span class="nav-icon">👥</span><span>Usuarios</span></div>
-      <div class="nav-item" onclick="showPage('misiones',this)"><span class="nav-icon">🎯</span><span>Misiones</span></div>
-      <div class="nav-item" onclick="showPage('referidos',this)"><span class="nav-icon">🤝</span><span>Referidos</span></div>
-      <div class="nav-item" onclick="showPage('pendientes',this)"><span class="nav-icon">⏳</span><span>Pendientes</span></div>
-      <div class="nav-item" onclick="showPage('juegos',this)"><span class="nav-icon">🎮</span><span>Juegos</span></div>
+      <div class="nav-item" onclick="showPage('referidos',this)"><span class="nav-icon">🌳</span><span>Red Referidos</span></div>
       <div class="nav-item" onclick="showPage('comisiones',this)"><span class="nav-icon">💰</span><span>Comisiones</span></div>
     </nav>
-    <div class="sidebar-bottom">
-      <div class="api-status"><div class="api-dot" id="apiDot"></div><span id="apiStatusTxt">Verificando...</span></div>
-      <div style="margin-top:8px;font-size:10px;color:rgba(255,255,255,0.3);font-family:'JetBrains Mono'">:3004</div>
+    <div class="sidebar-footer">
+      <div class="api-status">
+        <div class="api-dot" id="apiDot"></div>
+        <span id="apiStatusTxt">Verificando...</span>
+      </div>
     </div>
   </div>
+
   <div class="main">
+
+    <!-- DASHBOARD -->
     <div class="page active" id="page-dashboard">
-      <div class="page-title">📊 DASHBOARD</div>
+      <div class="page-title">📊 Dashboard</div>
       <div class="stats-grid">
         <div class="stat-card"><div class="stat-icon">👥</div><div class="stat-num" id="s-total">—</div><div class="stat-lbl">USUARIOS TOTALES</div></div>
         <div class="stat-card"><div class="stat-icon">⚡</div><div class="stat-num" id="s-activos">—</div><div class="stat-lbl">USUARIOS ACTIVOS</div></div>
@@ -121,362 +180,379 @@ tr:last-child td{border-bottom:none;}
         <div class="stat-card"><div class="stat-icon">🪙</div><div class="stat-num" id="s-tokens">—</div><div class="stat-lbl">$PISK DISTRIBUIDOS</div></div>
       </div>
       <div class="table-wrap">
-        <div class="table-header"><div class="table-title">🏆 TOP 10 HOLDERS</div><button class="btn btn-ghost" onclick="cargarDatos()">↻ ACTUALIZAR</button></div>
-        <table><thead><tr><th>#</th><th>USUARIO</th><th>$PISK</th><th>REFERIDOS</th><th>VIRTUAL</th></tr></thead><tbody id="top10Body"></tbody></table>
+        <div class="table-header">
+          <div class="table-title">🏆 TOP HOLDERS</div>
+          <button class="btn btn-ghost" onclick="cargarDashboard()">↻ Actualizar</button>
+        </div>
+        <table><thead><tr><th>#</th><th>USUARIO</th><th>$PISK</th><th>REFERIDOS</th><th>TIPO</th></tr></thead><tbody id="top10Body"></tbody></table>
       </div>
       <div class="table-wrap">
         <div class="table-header"><div class="table-title">🆕 REGISTROS RECIENTES</div></div>
         <table><thead><tr><th>NOMBRE</th><th>CÓDIGO</th><th>PAÍS</th><th>$PISK</th><th>REFS</th></tr></thead><tbody id="recientesBody"></tbody></table>
       </div>
     </div>
+
+    <!-- USUARIOS -->
     <div class="page" id="page-usuarios">
-      <div class="page-title">👥 USUARIOS</div>
+      <div class="page-title">👥 Usuarios</div>
       <div class="table-wrap">
-        <div class="table-header"><div class="table-title">TODOS LOS USUARIOS</div><input class="search-input" id="searchUsuario" placeholder="🔍 Buscar..." oninput="filtrarUsuarios()"></div>
-        <table><thead><tr><th>NOMBRE</th><th>CÓDIGO REF</th><th>PAÍS</th><th>$PISK</th><th>WALLET</th><th>ESTADO</th><th></th></tr></thead><tbody id="usuariosBody"></tbody></table>
-      </div>
-    </div>
-    <div class="page" id="page-misiones">
-      <div class="page-title">🎯 PROGRESO DE MISIONES</div>
-      <div class="mission-bars" id="misionesBars"></div>
-    </div>
-    <div class="page" id="page-referidos">
-      <div class="page-title">🤝 ÁRBOL DE REFERIDOS</div>
-      <div class="ref-search">
-        <input class="search-input" id="refSearchInput" placeholder="Código (ej: PISK212995)" style="flex:1;">
-        <button class="btn btn-gold" onclick="buscarArbol()">BUSCAR</button>
-      </div>
-      <div class="ref-tree" id="refTreeBox">Ingresa un código para ver el árbol de referidos</div>
-      <div class="table-wrap" style="margin-top:20px;">
-        <div class="table-header"><div class="table-title">🏆 TOP REFERIDORES</div></div>
-        <table><thead><tr><th>#</th><th>NOMBRE</th><th>CÓDIGO</th><th>REFERIDOS</th><th>COMISIÓN USDT</th></tr></thead><tbody id="topRefsBody"></tbody></table>
-      </div>
-    </div>
-    <div class="page" id="page-pendientes">
-      <div class="page-title">⏳ APROBACIONES PENDIENTES</div>
-      <div class="table-wrap">
-        <div class="table-header"><div class="table-title">VOUCHERS E INFLUENCERS</div></div>
-        <table><thead><tr><th>USUARIO</th><th>TIPO</th><th>FECHA</th><th>DETALLE</th><th>ACCIONES</th></tr></thead><tbody id="pendientesBody"></tbody></table>
-      </div>
-    </div>
-    <div class="page" id="page-juegos">
-      <div class="page-title">🎮 ESTADÍSTICAS DE JUEGOS</div>
-      <div class="stats-grid" style="grid-template-columns:repeat(3,1fr)">
-        <div class="stat-card"><div class="stat-num" id="gj-total">—</div><div class="stat-lbl">JUGADORES TOTALES</div></div>
-        <div class="stat-card"><div class="stat-num" id="gj-pts">—</div><div class="stat-lbl">PUNTOS GENERADOS</div></div>
-        <div class="stat-card"><div class="stat-num" id="gj-canjes">—</div><div class="stat-lbl">$PISK CANJEADOS</div></div>
-      </div>
-      <div class="table-wrap">
-        <div class="table-header"><div class="table-title">TOP JUGADORES</div></div>
-        <table><thead><tr><th>#</th><th>JUGADOR</th><th>PUNTOS</th><th>$PISK CANJEADOS</th></tr></thead><tbody id="jugadoresBody"></tbody></table>
+        <div class="table-header">
+          <div class="table-title">TODOS LOS USUARIOS</div>
+          <input class="search-input" id="searchUsuario" placeholder="🔍 Buscar nombre o código..." oninput="filtrarUsuarios()" style="width:260px;">
+        </div>
+        <table><thead><tr><th>NOMBRE</th><th>CÓDIGO REF</th><th>PAÍS</th><th>$PISK</th><th>WALLET</th><th>TIPO</th><th></th></tr></thead><tbody id="usuariosBody"></tbody></table>
       </div>
     </div>
 
+    <!-- RED DE REFERIDOS -->
+    <div class="page" id="page-referidos">
+      <div class="page-title">🌳 Red de Referidos</div>
+      <div class="tree-controls">
+        <input class="search-input" id="refSearchInput" placeholder="Buscar por código (ej: PISK212995) o nombre...">
+        <button class="btn btn-gold" onclick="buscarArbol()">🔍 VER ÁRBOL</button>
+        <button class="btn btn-ghost" onclick="cargarRedCompleta()">🌳 TODA LA RED</button>
+      </div>
+      <div class="table-wrap">
+        <div class="table-header">
+          <div class="table-title" id="treeTitle">ÁRBOL DE REFERIDOS</div>
+        </div>
+        <div class="tree-container" id="treeContainer">
+          <div class="tree-empty"><span>🌳</span>Ingresa un código o pulsa "TODA LA RED"</div>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <div class="table-header"><div class="table-title">🏆 TOP REFERIDORES</div></div>
+        <table><thead><tr><th>#</th><th>NOMBRE</th><th>CÓDIGO</th><th>REFERIDOS</th><th>COMISIÓN EST.</th></tr></thead><tbody id="topRefsBody"></tbody></table>
+      </div>
+    </div>
+
+    <!-- COMISIONES -->
     <div class="page" id="page-comisiones">
-      <div class="page-title">💰 COMISIONES Y PAGOS</div>
-      <div class="stats-grid" style="grid-template-columns:repeat(3,1fr)">
+      <div class="page-title">💰 Comisiones y Pagos</div>
+      <div class="comis-grid">
         <div class="stat-card"><div class="stat-icon">⏳</div><div class="stat-num" id="c-pendiente">—</div><div class="stat-lbl">USDT PENDIENTE</div></div>
         <div class="stat-card"><div class="stat-icon">✅</div><div class="stat-num" id="c-pagado">—</div><div class="stat-lbl">USDT PAGADO</div></div>
         <div class="stat-card"><div class="stat-icon">🛒</div><div class="stat-num" id="c-compras">—</div><div class="stat-lbl">COMPRAS TOTALES</div></div>
       </div>
-
       <div class="table-wrap">
         <div class="table-header">
           <div class="table-title">⏳ COMISIONES PENDIENTES</div>
-          <button class="btn btn-ghost" onclick="cargarComisiones()">↻ ACTUALIZAR</button>
+          <button class="btn btn-ghost" onclick="cargarComisiones()">↻ Actualizar</button>
         </div>
-        <table>
-          <thead><tr><th>SOCIO</th><th>WALLET</th><th>REFS</th><th>USDT A PAGAR</th><th>$PISK</th><th>ESTADO</th><th>ACCIÓN</th></tr></thead>
-          <tbody id="comisionesPendBody"></tbody>
-        </table>
+        <table><thead><tr><th>SOCIO</th><th>WALLET</th><th>REFS</th><th>USDT A PAGAR</th><th>$PISK</th><th>ESTADO</th><th>ACCIÓN</th></tr></thead><tbody id="comisionesPendBody"></tbody></table>
       </div>
-
       <div class="table-wrap">
         <div class="table-header"><div class="table-title">🛒 HISTORIAL DE COMPRAS</div></div>
-        <table>
-          <thead><tr><th>COMPRADOR</th><th>USDT</th><th>$PISK</th><th>FECHA</th><th>TX</th></tr></thead>
-          <tbody id="comprasBody"></tbody>
-        </table>
+        <table><thead><tr><th>COMPRADOR</th><th>USDT</th><th>$PISK</th><th>FECHA</th><th>TX</th></tr></thead><tbody id="comprasBody"></tbody></table>
       </div>
     </div>
-  </div>
-</div>
-<div class="modal-bg" id="modalBg" onclick="if(event.target===this)cerrarModal()">
-  <div class="modal-box">
-    <div class="modal-title">APROBAR MISIÓN</div>
-    <div class="modal-field"><div class="modal-label">USUARIO</div><div class="modal-val" id="modalUser">—</div></div>
-    <div class="modal-field"><div class="modal-label">MISIÓN</div><div class="modal-val" id="modalMision">—</div></div>
-    <div class="modal-field"><div class="modal-label">TOKENS A OTORGAR</div><input class="login-input" id="modalTokens" type="number" value="0" style="margin:0;background:#F9FAFB"></div>
-    <div class="modal-btns">
-      <button class="btn btn-green" onclick="aprobarMision()" style="flex:1;padding:12px">✅ APROBAR</button>
-      <button class="btn btn-red" onclick="rechazarMision()" style="flex:1;padding:12px">❌ RECHAZAR</button>
-      <button class="btn btn-ghost" onclick="cerrarModal()">CANCELAR</button>
-    </div>
-  </div>
-</div>
-<div class="toast" id="toast"></div>
-<script>
-// ✅ FIX: URL corregida de '/airdrop-api' → ':3004'
-const API = 'https://api.neopisk.lat';
-const CREDS = { user:'ernesto', pass:'neopisk2025' };
-let allUsers = [], pendingAction = null;
 
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const API   = 'https://api.neopisk.lat';
+const CREDS = { user:'ernesto', pass:'neopisk2025' };
+let allUsers   = [];
+let statsCache = null;
+
+// ── LOGIN ─────────────────────────────────────────
 function doLogin() {
-  const u = document.getElementById('loginUser').value;
+  const u = document.getElementById('loginUser').value.trim();
   const p = document.getElementById('loginPass').value;
-  if (u===CREDS.user && p===CREDS.pass) {
-    document.getElementById('loginScreen').style.display='none';
-    document.getElementById('app').style.display='block';
-    cargarDatos(); checkAPI();
-    setInterval(checkAPI,30000);
+  if (u === CREDS.user && p === CREDS.pass) {
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('app').style.display = 'block';
+    cargarDashboard(); checkAPI();
+    setInterval(checkAPI, 30000);
   } else {
-    document.getElementById('loginErr').style.display='block';
+    document.getElementById('loginErr').style.display = 'block';
   }
 }
 
+// ── API STATUS ────────────────────────────────────
 async function checkAPI() {
   try {
-    const r = await fetch(API+'/stats',{signal:AbortSignal.timeout(5000)});
-    if(!r.ok) throw new Error();
+    const r = await fetch(API + '/stats', { signal: AbortSignal.timeout(5000) });
+    if (!r.ok) throw new Error();
     document.getElementById('apiDot').classList.add('online');
-    document.getElementById('apiStatusTxt').textContent='API Online';
-  } catch(e) {
+    document.getElementById('apiStatusTxt').textContent = 'API Online';
+  } catch (_) {
     document.getElementById('apiDot').classList.remove('online');
-    document.getElementById('apiStatusTxt').textContent='API Offline';
+    document.getElementById('apiStatusTxt').textContent = 'API Offline';
   }
 }
 
+// ── NAVEGACIÓN ────────────────────────────────────
 function showPage(page, el) {
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
-  document.getElementById('page-'+page).classList.add('active');
-  if(el) el.classList.add('active');
-  if(page==='referidos') cargarTopRefs();
-  if(page==='juegos') cargarJuegos();
-  if(page==='comisiones') cargarComisiones();
-  if(page==='pendientes') cargarPendientes();
-  if(page==='usuarios') cargarUsuariosCompleto();
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('page-' + page).classList.add('active');
+  if (el) el.classList.add('active');
+  if (page === 'referidos')  cargarTopRefs();
+  if (page === 'comisiones') cargarComisiones();
+  if (page === 'usuarios')   renderUsuarios(allUsers);
 }
 
-async function cargarDatos() {
+// ── DASHBOARD ────────────────────────────────────
+async function cargarDashboard() {
   try {
-    const r = await fetch(API+'/stats');
-    if(!r.ok) throw new Error('HTTP '+r.status);
+    const r = await fetch(API + '/stats');
+    if (!r.ok) throw new Error('HTTP ' + r.status);
     const d = await r.json();
-    document.getElementById('s-total').textContent     = d.total??0;
-    document.getElementById('s-activos').textContent   = d.activos??0;
-    document.getElementById('s-inversores').textContent= d.inversores??0;
-    document.getElementById('s-tokens').textContent    = Number(d.totalTokens??0).toFixed(0);
-    const medals=['🥇','🥈','🥉','4','5','6','7','8','9','10'];
-    document.getElementById('top10Body').innerHTML=(d.top10||[]).map((u,i)=>`
+    statsCache = d;
+
+    document.getElementById('s-total').textContent      = d.total ?? 0;
+    document.getElementById('s-activos').textContent    = d.activos ?? 0;
+    document.getElementById('s-inversores').textContent = d.inversores ?? 0;
+    document.getElementById('s-tokens').textContent     = Number(d.totalTokens ?? 0).toFixed(1);
+
+    const medals = ['🥇','🥈','🥉'];
+    document.getElementById('top10Body').innerHTML = (d.top10 || []).map((u, i) => `
       <tr>
-        <td style="color:#B8860B">${medals[i]||i+1}</td>
-        <td style="font-family:'Rajdhani';font-size:14px;font-weight:700">${u.nombre}</td>
-        <td><span style="color:#8B6914;font-family:'Bebas Neue';font-size:16px">${u.pisk}</span> $PISK</td>
+        <td style="color:var(--gold);font-family:'Bebas Neue';font-size:18px">${medals[i] || i+1}</td>
+        <td style="font-family:'Rajdhani';font-weight:700;font-size:14px">${esc(u.nombre)}</td>
+        <td><span style="color:var(--gold);font-family:'Bebas Neue';font-size:17px">${u.pisk}</span> $PISK</td>
         <td>${u.refs}</td>
-        <td>${u.virtual?'<span class="badge badge-red">BOT</span>':'<span class="badge badge-green">REAL</span>'}</td>
-      </tr>`).join('')||'<tr><td colspan="5" style="text-align:center;color:#6B7280;padding:24px">Sin datos aún</td></tr>';
-    document.getElementById('recientesBody').innerHTML=(d.usuarios_recientes||[]).map(u=>`
+        <td>${u.virtual ? '<span class="badge badge-red">BOT</span>' : '<span class="badge badge-green">REAL</span>'}</td>
+      </tr>`).join('') || emptyRow(5, 'Sin datos aún');
+
+    document.getElementById('recientesBody').innerHTML = (d.usuarios_recientes || []).map(u => `
       <tr>
-        <td style="font-weight:700">${u.nombre}</td>
-        <td style="color:#8B6914">${u.codigo_ref||'—'}</td>
-        <td>${u.pais||'—'}</td>
+        <td style="font-weight:700;font-family:'Rajdhani';font-size:14px">${esc(u.nombre)}</td>
+        <td style="color:var(--gold2)">${u.codigo_ref || '—'}</td>
+        <td>${u.pais || '—'}</td>
         <td>${u.pisk} $PISK</td>
         <td>${u.refs}</td>
-      </tr>`).join('')||'<tr><td colspan="5" style="text-align:center;color:#6B7280;padding:24px">Sin registros</td></tr>';
-    const mNames={registro:'📝 Registro',viral:'🦠 Viral 5x5',redes:'📱 Redes',voucher:'💰 Voucher',influencer:'🎬 Influencer',comunidad:'👥 Comunidad',wallet:'💳 Wallet',humanidad:'🤖 Humanidad',diario:'🔥 Diario'};
-    const total=d.total||1;
-    document.getElementById('misionesBars').innerHTML=Object.entries(d.misiones||{}).map(([k,v])=>`
-      <div class="m-bar-item">
-        <div class="m-bar-top"><span class="m-bar-name">${mNames[k]||k}</span><span class="m-bar-count">${v}/${total}</span></div>
-        <div class="m-bar-bg"><div class="m-bar-fill" style="width:${total>0?Math.round(v/total*100):0}%"></div></div>
-      </div>`).join('');
-    allUsers=d.usuarios_recientes||[];
-    renderUsuarios(allUsers);
-  } catch(e) {
-    toast('❌ '+e.message);
-    document.getElementById('apiDot').classList.remove('online');
-    document.getElementById('apiStatusTxt').textContent='API Offline';
-  }
+      </tr>`).join('') || emptyRow(5, 'Sin registros');
+
+    allUsers = uniq([...(d.top10 || []), ...(d.usuarios_recientes || [])]);
+  } catch (e) { toast('❌ ' + e.message); }
 }
 
-async function cargarUsuariosCompleto() {
-  try {
-    const r=await fetch(API+'/stats'); const d=await r.json();
-    const todos=[...(d.top10||[]),...(d.usuarios_recientes||[])];
-    const seen=new Set();
-    allUsers=todos.filter(u=>{const k=u.codigo_ref||u.nombre;if(seen.has(k))return false;seen.add(k);return true;});
-    renderUsuarios(allUsers);
-  } catch(e){toast('❌ Error cargando usuarios');}
-}
-
+// ── USUARIOS ─────────────────────────────────────
 function renderUsuarios(users) {
-  document.getElementById('usuariosBody').innerHTML=users.map(u=>`
+  document.getElementById('usuariosBody').innerHTML = users.map(u => `
     <tr>
-      <td style="font-weight:700;font-family:'Rajdhani';font-size:14px">${u.nombre||'—'}</td>
-      <td style="color:#8B6914">${u.codigo_ref||'—'}</td>
-      <td>${u.pais||'—'}</td>
-      <td style="color:#8B6914;font-family:'Bebas Neue';font-size:16px">${u.pisk||0}</td>
-      <td style="font-size:11px;color:#6B7280">${u.wallet?u.wallet.slice(0,12)+'...':'—'}</td>
-      <td>${u.virtual?'<span class="badge badge-red">BOT</span>':'<span class="badge badge-green">REAL</span>'}</td>
-      <td><button class="btn btn-ghost" onclick="irArbol('${u.codigo_ref}')">VER</button></td>
-    </tr>`).join('')||'<tr><td colspan="7" style="text-align:center;color:#6B7280;padding:24px">Sin usuarios</td></tr>';
+      <td style="font-weight:700;font-family:'Rajdhani';font-size:14px">${esc(u.nombre || '—')}</td>
+      <td style="color:var(--gold2)">${u.codigo_ref || '—'}</td>
+      <td>${u.pais || '—'}</td>
+      <td style="color:var(--gold);font-family:'Bebas Neue';font-size:16px">${u.pisk || 0}</td>
+      <td style="font-size:11px;color:var(--muted)">${u.wallet ? u.wallet.slice(0,14)+'…' : '—'}</td>
+      <td>${u.virtual ? '<span class="badge badge-red">BOT</span>' : '<span class="badge badge-green">REAL</span>'}</td>
+      <td><button class="btn btn-ghost" onclick="irArbol('${u.codigo_ref}')">🌳 Ver red</button></td>
+    </tr>`).join('') || emptyRow(7, 'Sin usuarios');
 }
 
 function filtrarUsuarios() {
-  const q=document.getElementById('searchUsuario').value.toLowerCase();
-  renderUsuarios(allUsers.filter(u=>(u.nombre||'').toLowerCase().includes(q)||(u.codigo_ref||'').toLowerCase().includes(q)));
+  const q = document.getElementById('searchUsuario').value.toLowerCase();
+  renderUsuarios(allUsers.filter(u =>
+    (u.nombre || '').toLowerCase().includes(q) ||
+    (u.codigo_ref || '').toLowerCase().includes(q)
+  ));
 }
 
-function irArbol(codigo) {
-  document.getElementById('refSearchInput').value=codigo;
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
-  document.getElementById('page-referidos').classList.add('active');
-  document.querySelectorAll('.nav-item')[3].classList.add('active');
-  cargarTopRefs(); buscarArbol();
+// ── ÁRBOL VISUAL ─────────────────────────────────
+
+function buildTree(rootCodigo, flat) {
+  const map = {};
+  flat.forEach(u => { if (u.codigo_ref) map[u.codigo_ref] = u; });
+  const root = map[rootCodigo];
+  if (!root) return null;
+
+  function attach(u, depth) {
+    if (depth > 4) return { ...u, children: [] };
+    const kids = flat.filter(v => v.referido_por === u.codigo_ref);
+    return { ...u, children: kids.map(k => attach(k, depth + 1)) };
+  }
+  return attach(root, 0);
 }
 
-async function buscarArbol() {
-  const codigo=document.getElementById('refSearchInput').value.trim();
-  if(!codigo) return;
-  const box=document.getElementById('refTreeBox');
-  box.innerHTML='<div class="spin"></div>';
-  try {
-    const r=await fetch(`${API}/arbol?codigo=${encodeURIComponent(codigo)}`);
-    const d=await r.json();
-    if(!d.root){box.innerHTML='<span style="color:#6B7280">Sin resultados para ese código</span>';return;}
-    box.innerHTML=renderTree(d.root,0);
-  } catch(e){box.innerHTML='<span style="color:#DC2626">❌ Error de conexión</span>';}
+function nodeCard(u, level) {
+  const tags    = ['tag-root','tag-lv1','tag-lv2','tag-lv2'];
+  const tagTxts = ['TITULAR','NIVEL 1','NIVEL 2','NIVEL 3'];
+  const avCls   = level === 0 ? '' : level === 1 ? 'lv1' : 'lv2';
+  const cardCls = level === 0 ? 'root-card' : '';
+  const init    = (u.nombre || '?').charAt(0).toUpperCase();
+  const refsLbl = (u.refs > 0 || (u.children && u.children.length > 0))
+    ? `<div class="node-refs">${u.refs || (u.children && u.children.length) || 0} referidos</div>` : '';
+  return `
+    <div class="node-card ${cardCls}" onclick="irArbol('${u.codigo_ref}')">
+      <div class="node-avatar ${avCls}">${init}</div>
+      <div class="node-info">
+        <div class="node-name">${esc(u.nombre || '—')}</div>
+        <div class="node-code">${u.codigo_ref || '—'}</div>
+        ${refsLbl}
+      </div>
+      <div class="node-right">
+        <div class="node-pisk">${u.pisk || 0}</div>
+        <div class="node-pisk-lbl">$PISK</div>
+        <div class="node-tag ${tags[level] || 'tag-lv2'}">${tagTxts[level] || 'NIVEL '+(level)}</div>
+      </div>
+    </div>`;
 }
 
-function renderTree(node,level){
-  if(!node) return '';
-  const colors=['#B8860B','#374151','#6B7280','#9CA3AF'];
-  const color=colors[level]||'#9CA3AF';
-  let html=`<div style="color:${color};padding-left:${level*20}px;margin:2px 0">👤 <strong>${node.nombre}</strong> — <span style="color:#B8860B">${node.pisk} $PISK</span></div>`;
-  (node.refs||[]).forEach(child=>{html+=renderTree(child,level+1);});
+function treeHTML(node, level) {
+  if (!node) return '';
+  let html = `<div class="tree-node">${nodeCard(node, level)}`;
+  if (node.children && node.children.length > 0) {
+    html += '<div class="tree-branch">';
+    node.children.forEach(c => {
+      html += `<div class="tree-child">${treeHTML(c, level + 1)}</div>`;
+    });
+    html += '</div>';
+  }
+  html += '</div>';
   return html;
 }
 
+async function buscarArbol() {
+  const q = document.getElementById('refSearchInput').value.trim();
+  if (!q) { toast('⚠️ Ingresa un código o nombre'); return; }
+
+  const box = document.getElementById('treeContainer');
+  box.innerHTML = '<div class="spin"></div>';
+
+  // Intentar API primero
+  try {
+    const r = await fetch(`${API}/arbol?codigo=${encodeURIComponent(q)}`);
+    const d = await r.json();
+    if (d && d.root) {
+      document.getElementById('treeTitle').textContent = 'ÁRBOL DE ' + (d.root.nombre || q).toUpperCase();
+      box.innerHTML = treeHTML(convertAPI(d.root), 0);
+      return;
+    }
+  } catch (_) {}
+
+  // Fallback local
+  if (!statsCache) await cargarDashboard();
+  const flat = uniq([...(statsCache?.top10 || []), ...(statsCache?.usuarios_recientes || [])]);
+  const found = flat.find(u =>
+    (u.codigo_ref || '').toLowerCase() === q.toLowerCase() ||
+    (u.nombre || '').toLowerCase().includes(q.toLowerCase())
+  );
+  if (!found) { box.innerHTML = '<div class="tree-empty"><span>🔍</span>Usuario no encontrado</div>'; return; }
+
+  const tree = buildTree(found.codigo_ref, flat);
+  if (!tree) { box.innerHTML = '<div class="tree-empty"><span>🌱</span>Sin referidos aún</div>'; return; }
+
+  document.getElementById('treeTitle').textContent = 'ÁRBOL DE ' + (found.nombre || q).toUpperCase();
+  box.innerHTML = treeHTML(tree, 0);
+}
+
+async function cargarRedCompleta() {
+  if (!statsCache) await cargarDashboard();
+  const flat = uniq([...(statsCache?.top10 || []), ...(statsCache?.usuarios_recientes || [])]);
+  const roots = flat.filter(u => !u.referido_por);
+
+  document.getElementById('treeTitle').textContent = 'RED COMPLETA DE REFERIDOS';
+  const box = document.getElementById('treeContainer');
+
+  if (!roots.length) { box.innerHTML = '<div class="tree-empty"><span>🌱</span>Sin datos</div>'; return; }
+
+  box.innerHTML = roots.map((r, i) => {
+    const tree = buildTree(r.codigo_ref, flat);
+    const sep  = i > 0 ? '<hr style="border:none;border-top:1px dashed rgba(0,0,0,0.1);margin:20px 0;">' : '';
+    return sep + (tree ? treeHTML(tree, 0) : '');
+  }).join('');
+}
+
+function convertAPI(node) {
+  if (!node) return null;
+  return { nombre: node.nombre, codigo_ref: node.codigo_ref || '', pisk: node.pisk || 0,
+    referido_por: node.referido_por || '', refs: (node.refs || []).length,
+    children: (node.refs || []).map(convertAPI).filter(Boolean) };
+}
+
+function irArbol(codigo) {
+  if (!codigo) return;
+  document.getElementById('refSearchInput').value = codigo;
+  showPage('referidos', document.querySelectorAll('.nav-item')[2]);
+  cargarTopRefs(); buscarArbol();
+}
+
+// ── TOP REFERIDORES ──────────────────────────────
 async function cargarTopRefs() {
   try {
-    const r=await fetch(API+'/ranking'); const d=await r.json();
-    document.getElementById('topRefsBody').innerHTML=(d.top||[]).slice(0,10).map((u,i)=>`
+    const r = await fetch(API + '/ranking');
+    const d = await r.json();
+    document.getElementById('topRefsBody').innerHTML = (d.top || []).slice(0, 10).map((u, i) => `
       <tr>
-        <td style="color:#B8860B">${i+1}</td>
-        <td style="font-weight:700">${u.nombre}</td>
-        <td style="color:#8B6914">${u.codigo_ref||'—'}</td>
-        <td>${u.refs}</td>
-        <td style="color:#059669">$${((u.refs||0)*5).toFixed(2)}</td>
-      </tr>`).join('')||'<tr><td colspan="5" style="text-align:center;color:#6B7280;padding:24px">Sin datos</td></tr>';
-  } catch(e){}
+        <td style="color:var(--gold);font-family:'Bebas Neue';font-size:18px">${i+1}</td>
+        <td style="font-weight:700;font-family:'Rajdhani';font-size:14px">${esc(u.nombre)}</td>
+        <td style="color:var(--gold2)">${u.codigo_ref || '—'}</td>
+        <td><span class="badge badge-gold">${u.refs} refs</span></td>
+        <td style="color:var(--green);font-family:'Bebas Neue';font-size:16px">$${((u.refs||0)*5).toFixed(2)}</td>
+      </tr>`).join('') || emptyRow(5, 'Sin datos');
+  } catch (_) {}
 }
 
-function cargarPendientes() {
-  document.getElementById('pendientesBody').innerHTML=`
-    <tr><td colspan="5" style="text-align:center;padding:32px;color:#6B7280;font-size:13px">
-      Las aprobaciones llegan por WhatsApp al admin.<br><br>
-      <span style="color:#B8860B;font-family:'JetBrains Mono'">APROBAR_TG [userId] [mision]</span><br>
-      <span style="color:#B8860B;font-family:'JetBrains Mono'">RECHAZAR_TG [userId]</span>
-    </td></tr>`;
-}
-
-async function cargarJuegos() {
-  try {
-    const r=await fetch(API+'/stats'); const d=await r.json();
-    document.getElementById('gj-total').textContent=d.total||0;
-    document.getElementById('gj-pts').textContent='—';
-    document.getElementById('gj-canjes').textContent='—';
-    document.getElementById('jugadoresBody').innerHTML=(d.top10||[]).map((u,i)=>`
-      <tr>
-        <td style="color:#B8860B">${i+1}</td>
-        <td style="font-weight:700">${u.nombre}</td>
-        <td style="color:#8B6914">${u.game_points||0}</td>
-        <td>${u.pisk_canjeados||0}</td>
-      </tr>`).join('');
-  } catch(e){}
-}
-
-function abrirModalAprobar(userId,nombre,mision,tokens) {
-  pendingAction={userId,mision};
-  document.getElementById('modalUser').textContent=nombre;
-  document.getElementById('modalMision').textContent=mision;
-  document.getElementById('modalTokens').value=tokens;
-  document.getElementById('modalBg').classList.add('show');
-}
-
-function cerrarModal(){document.getElementById('modalBg').classList.remove('show');pendingAction=null;}
-
-async function aprobarMision() {
-  if(!pendingAction) return;
-  const tokens=parseInt(document.getElementById('modalTokens').value);
-  try {
-    await fetch(API+'/aprobar',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({...pendingAction,tokens})});
-    toast('✅ Misión aprobada — +'+tokens+' $PISK');
-    cerrarModal(); cargarDatos();
-  } catch(e){toast('❌ Error al aprobar');}
-}
-
-function rechazarMision(){toast('❌ Misión rechazada');cerrarModal();}
-
-function toast(msg) {
-  const t=document.getElementById('toast');
-  t.textContent=msg; t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),3500);
-}
-
-
+// ── COMISIONES ───────────────────────────────────
 async function cargarComisiones() {
   try {
-    const r = await fetch(API+'/comisiones');
+    const r = await fetch(API + '/comisiones');
     const d = await r.json();
+    document.getElementById('c-pendiente').textContent = '$' + Number(d.totalPendiente || 0).toFixed(4);
+    document.getElementById('c-pagado').textContent    = '$' + Number(d.totalPagado || 0).toFixed(4);
+    document.getElementById('c-compras').textContent   = (d.compras || []).length;
 
-    document.getElementById('c-pendiente').textContent = '$'+Number(d.totalPendiente||0).toFixed(4);
-    document.getElementById('c-pagado').textContent    = '$'+Number(d.totalPagado||0).toFixed(4);
-    document.getElementById('c-compras').textContent   = (d.compras||[]).length;
-
-    // Pendientes
-    document.getElementById('comisionesPendBody').innerHTML = (d.pendientes||[]).map(u => `
+    document.getElementById('comisionesPendBody').innerHTML = (d.pendientes || []).map(u => `
       <tr>
-        <td style="font-weight:700;font-family:'Rajdhani';font-size:14px">${u.nombre}</td>
-        <td style="font-size:11px;color:#6B7280">${u.wallet ? u.wallet.slice(0,16)+'...' : '<span style="color:#DC2626">SIN WALLET</span>'}</td>
+        <td style="font-weight:700;font-family:'Rajdhani';font-size:14px">${esc(u.nombre)}</td>
+        <td style="font-size:11px;color:var(--muted)">${u.wallet ? u.wallet.slice(0,16)+'…' : '<span style="color:var(--red)">SIN WALLET</span>'}</td>
         <td>${u.refs}</td>
-        <td style="color:#059669;font-family:'Bebas Neue';font-size:16px">$${Number(u.comisiones_usdt).toFixed(4)}</td>
-        <td style="color:#8B6914">${Number(u.comisiones_pisk).toFixed(2)} $PISK</td>
+        <td style="color:var(--green);font-family:'Bebas Neue';font-size:16px">$${Number(u.comisiones_usdt).toFixed(4)}</td>
+        <td style="color:var(--gold2)">${Number(u.comisiones_pisk).toFixed(2)} $PISK</td>
         <td>${u.pagado ? '<span class="badge badge-green">PAGADO</span>' : '<span class="badge badge-red">PENDIENTE</span>'}</td>
-        <td>${!u.pagado ? `<button class="btn btn-green" onclick="marcarPagado(${u.id},'${u.nombre}')">✅ PAGADO</button>` : '—'}</td>
-      </tr>`).join('') || '<tr><td colspan="7" style="text-align:center;color:#6B7280;padding:24px">Sin comisiones pendientes</td></tr>';
+        <td>${!u.pagado ? `<button class="btn btn-gold" onclick="marcarPagado(${u.id},'${esc(u.nombre)}')">✅ Pagado</button>` : '—'}</td>
+      </tr>`).join('') || emptyRow(7, 'Sin comisiones pendientes');
 
-    // Compras
-    document.getElementById('comprasBody').innerHTML = (d.compras||[]).map(c => `
+    document.getElementById('comprasBody').innerHTML = (d.compras || []).map(c => `
       <tr>
-        <td style="font-weight:700">${c.compradorNombre||'—'}</td>
-        <td style="color:#059669">$${Number(c.usdt||0).toFixed(4)}</td>
-        <td style="color:#8B6914">${c.pisk||0} $PISK</td>
-        <td style="font-size:12px;color:#6B7280">${c.fecha ? new Date(c.fecha).toLocaleDateString('es-PE') : '—'}</td>
-        <td><a href="https://polygonscan.com/tx/${c.txHash}" target="_blank" style="color:#B8860B;font-family:'JetBrains Mono';font-size:11px">${c.txHash ? c.txHash.slice(0,14)+'...' : '—'}</a></td>
-      </tr>`).join('') || '<tr><td colspan="5" style="text-align:center;color:#6B7280;padding:24px">Sin compras registradas</td></tr>';
-
-  } catch(e) { toast('❌ Error cargando comisiones'); }
+        <td style="font-weight:700;font-family:'Rajdhani'">${esc(c.compradorNombre || '—')}</td>
+        <td style="color:var(--green)">$${Number(c.usdt || 0).toFixed(4)}</td>
+        <td style="color:var(--gold2)">${c.pisk || 0} $PISK</td>
+        <td style="font-size:11px;color:var(--muted)">${c.fecha ? new Date(c.fecha).toLocaleDateString('es-PE') : '—'}</td>
+        <td><a href="https://polygonscan.com/tx/${c.txHash}" target="_blank" style="color:var(--gold);font-size:11px">${c.txHash ? c.txHash.slice(0,14)+'…' : '—'}</a></td>
+      </tr>`).join('') || emptyRow(5, 'Sin compras registradas');
+  } catch (_) { toast('❌ Error cargando comisiones'); }
 }
 
 async function marcarPagado(userId, nombre) {
-  if (!confirm(`¿Confirmas que ya pagaste la comisión a ${nombre}?`)) return;
+  if (!confirm('¿Confirmas que ya pagaste la comisión a ' + nombre + '?')) return;
   try {
-    const r = await fetch(API+'/marcar-pagado', {
-      method:'POST', headers:{'Content-Type':'application/json'},
+    const r = await fetch(API + '/marcar-pagado', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ userId })
     });
     const d = await r.json();
     if (d.ok) { toast('✅ Marcado como pagado'); cargarComisiones(); }
-    else { toast('❌ Error al actualizar'); }
-  } catch(e) { toast('❌ Error de conexión'); }
+    else toast('❌ Error al actualizar');
+  } catch (_) { toast('❌ Error de conexión'); }
 }
 
-setInterval(()=>{
-  if(document.getElementById('page-dashboard').classList.contains('active')) cargarDatos();
-},30000);
+// ── UTILS ─────────────────────────────────────────
+function esc(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function emptyRow(cols, msg) {
+  return `<tr><td colspan="${cols}" style="text-align:center;color:var(--muted);padding:28px;font-family:'Rajdhani'">${msg}</td></tr>`;
+}
+function uniq(arr) {
+  const seen = new Set();
+  return arr.filter(u => { const k = u.codigo_ref||u.nombre; if(seen.has(k))return false; seen.add(k); return true; });
+}
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3500);
+}
+
+setInterval(() => {
+  if (document.getElementById('page-dashboard').classList.contains('active')) cargarDashboard();
+}, 30000);
 </script>
 </body>
 </html>
