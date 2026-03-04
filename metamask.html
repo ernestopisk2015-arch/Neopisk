@@ -86,8 +86,8 @@
         .btn-metamask:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(246,133,27,0.3);}
         .btn-contract{width:100%;padding:14px;background:transparent;border:1px solid var(--border);color:var(--muted);font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:2px;cursor:pointer;transition:all 0.2s;margin-bottom:10px;}
         .btn-contract:hover{border-color:var(--gold);color:var(--gold);}
-        .btn-support-ws{display:flex;align-items:center;justify-content:center;gap:10px;background:rgba(0,136,204,0.1);border:1px solid rgba(0,136,204,0.3);color:#29b6f6;padding:16px;text-decoration:none;font-family:'Bebas Neue',sans-serif;font-size:15px;letter-spacing:2px;margin-top:10px;transition:all 0.2s;}
-        .btn-support-ws:hover{background:rgba(0,136,204,0.15);}
+        .btn-support{display:flex;align-items:center;justify-content:center;gap:10px;background:rgba(0,136,204,0.1);border:1px solid rgba(0,136,204,0.3);color:#29b6f6;padding:16px;text-decoration:none;font-family:'Bebas Neue',sans-serif;font-size:15px;letter-spacing:2px;margin-top:10px;transition:all 0.2s;}
+        .btn-support:hover{background:rgba(0,136,204,0.15);}
 
         /* LEGAL / FOOTER */
         .legal-box{background:var(--dark2);border:1px solid var(--border);padding:24px 28px;font-size:12px;color:var(--muted);text-align:justify;line-height:1.8;margin-bottom:28px;}
@@ -96,8 +96,8 @@
         .footer a{color:var(--gold);text-decoration:none;font-weight:700;}
 
         /* FLOAT */
-        .btn-whatsapp-float{position:fixed;bottom:28px;right:20px;background:linear-gradient(135deg,#0088cc,#006699);color:white;width:58px;height:58px;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(0,136,204,0.4);text-decoration:none;z-index:1000;transition:all 0.3s;border:1px solid rgba(0,136,204,0.5);}
-        .btn-whatsapp-float:hover{transform:scale(1.1);}
+        .btn-float{position:fixed;bottom:28px;right:20px;background:linear-gradient(135deg,#0088cc,#006699);color:white;width:58px;height:58px;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(0,136,204,0.4);text-decoration:none;z-index:1000;transition:all 0.3s;border:1px solid rgba(0,136,204,0.5);}
+        .btn-float:hover{transform:scale(1.1);}
 
         /* MODAL */
         .metamask-modal-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.92);z-index:10000;justify-content:center;align-items:center;}
@@ -107,9 +107,13 @@
         .metamask-modal h3{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:3px;color:var(--gold2);margin:0 0 12px;}
         .metamask-modal p{font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:24px;}
         .metamask-modal p strong{color:var(--text);}
-        .btn-open-metamask-modal{background:linear-gradient(135deg,#f6851b,#e2761b);color:white;padding:16px;border:none;font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:3px;cursor:pointer;width:100%;transition:all 0.2s;}
-        .btn-cancel-modal{background:transparent;color:var(--muted);border:1px solid var(--border);padding:12px;margin-top:10px;cursor:pointer;font-family:'Rajdhani',sans-serif;font-size:13px;width:100%;letter-spacing:1px;transition:all 0.2s;}
+        .btn-open-metamask-modal{background:linear-gradient(135deg,#f6851b,#e2761b);color:white;padding:16px;border:none;font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:3px;cursor:pointer;width:100%;transition:all 0.2s;margin-bottom:10px;}
+        .btn-open-metamask-modal:active{transform:scale(0.97);}
+        .btn-cancel-modal{background:transparent;color:var(--muted);border:1px solid var(--border);padding:12px;cursor:pointer;font-family:'Rajdhani',sans-serif;font-size:13px;width:100%;letter-spacing:1px;transition:all 0.2s;}
         .btn-cancel-modal:hover{border-color:var(--muted);color:var(--text);}
+
+        /* BADGE ANDROID */
+        .android-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(0,230,118,0.08);border:1px solid rgba(0,230,118,0.2);padding:6px 12px;font-size:11px;color:var(--green);letter-spacing:2px;margin-bottom:12px;}
 
         @media(max-width:600px){h1{font-size:2.2em;letter-spacing:4px;}.center-panel,.presale-container,.info-card{padding:24px 16px;}#saldoDisplay{font-size:38px;}.req-items{flex-direction:column;}}
     </style>
@@ -138,6 +142,7 @@
         </svg>
         <h3 id="modal-title">🦊 CONECTAR METAMASK</h3>
         <p id="modal-desc">Para conectar tu billetera, necesitas abrir esta página dentro del <strong>navegador de MetaMask</strong></p>
+        <div class="android-badge" id="modal-platform-badge">📱 ANDROID DETECTADO</div>
         <button class="btn-open-metamask-modal" onclick="abrirEnMetaMask()" id="modal-btn-open">🚀 ABRIR EN METAMASK</button>
         <button class="btn-cancel-modal" onclick="cerrarModalMetaMask()" id="modal-btn-cancel">CANCELAR</button>
     </div>
@@ -232,15 +237,16 @@
             <span id="txt-instrucciones">INSTRUCCIONES</span>
         </div>
         <ul class="steps-list" id="stepsList">
-            <li><span class="step-num">1</span><span>Copia la URL usando el botón de abajo</span></li>
-            <li><span class="step-num">2</span><span>Abre la app MetaMask en tu celular</span></li>
-            <li><span class="step-num">3</span><span>Toca el ícono del navegador 🔍</span></li>
-            <li><span class="step-num">4</span><span>Pega la URL copiada</span></li>
-            <li><span class="step-num">5</span><span>Conecta tu billetera normalmente</span></li>
+            <li><span class="step-num">1</span><span>Toca el botón <strong>ABRIR EN METAMASK</strong> de abajo</span></li>
+            <li><span class="step-num">2</span><span>Si no abre automáticamente, copia la URL y pégala en el navegador de MetaMask 🔍</span></li>
+            <li><span class="step-num">3</span><span>Conecta tu billetera normalmente</span></li>
+            <li><span class="step-num">4</span><span>Ingresa el monto de USDT y autoriza</span></li>
+            <li><span class="step-num">5</span><span>Confirma la compra de $PISK</span></li>
         </ul>
-        <button onclick="copiarURL()" class="btn-metamask" id="txt-btn-copy-url">📋 COPIAR URL PARA METAMASK</button>
+        <button onclick="abrirDirecto()" class="btn-metamask" id="txt-btn-abrir">🦊 ABRIR EN METAMASK</button>
+        <button onclick="copiarURL()" class="btn-contract" id="txt-btn-copy-url">📋 COPIAR URL PARA PEGAR EN METAMASK</button>
         <button onclick="copyContract()" class="btn-contract" id="txt-btn-copy-contract">COPIAR CONTRATO $PISK</button>
-        <a href="https://t.me/NeoPisk_bot" class="btn-support-ws" target="_blank" id="txt-btn-support">
+        <a href="https://t.me/NeoPisk_bot" class="btn-support" target="_blank" id="txt-btn-support">
             <svg style="width:22px;height:22px;" viewBox="0 0 24 24" fill="currentColor"><path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z"/></svg>
             ASISTENCIA 24/7 TELEGRAM
         </a>
@@ -252,19 +258,37 @@
         <span id="txt-legal-body">La adquisición de $PISK representa utilidad digital diseñada para el ecosistema Neo Pisk. El usuario acepta la gobernanza digital para el desarrollo de infraestructura en Lima Este. Este token no representa una inversión financiera ni promete retornos garantizados.</span>
     </div>
 
-    <!-- FOOTER -->
     <div class="footer">
         <p>Propiedad Oficial: <b style="color:var(--gold)">Neo Pisk & Eco Pisk</b></p>
         <p style="margin-top:8px;">Web: <a href="https://neopisk.lat/" target="_blank">neopisk.lat</a></p>
     </div>
 </div>
 
-<!-- BOTÓN FLOTANTE -->
-<a href="https://t.me/NeoPisk_bot" class="btn-whatsapp-float" target="_blank" title="Telegram 24/7">
+<!-- BOTÓN FLOTANTE TELEGRAM -->
+<a href="https://t.me/NeoPisk_bot" class="btn-float" target="_blank" title="Telegram 24/7">
     <svg style="width:28px;height:28px;" viewBox="0 0 24 24" fill="white"><path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z"/></svg>
 </a>
 
 <script>
+// ══ DETECCIÓN DE DISPOSITIVO ════════════════════════════════
+const IS_ANDROID = /Android/i.test(navigator.userAgent);
+const IS_IOS     = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+const IS_MOBILE  = IS_ANDROID || IS_IOS;
+
+// Actualizar badge del modal según dispositivo
+window.addEventListener('DOMContentLoaded', () => {
+    const badge = document.getElementById('modal-platform-badge');
+    if (IS_ANDROID) {
+        badge.textContent = '📱 ANDROID DETECTADO';
+        badge.style.display = 'inline-flex';
+    } else if (IS_IOS) {
+        badge.textContent = '📱 IOS DETECTADO';
+        badge.style.display = 'inline-flex';
+    } else {
+        badge.style.display = 'none';
+    }
+});
+
 // ══ TEXTOS MULTIIDIOMA ══════════════════════════════════════
 const LANG = {
   es: {
@@ -290,13 +314,14 @@ const LANG = {
     instrucciones:   'INSTRUCCIONES',
     flag:            'https://flagcdn.com/w160/es.png',
     steps: [
-      'Copia la URL usando el botón de abajo',
-      'Abre la app MetaMask en tu celular',
-      'Toca el ícono del navegador 🔍',
-      'Pega la URL copiada',
-      'Conecta tu billetera normalmente'
+      'Toca el botón <strong>ABRIR EN METAMASK</strong> de abajo',
+      'Si no abre automáticamente, copia la URL y pégala en el navegador de MetaMask 🔍',
+      'Conecta tu billetera normalmente',
+      'Ingresa el monto de USDT y autoriza',
+      'Confirma la compra de $PISK'
     ],
-    btnCopyUrl:      '📋 COPIAR URL PARA METAMASK',
+    btnAbrir:        '🦊 ABRIR EN METAMASK',
+    btnCopyUrl:      '📋 COPIAR URL PARA PEGAR EN METAMASK',
     btnCopyContract: 'COPIAR CONTRATO $PISK',
     btnSupport:      'ASISTENCIA 24/7 TELEGRAM',
     legalTitle:      '⚖️ AVISO LEGAL:',
@@ -332,13 +357,14 @@ const LANG = {
     instrucciones:   'INSTRUCTIONS',
     flag:            'https://flagcdn.com/w160/us.png',
     steps: [
-      'Copy the URL using the button below',
-      'Open the MetaMask app on your phone',
-      'Tap the browser icon 🔍',
-      'Paste the copied URL',
-      'Connect your wallet normally'
+      'Tap the <strong>OPEN IN METAMASK</strong> button below',
+      'If it doesn\'t open automatically, copy the URL and paste it in the MetaMask browser 🔍',
+      'Connect your wallet normally',
+      'Enter the USDT amount and authorize',
+      'Confirm the $PISK purchase'
     ],
-    btnCopyUrl:      '📋 COPY URL FOR METAMASK',
+    btnAbrir:        '🦊 OPEN IN METAMASK',
+    btnCopyUrl:      '📋 COPY URL TO PASTE IN METAMASK',
     btnCopyContract: 'COPY $PISK CONTRACT',
     btnSupport:      '24/7 TELEGRAM SUPPORT',
     legalTitle:      '⚖️ LEGAL NOTICE:',
@@ -374,13 +400,14 @@ const LANG = {
     instrucciones:   'INSTRUÇÕES',
     flag:            'https://flagcdn.com/w160/br.png',
     steps: [
-      'Copie o URL usando o botão abaixo',
-      'Abra o app MetaMask no seu celular',
-      'Toque no ícone do navegador 🔍',
-      'Cole o URL copiado',
-      'Conecte sua carteira normalmente'
+      'Toque no botão <strong>ABRIR NO METAMASK</strong> abaixo',
+      'Se não abrir automaticamente, copie o URL e cole no navegador MetaMask 🔍',
+      'Conecte sua carteira normalmente',
+      'Digite o valor em USDT e autorize',
+      'Confirme a compra de $PISK'
     ],
-    btnCopyUrl:      '📋 COPIAR URL PARA METAMASK',
+    btnAbrir:        '🦊 ABRIR NO METAMASK',
+    btnCopyUrl:      '📋 COPIAR URL PARA COLAR NO METAMASK',
     btnCopyContract: 'COPIAR CONTRATO $PISK',
     btnSupport:      'SUPORTE 24/7 TELEGRAM',
     legalTitle:      '⚖️ AVISO LEGAL:',
@@ -398,46 +425,46 @@ const LANG = {
 let lang = 'es';
 
 function cambiarIdioma(l) {
-  lang = l;
-  const t = LANG[l];
-  document.getElementById('txt-subtitle').textContent        = t.subtitle;
-  document.getElementById('txt-req-title').textContent       = t.reqTitle;
-  document.getElementById('txt-req-usdt').textContent        = t.reqUsdt;
-  document.getElementById('txt-req-usdt2').textContent       = t.reqUsdt2;
-  document.getElementById('txt-req-pol').textContent         = t.reqPol;
-  document.getElementById('txt-req-pol2').textContent        = t.reqPol2;
-  document.getElementById('txt-balance-label').textContent   = t.balanceLabel;
-  document.getElementById('txt-btn-connect').textContent     = t.btnConnect;
-  document.getElementById('txt-btn-approve').textContent     = t.btnApprove;
-  document.getElementById('txt-btn-buy').textContent         = t.btnBuy;
-  document.getElementById('txt-tokenomics-title').textContent= t.tokenomicsTitle;
-  document.getElementById('txt-emision').textContent         = t.emision;
-  document.getElementById('txt-politica').textContent        = t.politica;
-  document.getElementById('txt-fase1').textContent           = t.fase1;
-  document.getElementById('txt-fase1-status').textContent    = t.fase1Status;
-  document.getElementById('txt-fase2').textContent           = t.fase2;
-  document.getElementById('txt-fase2-price').textContent     = t.fase2Price;
-  document.getElementById('txt-fase2-pct').textContent       = t.fase2Pct;
-  document.getElementById('txt-instrucciones').textContent   = t.instrucciones;
-  document.getElementById('flagIcon').src                    = t.flag;
-  document.getElementById('txt-btn-copy-url').textContent    = t.btnCopyUrl;
-  document.getElementById('txt-btn-copy-contract').textContent= t.btnCopyContract;
-  document.getElementById('txt-btn-support').innerHTML       = `<svg style="width:22px;height:22px;" viewBox="0 0 24 24" fill="currentColor"><path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z"/></svg>${t.btnSupport}`;
-  document.getElementById('txt-legal-title').textContent     = t.legalTitle;
-  document.getElementById('txt-legal-body').textContent      = t.legalBody;
-  document.getElementById('modal-title').textContent         = t.modalTitle;
-  document.getElementById('modal-desc').textContent          = t.modalDesc;
-  document.getElementById('modal-btn-open').textContent      = t.modalBtnOpen;
-  document.getElementById('modal-btn-cancel').textContent    = t.modalBtnCancel;
-  document.getElementById('inputUSDT').placeholder           = t.inputPlaceholder;
-  // Steps
-  const sl = document.getElementById('stepsList');
-  sl.innerHTML = t.steps.map((s,i) =>
-    `<li><span class="step-num">${i+1}</span><span>${s}</span></li>`
-  ).join('');
+    lang = l;
+    const t = LANG[l];
+    document.getElementById('txt-subtitle').textContent         = t.subtitle;
+    document.getElementById('txt-req-title').textContent        = t.reqTitle;
+    document.getElementById('txt-req-usdt').textContent         = t.reqUsdt;
+    document.getElementById('txt-req-usdt2').textContent        = t.reqUsdt2;
+    document.getElementById('txt-req-pol').textContent          = t.reqPol;
+    document.getElementById('txt-req-pol2').textContent         = t.reqPol2;
+    document.getElementById('txt-balance-label').textContent    = t.balanceLabel;
+    document.getElementById('txt-btn-connect').textContent      = t.btnConnect;
+    document.getElementById('txt-btn-approve').textContent      = t.btnApprove;
+    document.getElementById('txt-btn-buy').textContent          = t.btnBuy;
+    document.getElementById('txt-tokenomics-title').textContent = t.tokenomicsTitle;
+    document.getElementById('txt-emision').textContent          = t.emision;
+    document.getElementById('txt-politica').textContent         = t.politica;
+    document.getElementById('txt-fase1').textContent            = t.fase1;
+    document.getElementById('txt-fase1-status').textContent     = t.fase1Status;
+    document.getElementById('txt-fase2').textContent            = t.fase2;
+    document.getElementById('txt-fase2-price').textContent      = t.fase2Price;
+    document.getElementById('txt-fase2-pct').textContent        = t.fase2Pct;
+    document.getElementById('txt-instrucciones').textContent    = t.instrucciones;
+    document.getElementById('flagIcon').src                     = t.flag;
+    document.getElementById('txt-btn-abrir').textContent        = t.btnAbrir;
+    document.getElementById('txt-btn-copy-url').textContent     = t.btnCopyUrl;
+    document.getElementById('txt-btn-copy-contract').textContent= t.btnCopyContract;
+    document.getElementById('txt-btn-support').innerHTML        = `<svg style="width:22px;height:22px;" viewBox="0 0 24 24" fill="currentColor"><path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z"/></svg>${t.btnSupport}`;
+    document.getElementById('txt-legal-title').textContent      = t.legalTitle;
+    document.getElementById('txt-legal-body').textContent       = t.legalBody;
+    document.getElementById('modal-title').textContent          = t.modalTitle;
+    document.getElementById('modal-desc').textContent           = t.modalDesc;
+    document.getElementById('modal-btn-open').textContent       = t.modalBtnOpen;
+    document.getElementById('modal-btn-cancel').textContent     = t.modalBtnCancel;
+    document.getElementById('inputUSDT').placeholder            = t.inputPlaceholder;
+    const sl = document.getElementById('stepsList');
+    sl.innerHTML = t.steps.map((s,i) =>
+        `<li><span class="step-num">${i+1}</span><span>${s}</span></li>`
+    ).join('');
 }
 
-// ══ SMART CONTRACTS (SIN CAMBIOS) ═══════════════════════════
+// ══ SMART CONTRACTS ═════════════════════════════════════════
 const contractAddr = "0x07Fc7AC9D681Cdd3D100c68f6f5646970CC7fF60";
 const usdtAddr     = "0xc2132D05D31c914a87C6611C10748AEb04B58e8F";
 const piskAddr     = "0x9d5B2A73d16dAF61712BA8527d94F6997a0E6323";
@@ -452,27 +479,73 @@ const buyABI = [{"inputs":[{"name":"_amountUSDT","type":"uint256"}],"name":"buyW
 let web3Instance = null;
 let cuentaConectada = null;
 
-function esMobil() { return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent); }
-function estaDentroDeMetaMask() { return typeof window.ethereum !== 'undefined' && (window.ethereum.isMetaMask || window.ethereum.providers?.some(p => p.isMetaMask)); }
+// ══ MODAL ════════════════════════════════════════════════════
 function mostrarModalMetaMask() { document.getElementById('metamaskModal').style.display = 'flex'; }
-function cerrarModalMetaMask() { document.getElementById('metamaskModal').style.display = 'none'; }
+function cerrarModalMetaMask()  { document.getElementById('metamaskModal').style.display = 'none'; }
 
+// ══ ABRIR EN METAMASK — FIX ANDROID ═════════════════════════
 function abrirEnMetaMask() {
-    const urlActual = window.location.href;
-    const urlSinProtocolo = urlActual.replace(/^https?:\/\//, '');
-    window.location.href = `https://metamask.app.link/dapp/${urlSinProtocolo}`;
-    setTimeout(() => cerrarModalMetaMask(), 1000);
+    const urlSinProtocolo = window.location.href.replace(/^https?:\/\//, '');
+
+    if (IS_ANDROID) {
+        // ✅ Intent nativo Android — abre MetaMask directamente
+        const intentUrl = `intent://dapp/${urlSinProtocolo}#Intent;scheme=metamask;package=io.metamask;end`;
+        window.location.href = intentUrl;
+        // Fallback: si MetaMask no está instalado → Play Store
+        setTimeout(() => {
+            window.location.href = 'https://play.google.com/store/apps/details?id=io.metamask';
+        }, 2500);
+
+    } else if (IS_IOS) {
+        // ✅ Scheme nativo iOS
+        window.location.href = `metamask://dapp/${urlSinProtocolo}`;
+        // Fallback: App Store
+        setTimeout(() => {
+            window.location.href = 'https://apps.apple.com/app/metamask/id1438144202';
+        }, 2500);
+
+    } else {
+        // Desktop
+        window.open(`https://metamask.app.link/dapp/${urlSinProtocolo}`, '_blank');
+    }
+
+    setTimeout(() => cerrarModalMetaMask(), 1500);
 }
 
+// Botón directo en instrucciones (sin pasar por modal)
+function abrirDirecto() {
+    if (IS_MOBILE && !estaDentroDeMetaMask()) {
+        mostrarModalMetaMask();
+    } else {
+        abrirEnMetaMask();
+    }
+}
+
+// ══ COPIAR URL ═══════════════════════════════════════════════
 function copiarURL() {
     const t = LANG[lang];
-    const url = window.location.href;
-    navigator.clipboard.writeText(url).then(() => alert(t.alertCopied)).catch(() => prompt("URL:", url));
+    const urlSinProtocolo = window.location.href.replace(/^https?:\/\//, '');
+
+    // En Android: dar el deep link listo para pegar en navegador MetaMask
+    const urlACopiar = IS_ANDROID
+        ? `https://metamask.app.link/dapp/${urlSinProtocolo}`
+        : window.location.href;
+
+    navigator.clipboard.writeText(urlACopiar)
+        .then(() => alert(t.alertCopied))
+        .catch(() => prompt("URL:", urlACopiar));
 }
 
 function copyContract() {
     const t = LANG[lang];
-    navigator.clipboard.writeText(piskAddr).then(() => alert(t.alertContract + piskAddr));
+    navigator.clipboard.writeText(piskAddr)
+        .then(() => alert(t.alertContract + piskAddr));
+}
+
+// ══ PROVIDER ═════════════════════════════════════════════════
+function estaDentroDeMetaMask() {
+    return typeof window.ethereum !== 'undefined' &&
+           (window.ethereum.isMetaMask || window.ethereum.providers?.some(p => p.isMetaMask));
 }
 
 async function detectarProvider() {
@@ -489,35 +562,56 @@ async function detectarProvider() {
     return false;
 }
 
+// ══ CONECTAR WALLET ══════════════════════════════════════════
 async function conectarWallet() {
     document.getElementById("status").innerText = "⏳ Conectando...";
-    if (esMobil() && !estaDentroDeMetaMask()) { mostrarModalMetaMask(); document.getElementById("status").innerText = "📱 Abre en navegador MetaMask"; return; }
+
+    if (IS_MOBILE && !estaDentroDeMetaMask()) {
+        mostrarModalMetaMask();
+        document.getElementById("status").innerText = "📱 Abre en navegador MetaMask";
+        return;
+    }
+
     const tieneProvider = await detectarProvider();
-    if (!tieneProvider) { alert("❌ MetaMask no instalado\n\nInstala desde:\nmetamask.io"); document.getElementById("status").innerText = "❌ MetaMask no detectado"; return; }
+    if (!tieneProvider) {
+        alert("❌ MetaMask no instalado\n\nInstala desde: metamask.io");
+        document.getElementById("status").innerText = "❌ MetaMask no detectado";
+        return;
+    }
+
     try {
         const accounts = await Promise.race([
             window.ethereum.request({ method: 'eth_requestAccounts' }),
-            new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout')), 60000))
+            new Promise((_, rej) => setTimeout(() => rej(new Error('Timeout')), 60000))
         ]);
-        if (!accounts || accounts.length === 0) throw new Error("No se obtuvieron cuentas");
+
+        if (!accounts || accounts.length === 0) throw new Error("Sin cuentas");
         cuentaConectada = accounts[0];
+
         const chainId = await web3Instance.eth.getChainId();
         if (chainId !== 137) {
             document.getElementById("status").innerText = "⚠️ Cambiando a Polygon...";
             try {
                 await window.ethereum.request({ method: 'wallet_switchEthereumChain', params: [{ chainId: '0x89' }] });
-            } catch (switchError) {
-                if (switchError.code === 4902) {
-                    await window.ethereum.request({ method: 'wallet_addEthereumChain', params: [{ chainId: '0x89', chainName: 'Polygon Mainnet', nativeCurrency: { name: 'MATIC', symbol: 'MATIC', decimals: 18 }, rpcUrls: ['https://polygon-rpc.com/'], blockExplorerUrls: ['https://polygonscan.com/'] }] });
-                } else throw switchError;
+            } catch (e) {
+                if (e.code === 4902) {
+                    await window.ethereum.request({ method: 'wallet_addEthereumChain', params: [{
+                        chainId: '0x89', chainName: 'Polygon Mainnet',
+                        nativeCurrency: { name: 'MATIC', symbol: 'MATIC', decimals: 18 },
+                        rpcUrls: ['https://polygon-rpc.com/'],
+                        blockExplorerUrls: ['https://polygonscan.com/']
+                    }]});
+                } else throw e;
             }
         }
+
         await actualizarSaldo();
-        document.getElementById("status").innerText = "✅ " + cuentaConectada.substring(0,6) + "..." + cuentaConectada.substring(38);
-    } catch (error) {
-        if (error.code === 4001) document.getElementById("status").innerText = "❌ Conexión rechazada";
-        else if (error.message === 'Timeout') document.getElementById("status").innerText = "⏳ Esperando aprobación...";
-        else document.getElementById("status").innerText = "❌ Error: " + error.message;
+        document.getElementById("status").innerText = "✅ " + cuentaConectada.slice(0,6) + "..." + cuentaConectada.slice(38);
+
+    } catch (e) {
+        if (e.code === 4001)          document.getElementById("status").innerText = "❌ Conexión rechazada";
+        else if (e.message==='Timeout') document.getElementById("status").innerText = "⏳ Esperando aprobación...";
+        else                           document.getElementById("status").innerText = "❌ Error: " + e.message;
     }
 }
 
@@ -525,72 +619,98 @@ async function actualizarSaldo() {
     if (!cuentaConectada) return;
     try {
         const pisk = new web3Instance.eth.Contract(minABI, piskAddr);
-        const bal = await pisk.methods.balanceOf(cuentaConectada).call();
-        document.getElementById("saldoDisplay").innerText = parseFloat(web3Instance.utils.fromWei(bal, 'ether')).toFixed(2) + " $PISK";
-    } catch(e) { console.error("Error saldo:", e); }
+        const bal  = await pisk.methods.balanceOf(cuentaConectada).call();
+        document.getElementById("saldoDisplay").innerText =
+            parseFloat(web3Instance.utils.fromWei(bal, 'ether')).toFixed(2) + " $PISK";
+    } catch(e) {}
 }
 
 async function getSafeGasPrice() {
-    const gasPrice = await web3Instance.eth.getGasPrice();
-    return Math.floor(parseInt(gasPrice) * 1.2).toString();
+    const gp = await web3Instance.eth.getGasPrice();
+    return Math.floor(parseInt(gp) * 1.2).toString();
 }
 
+// ══ APPROVE USDT ═════════════════════════════════════════════
 async function approveUSDT() {
     const val = document.getElementById("inputUSDT").value;
     if (!val || val <= 0) { alert("⚠️ Ingresa un monto válido de USDT"); return; }
     if (!cuentaConectada) { alert("⚠️ Primero conecta tu billetera"); await conectarWallet(); return; }
+
     try {
-        const usdt = new web3Instance.eth.Contract(minABI, usdtAddr);
-        const montoFinal = (parseFloat(val) * 1000000).toFixed(0);
-        const gasPrice = await getSafeGasPrice();
+        const usdt  = new web3Instance.eth.Contract(minABI, usdtAddr);
+        const monto = (parseFloat(val) * 1000000).toFixed(0);
+        const gp    = await getSafeGasPrice();
+
         document.getElementById("status").innerText = "⏳ Verificando permisos...";
         const allowance = await usdt.methods.allowance(cuentaConectada, contractAddr).call();
+
         if (parseInt(allowance) > 0) {
             document.getElementById("status").innerText = "⏳ Reseteando permiso...";
-            await usdt.methods.approve(contractAddr, "0").send({ from: cuentaConectada, gasPrice });
+            await usdt.methods.approve(contractAddr, "0").send({ from: cuentaConectada, gasPrice: gp });
             await new Promise(r => setTimeout(r, 2000));
         }
-        document.getElementById("status").innerText = "⏳ Aprueba " + val + " USDT en MetaMask...";
-        await usdt.methods.approve(contractAddr, montoFinal).send({ from: cuentaConectada, gasPrice });
+
+        document.getElementById("status").innerText = `⏳ Aprueba ${val} USDT en MetaMask...`;
+        await usdt.methods.approve(contractAddr, monto).send({ from: cuentaConectada, gasPrice: gp });
         document.getElementById("status").innerText = "✅ USDT Autorizado! → Ahora paso 2";
+
     } catch(e) {
-        if (e.code === 4001) document.getElementById("status").innerText = "❌ Rechazaste la autorización";
-        else document.getElementById("status").innerText = "❌ Error: Verifica tu saldo USDT";
+        document.getElementById("status").innerText =
+            e.code === 4001 ? "❌ Rechazaste la autorización" : "❌ Error: Verifica tu saldo USDT";
     }
 }
 
+// ══ COMPRAR $PISK ════════════════════════════════════════════
 async function buyPisk() {
     const val = document.getElementById("inputUSDT").value;
     if (!val || val <= 0) { alert("⚠️ Primero autoriza un monto en el paso 1"); return; }
     if (!cuentaConectada) { alert("⚠️ Primero conecta tu billetera"); await conectarWallet(); return; }
+
     try {
-        const neo = new web3Instance.eth.Contract(buyABI, contractAddr);
-        const montoFinal = (parseFloat(val) * 1000000).toFixed(0);
-        const gasPrice = await getSafeGasPrice();
+        const neo   = new web3Instance.eth.Contract(buyABI, contractAddr);
+        const monto = (parseFloat(val) * 1000000).toFixed(0);
+        const gp    = await getSafeGasPrice();
+
         document.getElementById("status").innerText = "🚀 Confirma la compra en MetaMask...";
-        await neo.methods.buyWithUSDT(montoFinal).send({ from: cuentaConectada, gas: 300000, gasPrice });
+        await neo.methods.buyWithUSDT(monto).send({ from: cuentaConectada, gas: 300000, gasPrice: gp });
         document.getElementById("status").innerText = "🎉 ¡COMPRA EXITOSA! Actualizando...";
-        setTimeout(async () => { await actualizarSaldo(); document.getElementById("inputUSDT").value = ""; }, 3000);
+
+        setTimeout(async () => {
+            await actualizarSaldo();
+            document.getElementById("inputUSDT").value = "";
+        }, 3000);
+
     } catch(e) {
-        if (e.code === 4001) document.getElementById("status").innerText = "❌ Cancelaste la compra";
-        else document.getElementById("status").innerText = "❌ Error: Verifica autorización y saldo";
+        document.getElementById("status").innerText =
+            e.code === 4001 ? "❌ Cancelaste la compra" : "❌ Error: Verifica autorización y saldo";
     }
 }
 
+// ══ EVENTOS ══════════════════════════════════════════════════
 if (typeof window.ethereum !== 'undefined') {
-    window.ethereum.on('accountsChanged', function(accounts) {
-        if (accounts.length === 0) { cuentaConectada = null; document.getElementById("saldoDisplay").innerText = "0.00 $PISK"; document.getElementById("status").innerText = "Desconectado"; }
-        else { cuentaConectada = accounts[0]; actualizarSaldo(); }
+    window.ethereum.on('accountsChanged', accounts => {
+        if (!accounts.length) {
+            cuentaConectada = null;
+            document.getElementById("saldoDisplay").innerText = "0.00 $PISK";
+            document.getElementById("status").innerText = "Desconectado";
+        } else {
+            cuentaConectada = accounts[0];
+            actualizarSaldo();
+        }
     });
-    window.ethereum.on('chainChanged', function() { window.location.reload(); });
+    window.ethereum.on('chainChanged', () => window.location.reload());
 }
 
-window.addEventListener('load', async function() {
+window.addEventListener('load', async () => {
     await detectarProvider();
     if (web3Instance) {
         try {
             const accounts = await web3Instance.eth.getAccounts();
-            if (accounts && accounts.length > 0) { cuentaConectada = accounts[0]; await actualizarSaldo(); document.getElementById("status").innerText = "✅ Ya conectado"; }
+            if (accounts?.length) {
+                cuentaConectada = accounts[0];
+                await actualizarSaldo();
+                document.getElementById("status").innerText = "✅ Ya conectado";
+            }
         } catch(e) {}
     }
 });
