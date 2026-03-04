@@ -176,74 +176,34 @@ body{background:var(--dark);color:var(--text);font-family:'Rajdhani',sans-serif;
 
 <!-- TAB COMPRAR -->
 <div class="tab-content" id="tab-comprar">
-
-  <!-- Precio y cantidad -->
-  <div style="background:linear-gradient(135deg,#0D1117,#131A24);border:1px solid var(--border);padding:16px;margin-bottom:12px;">
-    <div style="font-size:10px;letter-spacing:4px;color:var(--muted);margin-bottom:8px;">PRECIO DE PREVENTA</div>
-    <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:4px;">
-      <span style="font-family:'Bebas Neue';font-size:42px;color:var(--gold2);">$0.10</span>
-      <span style="font-family:'Bebas Neue';font-size:18px;color:var(--muted);">USD / $PISK</span>
-    </div>
-    <div style="font-size:11px;color:var(--muted);">Mínimo de compra: <strong style="color:var(--text)">$10 USDT</strong> = 100 $PISK</div>
-  </div>
-
-  <!-- Calculadora rápida -->
-  <div style="background:var(--dark2);border:1px solid var(--border);padding:14px;margin-bottom:12px;">
-    <div style="font-size:10px;letter-spacing:3px;color:var(--muted);margin-bottom:8px;">CALCULADORA</div>
-    <div style="display:flex;gap:8px;align-items:center;margin-bottom:6px;">
-      <input id="calcUsdt" type="number" min="10" placeholder="USDT a enviar" oninput="calcPisk()"
-        style="flex:1;background:var(--dark3);border:1px solid var(--border);color:var(--text);padding:10px;font-family:'Rajdhani';font-size:15px;outline:none;">
-      <span style="color:var(--muted);font-family:'Bebas Neue';font-size:18px;">=</span>
-      <div style="flex:1;background:var(--dark3);border:1px solid rgba(212,160,23,0.4);padding:10px;text-align:center;">
-        <span id="calcResult" style="font-family:'Bebas Neue';font-size:18px;color:var(--gold2);">0</span>
-        <span style="font-size:11px;color:var(--muted);"> $PISK</span>
-      </div>
+  <div style="background:linear-gradient(135deg,#0D1117,#131A24);border:1px solid var(--border);padding:20px 16px;margin-bottom:12px;text-align:center;">
+    <div style="font-family:'Bebas Neue';font-size:48px;color:var(--gold2);line-height:1;">$0.10 USD</div>
+    <div style="font-size:10px;letter-spacing:4px;color:var(--muted);margin-bottom:16px;">PRECIO DE PREVENTA · POLYGON</div>
+    <div style="display:flex;justify-content:center;gap:24px;padding-top:12px;border-top:1px solid var(--border);">
+      <div style="text-align:center;"><div style="font-family:'Bebas Neue';font-size:22px;color:var(--green);">10 $PISK</div><div style="font-size:9px;letter-spacing:2px;color:var(--muted);">POR 1 USDT</div></div>
+      <div style="text-align:center;"><div style="font-family:'Bebas Neue';font-size:22px;color:var(--green);">POLYGON</div><div style="font-size:9px;letter-spacing:2px;color:var(--muted);">RED</div></div>
     </div>
   </div>
 
-  <!-- Dirección de pago -->
-  <div style="background:var(--dark2);border:1px solid var(--border);padding:14px;margin-bottom:12px;">
-    <div style="font-size:10px;letter-spacing:3px;color:var(--muted);margin-bottom:6px;">ENVÍA USDT A ESTA DIRECCIÓN</div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:10px;">
-      <div style="background:rgba(212,160,23,0.08);border:1px solid var(--border);padding:8px;text-align:center;">
-        <div style="font-family:'Bebas Neue';font-size:13px;color:var(--gold2);">BEP20 (BSC)</div>
-        <div style="font-size:9px;color:var(--muted);">Red Binance Smart Chain</div>
-      </div>
-      <div style="background:rgba(212,160,23,0.08);border:1px solid var(--border);padding:8px;text-align:center;">
-        <div style="font-family:'Bebas Neue';font-size:13px;color:var(--gold2);">TRC20 (TRON)</div>
-        <div style="font-size:9px;color:var(--muted);">Red Tron</div>
-      </div>
-    </div>
-    <div id="payAddress" style="font-family:'Bebas Neue';font-size:11px;color:var(--gold);word-break:break-all;background:var(--dark3);padding:10px;letter-spacing:1px;margin-bottom:8px;border:1px solid rgba(212,160,23,0.3);">
-      0x742d35Cc6634C0532925a3b8D4C9E5B3e8F1a2b4
-    </div>
-    <button class="btn-full btn-gold" onclick="copiarDireccion()" style="font-size:15px;padding:12px;">
-      📋 COPIAR DIRECCIÓN
-    </button>
-    <div style="font-size:10px;color:var(--red);text-align:center;margin-top:8px;line-height:1.5;">
-      ⚠️ Verifica la dirección antes de enviar.<br>Solo USDT — no envíes otra moneda.
-    </div>
+  <div style="background:var(--dark2);border:1px solid var(--border);padding:16px;margin-bottom:12px;font-size:13px;color:var(--muted);line-height:1.7;">
+    <div style="font-family:'Bebas Neue';font-size:13px;letter-spacing:3px;color:var(--gold);margin-bottom:8px;">CÓMO COMPRAR</div>
+    <div>1️⃣ Abre <strong style="color:var(--text)">MetaMask</strong> en tu celular</div>
+    <div>2️⃣ Toca el ícono del <strong style="color:var(--text)">navegador 🌐</strong></div>
+    <div>3️⃣ Toca el botón de abajo para ir a la página de compra</div>
+    <div>4️⃣ Conecta tu wallet y compra $PISK</div>
   </div>
 
-  <!-- Registrar wallet propia -->
-  <div style="background:var(--dark2);border:1px solid var(--border);padding:14px;margin-bottom:12px;">
-    <div style="font-size:10px;letter-spacing:3px;color:var(--muted);margin-bottom:6px;" id="txt-myWalletLabel">TU WALLET (PARA RECIBIR $PISK)</div>
-    <input class="wallet-input" id="compraWalletInput" placeholder="0x... o T..." style="margin-bottom:8px;">
-    <div style="font-size:10px;color:var(--muted);">Aquí recibirás tus tokens $PISK una vez confirmada la compra.</div>
+  <button class="btn-full btn-gold" onclick="abrirCompra()" style="margin-bottom:8px;font-size:20px;padding:18px;">
+    🦊 ABRIR EN METAMASK
+  </button>
+  <div style="font-size:10px;color:var(--muted);text-align:center;margin-bottom:16px;">
+    Se abrirá la página de compra · Necesitas USDT en red Polygon
   </div>
 
-  <!-- Hash de transacción -->
-  <div style="background:var(--dark2);border:1px solid var(--border);padding:14px;margin-bottom:12px;">
-    <div style="font-size:10px;letter-spacing:3px;color:var(--muted);margin-bottom:6px;">HASH / TX ID DE TU TRANSFERENCIA</div>
-    <input class="wallet-input" id="hashInput" placeholder="0x... (copia el TxHash de tu wallet)" style="margin-bottom:6px;">
-    <div style="font-size:10px;color:var(--muted);margin-bottom:10px;">Pega el hash de la transacción para que podamos verificarla y enviarte los tokens.</div>
-    <button class="btn-full btn-gold" onclick="enviarCompra()" style="font-size:16px;">
-      ✅ CONFIRMAR COMPRA
-    </button>
+  <div style="background:rgba(212,160,23,0.06);border:1px solid var(--border);padding:12px 14px;font-size:11px;color:var(--muted);line-height:1.6;">
+    <strong style="color:var(--gold2);">💡 Después de comprar</strong><br>
+    Ve al tab <strong style="color:var(--text)">💳 WALLET</strong> y registra tu dirección Polygon para recibir tus comisiones de referidos.
   </div>
-
-  <div id="compraStatus" style="display:none;background:rgba(0,230,118,0.08);border:1px solid var(--green);padding:14px;text-align:center;font-size:13px;color:var(--green);margin-bottom:12px;"></div>
-
 </div>
 
 <!-- TAB WALLET -->
@@ -491,59 +451,12 @@ function toast(msg) {
 
 
 // ── COMPRAR ───────────────────────────────────────
-const USDT_ADDRESS = '0x742d35Cc6634C0532925a3b8D4C9E5B3e8F1a2b4'; // ← cambia por tu dirección real
-
-function calcPisk() {
-  const usdt = parseFloat(document.getElementById('calcUsdt').value) || 0;
-  document.getElementById('calcResult').textContent = (usdt / 0.10).toLocaleString();
-}
-
-function copiarDireccion() {
-  copiarTexto(USDT_ADDRESS, '📋 Dirección copiada');
-}
-
-async function enviarCompra() {
-  const wallet = document.getElementById('compraWalletInput').value.trim();
-  const hash   = document.getElementById('hashInput').value.trim();
-  const usdt   = parseFloat(document.getElementById('calcUsdt').value) || 0;
-  const status = document.getElementById('compraStatus');
-
-  if (!wallet || wallet.length < 20) { toast('⚠️ Ingresa tu wallet para recibir $PISK'); return; }
-  if (!hash || hash.length < 20)     { toast('⚠️ Ingresa el hash de tu transacción'); return; }
-  if (usdt < 10)                     { toast('⚠️ Mínimo $10 USDT'); return; }
-
-  // Guardar wallet también en perfil
-  if (user) { user.wallet = wallet; saveLocal(); updateUI(); }
-
-  const payload = {
-    userId:  user?.id || 'desconocido',
-    nombre:  user?.nombre || 'Desconocido',
-    wallet,
-    hash,
-    usdt,
-    pisk:    usdt / 0.10,
-    codigo_ref: user?.codigo_ref || '',
-    fecha:   new Date().toISOString()
-  };
-
-  try {
-    await fetch(`${API}/compra`, {
-      method:  'POST',
-      headers: {'Content-Type':'application/json'},
-      body:    JSON.stringify(payload),
-      signal:  AbortSignal.timeout(8000)
-    });
-  } catch(_) { /* guardamos aunque falle la API */ }
-
-  status.style.display = 'block';
-  status.innerHTML = `✅ ¡Compra registrada!<br><br>
-    <strong>${usdt} USDT → ${(usdt/0.10).toLocaleString()} $PISK</strong><br><br>
-    Verificaremos tu transacción en 24 hrs.<br>
-    Los tokens llegarán a: <span style="color:var(--gold2)">${wallet.slice(0,10)}…</span>`;
-
-  document.getElementById('hashInput').value = '';
-  tg?.HapticFeedback?.notificationOccurred('success');
-  toast('✅ ¡Compra enviada al administrador!');
+function abrirCompra() {
+  const uid    = user?.id || '';
+  const ref    = user?.codigo_ref || '';
+  const url    = `https://neopisk.lat/comprar.html?uid=${uid}&ref=${ref}`;
+  if (tg?.openLink) { tg.openLink(url); }
+  else { window.open(url, '_blank'); }
 }
 
 function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
