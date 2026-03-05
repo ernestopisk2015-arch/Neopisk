@@ -1,0 +1,1160 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Neo Pisk Food V2.0 · Red Logística</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#f7f6f0;--surface:#fff;--s2:#f0efe8;--border:#e2dfd5;
+  --text:#0f0f0f;--text2:#3a3a3a;--muted:#888878;
+  --or:#e85d00;--or-bg:#fff0e6;--or-l:#ff8c42;
+  --gr:#0d7a3e;--gr-bg:#e8f7ef;
+  --rd:#c8200a;--rd-bg:#fde8e5;
+  --bl:#0a4fc8;--bl-bg:#e6eeff;
+  --yl:#c8a000;--yl-bg:#fff8df;
+  --dark:#0f0f0f;
+  --fh:'Syne',sans-serif; --fm:'IBM Plex Mono',monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--text);font-family:var(--fm);min-height:100vh;overflow-x:hidden;}
+.scr{display:none;min-height:100vh;}
+.scr.on{display:flex;}
+
+/* LOGIN */
+#s-login{align-items:center;justify-content:center;background:linear-gradient(135deg,#0a0a0a 0%,#1a1000 50%,#0a0a0a 100%);position:relative;overflow:hidden;}
+#s-login::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 48px,rgba(255,140,66,.025) 48px,rgba(255,140,66,.025) 49px),repeating-linear-gradient(90deg,transparent,transparent 48px,rgba(255,140,66,.025) 48px,rgba(255,140,66,.025) 49px);}
+.lbox{background:var(--surface);border:2px solid var(--border);border-radius:20px;padding:48px 44px;width:430px;position:relative;box-shadow:0 40px 80px rgba(0,0,0,.5);animation:lIn .5s ease;}
+@keyframes lIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+.l-logo{text-align:center;margin-bottom:32px;}
+.l-logo-icon{font-size:46px;display:block;margin-bottom:6px;}
+.l-logo-name{font-family:var(--fh);font-size:28px;font-weight:800;letter-spacing:-1px;}
+.l-logo-sub{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:3px;margin-top:3px;}
+.rtabs{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:26px;background:var(--s2);padding:5px;border-radius:12px;border:1px solid var(--border);}
+.rtab{padding:10px 4px;text-align:center;cursor:pointer;border-radius:8px;transition:all .15s;font-size:10px;font-family:var(--fh);font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);}
+.rtab.on{background:var(--surface);color:var(--text);box-shadow:0 2px 8px rgba(0,0,0,.1);}
+.rtab-ic{font-size:20px;display:block;margin-bottom:3px;}
+.ff{margin-bottom:15px;}
+.ff label{display:block;font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--muted);margin-bottom:5px;}
+.ff input,.ff select{width:100%;background:var(--s2);border:2px solid var(--border);color:var(--text);padding:11px 14px;font-family:var(--fm);font-size:13px;border-radius:10px;outline:none;transition:border-color .15s;}
+.ff input:focus,.ff select:focus{border-color:var(--or);}
+.btn-login{width:100%;padding:14px;background:var(--or);color:#fff;border:none;border-radius:10px;font-family:var(--fh);font-size:14px;font-weight:700;cursor:pointer;transition:all .15s;margin-top:4px;letter-spacing:.3px;}
+.btn-login:hover{background:#d05200;box-shadow:0 6px 24px rgba(232,93,0,.35);}
+.demo-hint{text-align:center;margin-top:14px;font-size:11px;color:var(--muted);line-height:1.7;}
+.demo-hint strong{color:var(--or);}
+
+/* APP LAYOUT */
+#s-app{flex-direction:row;}
+.sb{width:238px;background:var(--dark);display:flex;flex-direction:column;position:fixed;top:0;bottom:0;left:0;z-index:200;transition:transform .3s;}
+.app-wrap{margin-left:238px;flex:1;display:flex;flex-direction:column;min-height:100vh;}
+.topbar{background:var(--surface);border-bottom:2px solid var(--border);padding:13px 26px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 10px rgba(0,0,0,.05);}
+.pg-content{padding:26px;flex:1;}
+
+/* SIDEBAR */
+.sb-logo{padding:22px 20px 18px;border-bottom:1px solid #1e1e1e;}
+.sb-logo-row{display:flex;align-items:center;gap:10px;}
+.sb-ic{font-size:26px;}
+.sb-name{font-family:var(--fh);font-size:17px;font-weight:800;color:#fff;}
+.sb-ver{font-size:9px;color:#444;text-transform:uppercase;letter-spacing:2px;margin-top:2px;}
+.sb-nav{padding:12px 0;flex:1;overflow-y:auto;}
+.sb-sec{font-size:9px;text-transform:uppercase;letter-spacing:2px;color:#333;padding:10px 20px 5px;}
+.sb-i{display:flex;align-items:center;gap:9px;padding:10px 20px;cursor:pointer;font-size:11px;color:#666;transition:all .15s;text-transform:uppercase;letter-spacing:.8px;border-left:3px solid transparent;font-family:var(--fh);font-weight:600;}
+.sb-i:hover{color:#fff;background:#181818;}
+.sb-i.on{color:#fff;background:#181818;border-left-color:var(--or);}
+.sb-ic2{font-size:15px;width:20px;text-align:center;}
+.sb-bdg{margin-left:auto;background:var(--or);color:#fff;font-size:9px;font-weight:700;padding:2px 6px;border-radius:10px;font-family:var(--fm);}
+.sb-ft{padding:14px 20px;border-top:1px solid #1e1e1e;}
+.u-pill{display:flex;align-items:center;gap:9px;}
+.u-av{width:32px;height:32px;background:var(--or-bg);border:2px solid var(--or);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
+.u-nm{font-family:var(--fh);font-size:11px;font-weight:700;color:#fff;}
+.u-rl{font-size:9px;color:#444;text-transform:uppercase;letter-spacing:1px;}
+.btn-out{background:none;border:1px solid #2a2a2a;color:#444;padding:3px 7px;border-radius:5px;cursor:pointer;font-size:9px;margin-left:auto;transition:all .15s;font-family:var(--fm);}
+.btn-out:hover{border-color:var(--rd);color:var(--rd);}
+
+/* TOPBAR */
+.tb-ttl{font-family:var(--fh);font-size:19px;font-weight:800;letter-spacing:-.5px;}
+.tb-r{display:flex;align-items:center;gap:9px;}
+.pill{padding:4px 11px;border-radius:20px;font-size:11px;font-weight:700;font-family:var(--fh);}
+.p-or{background:var(--or-bg);color:var(--or);}
+.p-gr{background:var(--gr-bg);color:var(--gr);}
+.p-rd{background:var(--rd-bg);color:var(--rd);}
+.p-bl{background:var(--bl-bg);color:var(--bl);}
+.p-yl{background:var(--yl-bg);color:var(--yl);}
+.p-mu{background:var(--s2);color:var(--muted);border:1px solid var(--border);}
+
+/* TABS */
+.tv{display:none;}.tv.on{display:block;}
+
+/* KPI */
+.krow{display:grid;gap:13px;margin-bottom:22px;}
+.k4{grid-template-columns:repeat(4,1fr);}
+.k3{grid-template-columns:repeat(3,1fr);}
+.k2{grid-template-columns:repeat(2,1fr);}
+.kpi{background:var(--surface);border:2px solid var(--border);border-radius:14px;padding:20px;position:relative;overflow:hidden;transition:all .15s;cursor:default;}
+.kpi:hover{box-shadow:0 8px 28px rgba(0,0,0,.07);transform:translateY(-1px);}
+.kb{position:absolute;top:0;left:0;right:0;height:4px;border-radius:14px 14px 0 0;}
+.ki{width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:19px;margin-bottom:13px;}
+.kl{font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--muted);margin-bottom:3px;}
+.kv{font-family:var(--fh);font-size:26px;font-weight:800;line-height:1;color:var(--text);}
+.ks{font-size:11px;color:var(--muted);margin-top:4px;}
+.cor .kb{background:var(--or);}.cor .ki{background:var(--or-bg);}
+.cgr .kb{background:var(--gr);}.cgr .ki{background:var(--gr-bg);}
+.cbl .kb{background:var(--bl);}.cbl .ki{background:var(--bl-bg);}
+.crd .kb{background:var(--rd);}.crd .ki{background:var(--rd-bg);}
+.cyl .kb{background:var(--yl);}.cyl .ki{background:var(--yl-bg);}
+
+/* CARD */
+.card{background:var(--surface);border:2px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:17px;}
+.ch{padding:14px 18px;border-bottom:2px solid var(--border);display:flex;align-items:center;justify-content:space-between;background:var(--s2);}
+.ct{font-family:var(--fh);font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1px;}
+.cb{padding:18px;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:17px;}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:13px;}
+
+/* TABLE */
+.tw{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;}
+th{padding:9px 14px;text-align:left;font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);background:var(--s2);border-bottom:2px solid var(--border);font-weight:500;}
+td{padding:11px 14px;font-size:12px;border-bottom:1px solid var(--border);color:var(--text2);vertical-align:middle;}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:var(--s2);}
+.bo{font-weight:700;font-family:var(--fh);color:var(--text);}
+
+/* CHIP */
+.chip{display:inline-flex;align-items:center;gap:3px;padding:3px 9px;border-radius:20px;font-size:10px;font-weight:700;font-family:var(--fh);}
+.cgr2{background:var(--gr-bg);color:var(--gr);}
+.cor2{background:var(--or-bg);color:var(--or);}
+.crd2{background:var(--rd-bg);color:var(--rd);}
+.cbl2{background:var(--bl-bg);color:var(--bl);}
+.cyl2{background:var(--yl-bg);color:var(--yl);}
+.cmu{background:var(--s2);color:var(--muted);border:1px solid var(--border);}
+
+/* BUTTONS */
+.btn{padding:9px 18px;font-family:var(--fh);font-size:12px;font-weight:700;cursor:pointer;border:none;border-radius:9px;transition:all .15s;}
+.bor{background:var(--or);color:#fff;}.bor:hover{background:#d05200;box-shadow:0 4px 16px rgba(232,93,0,.3);}
+.bgr{background:var(--gr);color:#fff;}.bgr:hover{background:#0a6533;}
+.bou{background:var(--surface);border:2px solid var(--border);color:var(--text2);}.bou:hover{border-color:var(--text);color:var(--text);}
+.brd{background:var(--rd);color:#fff;}
+.bsm{padding:5px 12px;font-size:11px;}
+.bfu{width:100%;}
+.btn:disabled{opacity:.4;cursor:not-allowed;}
+
+/* FORM */
+.fg{margin-bottom:13px;}
+.fg label{display:block;font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--muted);margin-bottom:4px;}
+.fg input,.fg select,.fg textarea{width:100%;background:var(--s2);border:2px solid var(--border);color:var(--text);padding:9px 11px;font-family:var(--fm);font-size:12px;border-radius:8px;outline:none;transition:border-color .15s;}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--or);}
+
+/* MAP */
+.mapbox{background:linear-gradient(135deg,#d8e8d8 0%,#c8dcc8 100%);border-radius:12px;height:320px;position:relative;overflow:hidden;border:2px solid var(--border);}
+.map-car{position:absolute;font-size:22px;cursor:pointer;transition:all .5s;}
+.map-pin{position:absolute;font-size:18px;}
+.map-leg{position:absolute;bottom:10px;left:10px;background:rgba(255,255,255,.92);backdrop-filter:blur(8px);border-radius:9px;padding:9px 13px;font-size:11px;border:1px solid var(--border);}
+.map-center{display:flex;align-items:center;justify-content:center;height:100%;flex-direction:column;gap:8px;color:var(--muted);font-size:13px;}
+
+/* RUTA CARD */
+.rc{background:var(--surface);border:2px solid var(--border);border-radius:14px;padding:18px;margin-bottom:13px;transition:all .15s;position:relative;}
+.rc:hover{border-color:var(--or);box-shadow:0 4px 20px rgba(232,93,0,.1);}
+.rc.blk{opacity:.55;cursor:not-allowed;}
+.rc.blk::after{content:'🔒 DOCUMENTOS VENCIDOS — Renueva para tomar rutas';position:absolute;inset:0;background:rgba(200,32,10,.05);display:flex;align-items:center;justify-content:center;font-family:var(--fh);font-weight:700;font-size:11px;color:var(--rd);border-radius:12px;border:2px dashed var(--rd);}
+.rc-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:11px;}
+.rc-ttl{font-family:var(--fh);font-size:15px;font-weight:800;}
+.rc-pay{font-family:var(--fh);font-size:22px;font-weight:800;color:var(--gr);}
+.rc-tags{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:11px;}
+.rc-tag{display:flex;align-items:center;gap:4px;font-size:11px;color:var(--text2);background:var(--s2);padding:4px 9px;border-radius:20px;border:1px solid var(--border);}
+.ptrack{height:5px;background:var(--s2);border-radius:3px;overflow:hidden;margin-bottom:6px;border:1px solid var(--border);}
+.pbar{height:100%;border-radius:3px;transition:width .5s;}
+.plbl{font-size:10px;color:var(--muted);}
+
+/* SPEED ALERT */
+.s-alert{background:var(--rd-bg);border:2px solid var(--rd);border-radius:12px;padding:14px 18px;margin-bottom:14px;display:flex;align-items:center;gap:12px;animation:shk .3s ease;}
+@keyframes shk{0%,100%{transform:translateX(0)}25%{transform:translateX(-3px)}75%{transform:translateX(3px)}}
+.sa-ic{font-size:26px;flex-shrink:0;}
+.sa-ttl{font-family:var(--fh);font-weight:700;color:var(--rd);margin-bottom:2px;}
+.sa-body{font-size:11px;color:var(--rd);}
+
+/* DOCS */
+.doc-c{background:var(--surface);border:2px solid var(--border);border-radius:12px;padding:14px;display:flex;align-items:center;gap:12px;}
+.doc-ic{width:40px;height:40px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.doc-nm{font-family:var(--fh);font-size:13px;font-weight:700;margin-bottom:2px;}
+.doc-exp{font-size:11px;color:var(--muted);}
+.dok{border-color:var(--gr);}.dok .doc-ic{background:var(--gr-bg);}
+.dwn{border-color:var(--yl);}.dwn .doc-ic{background:var(--yl-bg);}
+.dbd{border-color:var(--rd);}.dbd .doc-ic{background:var(--rd-bg);}
+
+/* ESTIBA */
+.egrid{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;margin-top:11px;}
+.ec{aspect-ratio:1;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:17px;border:2px solid transparent;transition:all .2s;cursor:pointer;}
+.ec:hover{transform:scale(1.1);}
+.ec.torta{background:#fff0e6;border-color:var(--or);}
+.ec.nrnj{background:var(--yl-bg);border-color:var(--yl);}
+.ec.vac{background:var(--s2);border-color:var(--border);border-style:dashed;}
+
+/* LIQ */
+.lr{display:flex;align-items:center;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--border);}
+.lr:last-child{border-bottom:none;}
+.ll{font-size:12px;color:var(--text2);}
+.lv{font-family:var(--fh);font-weight:700;font-size:13px;}
+
+/* SCHEMA */
+.stbl{background:#0d0d0d;border-radius:12px;padding:18px;margin-bottom:13px;border:1px solid #1e1e1e;}
+.sn{font-family:var(--fh);font-size:13px;font-weight:800;color:var(--or);margin-bottom:11px;display:flex;align-items:center;gap:7px;}
+.sf{display:flex;align-items:center;gap:9px;padding:5px 0;border-bottom:1px solid #181818;font-size:11px;}
+.sf:last-child{border-bottom:none;}
+.sf-n{color:#ddd;font-family:var(--fm);width:155px;flex-shrink:0;}
+.sf-t{color:var(--or);font-family:var(--fm);width:115px;flex-shrink:0;}
+.sf-d{color:#444;}
+.spk{color:var(--yl);font-size:9px;font-weight:700;background:#1a1200;padding:1px 5px;border-radius:3px;margin-right:3px;}
+.sfk{color:var(--bl);font-size:9px;font-weight:700;background:#00101a;padding:1px 5px;border-radius:3px;margin-right:3px;}
+
+/* ALGO */
+.as{display:flex;gap:13px;margin-bottom:15px;align-items:flex-start;}
+.an{width:30px;height:30px;background:var(--or);color:#fff;border-radius:7px;display:flex;align-items:center;justify-content:center;font-family:var(--fh);font-weight:800;font-size:12px;flex-shrink:0;}
+.ac .at{font-family:var(--fh);font-weight:700;font-size:13px;margin-bottom:3px;}
+.ac .ad{font-size:12px;color:var(--text2);line-height:1.6;}
+.cl{background:var(--s2);border-radius:6px;padding:5px 9px;font-family:var(--fm);font-size:11px;color:var(--or);margin-top:5px;border-left:3px solid var(--or);}
+
+/* TOAST */
+.toast{position:fixed;bottom:22px;right:22px;background:var(--dark);color:#fff;border-left:4px solid var(--gr);padding:13px 18px;font-size:12px;border-radius:12px;z-index:9999;transform:translateX(140%);transition:transform .3s;font-family:var(--fh);font-weight:600;box-shadow:0 8px 32px rgba(0,0,0,.25);max-width:310px;}
+.toast.on{transform:translateX(0);}
+.toast.err{border-left-color:var(--rd);}
+.toast.wrn{border-left-color:var(--yl);}
+
+/* UTILS */
+.mt14{margin-top:14px;}.mt20{margin-top:20px;}.mt24{margin-top:24px;}
+.flex{display:flex;}.gc10{gap:10px;}.gc14{gap:14px;}.aic{align-items:center;}
+::-webkit-scrollbar{width:4px;}
+::-webkit-scrollbar-track{background:var(--s2);}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="s-login" class="scr on">
+  <div class="lbox">
+    <div class="l-logo">
+      <span class="l-logo-icon">🍊</span>
+      <div class="l-logo-name">Neo Pisk Food</div>
+      <div class="l-logo-sub">Red Logística V2.0</div>
+    </div>
+    <div class="rtabs">
+      <div class="rtab on" onclick="selRol('admin',this)"><span class="rtab-ic">🛡️</span>Admin</div>
+      <div class="rtab" onclick="selRol('conductor',this)"><span class="rtab-ic">🚗</span>Conductor</div>
+      <div class="rtab" onclick="selRol('cliente',this)"><span class="rtab-ic">🛒</span>Cliente</div>
+    </div>
+    <div class="ff"><label>Usuario</label><input type="text" id="lu" placeholder="ernesto@neopisk.com"></div>
+    <div class="ff"><label>Contraseña</label><input type="password" id="lp" placeholder="••••••••"></div>
+    <button class="btn-login" onclick="doLogin()">Ingresar al Sistema →</button>
+    <div class="demo-hint">
+      Demo rápido:<br>
+      <strong>admin</strong> · <strong>conductor</strong> · <strong>cliente</strong><br>
+      (cualquier usuario, contraseña: <strong>123</strong>)
+    </div>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="s-app" class="scr">
+  <!-- SIDEBAR -->
+  <aside class="sb">
+    <div class="sb-logo">
+      <div class="sb-logo-row">
+        <span class="sb-ic">🍊</span>
+        <div><div class="sb-name">Neo Pisk</div><div class="sb-ver">V2.0 · Logística</div></div>
+      </div>
+    </div>
+    <nav class="sb-nav" id="snav"></nav>
+    <div class="sb-ft">
+      <div class="u-pill">
+        <div class="u-av" id="uav">👤</div>
+        <div><div class="u-nm" id="unm">—</div><div class="u-rl" id="url">—</div></div>
+        <button class="btn-out" onclick="doOut()">Salir</button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <div class="app-wrap">
+    <div class="topbar">
+      <div class="tb-ttl" id="tbttl">Dashboard</div>
+      <div class="tb-r">
+        <span class="pill p-gr" id="tb-st">● Sistema OK</span>
+        <span class="pill p-mu" id="tbclk"></span>
+      </div>
+    </div>
+    <div class="pg-content" id="pgc"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ─── ESTADO ────────────────────────────────────────────
+let ROL = 'admin', USR = null, _spd = false, _cnt = 3;
+
+const USERS = {
+  admin:     { name:'Ernesto Piskulich', rol:'admin',     av:'🛡️', lbl:'Administrador' },
+  conductor: { name:'Carlos Huanca',     rol:'conductor',  av:'🚗', lbl:'Conductor' },
+  cliente:   { name:'Rosa Mamani',       rol:'cliente',    av:'🛒', lbl:'Cliente VIP' },
+};
+
+const CONDUCTORES = [
+  { id:'C001', nm:'Carlos Huanca',  pl:'ABC-123', st:'En ruta',    doc:'OK',      vel:48, rt:'SJL→San Borja' },
+  { id:'C002', nm:'Pedro Quispe',   pl:'DEF-456', st:'Disponible', doc:'OK',      vel:0,  rt:'—' },
+  { id:'C003', nm:'Luis Mamani',    pl:'GHI-789', st:'En ruta',    doc:'Vencido', vel:67, rt:'SJL→Surco' },
+  { id:'C004', nm:'Ana Flores',     pl:'JKL-012', st:'Entregando', doc:'OK',      vel:12, rt:'SJL→Miraflores' },
+];
+
+const PEDIDOS = [
+  { id:'P001', cli:'Rosa Mamani',   prod:'Naranja 10kg',  zona:'San Borja', st:'Listo',    kg:'10' },
+  { id:'P002', cli:'María García',  prod:'Palta Hass',    zona:'San Borja', st:'Listo',    kg:'8' },
+  { id:'P003', cli:'Luis Torres',   prod:'Naranja 10kg',  zona:'Surco',     st:'Listo',    kg:'10' },
+  { id:'P004', cli:'Carmen Ríos',   prod:'Salchicha 2kg', zona:'San Borja', st:'Listo',    kg:'2' },
+  { id:'P005', cli:'Jorge Castro',  prod:'Naranja 10kg',  zona:'San Borja', st:'Listo',    kg:'10' },
+  { id:'P006', cli:'Sofía Vera',    prod:'Mango caja',    zona:'Surco',     st:'En ruta',  kg:'5' },
+  { id:'P007', cli:'Patricia N.',   prod:'Naranja 10kg',  zona:'San Borja', st:'Entregado',kg:'10' },
+];
+
+const RUTAS = [
+  { id:'R001', dst:'San Borja', pago:50, kg:45, ped:10, ok:true },
+  { id:'R002', dst:'Surco',     pago:55, kg:38, ped:10, ok:true },
+  { id:'R003', dst:'Miraflores',pago:60, kg:50, ped:8,  ok:false },
+];
+
+// ─── LOGIN ────────────────────────────────────────────
+function selRol(r, el) {
+  ROL = r;
+  document.querySelectorAll('.rtab').forEach(t => t.classList.remove('on'));
+  el.classList.add('on');
+  const h = { admin:'ernesto@neopisk.com', conductor:'carlos@neopisk.com', cliente:'rosa@gmail.com' };
+  document.getElementById('lu').placeholder = h[r];
+}
+
+function doLogin() {
+  const p = document.getElementById('lp').value.trim();
+  if (p !== '123') { toast('Contraseña incorrecta ✗', 'err'); return; }
+  USR = USERS[ROL];
+  document.getElementById('uav').textContent = USR.av;
+  document.getElementById('unm').textContent = USR.name;
+  document.getElementById('url').textContent = USR.lbl;
+  document.getElementById('s-login').classList.remove('on');
+  document.getElementById('s-app').classList.add('on');
+  buildNav();
+  setInterval(() => {
+    document.getElementById('tbclk').textContent =
+      new Date().toLocaleTimeString('es-PE',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+  }, 1000);
+  toast('Bienvenido, ' + USR.name + ' 👋');
+}
+
+function doOut() {
+  clearInterval(window._spdInt);
+  document.getElementById('s-app').classList.remove('on');
+  document.getElementById('s-login').classList.add('on');
+  document.getElementById('lp').value = '';
+  toast('Sesión cerrada');
+}
+
+// ─── NAV ────────────────────────────────────────────
+const NAVS = {
+  admin: [
+    { sec:'Operaciones' },
+    { id:'dash',   ic:'📊', lb:'Dashboard' },
+    { id:'mapa',   ic:'🗺️',  lb:'Mapa en Vivo', bdg:'3' },
+    { id:'conds',  ic:'🚗', lb:'Conductores' },
+    { id:'bunker', ic:'📦', lb:'Búnker · Pedidos' },
+    { sec:'Gestión' },
+    { id:'liq',    ic:'💰', lb:'Liquidación' },
+    { id:'schema', ic:'🗄️', lb:'Base de Datos' },
+    { id:'algo',   ic:'⚙️', lb:'Algoritmo' },
+  ],
+  conductor: [
+    { sec:'Mi Trabajo' },
+    { id:'mkt',    ic:'🛣️', lb:'Marketplace Rutas' },
+    { id:'miruta', ic:'📍', lb:'Mi Ruta Activa' },
+    { id:'docs',   ic:'📋', lb:'Mis Documentos' },
+    { id:'estiba', ic:'📦', lb:'Estiba Digital' },
+    { sec:'Mi Cuenta' },
+    { id:'mpagos', ic:'💵', lb:'Mis Pagos' },
+  ],
+  cliente: [
+    { sec:'Mis Pedidos' },
+    { id:'mpeds',  ic:'🛒', lb:'Mis Pedidos' },
+    { id:'track',  ic:'📍', lb:'Tracking' },
+    { sec:'Mi Cuenta' },
+    { id:'ahorro', ic:'💰', lb:'Mi Ahorro' },
+    { id:'tokens', ic:'🪙', lb:'Tokens Pisk' },
+  ],
+};
+
+const TITLES = {
+  dash:'Dashboard General', mapa:'Mapa en Vivo · SinoTrack', conds:'Conductores',
+  bunker:'Búnker · Pedidos Acumulados', liq:'Liquidación Automática',
+  schema:'Modelo de Base de Datos', algo:'Algoritmo de Asignación',
+  mkt:'Marketplace de Rutas', miruta:'Mi Ruta Activa',
+  docs:'Mis Documentos', estiba:'Estiba Digital', mpagos:'Mis Pagos',
+  mpeds:'Mis Pedidos', track:'Tracking de Envío',
+  ahorro:'Mi Ahorro', tokens:'Tokens Pisk',
+};
+
+function buildNav() {
+  const nav = document.getElementById('snav');
+  nav.innerHTML = '';
+  NAVS[ROL].forEach((item, i) => {
+    if (item.sec) {
+      nav.innerHTML += `<div class="sb-sec">${item.sec}</div>`;
+    } else {
+      nav.innerHTML += `<div class="sb-i" data-v="${item.id}" onclick="sv('${item.id}',this)">
+        <span class="sb-ic2">${item.ic}</span>${item.lb}
+        ${item.bdg ? `<span class="sb-bdg">${item.bdg}</span>` : ''}
+      </div>`;
+    }
+  });
+  const first = NAVS[ROL].find(x => x.id);
+  if (first) {
+    const el = nav.querySelector(`[data-v="${first.id}"]`);
+    sv(first.id, el);
+  }
+}
+
+function sv(id, el) {
+  document.querySelectorAll('.sb-i').forEach(x => x.classList.remove('on'));
+  if (el) el.classList.add('on');
+  document.getElementById('tbttl').textContent = TITLES[id] || id;
+  const V = {
+    dash:vDash, mapa:vMapa, conds:vConds, bunker:vBunker,
+    liq:vLiq, schema:vSchema, algo:vAlgo,
+    mkt:vMkt, miruta:vMiRuta, docs:vDocs, estiba:vEstiba, mpagos:vMpagos,
+    mpeds:vMpeds, track:vTrack, ahorro:vAhorro, tokens:vTokens,
+  };
+  document.getElementById('pgc').innerHTML = (V[id] ? V[id]() : '<div style="padding:40px;text-align:center;color:var(--muted)">Vista en desarrollo</div>');
+}
+
+// ─── VIEWS ADMIN ─────────────────────────────────────
+function vDash() {
+  return `
+<div class="krow k4">
+  <div class="kpi cor"><div class="kb"></div><div class="ki">🚗</div><div class="kl">Conductores Activos</div><div class="kv">3</div><div class="ks">de 4 registrados</div></div>
+  <div class="kpi cgr"><div class="kb"></div><div class="ki">📦</div><div class="kl">Pedidos en Búnker</div><div class="kv">7</div><div class="ks">2 rutas casi listas</div></div>
+  <div class="kpi cbl"><div class="kb"></div><div class="ki">💰</div><div class="kl">Ganancia Neo Pisk</div><div class="kv">S/ 450</div><div class="ks">hoy · 3 rutas</div></div>
+  <div class="kpi crd"><div class="kb"></div><div class="ki">⚠️</div><div class="kl">Alertas Activas</div><div class="kv">2</div><div class="ks">velocidad + docs</div></div>
+</div>
+<div class="g2">
+  <div>
+    <div class="card">
+      <div class="ch"><div class="ct">🚨 Alertas en Tiempo Real</div><span class="pill p-rd">2 activas</span></div>
+      <div class="cb">
+        <div class="s-alert" style="margin-bottom:10px">
+          <div class="sa-ic">🚨</div>
+          <div><div class="sa-ttl">Luis Mamani · GHI-789 · 67 km/h</div><div class="sa-body">Ruta SJL→Surco · Riesgo fotomulta · Hace 2 min</div></div>
+        </div>
+        <div class="s-alert" style="border-color:var(--yl);background:var(--yl-bg)">
+          <div class="sa-ic">📋</div>
+          <div><div class="sa-ttl" style="color:var(--yl)">Luis Mamani · Docs vencidos</div><div class="sa-body" style="color:var(--yl)">ATU vencida 01/02/2025 · Bloquear nueva ruta</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ch"><div class="ct">📊 Liquidaciones de Hoy</div></div>
+      <table>
+        <thead><tr><th>Conductor</th><th>Ruta</th><th>S/ Conductor</th><th>S/ Neo Pisk</th><th>Estado</th></tr></thead>
+        <tbody>
+          <tr><td class="bo">Carlos Huanca</td><td>SJL→San Borja</td><td style="color:var(--gr);font-family:var(--fh);font-weight:700">S/ 50</td><td style="color:var(--or);font-family:var(--fh);font-weight:700">S/ 150</td><td><span class="chip cgr2">Acreditado</span></td></tr>
+          <tr><td class="bo">Ana Flores</td><td>SJL→Miraflores</td><td style="color:var(--gr);font-family:var(--fh);font-weight:700">S/ 60</td><td style="color:var(--or);font-family:var(--fh);font-weight:700">S/ 150</td><td><span class="chip cyl2">En proceso</span></td></tr>
+          <tr><td class="bo">Pedro Quispe</td><td>SJL→Surco</td><td style="color:var(--muted)">S/ 55</td><td style="color:var(--muted)">S/ 150</td><td><span class="chip cmu">Pendiente</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div>
+    <div class="card">
+      <div class="ch"><div class="ct">🗺️ Mapa Simplificado</div><span class="pill p-or">3 activos</span></div>
+      <div class="cb" style="padding:12px">
+        <div class="mapbox">
+          <div class="map-center"><div style="font-size:44px">🗺️</div><div>Lima Metropolitana</div><div style="font-size:11px">SJL ↔ Distritos residenciales</div></div>
+          <div class="map-car" id="mc1" style="left:22%;top:32%">🚗</div>
+          <div class="map-car" id="mc2" style="left:58%;top:58%">🚙</div>
+          <div class="map-car" id="mc3" style="left:72%;top:36%">🔴</div>
+          <div class="map-pin" style="left:9%;top:18%;font-size:22px">🏭</div>
+          <div class="map-leg">
+            <div>🚗 Carlos · 48 km/h ✓</div>
+            <div>🚙 Ana · 12 km/h ✓</div>
+            <div style="color:var(--rd)">🔴 Luis · 67 km/h ⚠️</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ch"><div class="ct">⚡ Lógica 10×50</div></div>
+      <div class="cb">
+        <div style="margin-bottom:12px">
+          <div style="font-size:11px;color:var(--muted);margin-bottom:5px">SJL → San Borja</div>
+          <div class="ptrack"><div class="pbar" style="width:70%;background:var(--or)"></div></div>
+          <div class="plbl">7/10 pedidos · S/ 350 · <strong style="color:var(--or)">Activando ruta...</strong></div>
+        </div>
+        <div>
+          <div style="font-size:11px;color:var(--muted);margin-bottom:5px">SJL → Surco</div>
+          <div class="ptrack"><div class="pbar" style="width:100%;background:var(--gr)"></div></div>
+          <div class="plbl">10/10 pedidos · S/ 550 · <strong style="color:var(--gr)">¡Ruta activa!</strong></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>`;
+}
+
+function vMapa() {
+  return `
+<div class="krow k3">
+  <div class="kpi cgr"><div class="kb"></div><div class="ki">🚗</div><div class="kl">En Ruta</div><div class="kv">2</div></div>
+  <div class="kpi cor"><div class="kb"></div><div class="ki">📦</div><div class="kl">Entregando</div><div class="kv">1</div></div>
+  <div class="kpi crd"><div class="kb"></div><div class="ki">⚠️</div><div class="kl">Alerta Vel.</div><div class="kv">1</div></div>
+</div>
+<div class="g2">
+  <div>
+    <div class="card">
+      <div class="ch"><div class="ct">🗺️ Mapa en Vivo · SinoTrack</div><span class="pill p-gr">Sincronizado</span></div>
+      <div class="cb" style="padding:12px">
+        <div class="mapbox" style="height:380px">
+          <div class="map-center" style="opacity:.4"><div style="font-size:52px">🗺️</div><div style="font-size:14px;font-weight:600">Lima Metropolitana</div><div style="font-size:11px">Búnker SJL ↔ Distritos</div></div>
+          <div class="map-car" style="left:18%;top:25%;animation:none">🚗</div>
+          <div class="map-car" style="left:62%;top:62%">🚙</div>
+          <div class="map-car" style="left:74%;top:38%">🔴</div>
+          <div class="map-pin" style="left:7%;top:14%;font-size:24px">🏭</div>
+          <div class="map-leg" style="right:12px;left:auto">
+            <div style="font-family:var(--fh);font-weight:700;margin-bottom:5px">Leyenda</div>
+            <div style="margin-bottom:2px">🏭 Búnker SJL</div><div>🚗 En ruta</div><div style="color:var(--rd)">🔴 Alerta vel.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div class="card">
+      <div class="ch"><div class="ct">📡 Telemetría GPS</div></div>
+      <div class="cb">
+        ${CONDUCTORES.filter(c=>c.st!=='Disponible').map(c=>`
+        <div style="padding:11px;background:${c.vel>60?'var(--rd-bg)':'var(--s2)'};border-radius:9px;margin-bottom:9px;border:1px solid ${c.vel>60?'var(--rd)':'var(--border)'}">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+            <div style="font-family:var(--fh);font-weight:700">${c.nm}</div>
+            <span class="chip ${c.vel>60?'crd2':c.vel>40?'cor2':'cgr2'}">${c.vel} km/h</span>
+          </div>
+          <div style="font-size:11px;color:var(--muted)">Placa: ${c.pl} · ${c.rt}</div>
+          <div class="ptrack" style="margin-top:7px"><div class="pbar" style="width:${c.vel}%;background:${c.vel>60?'var(--rd)':c.vel>40?'var(--or)':'var(--gr)'}"></div></div>
+          ${c.vel>60?`<div style="font-size:11px;color:var(--rd);font-weight:600;margin-top:4px">🚨 ALERTA: Riesgo de fotomulta</div>`:`<div style="font-size:11px;color:var(--gr);margin-top:4px">✅ Velocidad segura</div>`}
+        </div>`).join('')}
+      </div>
+    </div>
+    <div class="card">
+      <div class="ch"><div class="ct">🔗 Anti-fraude SinoTrack</div><span class="pill p-gr">Activo</span></div>
+      <div class="cb">
+        <div style="font-size:12px;color:var(--text2);margin-bottom:11px;line-height:1.6">Cruza GPS del celular con ID del dispositivo SinoTrack del vehículo.</div>
+        ${CONDUCTORES.map(c=>`
+        <div style="display:flex;align-items:center;gap:9px;padding:7px 0;border-bottom:1px solid var(--border)">
+          <span>🚗</span>
+          <div style="flex:1"><div style="font-size:12px;font-weight:600">${c.nm}</div><div style="font-size:10px;color:var(--muted)">${c.pl}</div></div>
+          <span class="chip cgr2" style="font-size:9px">✓ GPS Match</span>
+        </div>`).join('')}
+      </div>
+    </div>
+  </div>
+</div>`;
+}
+
+function vConds() {
+  return `
+<div class="card">
+  <div class="ch"><div class="ct">🚗 Red de Conductores Neo Pisk</div><button class="btn bor bsm" onclick="toast('Invitación enviada por WhatsApp')">+ Agregar</button></div>
+  <table>
+    <thead><tr><th>Conductor</th><th>Placa</th><th>Estado</th><th>Docs</th><th>Velocidad</th><th>Ruta</th><th>Acción</th></tr></thead>
+    <tbody>
+      ${CONDUCTORES.map(c=>`
+      <tr>
+        <td class="bo">${c.nm}</td>
+        <td style="font-family:var(--fh);font-weight:700">${c.pl}</td>
+        <td><span class="chip ${c.st==='En ruta'?'cbl2':c.st==='Disponible'?'cgr2':'cor2'}">${c.st}</span></td>
+        <td><span class="chip ${c.doc==='OK'?'cgr2':'crd2'}">${c.doc==='OK'?'✓ Vigente':'✗ Vencido'}</span></td>
+        <td><span class="chip ${c.vel>60?'crd2':c.vel>0?'cor2':'cmu'}">${c.vel>0?c.vel+' km/h':'Estático'}</span></td>
+        <td style="color:var(--muted);font-size:11px">${c.rt}</td>
+        <td>
+          <button class="btn bou bsm" onclick="toast('Perfil: ${c.nm}')">Ver</button>
+          ${c.doc!=='OK'?`<button class="btn brd bsm" style="margin-left:5px" onclick="toast('${c.nm} bloqueado','wrn')">Bloquear</button>`:''}
+        </td>
+      </tr>`).join('')}
+    </tbody>
+  </table>
+</div>
+<div class="card">
+  <div class="ch"><div class="ct">📋 Flujo de Aprobación</div></div>
+  <div class="cb">
+    <div class="g3">
+      ${[['1️⃣','Registro','Conductor llena datos y sube ATU, SOAT, Brevete.','var(--s2)','var(--border)'],
+         ['2️⃣','Validación','Ernesto revisa y aprueba en este panel de admin.','var(--or-bg)','var(--or)'],
+         ['3️⃣','Activado','Ve rutas en Marketplace y puede tomar pedidos.','var(--gr-bg)','var(--gr)'],
+      ].map(s=>`
+      <div style="text-align:center;padding:18px;background:${s[3]};border-radius:11px;border:2px solid ${s[4]}">
+        <div style="font-size:30px;margin-bottom:8px">${s[0]}</div>
+        <div style="font-family:var(--fh);font-weight:700;margin-bottom:4px">${s[1]}</div>
+        <div style="font-size:11px;color:var(--muted)">${s[2]}</div>
+      </div>`).join('')}
+    </div>
+  </div>
+</div>`;
+}
+
+function vBunker() {
+  const l = PEDIDOS.filter(p=>p.st==='Listo').length;
+  return `
+<div class="krow k3">
+  <div class="kpi cor"><div class="kb"></div><div class="ki">📦</div><div class="kl">En Búnker</div><div class="kv">${l}</div><div class="ks">listos para despacho</div></div>
+  <div class="kpi cbl"><div class="kb"></div><div class="ki">🚗</div><div class="kl">En Ruta</div><div class="kv">1</div></div>
+  <div class="kpi cgr"><div class="kb"></div><div class="ki">✅</div><div class="kl">Entregados Hoy</div><div class="kv">1</div></div>
+</div>
+<div class="card">
+  <div class="ch">
+    <div class="ct">📦 Búnker SJL · Pedidos Acumulados</div>
+    <div class="flex aic gc10">
+      <span class="pill p-or">${l}/10 San Borja</span>
+      <button class="btn bor bsm" onclick="toast('Ruta SJL→San Borja activada en Marketplace ✅')">Activar Ruta</button>
+    </div>
+  </div>
+  <table>
+    <thead><tr><th>ID</th><th>Cliente</th><th>Producto</th><th>Zona</th><th>Peso</th><th>Estado</th></tr></thead>
+    <tbody>
+      ${PEDIDOS.map(p=>`
+      <tr>
+        <td style="font-family:var(--fh);color:var(--or)">${p.id}</td>
+        <td class="bo">${p.cli}</td>
+        <td>${p.prod}</td>
+        <td><span class="chip cbl2">${p.zona}</span></td>
+        <td style="color:var(--muted)">${p.kg} kg</td>
+        <td><span class="chip ${p.st==='Listo'?'cgr2':p.st==='En ruta'?'cbl2':'cor2'}">${p.st}</span></td>
+      </tr>`).join('')}
+    </tbody>
+  </table>
+</div>`;
+}
+
+function vLiq() {
+  return `
+<div class="g2">
+  <div>
+    <div class="card">
+      <div class="ch"><div class="ct">💰 Liquidación Automática · Lógica 10×50</div></div>
+      <div class="cb">
+        <div style="background:var(--s2);border-radius:9px;padding:14px;margin-bottom:15px;border:1px solid var(--border)">
+          <div style="font-family:var(--fh);font-weight:700;margin-bottom:8px">Por cada ruta completada (10 entregas):</div>
+          <div class="lr"><div class="ll">🚗 Pago al conductor</div><div class="lv" style="color:var(--gr)">S/ 50</div></div>
+          <div class="lr"><div class="ll">🍊 Ganancia Neo Pisk</div><div class="lv" style="color:var(--or)">S/ 150</div></div>
+          <div class="lr"><div class="ll">📦 Total facturado</div><div class="lv">S/ 200</div></div>
+        </div>
+        <div style="font-family:var(--fh);font-weight:700;margin-bottom:10px">Hoy — 3 rutas completadas</div>
+        <div class="lr"><div class="ll">Carlos Huanca · SJL→San Borja</div><div class="lv" style="color:var(--gr)">S/ 50 ✓</div></div>
+        <div class="lr"><div class="ll">Pedro Quispe · SJL→Surco</div><div class="lv" style="color:var(--yl)">S/ 55 ⏳</div></div>
+        <div class="lr"><div class="ll">Ana Flores · SJL→Miraflores</div><div class="lv" style="color:var(--yl)">S/ 60 ⏳</div></div>
+        <div style="margin-top:14px;padding:13px;background:var(--or-bg);border-radius:9px;border:2px solid var(--or)">
+          <div class="lr" style="border:none;padding:0"><div class="ll" style="font-size:13px;font-weight:700;color:var(--or)">💰 Total Neo Pisk hoy</div><div class="lv" style="color:var(--or);font-size:22px">S/ 450</div></div>
+        </div>
+        <button class="btn bor bfu" style="margin-top:13px" onclick="toast('Liquidaciones acreditadas vía Yape/BCP ✅')">Acreditar Todo ✓</button>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div class="card">
+      <div class="ch"><div class="ct">📊 Resumen Semanal</div></div>
+      <div class="cb">
+        ${['Lun','Mar','Mié','Jue','Vie','Sáb','Dom'].map((d,i)=>{const v=[150,300,450,200,150,0,0][i];return`
+        <div class="lr" style="${i>=5?'opacity:.35':''}">
+          <div class="ll">${d}</div>
+          <div style="flex:1;margin:0 12px"><div class="ptrack"><div class="pbar" style="width:${v/5}%;background:var(--or)"></div></div></div>
+          <div class="lv" style="color:var(--or);font-size:12px">S/ ${v}</div>
+        </div>`}).join('')}
+        <div style="margin-top:14px;padding:11px;background:var(--s2);border-radius:8px;text-align:center">
+          <div style="font-size:10px;color:var(--muted);margin-bottom:3px">Total semana</div>
+          <div style="font-family:var(--fh);font-size:26px;font-weight:800;color:var(--or)">S/ 1,250</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>`;
+}
+
+function vSchema() {
+  const tbls = [
+    { nm:'Usuarios', ic:'👤', f:[
+      ['id','UUID','PK · Auto-generado'],
+      ['nombre','VARCHAR(100)','Nombre completo'],
+      ['email','VARCHAR(150)','Único · Index'],
+      ['password_hash','VARCHAR(255)','bcrypt rounds=12'],
+      ['rol','ENUM','admin | conductor | cliente'],
+      ['activo','BOOLEAN','false hasta aprobación admin'],
+      ['created_at','TIMESTAMP','Auto'],
+    ]},
+    { nm:'Vehiculos', ic:'🚗', f:[
+      ['id','UUID','PK'],
+      ['conductor_id','UUID','FK → Usuarios.id'],
+      ['placa','VARCHAR(8)','Único'],
+      ['marca','VARCHAR(50)','Nissan Sentra/Similar'],
+      ['soat_venc','DATE','Alerta 30 días antes'],
+      ['atu_venc','DATE','Alerta 30 días antes'],
+      ['sinotrack_id','VARCHAR(50)','ID del GPS físico'],
+    ]},
+    { nm:'Rutas', ic:'🛣️', f:[
+      ['id','UUID','PK'],
+      ['origen','VARCHAR(100)','Ej: Búnker SJL'],
+      ['destino','VARCHAR(100)','Ej: San Borja'],
+      ['pago_conductor','DECIMAL(8,2)','S/ 50 por ruta'],
+      ['ganancia_np','DECIMAL(8,2)','S/ 150 automático'],
+      ['conductor_id','UUID','FK → Usuarios · NULL si libre'],
+      ['estado','ENUM','pendiente|activa|en_ruta|completada'],
+      ['activada_at','TIMESTAMP','Cuando llega a 10 pedidos'],
+    ]},
+    { nm:'Transacciones', ic:'💰', f:[
+      ['id','UUID','PK'],
+      ['ruta_id','UUID','FK → Rutas.id'],
+      ['conductor_id','UUID','FK → Usuarios.id'],
+      ['monto_conductor','DECIMAL(8,2)','S/ 50'],
+      ['monto_neopisk','DECIMAL(8,2)','S/ 150'],
+      ['metodo','ENUM','yape | plin | bcp | efectivo'],
+      ['estado','ENUM','pendiente | acreditado | fallido'],
+      ['acreditado_at','TIMESTAMP','NULL hasta pago'],
+    ]},
+  ];
+  return `<div class="g2">${tbls.map(t=>`
+  <div class="stbl">
+    <div class="sn">${t.ic} ${t.nm}</div>
+    ${t.f.map((f,i)=>`
+    <div class="sf">
+      <span class="sf-n">${i===0?'<span class="spk">PK</span>':f[0].includes('_id')?'<span class="sfk">FK</span>':''}${f[0]}</span>
+      <span class="sf-t">${f[1]}</span>
+      <span class="sf-d">${f[2]}</span>
+    </div>`).join('')}
+  </div>`).join('')}</div>`;
+}
+
+function vAlgo() {
+  const steps = [
+    ['Acumulación 10×50','El sistema monitorea el Búnker. Cuando una zona llega a 10 pedidos y mínimo S/ 500 facturado, dispara el evento de activación.',
+     'IF pedidos_zona >= 10 AND monto_zona >= 500 → activar_ruta()'],
+    ['Filtro Elegibilidad','Consulta Usuarios+Vehiculos. Pasan solo conductores: activo=true, docs vigentes, sin ruta activa ahora.',
+     'SELECT u.* FROM usuarios u JOIN vehiculos v ON ... WHERE soat_venc>NOW() AND atu_venc>NOW()'],
+    ['Score de Prioridad','Puntaje: +20 si está cerca del Búnker GPS, +15 por ruta OK sin incidentes, -30 por alertas de velocidad acumuladas.',
+     'score = dist_score + historial_score - penalizaciones'],
+    ['Notificación & Match','Conductor con mayor score recibe push+WhatsApp. Tiene 3 minutos para aceptar. Si no, baja al siguiente.',
+     'notify(sort_by_score(conductores)[0]) → timeout 3min → retry'],
+    ['Anti-fraude SinoTrack','Al aceptar, el GPS del vehículo debe encenderse en radio 500m del Búnker en máx 15 min.',
+     'IF sinotrack.pos NOT IN bunker_radius(500m) → cancelar_ruta()'],
+    ['Liquidación Auto','Al marcar punto 10 como Entregado, el sistema crea la transacción automáticamente.',
+     'crear_tx(ruta_id, conductor_id, monto=50, neopisk=150, estado=acreditado)'],
+  ];
+  return `
+<div class="g2">
+  <div>
+    <div class="card">
+      <div class="ch"><div class="ct">⚙️ Algoritmo de Asignación de Rutas</div></div>
+      <div class="cb">
+        ${steps.map((s,i)=>`
+        <div class="as">
+          <div class="an">${i+1}</div>
+          <div class="ac">
+            <div class="at">${s[0]}</div>
+            <div class="ad">${s[1]}</div>
+            <div class="cl">${s[2]}</div>
+          </div>
+        </div>`).join('')}
+      </div>
+    </div>
+  </div>
+  <div>
+    <div class="card">
+      <div class="ch"><div class="ct">🧮 Simulador de Match</div></div>
+      <div class="cb">
+        <div style="font-size:12px;color:var(--text2);margin-bottom:14px">Ruta activa: <strong>SJL → San Borja · S/ 50</strong></div>
+        ${[{nm:'Carlos Huanca',sc:92,d:'0.8km del búnker',r:12,a:0},
+           {nm:'Pedro Quispe', sc:78,d:'2.1km del búnker',r:8, a:0},
+           {nm:'Ana Flores',   sc:65,d:'3.5km del búnker',r:5, a:1},
+        ].map((c,i)=>`
+        <div style="padding:13px;background:${i===0?'var(--gr-bg)':'var(--s2)'};border-radius:9px;border:2px solid ${i===0?'var(--gr)':'var(--border)'};margin-bottom:9px">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+            <div style="font-family:var(--fh);font-weight:700">${i===0?'🥇 ':''}${c.nm}</div>
+            <span class="chip ${i===0?'cgr2':'cmu'}">Score: ${c.sc}</span>
+          </div>
+          <div style="font-size:11px;color:var(--muted)">📍 ${c.d} · ${c.r} rutas OK · ${c.a} alertas</div>
+          ${i===0?`<div style="margin-top:7px;font-size:11px;color:var(--gr);font-weight:700">✓ ASIGNADO PRIMERO · 3 min para aceptar</div>`:''}
+        </div>`).join('')}
+      </div>
+    </div>
+    <div class="card">
+      <div class="ch"><div class="ct">🏗️ Stack Técnico</div></div>
+      <div class="cb">
+        ${[['Backend','Node.js + Express','API REST + WebSockets'],
+           ['Base de datos','PostgreSQL','Tablas según schema'],
+           ['Auth','JWT RS256','Tokens 24h + refresh'],
+           ['GPS','SinoTrack API','Polling cada 30 seg'],
+           ['Push','FCM Firebase','Alertas velocidad'],
+           ['WhatsApp','Karla Bot (actual)','Notificaciones'],
+           ['Pagos','Yape/BCP API','Liquidación auto'],
+        ].map(r=>`
+        <div style="display:flex;align-items:center;gap:9px;padding:7px 0;border-bottom:1px solid var(--border)">
+          <div style="font-size:11px;color:var(--muted);width:85px">${r[0]}</div>
+          <div style="font-family:var(--fh);font-weight:700;font-size:12px;flex:1">${r[1]}</div>
+          <div style="font-size:10px;color:var(--muted)">${r[2]}</div>
+        </div>`).join('')}
+      </div>
+    </div>
+  </div>
+</div>`;
+}
+
+// ─── VIEWS CONDUCTOR ─────────────────────────────────
+function vMkt() {
+  return `
+<div style="background:var(--s2);border:2px solid var(--border);border-radius:12px;padding:14px 18px;margin-bottom:18px;display:flex;align-items:center;gap:12px">
+  <span style="font-size:26px">🚗</span>
+  <div>
+    <div style="font-family:var(--fh);font-weight:700">Carlos Huanca · ABC-123</div>
+    <div style="font-size:11px;color:var(--muted)">ATU <span style="color:var(--gr)">✓</span> · SOAT <span style="color:var(--gr)">✓</span> · Brevete <span style="color:var(--gr)">✓</span></div>
+  </div>
+  <span class="chip cgr2" style="margin-left:auto">Habilitado para rutas</span>
+</div>
+<div style="font-family:var(--fh);font-size:14px;font-weight:700;margin-bottom:13px">Rutas Disponibles Ahora</div>
+${RUTAS.filter(r=>r.ped>=10||r.ped===8).map(r=>`
+<div class="rc ${r.ped<10||!r.ok?'blk':''}">
+  <div class="rc-head">
+    <div><div class="rc-ttl">📍 Búnker SJL → ${r.dst}</div><div style="font-size:10px;color:var(--muted);margin-top:2px">ID: ${r.id}</div></div>
+    <div class="rc-pay ${r.ped<10?'style="color:var(--muted)"':''}">S/ ${r.pago}</div>
+  </div>
+  <div class="rc-tags">
+    <div class="rc-tag">📦 ${r.ped} pedidos</div>
+    <div class="rc-tag">⚖️ ${r.kg} kg</div>
+    <div class="rc-tag">⏱️ ~45 min</div>
+    <div class="rc-tag">💵 Pago al completar</div>
+  </div>
+  ${r.ped<10?`<div class="ptrack"><div class="pbar" style="width:${r.ped*10}%;background:var(--yl)"></div></div><div class="plbl">${r.ped}/10 pedidos · Esperando completar...</div>`:''}
+  ${r.ped>=10&&r.ok?`<div style="display:flex;gap:9px;margin-top:4px"><button class="btn bor" onclick="tomarRuta('${r.id}','${r.dst}',${r.pago})">🤝 Tomar Esta Ruta</button><button class="btn bou" onclick="toast('Detalles de ${r.id}')">Ver detalles</button></div>`:''}
+</div>`).join('')}`;
+}
+
+function vMiRuta() {
+  return `
+<div id="spd-cnt"></div>
+<div class="g2">
+  <div>
+    <div class="card">
+      <div class="ch"><div class="ct">📍 Ruta Activa · SJL → San Borja</div><span class="pill p-or">En Curso</span></div>
+      <div class="cb">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;padding:13px;background:var(--or-bg);border-radius:9px;border:2px solid var(--or)">
+          <div><div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:2px">Pago al completar</div><div style="font-family:var(--fh);font-size:28px;font-weight:800;color:var(--or)">S/ 50</div></div>
+          <div style="text-align:right"><div style="font-size:10px;color:var(--muted)">Progreso</div><div style="font-family:var(--fh);font-size:22px;font-weight:800" id="pcnt">3/10</div></div>
+        </div>
+        <div class="ptrack" style="margin-bottom:6px"><div class="pbar" id="pbar" style="width:30%;background:var(--or)"></div></div>
+        <div class="plbl" id="plbl">3 de 10 entregas completadas</div>
+        <div style="margin-top:15px">
+          <div style="font-family:var(--fh);font-weight:700;margin-bottom:9px;font-size:12px;text-transform:uppercase;letter-spacing:1px">Puntos de Entrega</div>
+          ${PEDIDOS.slice(0,5).map((p,i)=>`
+          <div style="display:flex;align-items:center;gap:9px;padding:9px;background:${i<3?'var(--gr-bg)':'var(--s2)'};border-radius:8px;margin-bottom:5px;border:1px solid ${i<3?'var(--gr)':'var(--border)'}">
+            <span style="width:22px;height:22px;background:${i<3?'var(--gr)':'var(--border)'};border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:${i<3?'#fff':'var(--muted)'};flex-shrink:0">${i+1}</span>
+            <div style="flex:1"><div style="font-size:12px;font-weight:600">${p.cli}</div><div style="font-size:10px;color:var(--muted)">${p.prod} · ${p.zona}</div></div>
+            ${i<3?'<span class="chip cgr2">✓</span>':`<button class="btn bou bsm" onclick="marcarEnt(${i})">Marcar</button>`}
+          </div>`).join('')}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div class="card">
+      <div class="ch"><div class="ct">📡 Telemetría GPS</div></div>
+      <div class="cb" style="text-align:center">
+        <div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:2px;margin-bottom:8px">Velocidad Actual</div>
+        <div id="spd-dsp" style="font-family:var(--fh);font-size:60px;font-weight:800;color:var(--gr);line-height:1">42</div>
+        <div style="font-size:16px;color:var(--muted);margin-bottom:14px">km/h</div>
+        <div class="ptrack" style="height:9px;margin-bottom:10px">
+          <div id="spd-bar" class="pbar" style="width:42%;background:var(--gr)"></div>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin-bottom:16px">
+          <span>0</span><span style="color:var(--or)">60 límite</span><span>100</span>
+        </div>
+        <button class="btn bou bfu" id="simBtn" onclick="simSpd()">▶ Simular variación GPS</button>
+        <div style="margin-top:12px;font-size:11px;color:var(--muted);line-height:1.7">
+          Superar <strong>60 km/h</strong> notifica al admin y queda en historial.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>`;
+}
+
+function vDocs() {
+  const docs = [
+    { nm:'ATU', ic:'📋', v:'15/08/2025', ok:true },
+    { nm:'SOAT', ic:'🛡️', v:'01/06/2025', ok:true },
+    { nm:'Brevete A2', ic:'🪪', v:'20/03/2026', ok:true },
+    { nm:'CITV (Rev. Técnica)', ic:'🔧', v:'10/01/2025', ok:false },
+  ];
+  return `
+<div class="card">
+  <div class="ch"><div class="ct">📋 Estado de Documentos</div></div>
+  <div class="cb">
+    <div class="g2">
+      ${docs.map(d=>`
+      <div class="doc-c ${d.ok?'dok':'dbd'}">
+        <div class="doc-ic">${d.ic}</div>
+        <div style="flex:1"><div class="doc-nm">${d.nm}</div><div class="doc-exp">Vence: ${d.v}</div></div>
+        <div style="text-align:right">
+          <span class="chip ${d.ok?'cgr2':'crd2'}">${d.ok?'✓ Vigente':'✗ Vencido'}</span><br>
+          <button class="btn bou bsm" style="margin-top:6px" onclick="toast('Subir: ${d.nm}')">↑ Actualizar</button>
+        </div>
+      </div>`).join('')}
+    </div>
+    <div style="margin-top:14px;padding:13px;background:var(--rd-bg);border-radius:9px;border:2px solid var(--rd)">
+      <div style="font-family:var(--fh);font-weight:700;color:var(--rd);margin-bottom:3px">⚠️ CITV Vencida</div>
+      <div style="font-size:12px;color:var(--rd)">Botón "Tomar Ruta" bloqueado hasta renovar Revisión Técnica. Las rutas ya iniciadas continúan normalmente.</div>
+    </div>
+  </div>
+</div>`;
+}
+
+function vEstiba() {
+  const carga = [
+    {t:'torta',e:'🎂'},{t:'torta',e:'🎂'},{t:'torta',e:'🎂'},{t:'nrnj',e:'🍊'},{t:'nrnj',e:'🍊'},
+    {t:'torta',e:'🎂'},{t:'torta',e:'🎂'},{t:'nrnj',e:'🍊'},{t:'nrnj',e:'🍊'},{t:'torta',e:'🎂'},
+    {t:'torta',e:'🎂'},{t:'torta',e:'🎂'},{t:'nrnj',e:'🍊'},{t:'nrnj',e:'🍊'},{t:'torta',e:'🎂'},
+    {t:'vac',e:''},{t:'vac',e:''},{t:'vac',e:''},{t:'vac',e:''},{t:'vac',e:''},
+  ];
+  return `
+<div class="g2">
+  <div>
+    <div class="card">
+      <div class="ch"><div class="ct">📦 Hoja de Carga Optimizada</div><span class="pill p-or">100 tortas</span></div>
+      <div class="cb">
+        <div style="font-size:12px;color:var(--text2);margin-bottom:12px;padding:9px;background:var(--or-bg);border-radius:7px;border-left:3px solid var(--or)">
+          <strong>Regla:</strong> Naranjas (pesado) van al fondo. Tortas arriba, bien centradas. Máx. 2 capas.
+        </div>
+        <div style="font-family:var(--fh);font-weight:700;margin-bottom:7px;font-size:12px">Vista Maletero (5 columnas × 4 filas)</div>
+        <div class="egrid">
+          ${carga.map(c=>`<div class="ec ${c.t}">${c.e}</div>`).join('')}
+        </div>
+        <div style="display:flex;gap:11px;margin-top:12px;font-size:11px">
+          <div style="display:flex;align-items:center;gap:6px"><span class="ec torta" style="width:22px;height:22px;font-size:12px">🎂</span>Torta (arriba)</div>
+          <div style="display:flex;align-items:center;gap:6px"><span class="ec nrnj" style="width:22px;height:22px;font-size:12px">🍊</span>Naranja (abajo)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div class="card">
+      <div class="ch"><div class="ct">⚖️ Resumen de Carga</div></div>
+      <div class="cb">
+        <div class="lr"><div class="ll">🎂 Cajas tortas Willy</div><div class="lv">8 cajas</div></div>
+        <div class="lr"><div class="ll">🍊 Mallas naranja 10kg</div><div class="lv">4 mallas</div></div>
+        <div class="lr"><div class="ll">⚖️ Peso estimado</div><div class="lv">48 kg</div></div>
+        <div class="lr"><div class="ll">📐 Volumen estimado</div><div class="lv">0.4 m³</div></div>
+        <div class="lr"><div class="ll" style="color:var(--gr)">✅ Nissan Sentra</div><div class="lv" style="color:var(--gr)">Apto</div></div>
+        <div style="margin-top:13px;padding:11px;background:var(--yl-bg);border-radius:8px;border:1px solid var(--yl);font-size:12px">
+          ⚠️ Poner naranjas primero al fondo. Tortas encima bien centradas. No más de 2 capas.
+        </div>
+        <button class="btn bor bfu" style="margin-top:12px" onclick="toast('Hoja de carga enviada a tu WhatsApp 📱')">📱 Enviar a WhatsApp</button>
+      </div>
+    </div>
+  </div>
+</div>`;
+}
+
+function vMpagos() {
+  return `
+<div class="krow k3">
+  <div class="kpi cgr"><div class="kb"></div><div class="ki">💵</div><div class="kl">Este Mes</div><div class="kv">S/ 350</div></div>
+  <div class="kpi cor"><div class="kb"></div><div class="ki">🛣️</div><div class="kl">Rutas Completadas</div><div class="kv">7</div></div>
+  <div class="kpi cyl"><div class="kb"></div><div class="ki">⏳</div><div class="kl">Pendiente</div><div class="kv">S/ 50</div></div>
+</div>
+<div class="card">
+  <div class="ch"><div class="ct">💵 Historial de Pagos</div></div>
+  <table>
+    <thead><tr><th>Fecha</th><th>Ruta</th><th>Monto</th><th>Método</th><th>Estado</th></tr></thead>
+    <tbody>
+      ${[['04/03','SJL→San Borja','S/ 50','Yape','Acreditado'],
+         ['03/03','SJL→Surco','S/ 55','Yape','Acreditado'],
+         ['02/03','SJL→Miraflores','S/ 60','BCP','Acreditado'],
+         ['01/03','SJL→San Borja','S/ 50','Yape','Pendiente'],
+      ].map(r=>`<tr>
+        <td style="color:var(--muted)">${r[0]}</td>
+        <td class="bo">${r[1]}</td>
+        <td style="color:var(--gr);font-family:var(--fh);font-weight:700">${r[2]}</td>
+        <td>${r[3]}</td>
+        <td><span class="chip ${r[4]==='Acreditado'?'cgr2':'cyl2'}">${r[4]}</span></td>
+      </tr>`).join('')}
+    </tbody>
+  </table>
+</div>`;
+}
+
+// ─── VIEWS CLIENTE ────────────────────────────────────
+function vMpeds() {
+  return `
+<div class="card">
+  <div class="ch"><div class="ct">🛒 Mis Pedidos · Rosa Mamani</div><button class="btn bor bsm" onclick="toast('Nuevo pedido creado ✅')">+ Nuevo Pedido</button></div>
+  <table>
+    <thead><tr><th>Pedido</th><th>Producto</th><th>Fecha</th><th>Estado</th><th>Total</th></tr></thead>
+    <tbody>
+      ${[['P001','Naranja para Jugo 10kg','04/03/2025','Entregado','S/ 35'],
+         ['P008','Palta Hass 5kg','03/03/2025','En ruta','S/ 32'],
+         ['P015','Naranja 10kg + Mandarina','01/03/2025','Entregado','S/ 80'],
+      ].map(r=>`<tr>
+        <td style="color:var(--or);font-family:var(--fh);font-weight:700">${r[0]}</td>
+        <td class="bo">${r[1]}</td>
+        <td style="color:var(--muted)">${r[2]}</td>
+        <td><span class="chip ${r[3]==='Entregado'?'cgr2':'cbl2'}">${r[3]}</span></td>
+        <td style="color:var(--gr);font-family:var(--fh);font-weight:700">${r[4]}</td>
+      </tr>`).join('')}
+    </tbody>
+  </table>
+</div>`;
+}
+
+function vTrack() {
+  return `
+<div class="card">
+  <div class="ch"><div class="ct">📍 Tracking · Pedido P008</div><span class="pill p-bl">En Ruta</span></div>
+  <div class="cb">
+    <div class="g2" style="grid-template-columns:repeat(4,1fr);margin-bottom:18px">
+      ${[['✅','Confirmado','04/03 9:00am','cgr2','var(--gr-bg)','var(--gr)'],
+         ['✅','En Búnker','04/03 10:30am','cgr2','var(--gr-bg)','var(--gr)'],
+         ['🔵','En Ruta','04/03 11:15am','cbl2','var(--bl-bg)','var(--bl)'],
+         ['⏳','Entregado','Est. 12:00pm','cmu','var(--s2)','var(--border)'],
+      ].map(s=>`
+      <div style="text-align:center;padding:13px;background:${s[4]};border-radius:10px;border:2px solid ${s[5]}">
+        <div style="font-size:22px;margin-bottom:5px">${s[0]}</div>
+        <div style="font-family:var(--fh);font-weight:700;font-size:12px">${s[1]}</div>
+        <div style="font-size:10px;color:var(--muted)">${s[2]}</div>
+      </div>`).join('')}
+    </div>
+    <div style="padding:13px;background:var(--bl-bg);border-radius:9px;border:2px solid var(--bl)">
+      <div style="font-family:var(--fh);font-weight:700;margin-bottom:3px">🚗 Carlos Huanca está en camino</div>
+      <div style="font-size:12px;color:var(--text2)">Placa: ABC-123 · ETA: ~45 minutos · Velocidad: 48 km/h</div>
+    </div>
+  </div>
+</div>`;
+}
+
+function vAhorro() {
+  return `
+<div class="krow k3">
+  <div class="kpi cgr"><div class="kb"></div><div class="ki">💰</div><div class="kl">Ahorro Total</div><div class="kv">S/ 284</div><div class="ks">vs supermercado</div></div>
+  <div class="kpi cor"><div class="kb"></div><div class="ki">📦</div><div class="kl">Pedidos</div><div class="kv">8</div></div>
+  <div class="kpi cyl"><div class="kb"></div><div class="ki">%</div><div class="kl">Ahorro Promedio</div><div class="kv">43%</div></div>
+</div>
+<div class="card">
+  <div class="ch"><div class="ct">💰 Historial de Ahorro</div></div>
+  <table>
+    <thead><tr><th>Producto</th><th>Precio NP</th><th>Precio Súper</th><th>Ahorro</th></tr></thead>
+    <tbody>
+      ${[['Naranja 10kg','S/ 35','S/ 52','S/ 17 (33%)'],
+         ['Palta Hass 5kg','S/ 32','S/ 47','S/ 15 (32%)'],
+         ['Mandarina 15kg','S/ 45','S/ 68','S/ 23 (34%)'],
+         ['Salchicha 2kg','S/ 31','S/ 88','S/ 57 (65%)'],
+      ].map(r=>`<tr>
+        <td class="bo">${r[0]}</td>
+        <td style="color:var(--gr);font-weight:700">${r[1]}</td>
+        <td style="color:var(--muted);text-decoration:line-through">${r[2]}</td>
+        <td style="color:var(--or);font-family:var(--fh);font-weight:700">${r[3]}</td>
+      </tr>`).join('')}
+    </tbody>
+  </table>
+</div>`;
+}
+
+function vTokens() {
+  return `
+<div class="krow k3">
+  <div class="kpi cyl"><div class="kb"></div><div class="ki">🪙</div><div class="kl">Saldo Tokens</div><div class="kv">350</div><div class="ks">Nivel 🥈 Silver</div></div>
+  <div class="kpi cor"><div class="kb"></div><div class="ki">➕</div><div class="kl">Ganados (mes)</div><div class="kv">80</div></div>
+  <div class="kpi cgr"><div class="kb"></div><div class="ki">💎</div><div class="kl">Para Gold</div><div class="kv">150</div><div class="ks">tokens restantes</div></div>
+</div>
+<div class="card">
+  <div class="ch"><div class="ct">🪙 Movimientos de Tokens</div></div>
+  <table>
+    <thead><tr><th>Fecha</th><th>Descripción</th><th>Tokens</th><th>Saldo</th></tr></thead>
+    <tbody>
+      ${[['04/03','Compra Naranja P001','+35','350'],
+         ['03/03','Compra Palta P008','+32','315'],
+         ['01/03','Compra combo','+80','283'],
+         ['20/02','Bono referido','+50','203'],
+      ].map(r=>`<tr>
+        <td style="color:var(--muted)">${r[0]}</td>
+        <td>${r[1]}</td>
+        <td style="color:var(--gr);font-family:var(--fh);font-weight:700">${r[2]}</td>
+        <td style="font-family:var(--fh);font-weight:700">🪙 ${r[3]}</td>
+      </tr>`).join('')}
+    </tbody>
+  </table>
+</div>`;
+}
+
+// ─── ACCIONES ─────────────────────────────────────────
+function marcarEnt(i) {
+  _cnt = Math.min(_cnt + 1, 10);
+  const bar = document.getElementById('pbar');
+  const cnt = document.getElementById('pcnt');
+  const lbl = document.getElementById('plbl');
+  if (bar) bar.style.width = (_cnt * 10) + '%';
+  if (cnt) cnt.textContent = _cnt + '/10';
+  if (lbl) lbl.textContent = _cnt + ' de 10 entregas completadas';
+  if (_cnt >= 10) {
+    if (bar) bar.style.background = 'var(--gr)';
+    toast('🎉 ¡Ruta completa! S/ 50 acreditados ✅');
+    setTimeout(() => sv('mpagos', null), 2000);
+  } else {
+    toast('Entrega ' + _cnt + ' marcada ✓');
+  }
+}
+
+function simSpd() {
+  if (_spd) {
+    _spd = false;
+    clearInterval(window._spdInt);
+    const b = document.getElementById('simBtn');
+    if (b) b.textContent = '▶ Simular variación GPS';
+    return;
+  }
+  _spd = true;
+  const b = document.getElementById('simBtn');
+  if (b) b.textContent = '⏹ Detener simulación';
+  let v = 42;
+  window._spdInt = setInterval(() => {
+    v = Math.max(10, Math.min(90, v + (Math.random() - 0.44) * 14));
+    const vel = Math.round(v);
+    const d = document.getElementById('spd-dsp');
+    const bar = document.getElementById('spd-bar');
+    const cnt = document.getElementById('spd-cnt');
+    if (!d) { clearInterval(window._spdInt); return; }
+    d.textContent = vel;
+    const clr = vel > 60 ? 'var(--rd)' : vel > 45 ? 'var(--or)' : 'var(--gr)';
+    d.style.color = clr;
+    if (bar) { bar.style.width = vel + '%'; bar.style.background = clr; }
+    if (vel > 60 && cnt) {
+      cnt.innerHTML = `<div class="s-alert"><div class="sa-ic">🚨</div><div><div class="sa-ttl">ALERTA: ${vel} km/h — Riesgo de Fotomulta</div><div class="sa-body">Notificando a Ernesto (Admin) · Reducir velocidad ya.</div></div></div>`;
+      if (vel > 65) toast('🚨 ' + vel + ' km/h · Alerta enviada al admin', 'err');
+    } else if (cnt) cnt.innerHTML = '';
+  }, 750);
+}
+
+function tomarRuta(id, dst, pago) {
+  toast('✅ Ruta ' + id + ' tomada · SJL→' + dst + ' · S/ ' + pago + ' al completar');
+  setTimeout(() => sv('miruta', null), 900);
+}
+
+// ─── TOAST ────────────────────────────────────────────
+function toast(msg, type) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast' + (type === 'err' ? ' err' : type === 'wrn' ? ' wrn' : '') + ' on';
+  setTimeout(() => t.classList.remove('on'), 3500);
+}
+
+// Init
+document.getElementById('lu').placeholder = 'ernesto@neopisk.com';
+</script>
+</body>
+</html>
