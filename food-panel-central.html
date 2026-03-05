@@ -2,317 +2,2154 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Neo Pisk · Panel de Control</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="NeoPisk">
+<meta name="theme-color" content="#0a0a0a">
+<title>Neo Pisk · Super App Logística</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<!-- PWA Manifest inline -->
+<script>
+const manifestData = {
+  name: "Neo Pisk Logistics",
+  short_name: "NeoPisk",
+  start_url: "/",
+  display: "standalone",
+  background_color: "#0a0a0a",
+  theme_color: "#e85d00",
+  orientation: "portrait",
+  description: "Super App de logística: conductores, clientes e inversionistas.",
+  icons: [
+    { src: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect width='192' height='192' rx='40' fill='%23e85d00'/><text y='130' x='20' font-size='110' font-family='serif'>🍊</text></svg>", sizes: "192x192", type: "image/svg+xml" },
+    { src: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect width='512' height='512' rx='100' fill='%23e85d00'/><text y='360' x='40' font-size='300' font-family='serif'>🍊</text></svg>", sizes: "512x512", type: "image/svg+xml" }
+  ]
+};
+const blob = new Blob([JSON.stringify(manifestData)], {type:'application/json'});
+const manifestURL = URL.createObjectURL(blob);
+document.addEventListener('DOMContentLoaded', () => {
+  const link = document.createElement('link');
+  link.rel = 'manifest'; link.href = manifestURL;
+  document.head.appendChild(link);
+});
+</script>
+
 <style>
-  :root {
-    --bg:#f5f4f0;--surface:#ffffff;--surface2:#f0efe9;--border:#e0ddd5;--border2:#ccc9bf;
-    --text:#111111;--text2:#444444;--muted:#888880;
-    --gold:#c8820a;--gold-bg:#fff3d6;--green:#0a8a3c;--green-bg:#d6f5e3;
-    --red:#c8200a;--red-bg:#ffd6d0;--blue:#0a50c8;--blue-bg:#d6e5ff;
-    --orange:#c84b0a;--orange-bg:#ffe5d0;--purple:#7a0ac8;--purple-bg:#f0d6ff;
-    --font-head:'Plus Jakarta Sans',sans-serif;--font-mono:'DM Mono',monospace;
-  }
-  *{margin:0;padding:0;box-sizing:border-box;}
-  body{background:var(--bg);color:var(--text);font-family:var(--font-mono);min-height:100vh;}
-  .sidebar{position:fixed;left:0;top:0;bottom:0;width:230px;background:#111;display:flex;flex-direction:column;z-index:100;}
-  .logo{padding:24px 22px 20px;border-bottom:1px solid #222;}
-  .logo-icon{font-size:28px;margin-bottom:4px;}
-  .logo-title{font-family:var(--font-head);font-size:18px;font-weight:800;color:#fff;}
-  .logo-sub{font-size:10px;color:#555;margin-top:2px;text-transform:uppercase;letter-spacing:2px;}
-  .nav{padding:12px 0;flex:1;}
-  .nav-item{display:flex;align-items:center;gap:10px;padding:12px 22px;cursor:pointer;font-size:11px;color:#777;transition:all .15s;text-transform:uppercase;letter-spacing:1px;border-left:3px solid transparent;}
-  .nav-item:hover{color:#fff;background:#1a1a1a;}
-  .nav-item.active{color:#fff;background:#1a1a1a;border-left-color:#f5c030;}
-  .nav-icon{font-size:15px;width:20px;text-align:center;}
-  .live-dot{width:7px;height:7px;border-radius:50%;background:#0a8a3c;box-shadow:0 0 8px #0a8a3c;margin-left:auto;animation:blink 2s infinite;}
-  @keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
-  .sidebar-footer{padding:14px 22px;border-top:1px solid #222;font-size:10px;color:#555;}
-  .karla-pill{display:inline-flex;align-items:center;gap:6px;background:#1a1a1a;border:1px solid #2a2a2a;padding:5px 10px;border-radius:20px;color:#0a8a3c;font-size:10px;margin-bottom:6px;}
-  .main{margin-left:230px;min-height:100vh;}
-  .topbar{padding:14px 28px;background:var(--surface);border-bottom:2px solid var(--border);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50;box-shadow:0 2px 12px rgba(0,0,0,.06);}
-  .page-title{font-family:var(--font-head);font-size:20px;font-weight:800;color:var(--text);}
-  .topbar-right{display:flex;gap:10px;align-items:center;}
-  .pill{padding:5px 12px;border-radius:20px;font-size:11px;font-weight:600;font-family:var(--font-head);}
-  .pill-green{background:var(--green-bg);color:var(--green);}
-  .pill-muted{background:var(--surface2);color:var(--muted);border:1px solid var(--border);}
-  .content{padding:24px 28px;}
-  .tab-panel{display:none;}.tab-panel.active{display:block;}
-  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px;}
-  .kpi{background:var(--surface);border:2px solid var(--border);border-radius:12px;padding:20px 22px;position:relative;overflow:hidden;transition:box-shadow .15s,transform .15s;}
-  .kpi:hover{box-shadow:0 6px 24px rgba(0,0,0,.08);transform:translateY(-1px);}
-  .kpi-accent{position:absolute;top:0;left:0;right:0;height:4px;border-radius:12px 12px 0 0;}
-  .kpi.gold .kpi-accent{background:var(--gold);}.kpi.green .kpi-accent{background:var(--green);}
-  .kpi.blue .kpi-accent{background:var(--blue);}.kpi.red .kpi-accent{background:var(--red);}
-  .kpi-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;margin-bottom:12px;}
-  .kpi.gold .kpi-icon{background:var(--gold-bg);}.kpi.green .kpi-icon{background:var(--green-bg);}
-  .kpi.blue .kpi-icon{background:var(--blue-bg);}.kpi.red .kpi-icon{background:var(--red-bg);}
-  .kpi-label{font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--muted);margin-bottom:4px;}
-  .kpi-value{font-family:var(--font-head);font-size:30px;font-weight:800;color:var(--text);line-height:1;}
-  .kpi-sub{font-size:11px;color:var(--muted);margin-top:4px;}
-  .card{background:var(--surface);border:2px solid var(--border);border-radius:12px;overflow:hidden;}
-  .card-header{padding:14px 20px;border-bottom:2px solid var(--border);display:flex;align-items:center;justify-content:space-between;background:var(--surface2);}
-  .card-title{font-family:var(--font-head);font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:1px;}
-  table{width:100%;border-collapse:collapse;}
-  th{padding:10px 16px;text-align:left;font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);background:var(--surface2);border-bottom:2px solid var(--border);font-weight:500;}
-  td{padding:12px 16px;font-size:12px;border-bottom:1px solid var(--border);color:var(--text2);}
-  tr:last-child td{border-bottom:none;}tr:hover td{background:var(--surface2);}
-  .chip{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:20px;font-size:10px;font-weight:700;font-family:var(--font-head);}
-  .chip-green{background:var(--green-bg);color:var(--green);}.chip-gold{background:var(--gold-bg);color:var(--gold);}
-  .chip-red{background:var(--red-bg);color:var(--red);}.chip-orange{background:var(--orange-bg);color:var(--orange);}
-  .chip-blue{background:var(--blue-bg);color:var(--blue);}.chip-muted{background:var(--surface2);color:var(--muted);border:1px solid var(--border);}
-  .chat-feed{overflow-y:auto;height:460px;}
-  .chat-item{padding:14px 20px;border-bottom:1px solid var(--border);display:grid;grid-template-columns:42px 1fr auto;gap:12px;align-items:start;transition:background .1s;}
-  .chat-item:hover{background:var(--surface2);}
-  .avatar{width:38px;height:38px;background:var(--gold-bg);border:2px solid var(--gold);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;font-family:var(--font-head);color:var(--gold);flex-shrink:0;}
-  .chat-name{font-family:var(--font-head);font-size:13px;font-weight:700;color:var(--text);margin-bottom:3px;}
-  .chat-msg{font-size:12px;color:var(--text2);line-height:1.4;background:var(--surface2);padding:6px 10px;border-radius:0 8px 8px 8px;border-left:3px solid var(--border2);display:inline-block;}
-  .chat-resp{font-size:12px;color:var(--green);margin-top:6px;line-height:1.4;background:var(--green-bg);padding:6px 10px;border-radius:8px 0 8px 8px;border-right:3px solid var(--green);display:inline-block;}
-  .chat-time{font-size:10px;color:var(--muted);white-space:nowrap;}
-  .product-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px;}
-  .product-card{background:var(--surface);border:2px solid var(--border);border-radius:12px;padding:20px;cursor:pointer;transition:all .15s;position:relative;}
-  .product-card:hover{border-color:var(--gold);box-shadow:0 4px 20px rgba(200,130,10,.1);}
-  .product-card.selected{border-color:var(--gold);background:var(--gold-bg);}
-  .sel-badge{position:absolute;top:12px;right:12px;background:var(--gold);color:#fff;font-size:10px;font-weight:700;padding:3px 8px;border-radius:20px;font-family:var(--font-head);}
-  .product-emoji{font-size:28px;margin-bottom:10px;}
-  .product-name{font-family:var(--font-head);font-size:13px;font-weight:700;color:var(--text);margin-bottom:4px;}
-  .product-desc{font-size:11px;color:var(--muted);margin-bottom:12px;}
-  .price-row{display:flex;gap:8px;flex-wrap:wrap;}
-  .price-tag{padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;font-family:var(--font-head);}
-  .price-neo{background:var(--green-bg);color:var(--green);}
-  .price-super{background:var(--red-bg);color:var(--red);text-decoration:line-through;}
-  .price-save{background:var(--gold-bg);color:var(--gold);}
-  .form-group{margin-bottom:14px;}
-  label{display:block;font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--muted);margin-bottom:5px;}
-  input,textarea,select{width:100%;background:var(--surface);border:2px solid var(--border);color:var(--text);padding:9px 12px;font-family:var(--font-mono);font-size:12px;outline:none;border-radius:8px;transition:border-color .15s;}
-  input:focus,textarea:focus,select:focus{border-color:var(--gold);}
-  .btn{padding:10px 20px;font-family:var(--font-head);font-size:12px;font-weight:700;cursor:pointer;border:none;border-radius:8px;transition:all .15s;}
-  .btn-gold{background:var(--gold);color:#fff;}.btn-gold:hover{background:#b5720a;box-shadow:0 4px 14px rgba(200,130,10,.3);}
-  .btn-green{background:var(--green);color:#fff;}.btn-green:hover{background:#087a35;}
-  .btn-outline{background:var(--surface);border:2px solid var(--border);color:var(--text2);}.btn-outline:hover{border-color:var(--text);color:var(--text);}
-  .camp-preview{background:#f0f8f0;border:2px solid #b8e4c8;border-radius:12px;padding:18px;font-size:12px;line-height:1.8;white-space:pre-wrap;color:var(--text2);border-left:4px solid var(--green);}
-  .progress-bar{height:6px;border-radius:3px;background:var(--surface2);border:1px solid var(--border);overflow:hidden;display:none;margin:12px 0;}
-  .progress-fill{height:100%;background:var(--gold);width:0%;transition:width .3s;border-radius:3px;}
-  .toast{position:fixed;bottom:24px;right:24px;background:#111;color:#fff;border-left:4px solid var(--green);padding:14px 20px;font-size:12px;border-radius:10px;z-index:999;transform:translateX(140%);transition:transform .3s;font-family:var(--font-head);font-weight:600;box-shadow:0 8px 32px rgba(0,0,0,.2);max-width:300px;}
-  .toast.show{transform:translateX(0);}.toast.error{border-left-color:var(--red);}
-  .two-col{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
-  .mt16{margin-top:16px;}.mt20{margin-top:20px;}.mt24{margin-top:24px;}
-  .bold{font-weight:700;font-family:var(--font-head);color:var(--text);}
-  .token-val{display:inline-flex;align-items:center;gap:4px;font-weight:700;font-family:var(--font-head);color:var(--gold);}
-  ::-webkit-scrollbar{width:5px;}::-webkit-scrollbar-track{background:var(--surface2);}::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px;}
+/* ──── TOKENS ──────────────────────────────────────── */
+:root {
+  --bg: #f5f4ee;
+  --surface: #ffffff;
+  --s2: #eeede6;
+  --border: #dddbd1;
+  --text: #0f0f0f;
+  --text2: #3a3a3a;
+  --muted: #888878;
+  --or: #e85d00;
+  --or2: #ff7a1a;
+  --or-bg: #fff1e6;
+  --gr: #0d7a3e;
+  --gr-bg: #e6f7ee;
+  --rd: #c8200a;
+  --rd-bg: #fde8e5;
+  --bl: #1a5cd8;
+  --bl-bg: #e8eeff;
+  --yl: #c89500;
+  --yl-bg: #fff8de;
+  --pu: #7c3aed;
+  --pu-bg: #f3f0ff;
+  --dark: #0a0a0a;
+  --dark2: #141414;
+  --dark3: #1e1e1e;
+  --fh: 'Syne', sans-serif;
+  --fm: 'JetBrains Mono', monospace;
+  --sb-w: 240px;
+  --top-h: 58px;
+  --radius: 14px;
+  --shadow: 0 4px 24px rgba(0,0,0,.08);
+}
+
+/* ──── RESET ───────────────────────────────────────── */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { font-size: 14px; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--fm);
+  min-height: 100vh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+button { cursor: pointer; font-family: inherit; }
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: var(--s2); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+/* ──── SCREEN SYSTEM ───────────────────────────────── */
+.scr { display: none; min-height: 100dvh; }
+.scr.on { display: flex; }
+
+/* ──── LOGIN ───────────────────────────────────────── */
+#s-login {
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: var(--dark);
+  position: relative;
+  overflow: hidden;
+}
+#s-login::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 60% 50% at 20% 10%, rgba(232,93,0,.18) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 40% at 80% 90%, rgba(232,93,0,.10) 0%, transparent 60%),
+    repeating-linear-gradient(0deg, transparent, transparent 47px, rgba(255,255,255,.03) 47px, rgba(255,255,255,.03) 48px),
+    repeating-linear-gradient(90deg, transparent, transparent 47px, rgba(255,255,255,.03) 47px, rgba(255,255,255,.03) 48px);
+  pointer-events: none;
+}
+#s-login::after {
+  content: '🍊';
+  position: absolute;
+  font-size: 320px;
+  opacity: .04;
+  bottom: -40px;
+  right: -40px;
+  filter: blur(2px);
+  pointer-events: none;
+}
+
+.lbox {
+  background: rgba(255,255,255,.97);
+  border: 1.5px solid rgba(255,255,255,.2);
+  border-radius: 20px;
+  padding: 40px 36px;
+  width: 100%;
+  max-width: 420px;
+  position: relative;
+  z-index: 1;
+  box-shadow: 0 40px 80px rgba(0,0,0,.5), 0 0 0 1px rgba(255,255,255,.1);
+  animation: loginIn .45s cubic-bezier(.22,1,.36,1);
+}
+@keyframes loginIn { from { opacity:0; transform:translateY(24px) scale(.97); } to { opacity:1; transform:none; } }
+
+.l-brand { text-align: center; margin-bottom: 28px; }
+.l-brand-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+.l-brand-icon {
+  width: 48px; height: 48px;
+  background: var(--or);
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 26px;
+  box-shadow: 0 8px 24px rgba(232,93,0,.3);
+}
+.l-brand-name {
+  font-family: var(--fh);
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: -1px;
+  color: var(--text);
+}
+.l-brand-name span { color: var(--or); }
+.l-brand-sub {
+  font-size: 10px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  font-family: var(--fh);
+}
+
+.rtabs {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 5px;
+  background: var(--s2);
+  padding: 4px;
+  border-radius: 12px;
+  border: 1.5px solid var(--border);
+  margin-bottom: 24px;
+}
+.rtab {
+  padding: 8px 4px 7px;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: all .15s;
+  font-family: var(--fh);
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .3px;
+  color: var(--muted);
+}
+.rtab.on { background: var(--surface); color: var(--text); box-shadow: 0 2px 8px rgba(0,0,0,.09); }
+.rtab-ic { font-size: 18px; display: block; margin-bottom: 3px; }
+
+.ff { margin-bottom: 14px; }
+.ff label { display: block; font-size: 9px; text-transform: uppercase; letter-spacing: 2px; color: var(--muted); margin-bottom: 5px; font-family: var(--fh); font-weight: 600; }
+.ff input, .ff select {
+  width: 100%;
+  background: var(--s2);
+  border: 2px solid var(--border);
+  color: var(--text);
+  padding: 11px 14px;
+  font-family: var(--fm);
+  font-size: 13px;
+  border-radius: 10px;
+  outline: none;
+  transition: border-color .15s;
+}
+.ff input:focus, .ff select:focus { border-color: var(--or); background: #fff; }
+
+.btn-login {
+  width: 100%;
+  padding: 14px;
+  background: var(--or);
+  color: #fff;
+  border: none;
+  border-radius: 11px;
+  font-family: var(--fh);
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: .3px;
+  transition: all .15s;
+  margin-top: 4px;
+  box-shadow: 0 6px 20px rgba(232,93,0,.25);
+}
+.btn-login:hover { background: #d05200; box-shadow: 0 8px 28px rgba(232,93,0,.4); transform: translateY(-1px); }
+.btn-login:active { transform: none; }
+
+.demo-hint {
+  text-align: center;
+  margin-top: 14px;
+  font-size: 11px;
+  color: var(--muted);
+  line-height: 1.8;
+}
+.demo-hint strong { color: var(--or); }
+
+/* ──── APP SHELL ───────────────────────────────────── */
+#s-app { flex-direction: row; }
+
+/* ──── SIDEBAR ─────────────────────────────────────── */
+.sb {
+  width: var(--sb-w);
+  background: var(--dark);
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0; bottom: 0; left: 0;
+  z-index: 300;
+  transition: transform .28s cubic-bezier(.22,1,.36,1);
+  will-change: transform;
+  border-right: 1px solid var(--dark3);
+}
+
+.sb-logo {
+  padding: 20px 18px 16px;
+  border-bottom: 1px solid var(--dark3);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.sb-logo-brand { display: flex; align-items: center; gap: 10px; }
+.sb-logo-icon {
+  width: 36px; height: 36px;
+  background: var(--or);
+  border-radius: 9px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px;
+  flex-shrink: 0;
+}
+.sb-logo-text {}
+.sb-name { font-family: var(--fh); font-size: 16px; font-weight: 800; color: #fff; letter-spacing: -.3px; }
+.sb-ver { font-size: 9px; color: #444; text-transform: uppercase; letter-spacing: 2px; margin-top: 1px; }
+.sb-close-btn {
+  display: none;
+  background: none;
+  border: 1px solid #2a2a2a;
+  color: #555;
+  width: 28px; height: 28px;
+  border-radius: 7px;
+  font-size: 14px;
+  align-items: center;
+  justify-content: center;
+  transition: all .15s;
+}
+.sb-close-btn:hover { border-color: #555; color: #fff; }
+
+.sb-nav { padding: 10px 0; flex: 1; overflow-y: auto; }
+.sb-sec {
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #333;
+  padding: 12px 18px 5px;
+  font-family: var(--fh);
+  font-weight: 700;
+}
+.sb-i {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 9px 18px;
+  cursor: pointer;
+  font-size: 11px;
+  color: #666;
+  transition: all .12s;
+  text-transform: uppercase;
+  letter-spacing: .7px;
+  border-left: 3px solid transparent;
+  font-family: var(--fh);
+  font-weight: 600;
+  margin: 1px 0;
+  border-radius: 0 8px 8px 0;
+  margin-right: 8px;
+}
+.sb-i:hover { color: #ccc; background: rgba(255,255,255,.05); }
+.sb-i.on { color: #fff; background: rgba(232,93,0,.12); border-left-color: var(--or); }
+.sb-ic2 { font-size: 14px; width: 20px; text-align: center; flex-shrink: 0; }
+.sb-bdg {
+  margin-left: auto;
+  background: var(--or);
+  color: #fff;
+  font-size: 9px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 10px;
+  font-family: var(--fm);
+}
+
+.sb-ft {
+  padding: 14px 18px;
+  border-top: 1px solid var(--dark3);
+}
+.u-pill { display: flex; align-items: center; gap: 9px; }
+.u-av {
+  width: 32px; height: 32px;
+  background: rgba(232,93,0,.15);
+  border: 2px solid var(--or);
+  border-radius: 9px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+.u-nm { font-family: var(--fh); font-size: 11px; font-weight: 700; color: #ddd; line-height: 1.3; }
+.u-rl { font-size: 9px; color: #444; text-transform: uppercase; letter-spacing: 1px; }
+.btn-out {
+  background: none;
+  border: 1px solid #2a2a2a;
+  color: #444;
+  padding: 4px 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 9px;
+  margin-left: auto;
+  transition: all .12s;
+  font-family: var(--fh);
+  font-weight: 600;
+  flex-shrink: 0;
+}
+.btn-out:hover { border-color: var(--rd); color: var(--rd); }
+
+/* ──── OVERLAY ─────────────────────────────────────── */
+.sb-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.6);
+  z-index: 299;
+  backdrop-filter: blur(2px);
+}
+.sb-overlay.on { display: block; }
+
+/* ──── APP WRAP ────────────────────────────────────── */
+.app-wrap {
+  margin-left: var(--sb-w);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+  transition: margin-left .28s cubic-bezier(.22,1,.36,1);
+}
+
+/* ──── TOPBAR ──────────────────────────────────────── */
+.topbar {
+  background: var(--surface);
+  border-bottom: 1.5px solid var(--border);
+  padding: 0 22px;
+  height: var(--top-h);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 1px 8px rgba(0,0,0,.04);
+}
+.tb-l { display: flex; align-items: center; gap: 12px; }
+.tb-menu-btn {
+  display: none;
+  background: var(--s2);
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  width: 34px; height: 34px;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  transition: all .12s;
+  color: var(--text);
+}
+.tb-menu-btn:hover { background: var(--border); }
+.tb-ttl {
+  font-family: var(--fh);
+  font-size: 17px;
+  font-weight: 800;
+  letter-spacing: -.4px;
+  color: var(--text);
+}
+.tb-r { display: flex; align-items: center; gap: 8px; }
+.pill {
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 10px;
+  font-weight: 700;
+  font-family: var(--fh);
+  letter-spacing: .2px;
+}
+.p-or { background: var(--or-bg); color: var(--or); }
+.p-gr { background: var(--gr-bg); color: var(--gr); }
+.p-rd { background: var(--rd-bg); color: var(--rd); }
+.p-bl { background: var(--bl-bg); color: var(--bl); }
+.p-yl { background: var(--yl-bg); color: var(--yl); }
+.p-pu { background: var(--pu-bg); color: var(--pu); }
+.p-mu { background: var(--s2); color: var(--muted); border: 1px solid var(--border); }
+
+/* ──── PAGE CONTENT ────────────────────────────────── */
+.pg-content {
+  padding: 22px;
+  flex: 1;
+  animation: fadeIn .2s ease;
+}
+@keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+/* ──── KPI GRID ────────────────────────────────────── */
+.krow { display: grid; gap: 12px; margin-bottom: 20px; }
+.k4 { grid-template-columns: repeat(4, 1fr); }
+.k3 { grid-template-columns: repeat(3, 1fr); }
+.k2 { grid-template-columns: repeat(2, 1fr); }
+
+.kpi {
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px;
+  position: relative;
+  overflow: hidden;
+  transition: all .15s;
+  cursor: default;
+}
+.kpi:hover { box-shadow: var(--shadow); transform: translateY(-2px); }
+.kb { position: absolute; top: 0; left: 0; right: 0; height: 3px; border-radius: var(--radius) var(--radius) 0 0; }
+.ki {
+  width: 36px; height: 36px;
+  border-radius: 9px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 17px;
+  margin-bottom: 11px;
+}
+.kl { font-size: 9px; text-transform: uppercase; letter-spacing: 2px; color: var(--muted); margin-bottom: 4px; font-family: var(--fh); font-weight: 600; }
+.kv { font-family: var(--fh); font-size: 24px; font-weight: 800; line-height: 1; color: var(--text); }
+.ks { font-size: 10px; color: var(--muted); margin-top: 4px; }
+.cor .kb { background: var(--or); } .cor .ki { background: var(--or-bg); }
+.cgr .kb { background: var(--gr); } .cgr .ki { background: var(--gr-bg); }
+.cbl .kb { background: var(--bl); } .cbl .ki { background: var(--bl-bg); }
+.crd .kb { background: var(--rd); } .crd .ki { background: var(--rd-bg); }
+.cyl .kb { background: var(--yl); } .cyl .ki { background: var(--yl-bg); }
+.cpu .kb { background: var(--pu); } .cpu .ki { background: var(--pu-bg); }
+
+/* ──── CARD ────────────────────────────────────────── */
+.card { background: var(--surface); border: 1.5px solid var(--border); border-radius: var(--radius); overflow: hidden; margin-bottom: 16px; }
+.ch { padding: 13px 17px; border-bottom: 1.5px solid var(--border); display: flex; align-items: center; justify-content: space-between; background: var(--s2); gap: 10px; flex-wrap: wrap; }
+.ct { font-family: var(--fh); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .8px; }
+.cb { padding: 17px; }
+
+/* ──── GRID HELPERS ────────────────────────────────── */
+.g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.g3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+.g4 { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; }
+
+/* ──── TABLE ───────────────────────────────────────── */
+.tw { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; }
+th { padding: 9px 14px; text-align: left; font-size: 9px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); background: var(--s2); border-bottom: 1.5px solid var(--border); font-family: var(--fh); font-weight: 600; white-space: nowrap; }
+td { padding: 11px 14px; font-size: 12px; border-bottom: 1px solid var(--border); color: var(--text2); vertical-align: middle; }
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: var(--s2); }
+.bo { font-weight: 600; font-family: var(--fh); color: var(--text); }
+
+/* ──── CHIP ────────────────────────────────────────── */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 3px 8px;
+  border-radius: 20px;
+  font-size: 10px;
+  font-weight: 700;
+  font-family: var(--fh);
+  white-space: nowrap;
+}
+.cgr2 { background: var(--gr-bg); color: var(--gr); }
+.cor2 { background: var(--or-bg); color: var(--or); }
+.crd2 { background: var(--rd-bg); color: var(--rd); }
+.cbl2 { background: var(--bl-bg); color: var(--bl); }
+.cyl2 { background: var(--yl-bg); color: var(--yl); }
+.cpu2 { background: var(--pu-bg); color: var(--pu); }
+.cmu { background: var(--s2); color: var(--muted); border: 1px solid var(--border); }
+
+/* ──── BUTTONS ─────────────────────────────────────── */
+.btn {
+  padding: 9px 16px;
+  font-family: var(--fh);
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  border: none;
+  border-radius: 9px;
+  transition: all .12s;
+  letter-spacing: .3px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+.bor { background: var(--or); color: #fff; }
+.bor:hover { background: #cf5200; box-shadow: 0 4px 16px rgba(232,93,0,.3); transform: translateY(-1px); }
+.bgr { background: var(--gr); color: #fff; }
+.bgr:hover { background: #0a6533; }
+.bpu { background: var(--pu); color: #fff; }
+.bou { background: var(--surface); border: 1.5px solid var(--border); color: var(--text2); }
+.bou:hover { border-color: var(--text); color: var(--text); }
+.brd { background: var(--rd); color: #fff; }
+.bsm { padding: 5px 11px; font-size: 10px; }
+.bfu { width: 100%; justify-content: center; }
+.btn:disabled { opacity: .4; cursor: not-allowed; }
+
+/* ──── FORM ────────────────────────────────────────── */
+.fg { margin-bottom: 12px; }
+.fg label { display: block; font-size: 9px; text-transform: uppercase; letter-spacing: 2px; color: var(--muted); margin-bottom: 4px; font-family: var(--fh); font-weight: 600; }
+.fg input, .fg select, .fg textarea {
+  width: 100%;
+  background: var(--s2);
+  border: 1.5px solid var(--border);
+  color: var(--text);
+  padding: 9px 11px;
+  font-family: var(--fm);
+  font-size: 12px;
+  border-radius: 8px;
+  outline: none;
+  transition: border-color .12s;
+}
+.fg input:focus, .fg select:focus, .fg textarea:focus { border-color: var(--or); background: #fff; }
+
+/* ──── MAP ─────────────────────────────────────────── */
+.mapbox {
+  background: linear-gradient(145deg, #cde4cf 0%, #b8d4ba 50%, #a8c4aa 100%);
+  border-radius: 11px;
+  height: 300px;
+  position: relative;
+  overflow: hidden;
+  border: 1.5px solid var(--border);
+}
+.map-car { position: absolute; font-size: 20px; cursor: pointer; transition: all .6s ease; filter: drop-shadow(0 2px 4px rgba(0,0,0,.3)); }
+.map-pin { position: absolute; font-size: 16px; filter: drop-shadow(0 2px 4px rgba(0,0,0,.3)); }
+.map-leg {
+  position: absolute;
+  bottom: 10px; left: 10px;
+  background: rgba(255,255,255,.94);
+  backdrop-filter: blur(10px);
+  border-radius: 9px;
+  padding: 9px 13px;
+  font-size: 10px;
+  border: 1px solid rgba(0,0,0,.08);
+  line-height: 1.7;
+}
+.map-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  flex-direction: column;
+  gap: 6px;
+  color: #5a7a5a;
+}
+.map-roads {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    45deg,
+    transparent,
+    transparent 30px,
+    rgba(255,255,255,.2) 30px,
+    rgba(255,255,255,.2) 32px
+  );
+}
+
+/* ──── ROUTE CARD ──────────────────────────────────── */
+.rc {
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  padding: 17px;
+  margin-bottom: 12px;
+  transition: all .15s;
+  position: relative;
+}
+.rc:hover { border-color: var(--or); box-shadow: 0 4px 20px rgba(232,93,0,.08); }
+.rc.blk { opacity: .55; }
+.rc.blk::after {
+  content: '🔒 DOCUMENTOS VENCIDOS — Renueva para tomar rutas';
+  position: absolute; inset: 0;
+  background: rgba(200,32,10,.06);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--fh); font-weight: 700; font-size: 10px; color: var(--rd);
+  border-radius: 12px; border: 2px dashed var(--rd);
+  letter-spacing: .5px;
+}
+.rc-head { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px; }
+.rc-ttl { font-family: var(--fh); font-size: 14px; font-weight: 800; }
+.rc-sub { font-size: 10px; color: var(--muted); margin-top: 2px; }
+.rc-pay { font-family: var(--fh); font-size: 20px; font-weight: 800; color: var(--gr); }
+.rc-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+.rc-tag { display: flex; align-items: center; gap: 4px; font-size: 10px; color: var(--text2); background: var(--s2); padding: 3px 8px; border-radius: 20px; border: 1px solid var(--border); }
+
+/* ──── PROGRESS ────────────────────────────────────── */
+.ptrack { height: 5px; background: var(--s2); border-radius: 3px; overflow: hidden; margin-bottom: 5px; border: 1px solid var(--border); }
+.pbar { height: 100%; border-radius: 3px; transition: width .5s ease; }
+.plbl { font-size: 10px; color: var(--muted); }
+
+/* ──── ALERT ───────────────────────────────────────── */
+.s-alert {
+  background: var(--rd-bg);
+  border: 1.5px solid var(--rd);
+  border-radius: 11px;
+  padding: 13px 16px;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+  animation: shk .3s ease;
+}
+@keyframes shk { 0%,100%{transform:translateX(0)}25%{transform:translateX(-3px)}75%{transform:translateX(3px)} }
+.sa-ic { font-size: 22px; flex-shrink: 0; margin-top: 1px; }
+.sa-ttl { font-family: var(--fh); font-weight: 700; color: var(--rd); margin-bottom: 2px; font-size: 12px; }
+.sa-body { font-size: 10px; color: var(--rd); opacity: .8; }
+
+/* ──── DOCS ────────────────────────────────────────── */
+.doc-c { background: var(--surface); border: 1.5px solid var(--border); border-radius: 11px; padding: 13px; display: flex; align-items: center; gap: 11px; margin-bottom: 10px; transition: all .12s; }
+.doc-c:hover { border-color: var(--muted); }
+.doc-ic { width: 38px; height: 38px; border-radius: 9px; display: flex; align-items: center; justify-content: center; font-size: 17px; flex-shrink: 0; }
+.doc-nm { font-family: var(--fh); font-size: 12px; font-weight: 700; margin-bottom: 2px; }
+.doc-exp { font-size: 10px; color: var(--muted); }
+.dok { border-color: var(--gr); } .dok .doc-ic { background: var(--gr-bg); }
+.dwn { border-color: var(--yl); } .dwn .doc-ic { background: var(--yl-bg); }
+.dbd { border-color: var(--rd); } .dbd .doc-ic { background: var(--rd-bg); }
+
+/* ──── LIQUIDATION ROW ─────────────────────────────── */
+.lr { display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--border); }
+.lr:last-child { border-bottom: none; }
+.ll { font-size: 11px; color: var(--text2); }
+.lv { font-family: var(--fh); font-weight: 700; font-size: 12px; }
+
+/* ──── SCHEMA ──────────────────────────────────────── */
+.stbl { background: #0d0d0d; border-radius: 11px; padding: 17px; margin-bottom: 12px; border: 1px solid #1e1e1e; }
+.sn { font-family: var(--fh); font-size: 12px; font-weight: 800; color: var(--or); margin-bottom: 10px; display: flex; align-items: center; gap: 7px; }
+.sf { display: flex; align-items: center; gap: 8px; padding: 5px 0; border-bottom: 1px solid #181818; font-size: 10px; }
+.sf:last-child { border-bottom: none; }
+.sf-n { color: #ddd; font-family: var(--fm); width: 140px; flex-shrink: 0; }
+.sf-t { color: var(--or); font-family: var(--fm); width: 110px; flex-shrink: 0; }
+.sf-d { color: #444; flex: 1; }
+.spk { color: var(--yl); font-size: 8px; font-weight: 700; background: #1a1200; padding: 1px 5px; border-radius: 3px; margin-right: 3px; }
+.sfk { color: var(--bl); font-size: 8px; font-weight: 700; background: #00101a; padding: 1px 5px; border-radius: 3px; margin-right: 3px; }
+
+/* ──── ALGORITHM ───────────────────────────────────── */
+.as { display: flex; gap: 12px; margin-bottom: 14px; align-items: flex-start; }
+.an { width: 28px; height: 28px; background: var(--or); color: #fff; border-radius: 7px; display: flex; align-items: center; justify-content: center; font-family: var(--fh); font-weight: 800; font-size: 11px; flex-shrink: 0; margin-top: 2px; }
+.ac .at { font-family: var(--fh); font-weight: 700; font-size: 12px; margin-bottom: 3px; }
+.ac .ad { font-size: 11px; color: var(--text2); line-height: 1.6; }
+.cl { background: var(--s2); border-radius: 6px; padding: 5px 9px; font-family: var(--fm); font-size: 10px; color: var(--or); margin-top: 5px; border-left: 3px solid var(--or); overflow-x: auto; white-space: nowrap; }
+
+/* ──── ESTIBA ──────────────────────────────────────── */
+.egrid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px; margin-top: 10px; }
+.ec { aspect-ratio: 1; border-radius: 7px; display: flex; align-items: center; justify-content: center; font-size: 16px; border: 2px solid transparent; transition: all .2s; cursor: pointer; }
+.ec:hover { transform: scale(1.1); }
+.ec.torta { background: #fff0e6; border-color: var(--or); }
+.ec.nrnj { background: var(--yl-bg); border-color: var(--yl); }
+.ec.vac { background: var(--s2); border-color: var(--border); border-style: dashed; }
+
+/* ──── INVESTOR CHARTS ─────────────────────────────── */
+.chart-bar { display: flex; align-items: flex-end; gap: 4px; height: 80px; }
+.bar-col { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.bar-body { width: 100%; border-radius: 4px 4px 0 0; background: var(--or); min-height: 4px; transition: height .5s ease; }
+.bar-lbl { font-size: 9px; color: var(--muted); font-family: var(--fh); }
+
+/* ──── TOAST ───────────────────────────────────────── */
+.toast {
+  position: fixed;
+  bottom: 22px; right: 22px;
+  background: var(--dark);
+  color: #fff;
+  border-left: 4px solid var(--gr);
+  padding: 12px 17px;
+  font-size: 11px;
+  border-radius: 11px;
+  z-index: 9999;
+  transform: translateX(140%);
+  transition: transform .3s cubic-bezier(.22,1,.36,1);
+  font-family: var(--fh);
+  font-weight: 600;
+  box-shadow: 0 8px 32px rgba(0,0,0,.3);
+  max-width: 300px;
+  line-height: 1.5;
+}
+.toast.on { transform: translateX(0); }
+.toast.err { border-left-color: var(--rd); }
+.toast.wrn { border-left-color: var(--yl); }
+
+/* ──── UTILS ───────────────────────────────────────── */
+.mt12 { margin-top: 12px; }
+.mt16 { margin-top: 16px; }
+.mt20 { margin-top: 20px; }
+.flex { display: flex; }
+.aic { align-items: center; }
+.gc8 { gap: 8px; }
+.gc12 { gap: 12px; }
+.jcsb { justify-content: space-between; }
+.f1 { flex: 1; }
+
+/* ──── MOBILE RESPONSIVE ───────────────────────────── */
+@media (max-width: 768px) {
+  :root { --sb-w: 240px; }
+
+  .sb { transform: translateX(-100%); }
+  .sb.open { transform: translateX(0); }
+
+  .sb-close-btn { display: inline-flex; }
+
+  .app-wrap { margin-left: 0 !important; }
+
+  .tb-menu-btn { display: inline-flex; }
+
+  .k4 { grid-template-columns: repeat(2, 1fr); }
+  .k3 { grid-template-columns: repeat(2, 1fr); }
+  .g2 { grid-template-columns: 1fr; }
+  .g3 { grid-template-columns: 1fr 1fr; }
+  .g4 { grid-template-columns: repeat(2,1fr); }
+  .kv { font-size: 20px; }
+
+  .pg-content { padding: 14px; }
+  .topbar { padding: 0 14px; }
+
+  .tb-ttl { font-size: 15px; }
+  .lbox { padding: 28px 22px; }
+  .rtabs { grid-template-columns: repeat(2, 1fr); }
+  .toast { right: 12px; bottom: 12px; max-width: calc(100vw - 24px); }
+}
+
+@media (max-width: 480px) {
+  .k4, .k3, .k2 { grid-template-columns: 1fr 1fr; }
+  .g3 { grid-template-columns: 1fr; }
+}
+
+/* ──── PWA INSTALL BANNER ──────────────────────────── */
+.pwa-banner {
+  display: none;
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  background: var(--dark);
+  padding: 14px 18px;
+  z-index: 1000;
+  border-top: 2px solid var(--or);
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 -8px 32px rgba(0,0,0,.4);
+  animation: slideUp .3s ease;
+}
+@keyframes slideUp { from { transform: translateY(100%); } to { transform: none; } }
+.pwa-banner.show { display: flex; }
+.pwa-banner-txt { font-family: var(--fh); font-weight: 600; color: #fff; font-size: 12px; flex: 1; line-height: 1.4; }
+.pwa-banner-txt small { color: #666; font-weight: 400; display: block; font-size: 10px; margin-top: 1px; }
+
+/* ──── SPEEDOMETER ─────────────────────────────────── */
+.spedo {
+  text-align: center;
+  padding: 20px;
+  background: var(--s2);
+  border-radius: 12px;
+  border: 1.5px solid var(--border);
+}
+.spedo-num { font-family: var(--fh); font-size: 64px; font-weight: 800; line-height: 1; }
+.spedo-unit { font-size: 16px; color: var(--muted); margin-bottom: 14px; }
 </style>
 </head>
 <body>
-<aside class="sidebar">
-  <div class="logo">
-    <div class="logo-icon">🍊</div>
-    <div class="logo-title">Neo Pisk</div>
-    <div class="logo-sub">Panel Interno</div>
+
+<!-- PWA INSTALL BANNER -->
+<div class="pwa-banner" id="pwa-banner">
+  <div style="font-size:24px">📱</div>
+  <div class="pwa-banner-txt">
+    Instalar Neo Pisk como App
+    <small>Accede desde tu pantalla de inicio sin abrir el navegador</small>
   </div>
-  <nav class="nav">
-    <div class="nav-item active" onclick="showTab('dashboard')"><span class="nav-icon">📊</span>Dashboard<span class="live-dot"></span></div>
-    <div class="nav-item" onclick="showTab('conversaciones')"><span class="nav-icon">💬</span>Conversaciones</div>
-    <div class="nav-item" onclick="showTab('clientes')"><span class="nav-icon">👥</span>Clientes</div>
-    <div class="nav-item" onclick="showTab('ventas')"><span class="nav-icon">🛒</span>Ventas</div>
-    <div class="nav-item" onclick="showTab('productos')"><span class="nav-icon">📦</span>Productos</div>
-    <div class="nav-item" onclick="showTab('campana')"><span class="nav-icon">📢</span>Campaña</div>
-  </nav>
-  <div class="sidebar-footer">
-    <div class="karla-pill"><span class="live-dot" style="width:6px;height:6px"></span>Karla online</div>
-    <div id="last-update" style="color:#444;font-size:10px">Actualizando...</div>
-  </div>
-</aside>
-<main class="main">
-  <div class="topbar">
-    <div class="page-title" id="page-title">Dashboard</div>
-    <div class="topbar-right">
-      <span class="pill pill-green">● EN VIVO</span>
-      <span class="pill pill-muted" id="clock"></span>
-      <button class="btn btn-outline" onclick="recargarTodo()">↺ Actualizar</button>
+  <button class="btn bor bsm" onclick="installPWA()">Instalar</button>
+  <button class="btn bou bsm" onclick="document.getElementById('pwa-banner').classList.remove('show')">✕</button>
+</div>
+
+<!-- ── LOGIN ─────────────────────────────────────────── -->
+<div id="s-login" class="scr on">
+  <div class="lbox">
+    <div class="l-brand">
+      <div class="l-brand-logo">
+        <div class="l-brand-icon">🍊</div>
+        <div class="l-brand-name">Neo<span>Pisk</span></div>
+      </div>
+      <div class="l-brand-sub">Super App · Logística V3.0</div>
+    </div>
+
+    <div class="rtabs">
+      <div class="rtab on" onclick="selRol('admin',this)"><span class="rtab-ic">🛡️</span>Admin</div>
+      <div class="rtab" onclick="selRol('conductor',this)"><span class="rtab-ic">🚗</span>Conductor</div>
+      <div class="rtab" onclick="selRol('cliente',this)"><span class="rtab-ic">🛒</span>Cliente</div>
+      <div class="rtab" onclick="selRol('inversor',this)"><span class="rtab-ic">💎</span>Inversor</div>
+    </div>
+
+    <div class="ff"><label>Usuario / Email</label><input type="email" id="lu" placeholder="ernesto@neopisk.com" autocomplete="email"></div>
+    <div class="ff"><label>Contraseña</label><input type="password" id="lp" placeholder="••••••••" autocomplete="current-password"></div>
+    <button class="btn-login" onclick="doLogin()">Ingresar al Sistema →</button>
+
+    <div class="demo-hint">
+      Demo: usuario cualquiera · contraseña <strong>123</strong><br>
+      Roles: <strong>admin</strong> · <strong>conductor</strong> · <strong>cliente</strong> · <strong>inversor</strong>
     </div>
   </div>
-  <div class="content">
+</div>
 
-    <!-- DASHBOARD -->
-    <div id="tab-dashboard" class="tab-panel active">
-      <div class="kpi-row">
-        <div class="kpi gold"><div class="kpi-accent"></div><div class="kpi-icon">💰</div><div class="kpi-label">Ventas Hoy</div><div class="kpi-value" id="kpi-ventas">—</div><div class="kpi-sub" id="kpi-ventas-sub">cargando...</div></div>
-        <div class="kpi green"><div class="kpi-accent"></div><div class="kpi-icon">👥</div><div class="kpi-label">Clientes</div><div class="kpi-value" id="kpi-clientes">—</div><div class="kpi-sub">en base de datos</div></div>
-        <div class="kpi blue"><div class="kpi-accent"></div><div class="kpi-icon">🪙</div><div class="kpi-label">Tokens Emitidos</div><div class="kpi-value" id="kpi-tokens">—</div><div class="kpi-sub">saldo total</div></div>
-        <div class="kpi red"><div class="kpi-accent"></div><div class="kpi-icon">💬</div><div class="kpi-label">Mensajes Hoy</div><div class="kpi-value" id="kpi-mensajes">—</div><div class="kpi-sub">conversaciones</div></div>
+<!-- ── APP ───────────────────────────────────────────── -->
+<div id="s-app" class="scr">
+  <!-- SIDEBAR OVERLAY (mobile) -->
+  <div class="sb-overlay" id="sb-overlay" onclick="closeSb()"></div>
+
+  <!-- SIDEBAR -->
+  <aside class="sb" id="sidebar">
+    <div class="sb-logo">
+      <div class="sb-logo-brand">
+        <div class="sb-logo-icon">🍊</div>
+        <div class="sb-logo-text">
+          <div class="sb-name">NeoPisk</div>
+          <div class="sb-ver">V3.0 · Super App</div>
+        </div>
       </div>
-      <div class="two-col">
+      <button class="sb-close-btn" onclick="closeSb()">✕</button>
+    </div>
+    <nav class="sb-nav" id="snav"></nav>
+    <div class="sb-ft">
+      <div class="u-pill">
+        <div class="u-av" id="uav">👤</div>
         <div>
-          <div class="card">
-            <div class="card-header"><div class="card-title">💬 Últimas Conversaciones</div><span class="pill pill-green" style="font-size:10px">Live</span></div>
-            <div class="chat-feed" id="feed-dashboard"></div>
-          </div>
+          <div class="u-nm" id="unm">—</div>
+          <div class="u-rl" id="url">—</div>
         </div>
-        <div style="display:flex;flex-direction:column;gap:18px">
-          <div class="card">
-            <div class="card-header"><div class="card-title">🏆 Top Clientes</div></div>
-            <table><thead><tr><th>Cliente</th><th>Tokens</th><th>Nivel</th></tr></thead><tbody id="top-clientes"></tbody></table>
-          </div>
-          <div class="card">
-            <div class="card-header"><div class="card-title">📦 Producto Activo</div></div>
-            <div style="padding:18px" id="producto-activo-card"><div style="font-size:12px;color:var(--muted)">Cargando...</div></div>
-          </div>
-        </div>
+        <button class="btn-out" onclick="doOut()">Salir</button>
       </div>
     </div>
+  </aside>
 
-    <!-- CONVERSACIONES -->
-    <div id="tab-conversaciones" class="tab-panel">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
-        <div style="font-family:var(--font-head);font-size:16px;font-weight:800">Conversaciones en Tiempo Real</div>
-        <div style="display:flex;gap:10px">
-          <input type="text" id="search-conv" placeholder="Buscar nombre..." style="width:200px" oninput="filtrarConversaciones()">
-          <select id="filter-tipo" onchange="filtrarConversaciones()" style="width:150px">
-            <option value="">Todos</option><option value="conversacion">Conversación</option>
-            <option value="lead">Lead nuevo</option><option value="followup">Followup</option><option value="optout">Opt-out</option>
-          </select>
-        </div>
+  <!-- MAIN -->
+  <div class="app-wrap" id="app-wrap">
+    <div class="topbar">
+      <div class="tb-l">
+        <button class="tb-menu-btn" onclick="openSb()">☰</button>
+        <div class="tb-ttl" id="tbttl">Dashboard</div>
       </div>
-      <div class="card"><div class="chat-feed" style="height:580px" id="feed-conversaciones"></div></div>
-    </div>
-
-    <!-- CLIENTES -->
-    <div id="tab-clientes" class="tab-panel">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
-        <div style="font-family:var(--font-head);font-size:16px;font-weight:800">Base de Clientes</div>
-        <input type="text" id="search-cli" placeholder="Buscar..." style="width:220px" oninput="filtrarClientes()">
-      </div>
-      <div class="card">
-        <table>
-          <thead><tr><th>ID</th><th>Nombre</th><th>WhatsApp</th><th>Tokens 🪙</th><th>Nivel</th><th>Registro</th><th>Estado</th></tr></thead>
-          <tbody id="tabla-clientes"></tbody>
-        </table>
+      <div class="tb-r">
+        <span class="pill p-gr" id="tb-st">● Sistema OK</span>
+        <span class="pill p-mu" id="tbclk" style="font-family:var(--fm)"></span>
       </div>
     </div>
-
-    <!-- VENTAS -->
-    <div id="tab-ventas" class="tab-panel">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
-        <div style="font-family:var(--font-head);font-size:16px;font-weight:800">Registro de Ventas</div>
-        <select id="filter-venta" onchange="filtrarVentas()" style="width:160px">
-          <option value="">Todos los estados</option><option value="Validado">Validado</option><option value="Pendiente">Pendiente</option>
-        </select>
-      </div>
-      <div class="card">
-        <table>
-          <thead><tr><th>ID</th><th>Fecha</th><th>Cliente</th><th>Producto</th><th>Total</th><th>Estado</th></tr></thead>
-          <tbody id="tabla-ventas"></tbody>
-        </table>
-      </div>
-    </div>
-
-    <!-- PRODUCTOS -->
-    <div id="tab-productos" class="tab-panel">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
-        <div style="font-family:var(--font-head);font-size:16px;font-weight:800">Producto del Día</div>
-        <button class="btn btn-gold" onclick="guardarProducto()">💾 Activar Seleccionado</button>
-      </div>
-      <div class="product-grid" id="product-grid"></div>
-      <div class="card mt20">
-        <div class="card-header"><div class="card-title">✏️ Agregar Nuevo Producto</div></div>
-        <div style="padding:20px">
-          <div class="two-col">
-            <div>
-              <div class="form-group"><label>SKU</label><input id="p-sku" placeholder="NPK-009"></div>
-              <div class="form-group"><label>Nombre</label><input id="p-nombre" placeholder="Producto Premium..."></div>
-              <div class="form-group"><label>Descripción</label><input id="p-desc" placeholder="Directo de mayorista..."></div>
-              <div class="form-group"><label>Emoji</label><input id="p-emoji" placeholder="🍊" style="width:80px"></div>
-            </div>
-            <div>
-              <div class="form-group"><label>Precio Neo Pisk (S/)</label><input type="number" id="p-precio" placeholder="35.00" step="0.01"></div>
-              <div class="form-group"><label>Precio Supermercado (S/)</label><input type="number" id="p-super" placeholder="52.00" step="0.01"></div>
-              <div class="form-group"><label>Tokens por venta</label><input type="number" id="p-tokens" placeholder="35"></div>
-              <button class="btn btn-green" onclick="agregarProducto()" style="margin-top:10px">+ Agregar al Catálogo</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- CAMPAÑA -->
-    <div id="tab-campana" class="tab-panel">
-      <div class="two-col">
-        <div>
-          <div class="card">
-            <div class="card-header"><div class="card-title">📢 Lanzar Campaña Masiva</div></div>
-            <div style="padding:22px">
-              <div class="form-group"><label>Producto de la campaña</label><select id="camp-producto" onchange="actualizarPreview()"></select></div>
-              <div class="form-group"><label>Mensaje personalizado (opcional)</label><textarea id="camp-mensaje" rows="3" placeholder="Vacío = mensaje automático"></textarea></div>
-              <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px;padding:10px 14px;background:var(--blue-bg);border-radius:8px">
-                <span style="font-size:16px">👥</span>
-                <span style="font-family:var(--font-head);font-size:12px">Destinatarios: <strong id="camp-total" style="color:var(--blue)">—</strong> clientes activos</span>
-              </div>
-              <div class="progress-bar" id="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
-              <div style="display:flex;gap:10px">
-                <button class="btn btn-gold" onclick="lanzarCampana()" id="btn-campana">🚀 Lanzar Campaña</button>
-                <button class="btn btn-outline" onclick="actualizarPreview()">👁 Preview</button>
-              </div>
-              <div id="camp-result" style="margin-top:14px;display:none;font-family:var(--font-head);font-size:13px;font-weight:600"></div>
-            </div>
-          </div>
-        </div>
-        <div>
-          <div class="card">
-            <div class="card-header"><div class="card-title">👁 Preview del Mensaje</div></div>
-            <div style="padding:18px"><div class="camp-preview" id="camp-preview">Selecciona un producto...</div></div>
-          </div>
-          <div class="card mt16">
-            <div class="card-header"><div class="card-title">📋 Historial de Campañas</div></div>
-            <table><thead><tr><th>Fecha</th><th>Producto</th><th>Enviados</th></tr></thead>
-            <tbody id="historial-campanas"><tr><td colspan="3" style="text-align:center;color:var(--muted)">Sin campañas aún</td></tr></tbody></table>
-          </div>
-        </div>
-      </div>
-    </div>
-
+    <div class="pg-content" id="pgc"></div>
   </div>
-</main>
+</div>
+
 <div class="toast" id="toast"></div>
+
 <script>
-const BOT_URL='http://TU-IP-VPS:3001';
-let DATA={conversaciones:[],clientes:[],ventas:[],tokens:[]};
-let PRODUCTOS=[
-  {sku:'NPK-001',emoji:'🍊',nombre:'Naranja para Jugo Premium – Malla 10 kg',descripcion:'Directo de Mayorista. Calidad de exportación.',precio:35,precioSuper:52,tokens:35,activo:true},
-  {sku:'NPK-002',emoji:'🍊',nombre:'Mandarina Clementina – Caja 15 kg',descripcion:'Jugosa y sin semillas.',precio:45,precioSuper:68,tokens:45,activo:false},
-  {sku:'NPK-003',emoji:'🌭',nombre:'Salchicha Frankfurter',descripcion:'Directo de Candy Market (fábrica).',precio:15.9,precioSuper:44,tokens:16,activo:false},
-  {sku:'NPK-004',emoji:'🥑',nombre:'Palta Hass – Caja 10 kg',descripcion:'Lista para consumo. Calibre premium.',precio:65,precioSuper:95,tokens:65,activo:false},
+/* ─── STATE ─────────────────────────────────────────── */
+let ROL = 'admin', USR = null, _spd = false, _cnt = 3;
+let _deferredPrompt = null;
+
+const USERS = {
+  admin:    { name:'Ernesto Piskulich', rol:'admin',    av:'🛡️', lbl:'Administrador' },
+  conductor:{ name:'Carlos Huanca',    rol:'conductor', av:'🚗', lbl:'Conductor' },
+  cliente:  { name:'Rosa Mamani',      rol:'cliente',   av:'🛒', lbl:'Cliente VIP' },
+  inversor: { name:'Marco Rivadeneira',rol:'inversor',  av:'💎', lbl:'Inversionista' },
+};
+
+const CONDUCTORES = [
+  { id:'C001', nm:'Carlos Huanca',  pl:'ABC-123', st:'En ruta',    doc:'OK',      vel:48, rt:'SJL→San Borja' },
+  { id:'C002', nm:'Pedro Quispe',   pl:'DEF-456', st:'Disponible', doc:'OK',      vel:0,  rt:'—' },
+  { id:'C003', nm:'Luis Mamani',    pl:'GHI-789', st:'En ruta',    doc:'Vencido', vel:67, rt:'SJL→Surco' },
+  { id:'C004', nm:'Ana Flores',     pl:'JKL-012', st:'Entregando', doc:'OK',      vel:12, rt:'SJL→Miraflores' },
 ];
-const TABS=['dashboard','conversaciones','clientes','ventas','productos','campana'];
-const TITLES={dashboard:'Dashboard',conversaciones:'Conversaciones',clientes:'Clientes',ventas:'Ventas del Día',productos:'Productos',campana:'Lanzar Campaña'};
-function showTab(n){document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));document.querySelectorAll('.nav-item').forEach(i=>i.classList.remove('active'));document.getElementById('tab-'+n).classList.add('active');document.querySelectorAll('.nav-item')[TABS.indexOf(n)].classList.add('active');document.getElementById('page-title').textContent=TITLES[n];}
-function updateClock(){document.getElementById('clock').textContent=new Date().toLocaleTimeString('es-PE',{hour:'2-digit',minute:'2-digit',second:'2-digit'});}
-setInterval(updateClock,1000);updateClock();
-async function cargarDatos(){try{const r=await fetch(`${BOT_URL}/api/datos`,{signal:AbortSignal.timeout(4000)});if(r.ok){DATA=await r.json();renderTodo();document.getElementById('last-update').textContent='Actualizado '+new Date().toLocaleTimeString('es-PE',{hour:'2-digit',minute:'2-digit'});return;}}catch(e){}cargarDemo();}
-function cargarDemo(){const h=new Date().toLocaleDateString('es-PE');DATA.conversaciones=[{fecha:h,tipo:'lead',numero:'51987654321',nombre:'Ernesto Piskulich',estado:'NUEVO',mensaje:'Hola',respuesta:'¡Hola! 👋 Soy Karla de Neo Pisk 🛒'},{fecha:h,tipo:'conversacion',numero:'51912345678',nombre:'Rosa Mamani',estado:'ACTIVO',mensaje:'Cuánto cuesta la naranja',respuesta:'🍊 Naranja para Jugo a S/ 35.00/malla 10kg'},{fecha:h,tipo:'conversacion',numero:'51923456789',nombre:'Carlos Huanca',estado:'ACTIVO',mensaje:'Quiero 2 mallas',respuesta:'¡Perfecto Carlos! 🎉 Son 2 x S/ 35.00 = S/ 70.00'},{fecha:h,tipo:'followup',numero:'51934567890',nombre:'Ana Villanueva',estado:'FOLLOWUP',mensaje:'[Auto-followup]',respuesta:'Hola Ana! 🔥 Hoy tenemos Cabanossi...'},{fecha:h,tipo:'conversacion',numero:'51945678901',nombre:'María García',estado:'ACTIVO',mensaje:'Yape al toque',respuesta:'Perfecto! 🟣 Yape al 987 654 321'}];DATA.clientes=[{id:'CLI-001',nombre:'Carlos Huanca Flores',wa:'51934567890',tokens:500,registro:'01/01/2024',activo:true},{id:'CLI-002',nombre:'Ernesto Piskulich',wa:'51987654321',tokens:350,registro:'15/01/2024',activo:true},{id:'CLI-003',nombre:'Ana Villanueva Ramos',wa:'51945678901',tokens:210,registro:'01/02/2024',activo:true},{id:'CLI-004',nombre:'María García López',wa:'51923456789',tokens:120,registro:'03/02/2024',activo:true},{id:'CLI-005',nombre:'Rosa Mamani Quispe',wa:'51912345678',tokens:80,registro:'01/03/2024',activo:true}];DATA.ventas=[{id:'VTA-001',fecha:h,cliente:'Ernesto Piskulich',producto:'Naranja Jugo',total:'S/ 35.00',estado:'Validado'},{id:'VTA-002',fecha:h,cliente:'Carlos Huanca',producto:'Palta Hass',total:'S/ 65.00',estado:'Validado'},{id:'VTA-003',fecha:h,cliente:'Rosa Mamani',producto:'Salchicha',total:'S/ 47.70',estado:'Pendiente'},{id:'VTA-004',fecha:h,cliente:'María García',producto:'Naranja Jugo',total:'S/ 70.00',estado:'Validado'}];renderTodo();document.getElementById('last-update').textContent='Modo demo — conecta el servidor';}
-function renderTodo(){renderKPIs();renderFeedDashboard();renderTopClientes();renderProductoActivo();renderFeedConversaciones();renderTablaClientes();renderTablaVentas();renderProductGrid();renderCampanaOptions();}
-function renderKPIs(){const h=new Date().toLocaleDateString('es-PE');const v=DATA.ventas.filter(x=>x.fecha===h);const t=v.reduce((s,x)=>s+(parseFloat(String(x.total||'').replace('S/ ','').replace(',',''))||0),0);document.getElementById('kpi-ventas').textContent=`S/ ${t.toFixed(2)}`;document.getElementById('kpi-ventas-sub').textContent=`${v.length} pedidos hoy`;document.getElementById('kpi-clientes').textContent=DATA.clientes.length;document.getElementById('kpi-tokens').textContent=DATA.clientes.reduce((s,c)=>s+(parseInt(c.tokens)||0),0).toLocaleString();document.getElementById('kpi-mensajes').textContent=DATA.conversaciones.filter(c=>c.fecha===h).length;}
-const TIPO_CHIP={conversacion:'<span class="chip chip-blue" style="font-size:9px">Chat</span>',lead:'<span class="chip chip-green" style="font-size:9px">Nuevo</span>',followup:'<span class="chip chip-orange" style="font-size:9px">Followup</span>',optout:'<span class="chip chip-red" style="font-size:9px">Opt-out</span>'};
-function chatItemHTML(c){return`<div class="chat-item"><div class="avatar">${(c.nombre||'?')[0].toUpperCase()}</div><div><div style="display:flex;align-items:center;gap:8px;margin-bottom:4px"><div class="chat-name">${c.nombre||c.numero||'?'}</div>${TIPO_CHIP[c.tipo]||''}</div><div class="chat-msg">💬 ${c.mensaje||'—'}</div>${c.respuesta?`<div class="chat-resp">🤖 ${c.respuesta}</div>`:''}</div><div class="chat-time">${c.fecha||''}</div></div>`;}
-function renderFeedDashboard(){const el=document.getElementById('feed-dashboard');const items=[...DATA.conversaciones].reverse().slice(0,8);el.innerHTML=items.length?items.map(chatItemHTML).join(''):'<div style="padding:24px;text-align:center;color:var(--muted)">Sin conversaciones aún</div>';}
-function renderFeedConversaciones(){const el=document.getElementById('feed-conversaciones');const q=(document.getElementById('search-conv')?.value||'').toLowerCase();const t=document.getElementById('filter-tipo')?.value||'';const items=[...DATA.conversaciones].reverse().filter(c=>(!q||(c.nombre||'').toLowerCase().includes(q)||(c.mensaje||'').toLowerCase().includes(q))&&(!t||c.tipo===t));el.innerHTML=items.length?items.map(chatItemHTML).join(''):'<div style="padding:24px;text-align:center;color:var(--muted)">Sin resultados</div>';}
-function filtrarConversaciones(){renderFeedConversaciones();}
-function renderTopClientes(){const s=[...DATA.clientes].sort((a,b)=>(b.tokens||0)-(a.tokens||0)).slice(0,5);const n=t=>t>=500?'🥇 Gold':t>=200?'🥈 Silver':'🥉 Bronze';document.getElementById('top-clientes').innerHTML=s.map(c=>`<tr><td class="bold">${c.nombre}</td><td><span class="token-val">🪙 ${(c.tokens||0).toLocaleString()}</span></td><td>${n(c.tokens||0)}</td></tr>`).join('');}
-function renderProductoActivo(){const p=PRODUCTOS.find(x=>x.activo)||PRODUCTOS[0];document.getElementById('producto-activo-card').innerHTML=`<div style="font-size:26px;margin-bottom:8px">${p.emoji}</div><div style="font-family:var(--font-head);font-weight:700;font-size:14px;margin-bottom:3px">${p.nombre}</div><div style="font-size:11px;color:var(--muted);margin-bottom:12px">${p.descripcion}</div><div style="display:flex;gap:8px;flex-wrap:wrap"><span class="chip chip-green">S/ ${p.precio.toFixed(2)}</span><span class="chip chip-gold">+${p.tokens} tokens</span><span class="chip chip-muted">Súper: S/ ${p.precioSuper.toFixed(2)}</span></div>`;}
-function renderTablaClientes(datos){const r=datos||DATA.clientes;const n=t=>t>=500?'<span class="chip chip-gold">🥇 Gold</span>':t>=200?'<span class="chip chip-green">🥈 Silver</span>':'<span class="chip chip-muted">🥉 Bronze</span>';document.getElementById('tabla-clientes').innerHTML=r.map(c=>`<tr><td style="color:var(--muted)">${c.id||'—'}</td><td class="bold">${c.nombre}</td><td style="color:var(--muted)">${c.wa||'—'}</td><td><span class="token-val">🪙 ${(c.tokens||0).toLocaleString()}</span></td><td>${n(c.tokens||0)}</td><td style="color:var(--muted)">${c.registro||'—'}</td><td>${c.activo!==false?'<span class="chip chip-green">Activo</span>':'<span class="chip chip-red">Inactivo</span>'}</td></tr>`).join('')||'<tr><td colspan="7" style="text-align:center;color:var(--muted)">Sin datos</td></tr>';}
-function filtrarClientes(){const q=document.getElementById('search-cli').value.toLowerCase();renderTablaClientes(DATA.clientes.filter(c=>(c.nombre||'').toLowerCase().includes(q)||(c.wa||'').includes(q)));}
-function renderTablaVentas(datos){const r=datos||DATA.ventas;const chip=e=>e==='Validado'?'<span class="chip chip-green">✓ Validado</span>':e==='Pendiente'?'<span class="chip chip-orange">⏳ Pendiente</span>':'<span class="chip chip-muted">'+e+'</span>';document.getElementById('tabla-ventas').innerHTML=r.map(v=>`<tr><td><span class="chip chip-gold">${v.id||'—'}</span></td><td style="color:var(--muted)">${v.fecha||'—'}</td><td class="bold">${v.cliente||'—'}</td><td>${v.producto||'—'}</td><td style="color:var(--green);font-weight:700;font-family:var(--font-head)">${v.total||'—'}</td><td>${chip(v.estado||'')}</td></tr>`).join('')||'<tr><td colspan="6" style="text-align:center;color:var(--muted)">Sin ventas</td></tr>';}
-function filtrarVentas(){const e=document.getElementById('filter-venta').value;renderTablaVentas(e?DATA.ventas.filter(v=>v.estado===e):null);}
-function renderProductGrid(){document.getElementById('product-grid').innerHTML=PRODUCTOS.map(p=>`<div class="product-card ${p.activo?'selected':''}" onclick="seleccionarProducto('${p.sku}')">${p.activo?'<span class="sel-badge">✓ ACTIVO</span>':''}<div class="product-emoji">${p.emoji}</div><div class="product-name">${p.nombre}</div><div class="product-desc">${p.descripcion}</div><div class="price-row"><span class="price-tag price-neo">S/ ${p.precio.toFixed(2)}</span><span class="price-tag price-super">S/ ${p.precioSuper.toFixed(2)}</span><span class="price-tag price-save">Ahorras S/ ${(p.precioSuper-p.precio).toFixed(2)}</span></div></div>`).join('');}
-function renderCampanaOptions(){const s=document.getElementById('camp-producto');if(!s)return;s.innerHTML=PRODUCTOS.map(p=>`<option value="${p.sku}" ${p.activo?'selected':''}>${p.emoji} ${p.nombre} — S/ ${p.precio}</option>`).join('');document.getElementById('camp-total').textContent=DATA.clientes.filter(c=>c.activo!==false).length;actualizarPreview();}
-function seleccionarProducto(sku){PRODUCTOS.forEach(p=>p.activo=p.sku===sku);renderProductGrid();renderProductoActivo();toast('✅ Producto seleccionado: '+PRODUCTOS.find(p=>p.sku===sku)?.nombre);}
-function guardarProducto(){const p=PRODUCTOS.find(x=>x.activo);if(!p)return toast('Selecciona un producto',true);toast('✅ '+p.nombre+' activado como producto del día');}
-function agregarProducto(){const sku=document.getElementById('p-sku').value.trim();const nombre=document.getElementById('p-nombre').value.trim();const desc=document.getElementById('p-desc').value.trim();const emoji=document.getElementById('p-emoji').value.trim()||'📦';const precio=parseFloat(document.getElementById('p-precio').value)||0;const sup=parseFloat(document.getElementById('p-super').value)||0;const toks=parseInt(document.getElementById('p-tokens').value)||Math.round(precio);if(!sku||!nombre||!precio)return toast('Rellena SKU, nombre y precio',true);PRODUCTOS.push({sku,nombre,descripcion:desc,emoji,precio,precioSuper:sup,tokens:toks,activo:false});renderProductGrid();renderCampanaOptions();toast('Producto '+nombre+' agregado');}
-function actualizarPreview(){const sku=document.getElementById('camp-producto')?.value;const p=PRODUCTOS.find(x=>x.sku===sku)||PRODUCTOS[0];if(!p)return;const manual=document.getElementById('camp-mensaje')?.value?.trim();const ahorro=(p.precioSuper-p.precio).toFixed(2);document.getElementById('camp-preview').textContent=manual||`¡Hola {nombre}! 👋 Soy Karla de Neo Pisk.\n\n${p.emoji} Hoy tenemos *${p.nombre}*\n_${p.descripcion}_\n\n📦 *S/ ${p.precio.toFixed(2)}* _(súper: S/ ${p.precioSuper.toFixed(2)})_\n💰 Ahorras *S/ ${ahorro}*\n✅ Incluye *${p.tokens} Tokens Pisk* 🪙\n\n¿Te anoto una? Responde *SÍ* 👇`;}
-async function lanzarCampana(){const btn=document.getElementById('btn-campana');const sku=document.getElementById('camp-producto').value;const p=PRODUCTOS.find(x=>x.sku===sku);if(!p)return toast('Selecciona un producto',true);const total=DATA.clientes.filter(c=>c.activo!==false).length;if(!confirm(`¿Enviar a ${total} clientes?`))return;btn.disabled=true;btn.textContent='⏳ Enviando...';document.getElementById('progress-bar').style.display='block';const fill=document.getElementById('progress-fill');let pct=0;const iv=setInterval(()=>{pct=Math.min(pct+Math.random()*15,95);fill.style.width=pct+'%';},400);try{const r=await fetch(`${BOT_URL}/api/campana`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({sku}),signal:AbortSignal.timeout(30000)});clearInterval(iv);fill.style.width='100%';const d=r.ok?await r.json():{enviados:total,errores:0};document.getElementById('camp-result').style.display='block';document.getElementById('camp-result').innerHTML=`<span style="color:var(--green)">✅ ${d.enviados} mensajes enviados</span>`;toast(`🚀 Campaña enviada a ${d.enviados} clientes`);const hoy=new Date().toLocaleDateString('es-PE');document.getElementById('historial-campanas').innerHTML=`<tr><td>${hoy}</td><td>${p.nombre}</td><td>${d.enviados}</td></tr>`+document.getElementById('historial-campanas').innerHTML;}catch(e){clearInterval(iv);fill.style.width='100%';document.getElementById('camp-result').style.display='block';document.getElementById('camp-result').innerHTML=`<span style="color:var(--orange)">⚠️ Sin backend. Enviaría a ${total} clientes.</span>`;toast('Conecta el servidor para enviar campañas reales',true);}finally{setTimeout(()=>{btn.disabled=false;btn.textContent='🚀 Lanzar Campaña';document.getElementById('progress-bar').style.display='none';fill.style.width='0%';},1500);}}
-function recargarTodo(){cargarDatos();toast('Datos actualizados');}
-function toast(msg,error=false){const t=document.getElementById('toast');t.textContent=msg;t.className='toast'+(error?' error':'')+' show';setTimeout(()=>t.classList.remove('show'),3200);}
-cargarDatos();setInterval(cargarDatos,30000);
+
+const PEDIDOS = [
+  { id:'P001', cli:'Rosa Mamani',   prod:'Naranja 10kg',  zona:'San Borja', st:'Listo',    kg:10 },
+  { id:'P002', cli:'María García',  prod:'Palta Hass',    zona:'San Borja', st:'Listo',    kg:8  },
+  { id:'P003', cli:'Luis Torres',   prod:'Naranja 10kg',  zona:'Surco',     st:'Listo',    kg:10 },
+  { id:'P004', cli:'Carmen Ríos',   prod:'Salchicha 2kg', zona:'San Borja', st:'Listo',    kg:2  },
+  { id:'P005', cli:'Jorge Castro',  prod:'Naranja 10kg',  zona:'San Borja', st:'Listo',    kg:10 },
+  { id:'P006', cli:'Sofía Vera',    prod:'Mango caja',    zona:'Surco',     st:'En ruta',  kg:5  },
+  { id:'P007', cli:'Patricia N.',   prod:'Naranja 10kg',  zona:'San Borja', st:'Entregado',kg:10 },
+];
+
+const RUTAS = [
+  { id:'R001', dst:'San Borja',   pago:50, kg:45, ped:10, ok:true  },
+  { id:'R002', dst:'Surco',       pago:55, kg:38, ped:10, ok:true  },
+  { id:'R003', dst:'Miraflores',  pago:60, kg:50, ped:8,  ok:false },
+];
+
+const VEHICULOS_INV = [
+  { id:'V001', placa:'ABC-123', tipo:'Nissan Sentra', conductor:'Carlos Huanca', inversion:8000, ganancia_dia:150, roi:22.5, rutas_mes:62, estado:'Activo' },
+  { id:'V002', placa:'XYZ-789', tipo:'Toyota Yaris',  conductor:'Ana Flores',   inversion:9500, ganancia_dia:120, roi:18.9, rutas_mes:51, estado:'Activo' },
+  { id:'V003', placa:'MNO-456', tipo:'Kia Rio',       conductor:'—',             inversion:7500, ganancia_dia:0,   roi:0,    rutas_mes:0,  estado:'En mantenimiento' },
+];
+
+/* ─── PWA ───────────────────────────────────────────── */
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault();
+  _deferredPrompt = e;
+  document.getElementById('pwa-banner').classList.add('show');
+});
+
+function installPWA() {
+  if (_deferredPrompt) {
+    _deferredPrompt.prompt();
+    _deferredPrompt.userChoice.then(() => {
+      _deferredPrompt = null;
+      document.getElementById('pwa-banner').classList.remove('show');
+    });
+  }
+}
+
+/* ─── SIDEBAR (mobile) ──────────────────────────────── */
+function openSb() {
+  document.getElementById('sidebar').classList.add('open');
+  document.getElementById('sb-overlay').classList.add('on');
+  document.body.style.overflow = 'hidden';
+}
+function closeSb() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sb-overlay').classList.remove('on');
+  document.body.style.overflow = '';
+}
+
+/* ─── LOGIN ─────────────────────────────────────────── */
+function selRol(r, el) {
+  ROL = r;
+  document.querySelectorAll('.rtab').forEach(t => t.classList.remove('on'));
+  el.classList.add('on');
+  const hints = {
+    admin:'ernesto@neopisk.com',
+    conductor:'carlos@neopisk.com',
+    cliente:'rosa@gmail.com',
+    inversor:'marco@inversiones.pe'
+  };
+  document.getElementById('lu').placeholder = hints[r];
+}
+
+function doLogin() {
+  const p = document.getElementById('lp').value.trim();
+  if (p !== '123') { toast('Contraseña incorrecta ✗', 'err'); return; }
+  USR = USERS[ROL];
+  document.getElementById('uav').textContent = USR.av;
+  document.getElementById('unm').textContent = USR.name;
+  document.getElementById('url').textContent = USR.lbl;
+  document.getElementById('s-login').classList.remove('on');
+  document.getElementById('s-app').classList.add('on');
+  buildNav();
+
+  setInterval(() => {
+    document.getElementById('tbclk').textContent =
+      new Date().toLocaleTimeString('es-PE',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+  }, 1000);
+  toast('Bienvenido, ' + USR.name.split(' ')[0] + ' 👋');
+}
+
+function doOut() {
+  clearInterval(window._spdInt);
+  closeSb();
+  document.getElementById('s-app').classList.remove('on');
+  document.getElementById('s-login').classList.add('on');
+  document.getElementById('lp').value = '';
+  toast('Sesión cerrada correctamente');
+}
+
+/* ─── NAV CONFIG ────────────────────────────────────── */
+const NAVS = {
+  admin: [
+    { sec:'Operaciones' },
+    { id:'dash',   ic:'📊', lb:'Dashboard' },
+    { id:'mapa',   ic:'🗺️',  lb:'Mapa en Vivo', bdg:'3' },
+    { id:'conds',  ic:'🚗', lb:'Conductores' },
+    { id:'bunker', ic:'📦', lb:'Búnker · Pedidos' },
+    { sec:'Gestión' },
+    { id:'liq',    ic:'💰', lb:'Liquidación' },
+    { id:'schema', ic:'🗄️', lb:'Base de Datos' },
+    { id:'algo',   ic:'⚙️', lb:'Algoritmo' },
+  ],
+  conductor: [
+    { sec:'Mi Trabajo' },
+    { id:'mkt',    ic:'🛣️', lb:'Marketplace Rutas' },
+    { id:'miruta', ic:'📍', lb:'Mi Ruta Activa' },
+    { id:'docs',   ic:'📋', lb:'Mis Documentos' },
+    { id:'estiba', ic:'📦', lb:'Estiba Digital' },
+    { sec:'Mi Cuenta' },
+    { id:'mpagos', ic:'💵', lb:'Mis Pagos' },
+  ],
+  cliente: [
+    { sec:'Mis Pedidos' },
+    { id:'mpeds',  ic:'🛒', lb:'Mis Pedidos' },
+    { id:'track',  ic:'📍', lb:'Tracking' },
+    { sec:'Mi Cuenta' },
+    { id:'ahorro', ic:'💰', lb:'Mi Ahorro' },
+    { id:'tokens', ic:'🪙', lb:'Tokens Pisk' },
+  ],
+  inversor: [
+    { sec:'Mi Portafolio' },
+    { id:'inv_dash', ic:'💎', lb:'Dashboard Inversor' },
+    { id:'inv_veh',  ic:'🚗', lb:'Mis Vehículos' },
+    { id:'inv_roi',  ic:'📈', lb:'ROI & Ganancias' },
+    { sec:'Reportes' },
+    { id:'inv_hist', ic:'📅', lb:'Historial Rutas' },
+    { id:'inv_tok',  ic:'🪙', lb:'Tokens Invertidos' },
+  ],
+};
+
+const TITLES = {
+  dash:'Dashboard General', mapa:'Mapa en Vivo · GPS', conds:'Conductores',
+  bunker:'Búnker · Pedidos Acumulados', liq:'Liquidación Automática',
+  schema:'Modelo de Base de Datos', algo:'Algoritmo de Asignación',
+  mkt:'Marketplace de Rutas', miruta:'Mi Ruta Activa',
+  docs:'Mis Documentos', estiba:'Estiba Digital', mpagos:'Mis Pagos',
+  mpeds:'Mis Pedidos', track:'Tracking de Envío',
+  ahorro:'Mi Ahorro', tokens:'Tokens Pisk',
+  inv_dash:'Dashboard Inversionista', inv_veh:'Mis Vehículos Financiados',
+  inv_roi:'ROI & Proyecciones', inv_hist:'Historial de Rutas',
+  inv_tok:'Tokens de Inversión',
+};
+
+function buildNav() {
+  const nav = document.getElementById('snav');
+  nav.innerHTML = '';
+  NAVS[ROL].forEach(item => {
+    if (item.sec) {
+      nav.innerHTML += `<div class="sb-sec">${item.sec}</div>`;
+    } else {
+      nav.innerHTML += `<div class="sb-i" data-v="${item.id}" onclick="sv('${item.id}',this)">
+        <span class="sb-ic2">${item.ic}</span>${item.lb}
+        ${item.bdg ? `<span class="sb-bdg">${item.bdg}</span>` : ''}
+      </div>`;
+    }
+  });
+  const first = NAVS[ROL].find(x => x.id);
+  if (first) {
+    const el = nav.querySelector(`[data-v="${first.id}"]`);
+    sv(first.id, el);
+  }
+}
+
+function sv(id, el) {
+  document.querySelectorAll('.sb-i').forEach(x => x.classList.remove('on'));
+  if (el) el.classList.add('on');
+  document.getElementById('tbttl').textContent = TITLES[id] || id;
+  const V = {
+    dash:vDash, mapa:vMapa, conds:vConds, bunker:vBunker,
+    liq:vLiq, schema:vSchema, algo:vAlgo,
+    mkt:vMkt, miruta:vMiRuta, docs:vDocs, estiba:vEstiba, mpagos:vMpagos,
+    mpeds:vMpeds, track:vTrack, ahorro:vAhorro, tokens:vTokens,
+    inv_dash:vInvDash, inv_veh:vInvVeh, inv_roi:vInvRoi,
+    inv_hist:vInvHist, inv_tok:vInvTok,
+  };
+  document.getElementById('pgc').innerHTML = V[id] ? V[id]() : `<div style="padding:60px;text-align:center;color:var(--muted)"><div style="font-size:40px;margin-bottom:12px">🚧</div>Vista en desarrollo</div>`;
+  closeSb();
+}
+
+/* ─── VIEWS: ADMIN ──────────────────────────────────── */
+function vDash() {
+  return `
+<div class="krow k4">
+  <div class="kpi cor"><div class="kb"></div><div class="ki">🚗</div><div class="kl">Conductores Activos</div><div class="kv">3</div><div class="ks">de 4 registrados</div></div>
+  <div class="kpi cgr"><div class="kb"></div><div class="ki">📦</div><div class="kl">Pedidos en Búnker</div><div class="kv">7</div><div class="ks">2 rutas casi listas</div></div>
+  <div class="kpi cbl"><div class="kb"></div><div class="ki">💰</div><div class="kl">Ganancia Hoy</div><div class="kv">S/ 450</div><div class="ks">3 rutas completadas</div></div>
+  <div class="kpi crd"><div class="kb"></div><div class="ki">⚠️</div><div class="kl">Alertas Activas</div><div class="kv">2</div><div class="ks">velocidad + docs</div></div>
+</div>
+<div class="g2">
+  <div>
+    <div class="card">
+      <div class="ch"><div class="ct">🚨 Alertas en Tiempo Real</div><span class="pill p-rd">2 activas</span></div>
+      <div class="cb">
+        <div class="s-alert">
+          <div class="sa-ic">🚨</div>
+          <div><div class="sa-ttl">Luis Mamani · GHI-789 · 67 km/h</div><div class="sa-body">Ruta SJL→Surco · Riesgo fotomulta · Hace 2 min</div></div>
+        </div>
+        <div class="s-alert" style="border-color:var(--yl);background:var(--yl-bg)">
+          <div class="sa-ic">📋</div>
+          <div><div class="sa-ttl" style="color:var(--yl)">Luis Mamani · Docs vencidos</div><div class="sa-body" style="color:var(--yl)">CITV vencida 01/01/2025 · Bloquear nueva ruta</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ch"><div class="ct">📊 Liquidaciones de Hoy</div></div>
+      <div class="tw"><table>
+        <thead><tr><th>Conductor</th><th>Ruta</th><th>Pago</th><th>Neo Pisk</th><th>Estado</th></tr></thead>
+        <tbody>
+          <tr><td class="bo">Carlos H.</td><td>SJL→San Borja</td><td style="color:var(--gr);font-family:var(--fh);font-weight:700">S/ 50</td><td style="color:var(--or);font-family:var(--fh);font-weight:700">S/ 150</td><td><span class="chip cgr2">Acreditado</span></td></tr>
+          <tr><td class="bo">Ana Flores</td><td>SJL→Miraflores</td><td style="color:var(--gr);font-family:var(--fh);font-weight:700">S/ 60</td><td style="color:var(--or);font-family:var(--fh);font-weight:700">S/ 150</td><td><span class="chip cyl2">En proceso</span></td></tr>
+          <tr><td class="bo">Pedro Q.</td><td>SJL→Surco</td><td style="color:var(--muted)">S/ 55</td><td style="color:var(--muted)">S/ 150</td><td><span class="chip cmu">Pendiente</span></td></tr>
+        </tbody>
+      </table></div>
+    </div>
+  </div>
+  <div>
+    <div class="card">
+      <div class="ch"><div class="ct">🗺️ Flota en Vivo</div><span class="pill p-or">3 activos</span></div>
+      <div class="cb" style="padding:10px">
+        <div class="mapbox">
+          <div class="map-roads"></div>
+          <div class="map-center" style="opacity:.25"><div style="font-size:42px">🗺️</div><div style="font-size:12px;font-weight:600">Lima Metropolitana</div></div>
+          <div class="map-car" id="mc1" style="left:22%;top:32%">🚗</div>
+          <div class="map-car" id="mc2" style="left:58%;top:58%">🚙</div>
+          <div class="map-car" id="mc3" style="left:72%;top:36%">🔴</div>
+          <div class="map-pin" style="left:9%;top:18%;font-size:20px">🏭</div>
+          <div class="map-leg">
+            <div style="font-family:var(--fh);font-weight:700;font-size:10px;margin-bottom:4px">Flota GPS</div>
+            <div>🚗 Carlos · 48 km/h ✓</div>
+            <div>🚙 Ana · 12 km/h ✓</div>
+            <div style="color:var(--rd)">🔴 Luis · 67 km/h ⚠️</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ch"><div class="ct">⚡ Lógica 10×50 · Progreso</div></div>
+      <div class="cb">
+        <div style="margin-bottom:14px">
+          <div style="display:flex;justify-content:space-between;margin-bottom:5px"><span style="font-size:11px;color:var(--muted)">SJL → San Borja</span><span class="chip cor2">7/10</span></div>
+          <div class="ptrack"><div class="pbar" style="width:70%;background:var(--or)"></div></div>
+          <div class="plbl">S/ 350 acumulado · <strong style="color:var(--or)">Activando...</strong></div>
+        </div>
+        <div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:5px"><span style="font-size:11px;color:var(--muted)">SJL → Surco</span><span class="chip cgr2">10/10</span></div>
+          <div class="ptrack"><div class="pbar" style="width:100%;background:var(--gr)"></div></div>
+          <div class="plbl">S/ 550 · <strong style="color:var(--gr)">¡Ruta Activa!</strong></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>`;
+}
+
+function vMapa() {
+  return `
+<div class="krow k3">
+  <div class="kpi cgr"><div class="kb"></div><div class="ki">🚗</div><div class="kl">En Ruta</div><div class="kv">2</div><div class="ks">Carlos + Luis</div></div>
+  <div class="kpi cor"><div class="kb"></div><div class="ki">📦</div><div class="kl">Entregando</div><div class="kv">1</div><div class="ks">Ana Flores</div></div>
+  <div class="kpi crd"><div class="kb"></div><div class="ki">⚠️</div><div class="kl">Alerta Vel.</div><div class="kv">1</div><div class="ks">67 km/h · Surco</div></div>
+</div>
+<div class="g2">
+  <div>
+    <div class="card">
+      <div class="ch"><div class="ct">🗺️ Mapa en Vivo · GPS</div><span class="pill p-gr">● Sincronizado</span></div>
+      <div class="cb" style="padding:10px">
+        <div class="mapbox" style="height:350px">
+          <div class="map-roads"></div>
+          <div class="map-center" style="opacity:.2"><div style="font-size:52px">🗺️</div><div style="font-size:13px;font-weight:600">Lima Metropolitana</div><div style="font-size:10px">Búnker SJL ↔ Distritos</div></div>
+          <div class="map-car" style="left:18%;top:25%">🚗</div>
+          <div class="map-car" style="left:62%;top:62%">🚙</div>
+          <div class="map-car" style="left:74%;top:38%">🔴</div>
+          <div class="map-pin" style="left:7%;top:14%;font-size:22px">🏭</div>
+          <div class="map-leg" style="right:12px;left:auto">
+            <div style="font-family:var(--fh);font-weight:700;font-size:10px;margin-bottom:5px">Leyenda GPS</div>
+            <div>🏭 Búnker SJL</div>
+            <div>🚗 En ruta OK</div>
+            <div style="color:var(--rd)">🔴 Alerta velocidad</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div class="card">
+      <div class="ch"><div class="ct">📡 Telemetría GPS</div></div>
+      <div class="cb">
+        ${CONDUCTORES.filter(c=>c.st!=='Disponible').map(c=>`
+        <div style="padding:11px;background:${c.vel>60?'var(--rd-bg)':'var(--s2)'};border-radius:10px;margin-bottom:9px;border:1.5px solid ${c.vel>60?'var(--rd)':'var(--border)'}">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+            <div style="font-family:var(--fh);font-weight:700;font-size:12px">${c.nm}</div>
+            <span class="chip ${c.vel>60?'crd2':c.vel>40?'cor2':'cgr2'}">${c.vel} km/h</span>
+          </div>
+          <div style="font-size:10px;color:var(--muted);margin-bottom:7px">Placa: ${c.pl} · ${c.rt}</div>
+          <div class="ptrack"><div class="pbar" style="width:${c.vel}%;background:${c.vel>60?'var(--rd)':c.vel>40?'var(--or)':'var(--gr)'}"></div></div>
+          ${c.vel>60?`<div style="font-size:10px;color:var(--rd);font-weight:600;margin-top:5px">🚨 ALERTA: Riesgo fotomulta</div>`:`<div style="font-size:10px;color:var(--gr);margin-top:5px">✅ Velocidad segura</div>`}
+        </div>`).join('')}
+      </div>
+    </div>
+    <div class="card">
+      <div class="ch"><div class="ct">🔗 Anti-fraude GPS</div><span class="pill p-gr">Activo</span></div>
+      <div class="cb">
+        <div style="font-size:11px;color:var(--text2);margin-bottom:12px;line-height:1.6">Sistema cruza GPS del celular con ID del dispositivo instalado en el vehículo.</div>
+        ${CONDUCTORES.map(c=>`
+        <div style="display:flex;align-items:center;gap:9px;padding:8px 0;border-bottom:1px solid var(--border)">
+          <span style="font-size:14px">🚗</span>
+          <div style="flex:1"><div style="font-size:12px;font-weight:600;font-family:var(--fh)">${c.nm}</div><div style="font-size:10px;color:var(--muted)">${c.pl}</div></div>
+          <span class="chip cgr2" style="font-size:9px">✓ Match</span>
+        </div>`).join('')}
+      </div>
+    </div>
+  </div>
+</div>`;
+}
+
+function vConds() {
+  return `
+<div class="card">
+  <div class="ch"><div class="ct">🚗 Red de Conductores Neo Pisk</div><button class="btn bor bsm" onclick="toast('Invitación enviada por WhatsApp 📱')">+ Agregar Conductor</button></div>
+  <div class="tw"><table>
+    <thead><tr><th>Conductor</th><th>Placa</th><th>Estado</th><th>Docs</th><th>Velocidad</th><th>Ruta</th><th>Acción</th></tr></thead>
+    <tbody>
+      ${CONDUCTORES.map(c=>`
+      <tr>
+        <td class="bo">${c.nm}</td>
+        <td style="font-family:var(--fh);font-weight:700">${c.pl}</td>
+        <td><span class="chip ${c.st==='En ruta'?'cbl2':c.st==='Disponible'?'cgr2':'cor2'}">${c.st}</span></td>
+        <td><span class="chip ${c.doc==='OK'?'cgr2':'crd2'}">${c.doc==='OK'?'✓ Vigente':'✗ Vencido'}</span></td>
+        <td><span class="chip ${c.vel>60?'crd2':c.vel>0?'cor2':'cmu'}">${c.vel>0?c.vel+' km/h':'Estático'}</span></td>
+        <td style="color:var(--muted);font-size:10px;white-space:nowrap">${c.rt}</td>
+        <td>
+          <button class="btn bou bsm" onclick="toast('Perfil de ${c.nm}')">Ver</button>
+          ${c.doc!=='OK'?`<button class="btn brd bsm" style="margin-left:4px" onclick="toast('${c.nm} bloqueado temporalmente','wrn')">Bloquear</button>`:''}
+        </td>
+      </tr>`).join('')}
+    </tbody>
+  </table></div>
+</div>
+<div class="card">
+  <div class="ch"><div class="ct">📋 Flujo de Aprobación de Conductores</div></div>
+  <div class="cb">
+    <div class="g3">
+      ${[['1️⃣','Registro','Conductor llena datos y sube ATU, SOAT, Brevete.','var(--s2)','var(--border)'],
+         ['2️⃣','Validación','Ernesto revisa y aprueba en panel admin.','var(--or-bg)','var(--or)'],
+         ['3️⃣','Activado','Ve rutas en Marketplace y toma pedidos.','var(--gr-bg)','var(--gr)'],
+      ].map(s=>`
+      <div style="text-align:center;padding:18px 14px;background:${s[3]};border-radius:11px;border:2px solid ${s[4]}">
+        <div style="font-size:28px;margin-bottom:8px">${s[0]}</div>
+        <div style="font-family:var(--fh);font-weight:700;margin-bottom:4px;font-size:12px">${s[1]}</div>
+        <div style="font-size:10px;color:var(--muted)">${s[2]}</div>
+      </div>`).join('')}
+    </div>
+  </div>
+</div>`;
+}
+
+function vBunker() {
+  const l = PEDIDOS.filter(p=>p.st==='Listo').length;
+  return `
+<div class="krow k3">
+  <div class="kpi cor"><div class="kb"></div><div class="ki">📦</div><div class="kl">En Búnker</div><div class="kv">${l}</div><div class="ks">listos para despacho</div></div>
+  <div class="kpi cbl"><div class="kb"></div><div class="ki">🚗</div><div class="kl">En Ruta</div><div class="kv">1</div><div class="ks">Sofia Vera</div></div>
+  <div class="kpi cgr"><div class="kb"></div><div class="ki">✅</div><div class="kl">Entregados Hoy</div><div class="kv">1</div><div class="ks">Patricia N.</div></div>
+</div>
+<div class="card">
+  <div class="ch">
+    <div class="ct">📦 Búnker SJL · Pedidos Acumulados</div>
+    <div class="flex aic gc8">
+      <span class="pill p-or">${l}/10 San Borja</span>
+      <button class="btn bor bsm" onclick="toast('Ruta SJL→San Borja activada en Marketplace ✅')">Activar Ruta</button>
+    </div>
+  </div>
+  <div class="tw"><table>
+    <thead><tr><th>ID</th><th>Cliente</th><th>Producto</th><th>Zona</th><th>Peso</th><th>Estado</th></tr></thead>
+    <tbody>
+      ${PEDIDOS.map(p=>`
+      <tr>
+        <td style="font-family:var(--fh);color:var(--or);font-weight:700">${p.id}</td>
+        <td class="bo">${p.cli}</td>
+        <td>${p.prod}</td>
+        <td><span class="chip cbl2">${p.zona}</span></td>
+        <td style="color:var(--muted)">${p.kg} kg</td>
+        <td><span class="chip ${p.st==='Listo'?'cgr2':p.st==='En ruta'?'cbl2':'cor2'}">${p.st}</span></td>
+      </tr>`).join('')}
+    </tbody>
+  </table></div>
+</div>`;
+}
+
+function vLiq() {
+  const dias = ['Lun','Mar','Mié','Jue','Vie','Sáb','Dom'];
+  const vals = [150, 300, 450, 200, 150, 0, 0];
+  const max = Math.max(...vals);
+  return `
+<div class="g2">
+  <div>
+    <div class="card">
+      <div class="ch"><div class="ct">💰 Liquidación Automática · Lógica 10×50</div></div>
+      <div class="cb">
+        <div style="background:var(--s2);border-radius:10px;padding:15px;margin-bottom:16px;border:1.5px solid var(--border)">
+          <div style="font-family:var(--fh);font-weight:700;margin-bottom:9px;font-size:12px">Por cada ruta completada (10 entregas):</div>
+          <div class="lr"><div class="ll">🚗 Pago al conductor</div><div class="lv" style="color:var(--gr)">S/ 50</div></div>
+          <div class="lr"><div class="ll">🍊 Ganancia Neo Pisk</div><div class="lv" style="color:var(--or)">S/ 150</div></div>
+          <div class="lr"><div class="ll" style="font-weight:700">📦 Total facturado</div><div class="lv">S/ 200</div></div>
+        </div>
+        <div style="font-family:var(--fh);font-weight:700;margin-bottom:10px;font-size:12px">Hoy — 3 rutas completadas</div>
+        <div class="lr"><div class="ll">Carlos Huanca · SJL→San Borja</div><div class="lv" style="color:var(--gr)">S/ 50 ✓</div></div>
+        <div class="lr"><div class="ll">Pedro Quispe · SJL→Surco</div><div class="lv" style="color:var(--yl)">S/ 55 ⏳</div></div>
+        <div class="lr"><div class="ll">Ana Flores · SJL→Miraflores</div><div class="lv" style="color:var(--yl)">S/ 60 ⏳</div></div>
+        <div style="margin-top:15px;padding:13px;background:var(--or-bg);border-radius:10px;border:2px solid var(--or)">
+          <div class="lr" style="border:none;padding:0"><div class="ll" style="font-size:13px;font-weight:700;color:var(--or);font-family:var(--fh)">💰 Total Neo Pisk hoy</div><div class="lv" style="color:var(--or);font-size:22px">S/ 450</div></div>
+        </div>
+        <button class="btn bor bfu mt12" onclick="toast('Liquidaciones acreditadas vía Yape/BCP ✅')">Acreditar Todo ✓</button>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div class="card">
+      <div class="ch"><div class="ct">📊 Ingresos Semanales</div></div>
+      <div class="cb">
+        <div class="chart-bar" style="height:100px;margin-bottom:8px">
+          ${vals.map((v,i)=>`
+          <div class="bar-col">
+            <div class="bar-body" style="height:${max?Math.round(v/max*80)+20:4}px;background:${v===0?'var(--border)':i===4?'var(--or)':'var(--dark)'};opacity:${v===0?.3:1}"></div>
+            <div class="bar-lbl">${dias[i]}</div>
+          </div>`).join('')}
+        </div>
+        ${dias.map((d,i)=>`
+        <div class="lr" style="${i>=5?'opacity:.35':''}">
+          <div class="ll">${d}</div>
+          <div style="flex:1;margin:0 12px"><div class="ptrack"><div class="pbar" style="width:${max?Math.round(vals[i]/max*100):0}%;background:var(--or)"></div></div></div>
+          <div class="lv" style="color:var(--or);font-size:11px">S/ ${vals[i]}</div>
+        </div>`).join('')}
+        <div style="margin-top:14px;padding:11px;background:var(--s2);border-radius:9px;text-align:center;border:1.5px solid var(--border)">
+          <div style="font-size:9px;color:var(--muted);margin-bottom:3px;text-transform:uppercase;letter-spacing:2px;font-family:var(--fh)">Total semana</div>
+          <div style="font-family:var(--fh);font-size:26px;font-weight:800;color:var(--or)">S/ 1,250</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>`;
+}
+
+function vSchema() {
+  const tbls = [
+    { nm:'Usuarios', ic:'👤', f:[
+      ['id','UUID','PK · Auto-generado'],
+      ['nombre','VARCHAR(100)','Nombre completo'],
+      ['email','VARCHAR(150)','Único · Index'],
+      ['password_hash','VARCHAR(255)','bcrypt rounds=12'],
+      ['rol','ENUM','admin | conductor | cliente | inversor'],
+      ['activo','BOOLEAN','false hasta aprobación admin'],
+      ['created_at','TIMESTAMP','Auto'],
+    ]},
+    { nm:'Vehiculos', ic:'🚗', f:[
+      ['id','UUID','PK'],
+      ['conductor_id','UUID','FK → Usuarios.id'],
+      ['placa','VARCHAR(8)','Único'],
+      ['marca','VARCHAR(50)','Nissan/Toyota/Kia'],
+      ['soat_venc','DATE','Alerta 30 días antes'],
+      ['atu_venc','DATE','Alerta 30 días antes'],
+      ['sinotrack_id','VARCHAR(50)','ID del GPS físico'],
+    ]},
+    { nm:'Rutas', ic:'🛣️', f:[
+      ['id','UUID','PK'],
+      ['origen','VARCHAR(100)','Ej: Búnker SJL'],
+      ['destino','VARCHAR(100)','Ej: San Borja'],
+      ['pago_conductor','DECIMAL(8,2)','S/ 50 por ruta'],
+      ['ganancia_np','DECIMAL(8,2)','S/ 150 automático'],
+      ['conductor_id','UUID','FK → Usuarios'],
+      ['estado','ENUM','pendiente|activa|en_ruta|completada'],
+    ]},
+    { nm:'Inversiones', ic:'💎', f:[
+      ['id','UUID','PK'],
+      ['inversor_id','UUID','FK → Usuarios.id'],
+      ['vehiculo_id','UUID','FK → Vehiculos.id'],
+      ['monto','DECIMAL(10,2)','Capital invertido'],
+      ['porcentaje_roi','DECIMAL(5,2)','% ganancia acordada'],
+      ['fecha_inicio','DATE','Inicio del contrato'],
+      ['activo','BOOLEAN','true si vigente'],
+    ]},
+  ];
+  return `<div class="g2">${tbls.map(t=>`
+  <div class="stbl">
+    <div class="sn">${t.ic} ${t.nm}</div>
+    ${t.f.map((f,i)=>`
+    <div class="sf">
+      <span class="sf-n">${i===0?'<span class="spk">PK</span>':f[0].includes('_id')?'<span class="sfk">FK</span>':''}${f[0]}</span>
+      <span class="sf-t">${f[1]}</span>
+      <span class="sf-d">${f[2]}</span>
+    </div>`).join('')}
+  </div>`).join('')}</div>`;
+}
+
+function vAlgo() {
+  const steps = [
+    ['Acumulación 10×50','El sistema monitorea el Búnker. Cuando una zona llega a 10 pedidos y S/ 500 mínimo, dispara activación.',
+     'IF pedidos_zona >= 10 AND monto >= 500 → activar_ruta()'],
+    ['Filtro Elegibilidad','Conductores: activo=true, docs vigentes, sin ruta activa en curso.',
+     'SELECT * FROM usuarios WHERE docs_ok AND NOT en_ruta'],
+    ['Score de Prioridad','Score: +20 cercanía GPS, +15 historial limpio, -30 alertas acumuladas.',
+     'score = dist_score + historial_score - penalizaciones'],
+    ['Notificación & Match','Conductor mayor score recibe push+WhatsApp. Tiene 3 min. Si no acepta, baja al siguiente.',
+     'notify(sort_by_score()[0]) → timeout 3min → retry'],
+    ['Anti-fraude GPS','Al aceptar, GPS del vehículo debe encenderse en radio 500m del Búnker en máx 15 min.',
+     'IF gps.pos NOT IN bunker_radius(500m) → cancelar()'],
+  ];
+  return `
+<div class="g2">
+  <div>
+    <div class="card">
+      <div class="ch"><div class="ct">⚙️ Algoritmo de Asignación</div></div>
+      <div class="cb">
+        ${steps.map((s,i)=>`
+        <div class="as">
+          <div class="an">${i+1}</div>
+          <div class="ac">
+            <div class="at">${s[0]}</div>
+            <div class="ad">${s[1]}</div>
+            <div class="cl">${s[2]}</div>
+          </div>
+        </div>`).join('')}
+      </div>
+    </div>
+  </div>
+  <div>
+    <div class="card">
+      <div class="ch"><div class="ct">🧮 Simulador de Match</div></div>
+      <div class="cb">
+        <div style="font-size:11px;color:var(--text2);margin-bottom:14px;padding:9px;background:var(--s2);border-radius:8px">Ruta activa: <strong>SJL → San Borja · S/ 50</strong></div>
+        ${[{nm:'Carlos Huanca',sc:92,d:'0.8km del búnker',r:12,a:0},
+           {nm:'Pedro Quispe', sc:78,d:'2.1km del búnker',r:8, a:0},
+           {nm:'Ana Flores',   sc:65,d:'3.5km del búnker',r:5, a:1},
+        ].map((c,i)=>`
+        <div style="padding:12px;background:${i===0?'var(--gr-bg)':'var(--s2)'};border-radius:10px;border:2px solid ${i===0?'var(--gr)':'var(--border)'};margin-bottom:9px">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px">
+            <div style="font-family:var(--fh);font-weight:700;font-size:12px">${i===0?'🥇 ':''}${c.nm}</div>
+            <span class="chip ${i===0?'cgr2':'cmu'}">Score: ${c.sc}</span>
+          </div>
+          <div style="font-size:10px;color:var(--muted)">📍 ${c.d} · ${c.r} rutas OK · ${c.a} alertas</div>
+          ${i===0?`<div style="margin-top:7px;font-size:10px;color:var(--gr);font-weight:700;font-family:var(--fh)">✓ ASIGNADO PRIMERO · 3 min para aceptar</div>`:''}
+        </div>`).join('')}
+      </div>
+    </div>
+    <div class="card">
+      <div class="ch"><div class="ct">🏗️ Stack Técnico</div></div>
+      <div class="cb">
+        ${[['Backend','Node.js + Express','API REST'],
+           ['Base de datos','PostgreSQL','Relacional'],
+           ['Auth','JWT RS256','Tokens 24h'],
+           ['GPS','SinoTrack API','Polling 30s'],
+           ['Push','FCM Firebase','Alertas'],
+           ['WhatsApp','Karla Bot','Notificaciones'],
+           ['Pagos','Yape/BCP','Liquidación auto'],
+        ].map(r=>`
+        <div style="display:flex;align-items:center;gap:9px;padding:7px 0;border-bottom:1px solid var(--border)">
+          <div style="font-size:10px;color:var(--muted);width:80px;font-family:var(--fh)">${r[0]}</div>
+          <div style="font-family:var(--fh);font-weight:700;font-size:11px;flex:1">${r[1]}</div>
+          <div style="font-size:10px;color:var(--muted)">${r[2]}</div>
+        </div>`).join('')}
+      </div>
+    </div>
+  </div>
+</div>`;
+}
+
+/* ─── VIEWS: CONDUCTOR ──────────────────────────────── */
+function vMkt() {
+  return `
+<div style="background:linear-gradient(135deg,var(--s2),var(--or-bg));border:2px solid var(--or);border-radius:var(--radius);padding:16px;margin-bottom:18px;display:flex;align-items:center;gap:12px">
+  <div style="font-size:32px">🚗</div>
+  <div style="flex:1">
+    <div style="font-family:var(--fh);font-weight:800;font-size:14px">Carlos Huanca · ABC-123</div>
+    <div style="font-size:10px;color:var(--muted);margin-top:2px">ATU <span style="color:var(--gr)">✓</span> · SOAT <span style="color:var(--gr)">✓</span> · Brevete <span style="color:var(--gr)">✓</span></div>
+  </div>
+  <span class="chip cgr2">Habilitado</span>
+</div>
+<div style="font-family:var(--fh);font-size:13px;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:8px">
+  🛣️ Rutas Disponibles Ahora
+  <span class="chip cor2">${RUTAS.filter(r=>r.ped>=10).length} activas</span>
+</div>
+${RUTAS.map(r=>`
+<div class="rc ${r.ped<10||!r.ok?'blk':''}">
+  <div class="rc-head">
+    <div>
+      <div class="rc-ttl">📍 Búnker SJL → ${r.dst}</div>
+      <div class="rc-sub">ID: ${r.id} · Pago inmediato al completar</div>
+    </div>
+    <div class="rc-pay">S/ ${r.pago}</div>
+  </div>
+  <div class="rc-tags">
+    <div class="rc-tag">📦 ${r.ped} pedidos</div>
+    <div class="rc-tag">⚖️ ${r.kg} kg</div>
+    <div class="rc-tag">⏱️ ~45 min</div>
+    <div class="rc-tag">💵 Yape/BCP</div>
+  </div>
+  ${r.ped<10?`
+  <div class="ptrack"><div class="pbar" style="width:${r.ped*10}%;background:var(--yl)"></div></div>
+  <div class="plbl">${r.ped}/10 pedidos · Esperando completar zona...</div>
+  `:''}
+  ${r.ped>=10&&r.ok?`
+  <div style="display:flex;gap:8px;margin-top:8px">
+    <button class="btn bor" onclick="tomarRuta('${r.id}','${r.dst}',${r.pago})">🤝 Tomar Esta Ruta</button>
+    <button class="btn bou" onclick="toast('Detalles de ruta ${r.id}')">Ver detalles</button>
+  </div>`:''}
+</div>`).join('')}`;
+}
+
+function vMiRuta() {
+  return `
+<div id="spd-cnt"></div>
+<div class="g2">
+  <div>
+    <div class="card">
+      <div class="ch"><div class="ct">📍 Ruta Activa · SJL → San Borja</div><span class="pill p-or">En Curso</span></div>
+      <div class="cb">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;padding:14px;background:var(--or-bg);border-radius:10px;border:2px solid var(--or)">
+          <div>
+            <div style="font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:2px;margin-bottom:4px;font-family:var(--fh)">Pago al completar</div>
+            <div style="font-family:var(--fh);font-size:30px;font-weight:800;color:var(--or)">S/ 50</div>
+          </div>
+          <div style="text-align:right">
+            <div style="font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:2px;margin-bottom:4px;font-family:var(--fh)">Progreso</div>
+            <div style="font-family:var(--fh);font-size:24px;font-weight:800" id="pcnt">${_cnt}/10</div>
+          </div>
+        </div>
+        <div class="ptrack" style="margin-bottom:6px"><div class="pbar" id="pbar" style="width:${_cnt*10}%;background:var(--or)"></div></div>
+        <div class="plbl" id="plbl">${_cnt} de 10 entregas completadas</div>
+        <div style="margin-top:16px">
+          <div style="font-family:var(--fh);font-weight:700;margin-bottom:9px;font-size:11px;text-transform:uppercase;letter-spacing:1px">Puntos de Entrega</div>
+          ${PEDIDOS.slice(0,6).map((p,i)=>`
+          <div style="display:flex;align-items:center;gap:9px;padding:9px;background:${i<_cnt?'var(--gr-bg)':'var(--s2)'};border-radius:9px;margin-bottom:5px;border:1.5px solid ${i<_cnt?'var(--gr)':'var(--border)'}">
+            <span style="width:22px;height:22px;background:${i<_cnt?'var(--gr)':'var(--border)'};border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:${i<_cnt?'#fff':'var(--muted)'};flex-shrink:0">${i+1}</span>
+            <div style="flex:1">
+              <div style="font-size:12px;font-weight:600;font-family:var(--fh)">${p.cli}</div>
+              <div style="font-size:10px;color:var(--muted)">${p.prod} · ${p.zona}</div>
+            </div>
+            ${i<_cnt?'<span class="chip cgr2">✓</span>':`<button class="btn bou bsm" onclick="marcarEnt(${i})">Marcar</button>`}
+          </div>`).join('')}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div class="card">
+      <div class="ch"><div class="ct">📡 GPS en Vivo</div></div>
+      <div class="cb">
+        <div class="spedo">
+          <div style="font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:2px;margin-bottom:8px;font-family:var(--fh)">Velocidad Actual</div>
+          <div class="spedo-num" id="spd-dsp" style="color:var(--gr)">42</div>
+          <div class="spedo-unit">km/h</div>
+          <div class="ptrack" style="height:8px;margin-bottom:10px">
+            <div id="spd-bar" class="pbar" style="width:42%;background:var(--gr)"></div>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:9px;color:var(--muted);margin-bottom:16px;font-family:var(--fh)">
+            <span>0</span><span style="color:var(--or)">60 límite</span><span>100</span>
+          </div>
+          <button class="btn bou bfu" id="simBtn" onclick="simSpd()">▶ Simular GPS</button>
+          <div style="margin-top:11px;font-size:10px;color:var(--muted);line-height:1.7">
+            Superar <strong>60 km/h</strong> notifica al admin y queda registrado.
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ch"><div class="ct">🗺️ Mapa de Ruta</div></div>
+      <div class="cb" style="padding:10px">
+        <div class="mapbox" style="height:200px">
+          <div class="map-roads"></div>
+          <div class="map-center" style="opacity:.25"><div style="font-size:32px">🗺️</div></div>
+          <div class="map-car" style="left:30%;top:45%">🚗</div>
+          <div class="map-pin" style="left:12%;top:20%;font-size:18px">🏭</div>
+          <div class="map-pin" style="left:72%;top:65%;font-size:18px">🏘️</div>
+          <div class="map-leg">
+            <div>🏭 Búnker SJL</div>
+            <div>🚗 En ruta</div>
+            <div>🏘️ San Borja</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>`;
+}
+
+function vDocs() {
+  const docs = [
+    { nm:'ATU',             ic:'📋', v:'15/08/2025', ok:true },
+    { nm:'SOAT',            ic:'🛡️', v:'01/06/2025', ok:true },
+    { nm:'Brevete A2',      ic:'🪪', v:'20/03/2026', ok:true },
+    { nm:'CITV (Rev. Téc.)',ic:'🔧', v:'10/01/2025', ok:false },
+  ];
+  return `
+<div class="card">
+  <div class="ch"><div class="ct">📋 Estado de Documentos</div><span class="pill ${docs.filter(d=>!d.ok).length?'p-rd':'p-gr'}">${docs.filter(d=>!d.ok).length} vencido(s)</span></div>
+  <div class="cb">
+    ${docs.map(d=>`
+    <div class="doc-c ${d.ok?'dok':'dbd'}">
+      <div class="doc-ic">${d.ic}</div>
+      <div style="flex:1">
+        <div class="doc-nm">${d.nm}</div>
+        <div class="doc-exp">Vence: ${d.v}</div>
+      </div>
+      <div style="text-align:right;display:flex;flex-direction:column;align-items:flex-end;gap:6px">
+        <span class="chip ${d.ok?'cgr2':'crd2'}">${d.ok?'✓ Vigente':'✗ Vencido'}</span>
+        <button class="btn bou bsm" onclick="toast('Subir: ${d.nm}')">↑ Actualizar</button>
+      </div>
+    </div>`).join('')}
+    <div style="margin-top:14px;padding:13px;background:var(--rd-bg);border-radius:10px;border:2px solid var(--rd)">
+      <div style="font-family:var(--fh);font-weight:700;color:var(--rd);margin-bottom:3px;font-size:12px">⚠️ CITV Vencida — Acción Requerida</div>
+      <div style="font-size:11px;color:var(--rd);opacity:.85">El botón "Tomar Ruta" está bloqueado hasta renovar la Revisión Técnica Vehicular.</div>
+    </div>
+  </div>
+</div>`;
+}
+
+function vEstiba() {
+  const carga = [
+    {t:'torta',e:'🎂'},{t:'torta',e:'🎂'},{t:'torta',e:'🎂'},{t:'nrnj',e:'🍊'},{t:'nrnj',e:'🍊'},
+    {t:'torta',e:'🎂'},{t:'torta',e:'🎂'},{t:'nrnj',e:'🍊'},{t:'nrnj',e:'🍊'},{t:'torta',e:'🎂'},
+    {t:'torta',e:'🎂'},{t:'torta',e:'🎂'},{t:'nrnj',e:'🍊'},{t:'nrnj',e:'🍊'},{t:'torta',e:'🎂'},
+    {t:'vac',e:''},{t:'vac',e:''},{t:'vac',e:''},{t:'vac',e:''},{t:'vac',e:''},
+  ];
+  return `
+<div class="g2">
+  <div>
+    <div class="card">
+      <div class="ch"><div class="ct">📦 Hoja de Carga Optimizada</div><span class="pill p-or">15 items</span></div>
+      <div class="cb">
+        <div style="font-size:11px;color:var(--text2);margin-bottom:12px;padding:10px;background:var(--or-bg);border-radius:8px;border-left:3px solid var(--or);line-height:1.6">
+          <strong>Regla de estiba:</strong> Naranjas (pesado) van al fondo del maletero. Tortas arriba, bien centradas. Máx. 2 capas.
+        </div>
+        <div style="font-family:var(--fh);font-weight:700;margin-bottom:8px;font-size:11px;text-transform:uppercase;letter-spacing:1px">Vista Maletero (5 × 4)</div>
+        <div class="egrid">
+          ${carga.map(c=>`<div class="ec ${c.t}" title="${c.t==='torta'?'Torta Willy':c.t==='nrnj'?'Naranja 10kg':'Vacío'}">${c.e}</div>`).join('')}
+        </div>
+        <div style="display:flex;gap:12px;margin-top:12px;font-size:10px;flex-wrap:wrap">
+          <div style="display:flex;align-items:center;gap:6px"><span class="ec torta" style="width:20px;height:20px;font-size:11px">🎂</span>Torta (arriba)</div>
+          <div style="display:flex;align-items:center;gap:6px"><span class="ec nrnj" style="width:20px;height:20px;font-size:11px">🍊</span>Naranja (fondo)</div>
+          <div style="display:flex;align-items:center;gap:6px"><span class="ec vac" style="width:20px;height:20px"></span>Vacío</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div class="card">
+      <div class="ch"><div class="ct">⚖️ Resumen de Carga</div></div>
+      <div class="cb">
+        <div class="lr"><div class="ll">🎂 Cajas tortas Willy</div><div class="lv">8 cajas</div></div>
+        <div class="lr"><div class="ll">🍊 Mallas naranja 10kg</div><div class="lv">4 mallas</div></div>
+        <div class="lr"><div class="ll">⚖️ Peso estimado</div><div class="lv">48 kg</div></div>
+        <div class="lr"><div class="ll">📐 Volumen est.</div><div class="lv">0.4 m³</div></div>
+        <div class="lr"><div class="ll" style="color:var(--gr)">✅ Nissan Sentra</div><div class="lv" style="color:var(--gr)">Apto</div></div>
+        <div style="margin-top:13px;padding:11px;background:var(--yl-bg);border-radius:8px;border:1.5px solid var(--yl);font-size:11px;line-height:1.6">
+          ⚠️ Naranjas primero al fondo. Tortas encima bien centradas. No más de 2 capas.
+        </div>
+        <button class="btn bor bfu mt12" onclick="toast('Hoja de carga enviada a tu WhatsApp 📱')">📱 Enviar a WhatsApp</button>
+      </div>
+    </div>
+  </div>
+</div>`;
+}
+
+function vMpagos() {
+  return `
+<div class="krow k3">
+  <div class="kpi cgr"><div class="kb"></div><div class="ki">💵</div><div class="kl">Este Mes</div><div class="kv">S/ 350</div><div class="ks">7 rutas completadas</div></div>
+  <div class="kpi cor"><div class="kb"></div><div class="ki">🛣️</div><div class="kl">Total Rutas</div><div class="kv">7</div><div class="ks">este mes</div></div>
+  <div class="kpi cyl"><div class="kb"></div><div class="ki">⏳</div><div class="kl">Pendiente</div><div class="kv">S/ 50</div><div class="ks">acreditando...</div></div>
+</div>
+<div class="card">
+  <div class="ch"><div class="ct">💵 Historial de Pagos</div></div>
+  <div class="tw"><table>
+    <thead><tr><th>Fecha</th><th>Ruta</th><th>Monto</th><th>Método</th><th>Estado</th></tr></thead>
+    <tbody>
+      ${[['04/03','SJL→San Borja','S/ 50','Yape','Acreditado'],
+         ['03/03','SJL→Surco','S/ 55','Yape','Acreditado'],
+         ['02/03','SJL→Miraflores','S/ 60','BCP','Acreditado'],
+         ['01/03','SJL→San Borja','S/ 50','Yape','Pendiente'],
+      ].map(r=>`<tr>
+        <td style="color:var(--muted);font-family:var(--fh)">${r[0]}</td>
+        <td class="bo">${r[1]}</td>
+        <td style="color:var(--gr);font-family:var(--fh);font-weight:700">${r[2]}</td>
+        <td style="color:var(--muted)">${r[3]}</td>
+        <td><span class="chip ${r[4]==='Acreditado'?'cgr2':'cyl2'}">${r[4]}</span></td>
+      </tr>`).join('')}
+    </tbody>
+  </table></div>
+</div>`;
+}
+
+/* ─── VIEWS: CLIENTE ────────────────────────────────── */
+function vMpeds() {
+  return `
+<div class="card">
+  <div class="ch"><div class="ct">🛒 Mis Pedidos · Rosa Mamani</div><button class="btn bor bsm" onclick="toast('Nuevo pedido creado ✅')">+ Nuevo Pedido</button></div>
+  <div class="tw"><table>
+    <thead><tr><th>Pedido</th><th>Producto</th><th>Fecha</th><th>Estado</th><th>Total</th><th></th></tr></thead>
+    <tbody>
+      ${[['P001','Naranja para Jugo 10kg','04/03','Entregado','S/ 35'],
+         ['P008','Palta Hass 5kg','03/03','En ruta','S/ 32'],
+         ['P015','Naranja 10kg + Mandarina','01/03','Entregado','S/ 80'],
+      ].map(r=>`<tr>
+        <td style="color:var(--or);font-family:var(--fh);font-weight:700">${r[0]}</td>
+        <td class="bo">${r[1]}</td>
+        <td style="color:var(--muted)">${r[2]}</td>
+        <td><span class="chip ${r[3]==='Entregado'?'cgr2':'cbl2'}">${r[3]}</span></td>
+        <td style="color:var(--gr);font-family:var(--fh);font-weight:700">${r[4]}</td>
+        <td>${r[3]==='En ruta'?`<button class="btn bou bsm" onclick="sv('track',null)">Rastrear</button>`:''}</td>
+      </tr>`).join('')}
+    </tbody>
+  </table></div>
+</div>`;
+}
+
+function vTrack() {
+  return `
+<div class="card">
+  <div class="ch"><div class="ct">📍 Tracking · Pedido P008 · Palta Hass 5kg</div><span class="pill p-bl">En Ruta</span></div>
+  <div class="cb">
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px">
+      ${[['✅','Confirmado','04/03 9:00am','cgr2','var(--gr-bg)','var(--gr)'],
+         ['✅','En Búnker','04/03 10:30am','cgr2','var(--gr-bg)','var(--gr)'],
+         ['🔵','En Ruta','04/03 11:15am','cbl2','var(--bl-bg)','var(--bl)'],
+         ['⏳','Entregado','Est. 12:00pm','cmu','var(--s2)','var(--border)'],
+      ].map(s=>`
+      <div style="text-align:center;padding:12px 8px;background:${s[4]};border-radius:10px;border:2px solid ${s[5]}">
+        <div style="font-size:20px;margin-bottom:4px">${s[0]}</div>
+        <div style="font-family:var(--fh);font-weight:700;font-size:11px">${s[1]}</div>
+        <div style="font-size:9px;color:var(--muted);margin-top:2px">${s[2]}</div>
+      </div>`).join('')}
+    </div>
+    <div style="padding:13px;background:var(--bl-bg);border-radius:10px;border:2px solid var(--bl);margin-bottom:14px">
+      <div style="font-family:var(--fh);font-weight:700;margin-bottom:3px;font-size:13px">🚗 Carlos Huanca está en camino</div>
+      <div style="font-size:11px;color:var(--text2)">Placa: ABC-123 · ETA: ~45 minutos · Velocidad: 48 km/h</div>
+    </div>
+    <div class="mapbox" style="height:200px">
+      <div class="map-roads"></div>
+      <div class="map-center" style="opacity:.25"><div style="font-size:32px">🗺️</div></div>
+      <div class="map-car" style="left:40%;top:50%">🚗</div>
+      <div class="map-pin" style="left:15%;top:25%;font-size:16px">🏭</div>
+      <div class="map-pin" style="left:75%;top:70%;font-size:16px">🏠</div>
+      <div class="map-leg"><div>📍 Tu dirección</div><div>🏭 Origen SJL</div></div>
+    </div>
+  </div>
+</div>`;
+}
+
+function vAhorro() {
+  return `
+<div class="krow k3">
+  <div class="kpi cgr"><div class="kb"></div><div class="ki">💰</div><div class="kl">Ahorro Total</div><div class="kv">S/ 284</div><div class="ks">vs supermercado</div></div>
+  <div class="kpi cor"><div class="kb"></div><div class="ki">📦</div><div class="kl">Pedidos</div><div class="kv">8</div><div class="ks">este mes</div></div>
+  <div class="kpi cyl"><div class="kb"></div><div class="ki">%</div><div class="kl">Ahorro Promedio</div><div class="kv">43%</div><div class="ks">por pedido</div></div>
+</div>
+<div class="card">
+  <div class="ch"><div class="ct">💰 Historial de Ahorro vs Supermercado</div></div>
+  <div class="tw"><table>
+    <thead><tr><th>Producto</th><th>Precio NP</th><th>Precio Súper</th><th>Ahorro</th></tr></thead>
+    <tbody>
+      ${[['Naranja 10kg','S/ 35','S/ 52','S/ 17 · 33%'],
+         ['Palta Hass 5kg','S/ 32','S/ 47','S/ 15 · 32%'],
+         ['Mandarina 15kg','S/ 45','S/ 68','S/ 23 · 34%'],
+         ['Salchicha 2kg','S/ 31','S/ 88','S/ 57 · 65%'],
+      ].map(r=>`<tr>
+        <td class="bo">${r[0]}</td>
+        <td style="color:var(--gr);font-family:var(--fh);font-weight:700">${r[1]}</td>
+        <td style="color:var(--muted);text-decoration:line-through">${r[2]}</td>
+        <td style="color:var(--or);font-family:var(--fh);font-weight:700">${r[3]}</td>
+      </tr>`).join('')}
+    </tbody>
+  </table></div>
+</div>`;
+}
+
+function vTokens() {
+  return `
+<div class="krow k3">
+  <div class="kpi cyl"><div class="kb"></div><div class="ki">🪙</div><div class="kl">Saldo Tokens</div><div class="kv">350</div><div class="ks">Nivel 🥈 Silver</div></div>
+  <div class="kpi cor"><div class="kb"></div><div class="ki">➕</div><div class="kl">Ganados Mes</div><div class="kv">80</div><div class="ks">por compras</div></div>
+  <div class="kpi cgr"><div class="kb"></div><div class="ki">💎</div><div class="kl">Para Gold</div><div class="kv">150</div><div class="ks">tokens restantes</div></div>
+</div>
+<div class="card">
+  <div class="ch"><div class="ct">🪙 Movimientos de Tokens Pisk</div></div>
+  <div class="tw"><table>
+    <thead><tr><th>Fecha</th><th>Descripción</th><th>Tokens</th><th>Saldo</th></tr></thead>
+    <tbody>
+      ${[['04/03','Compra Naranja P001','+35','350'],
+         ['03/03','Compra Palta P008','+32','315'],
+         ['01/03','Compra combo','+80','283'],
+         ['20/02','Bono referido','+50','203'],
+      ].map(r=>`<tr>
+        <td style="color:var(--muted);font-family:var(--fh)">${r[0]}</td>
+        <td>${r[1]}</td>
+        <td style="color:var(--gr);font-family:var(--fh);font-weight:700">${r[2]}</td>
+        <td style="font-family:var(--fh);font-weight:700">🪙 ${r[3]}</td>
+      </tr>`).join('')}
+    </tbody>
+  </table></div>
+</div>`;
+}
+
+/* ─── VIEWS: INVERSIONISTA ──────────────────────────── */
+function vInvDash() {
+  const totalInv = VEHICULOS_INV.reduce((a,v)=>a+v.inversion,0);
+  const totalGanDia = VEHICULOS_INV.reduce((a,v)=>a+v.ganancia_dia,0);
+  const avgRoi = (VEHICULOS_INV.filter(v=>v.roi>0).reduce((a,v)=>a+v.roi,0)/VEHICULOS_INV.filter(v=>v.roi>0).length).toFixed(1);
+  return `
+<div class="krow k4">
+  <div class="kpi cpu"><div class="kb"></div><div class="ki">💎</div><div class="kl">Capital Invertido</div><div class="kv">S/ ${totalInv.toLocaleString()}</div><div class="ks">3 vehículos</div></div>
+  <div class="kpi cgr"><div class="kb"></div><div class="ki">💰</div><div class="kl">Ganancia Hoy</div><div class="kv">S/ ${totalGanDia}</div><div class="ks">2 vehículos activos</div></div>
+  <div class="kpi cor"><div class="kb"></div><div class="ki">📈</div><div class="kl">ROI Promedio</div><div class="kv">${avgRoi}%</div><div class="ks">anual</div></div>
+  <div class="kpi cyl"><div class="kb"></div><div class="ki">🛣️</div><div class="kl">Rutas Este Mes</div><div class="kv">113</div><div class="ks">entre 2 vehículos</div></div>
+</div>
+<div class="g2">
+  <div>
+    <div class="card">
+      <div class="ch"><div class="ct">💎 Mi Portafolio de Vehículos</div></div>
+      <div class="cb">
+        ${VEHICULOS_INV.map(v=>`
+        <div style="padding:14px;background:${v.estado==='Activo'?'var(--s2)':'var(--rd-bg)'};border-radius:11px;border:1.5px solid ${v.estado==='Activo'?'var(--border)':'var(--rd)'};margin-bottom:10px">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+            <div>
+              <div style="font-family:var(--fh);font-weight:800;font-size:13px">${v.tipo}</div>
+              <div style="font-size:10px;color:var(--muted)">${v.placa} · ${v.conductor}</div>
+            </div>
+            <span class="chip ${v.estado==='Activo'?'cgr2':'crd2'}">${v.estado}</span>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:8px">
+            <div style="text-align:center;padding:8px;background:var(--surface);border-radius:8px">
+              <div style="font-size:9px;color:var(--muted);font-family:var(--fh);margin-bottom:3px">INVERSIÓN</div>
+              <div style="font-family:var(--fh);font-weight:800;font-size:13px;color:var(--pu)">S/ ${v.inversion.toLocaleString()}</div>
+            </div>
+            <div style="text-align:center;padding:8px;background:var(--surface);border-radius:8px">
+              <div style="font-size:9px;color:var(--muted);font-family:var(--fh);margin-bottom:3px">DÍA</div>
+              <div style="font-family:var(--fh);font-weight:800;font-size:13px;color:var(--gr)">S/ ${v.ganancia_dia}</div>
+            </div>
+            <div style="text-align:center;padding:8px;background:var(--surface);border-radius:8px">
+              <div style="font-size:9px;color:var(--muted);font-family:var(--fh);margin-bottom:3px">ROI</div>
+              <div style="font-family:var(--fh);font-weight:800;font-size:13px;color:var(--or)">${v.roi}%</div>
+            </div>
+          </div>
+        </div>`).join('')}
+      </div>
+    </div>
+  </div>
+  <div>
+    <div class="card">
+      <div class="ch"><div class="ct">📊 Ingresos Diarios · Últimos 7 días</div></div>
+      <div class="cb">
+        ${(() => {
+          const dias = ['Mar','Mié','Jue','Vie','Sáb','Dom','Lun'];
+          const vals = [245,280,310,270,150,120,270];
+          const max = Math.max(...vals);
+          return `
+          <div class="chart-bar" style="height:110px;margin-bottom:12px;align-items:flex-end">
+            ${vals.map((v,i)=>`
+            <div class="bar-col">
+              <div style="font-size:9px;color:var(--pu);font-family:var(--fh);font-weight:700;margin-bottom:3px">${v===Math.max(...vals)?'↑':''}</div>
+              <div class="bar-body" style="height:${Math.round(v/max*80)+8}px;background:${i===6?'var(--or)':'var(--pu)'}"></div>
+              <div class="bar-lbl">${dias[i]}</div>
+            </div>`).join('')}
+          </div>
+          ${dias.map((d,i)=>`
+          <div class="lr">
+            <div class="ll">${d}</div>
+            <div style="flex:1;margin:0 12px"><div class="ptrack"><div class="pbar" style="width:${Math.round(vals[i]/max*100)}%;background:var(--pu)"></div></div></div>
+            <div class="lv" style="color:var(--pu);font-size:11px">S/ ${vals[i]}</div>
+          </div>`).join('')}
+          <div style="margin-top:14px;padding:12px;background:var(--pu-bg);border-radius:9px;border:1.5px solid var(--pu);text-align:center">
+            <div style="font-size:9px;color:var(--pu);font-family:var(--fh);font-weight:700;text-transform:uppercase;letter-spacing:2px;margin-bottom:3px">Total 7 días</div>
+            <div style="font-family:var(--fh);font-size:26px;font-weight:800;color:var(--pu)">S/ 1,645</div>
+          </div>`;
+        })()}
+      </div>
+    </div>
+    <div class="card">
+      <div class="ch"><div class="ct">🎯 Proyección Mensual</div></div>
+      <div class="cb">
+        <div class="lr"><div class="ll">Ganancia proyectada mes</div><div class="lv" style="color:var(--pu)">S/ 8,100</div></div>
+        <div class="lr"><div class="ll">Ganancia acumulada (año)</div><div class="lv" style="color:var(--gr)">S/ 31,200</div></div>
+        <div class="lr"><div class="ll">ROI anual estimado</div><div class="lv" style="color:var(--or)">~22.5%</div></div>
+        <div class="lr"><div class="ll">Punto de equilibrio</div><div class="lv">~4.5 meses</div></div>
+        <div style="margin-top:12px;padding:11px;background:var(--gr-bg);border-radius:9px;border:1.5px solid var(--gr);font-size:11px;line-height:1.7;color:var(--gr)">
+          💡 A este ritmo recuperas tu inversión completa en <strong>~4.5 meses</strong> y empiezas a ganar puro beneficio.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>`;
+}
+
+function vInvVeh() {
+  return `
+<div class="card">
+  <div class="ch"><div class="ct">🚗 Vehículos Financiados</div><button class="btn bpu bsm" onclick="toast('Contactar a Ernesto para nueva inversión 📱')">+ Nuevo Vehículo</button></div>
+  <div class="tw"><table>
+    <thead><tr><th>Placa</th><th>Vehículo</th><th>Conductor</th><th>Inversión</th><th>Rutas/Mes</th><th>Ganancia Día</th><th>ROI</th><th>Estado</th></tr></thead>
+    <tbody>
+      ${VEHICULOS_INV.map(v=>`
+      <tr>
+        <td style="font-family:var(--fh);font-weight:700;color:var(--pu)">${v.placa}</td>
+        <td class="bo">${v.tipo}</td>
+        <td>${v.conductor}</td>
+        <td style="font-family:var(--fh);font-weight:700">S/ ${v.inversion.toLocaleString()}</td>
+        <td style="text-align:center">${v.rutas_mes}</td>
+        <td style="color:var(--gr);font-family:var(--fh);font-weight:700">S/ ${v.ganancia_dia}</td>
+        <td style="color:var(--or);font-family:var(--fh);font-weight:700">${v.roi}%</td>
+        <td><span class="chip ${v.estado==='Activo'?'cgr2':'crd2'}">${v.estado}</span></td>
+      </tr>`).join('')}
+    </tbody>
+  </table></div>
+</div>
+<div class="g2">
+  <div class="card">
+    <div class="ch"><div class="ct">📋 Contrato de Inversión</div></div>
+    <div class="cb" style="font-size:11px;color:var(--text2);line-height:1.8">
+      <div class="lr"><div class="ll">Modalidad</div><div class="lv">Cofinanciamiento de flota</div></div>
+      <div class="lr"><div class="ll">Inversión mínima</div><div class="lv">S/ 7,000</div></div>
+      <div class="lr"><div class="ll">ROI acordado</div><div class="lv" style="color:var(--or)">18% — 24% anual</div></div>
+      <div class="lr"><div class="ll">Liquidación</div><div class="lv">Semanal vía Yape/BCP</div></div>
+      <div class="lr"><div class="ll">Plazo mínimo</div><div class="lv">6 meses</div></div>
+      <div class="lr"><div class="ll">Supervisión GPS</div><div class="lv">Tiempo real 24/7</div></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="ch"><div class="ct">📑 Documentos Legales</div></div>
+    <div class="cb">
+      ${[['Contrato de Inversión','✓ Firmado','cgr2'],
+         ['Escritura del vehículo','✓ Vigente','cgr2'],
+         ['Póliza de seguro','✓ Activa','cgr2'],
+         ['Reporte mensual','↓ Descargar','cbl2'],
+      ].map(d=>`
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border)">
+        <div style="font-size:12px;font-family:var(--fh);font-weight:600">📄 ${d[0]}</div>
+        <span class="chip ${d[2]}" onclick="toast('${d[0]}: descargando...')" style="cursor:pointer">${d[1]}</span>
+      </div>`).join('')}
+    </div>
+  </div>
+</div>`;
+}
+
+function vInvRoi() {
+  return `
+<div class="krow k3">
+  <div class="kpi cpu"><div class="kb"></div><div class="ki">📈</div><div class="kl">ROI Realizado</div><div class="kv">22.5%</div><div class="ks">anual · V001</div></div>
+  <div class="kpi cgr"><div class="kb"></div><div class="ki">💰</div><div class="kl">Ganancias Totales</div><div class="kv">S/ 31,200</div><div class="ks">acumulado 12 meses</div></div>
+  <div class="kpi cor"><div class="kb"></div><div class="ki">🎯</div><div class="kl">Meta Anual</div><div class="kv">87%</div><div class="ks">de S/ 36,000</div></div>
+</div>
+<div class="g2">
+  <div class="card">
+    <div class="ch"><div class="ct">📊 ROI por Vehículo</div></div>
+    <div class="cb">
+      ${VEHICULOS_INV.map(v=>`
+      <div style="margin-bottom:16px">
+        <div style="display:flex;justify-content:space-between;margin-bottom:6px">
+          <div>
+            <div style="font-family:var(--fh);font-weight:700;font-size:12px">${v.tipo} · ${v.placa}</div>
+            <div style="font-size:10px;color:var(--muted)">Inversión: S/ ${v.inversion.toLocaleString()}</div>
+          </div>
+          <span style="font-family:var(--fh);font-weight:800;font-size:16px;color:${v.roi>20?'var(--gr)':v.roi>0?'var(--or)':'var(--muted)'}">${v.roi}%</span>
+        </div>
+        <div class="ptrack" style="height:8px"><div class="pbar" style="width:${v.roi/30*100}%;background:${v.roi>20?'var(--gr)':v.roi>0?'var(--or)':'var(--muted)'}"></div></div>
+        <div class="plbl">Rutas este mes: ${v.rutas_mes} · Ganancia día: S/ ${v.ganancia_dia}</div>
+      </div>`).join('')}
+    </div>
+  </div>
+  <div class="card">
+    <div class="ch"><div class="ct">🧮 Calculadora de ROI</div></div>
+    <div class="cb">
+      <div class="fg"><label>Capital a invertir (S/)</label><input type="number" id="roi-cap" value="8000" onchange="calcRoi()"></div>
+      <div class="fg"><label>ROI anual estimado (%)</label><input type="number" id="roi-pct" value="22.5" onchange="calcRoi()"></div>
+      <div id="roi-result" style="margin-top:12px;padding:14px;background:var(--pu-bg);border-radius:10px;border:1.5px solid var(--pu)">
+        <div style="font-size:10px;color:var(--pu);font-family:var(--fh);font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Proyección</div>
+        <div class="lr" style="padding:6px 0"><div class="ll">Ganancia mensual</div><div class="lv" style="color:var(--pu)">S/ 150</div></div>
+        <div class="lr" style="padding:6px 0"><div class="ll">Ganancia anual</div><div class="lv" style="color:var(--gr)">S/ 1,800</div></div>
+        <div class="lr" style="padding:6px 0;border:none"><div class="ll">Recuperación inversión</div><div class="lv" style="color:var(--or)">~4.4 meses</div></div>
+      </div>
+      <button class="btn bpu bfu mt12" onclick="toast('Solicitud enviada a Ernesto 📱')">Solicitar Inversión</button>
+    </div>
+  </div>
+</div>`;
+}
+
+function vInvHist() {
+  return `
+<div class="card">
+  <div class="ch"><div class="ct">📅 Historial de Rutas · Tus Vehículos</div><span class="pill p-pu">113 este mes</span></div>
+  <div class="tw"><table>
+    <thead><tr><th>Fecha</th><th>Vehículo</th><th>Ruta</th><th>Conductor</th><th>Pedidos</th><th>Tu Ganancia</th></tr></thead>
+    <tbody>
+      ${[['05/03','ABC-123','SJL→San Borja','Carlos H.','10','S/ 30'],
+         ['05/03','XYZ-789','SJL→Miraflores','Ana F.','9','S/ 27'],
+         ['04/03','ABC-123','SJL→Surco','Carlos H.','10','S/ 30'],
+         ['04/03','XYZ-789','SJL→San Borja','Ana F.','10','S/ 30'],
+         ['03/03','ABC-123','SJL→San Borja','Carlos H.','10','S/ 30'],
+      ].map(r=>`<tr>
+        <td style="color:var(--muted);font-family:var(--fh)">${r[0]}</td>
+        <td style="font-family:var(--fh);font-weight:700;color:var(--pu)">${r[1]}</td>
+        <td class="bo">${r[2]}</td>
+        <td>${r[3]}</td>
+        <td style="text-align:center">${r[4]}</td>
+        <td style="color:var(--gr);font-family:var(--fh);font-weight:700">${r[5]}</td>
+      </tr>`).join('')}
+    </tbody>
+  </table></div>
+</div>`;
+}
+
+function vInvTok() {
+  return `
+<div class="krow k3">
+  <div class="kpi cpu"><div class="kb"></div><div class="ki">🪙</div><div class="kl">Tokens de Inversión</div><div class="kv">2,500</div><div class="ks">equivale S/ 2,500</div></div>
+  <div class="kpi cgr"><div class="kb"></div><div class="ki">📈</div><div class="kl">Valor Estimado</div><div class="kv">S/ 3,750</div><div class="ks">revalorización 50%</div></div>
+  <div class="kpi cor"><div class="kb"></div><div class="ki">🔒</div><div class="kl">Tokens Bloqueados</div><div class="kv">1,000</div><div class="ks">vencen en 3 meses</div></div>
+</div>
+<div class="card">
+  <div class="ch"><div class="ct">🪙 Sistema de Tokens de Inversión · NeoPisk</div></div>
+  <div class="cb">
+    <div style="padding:14px;background:var(--pu-bg);border-radius:11px;border:1.5px solid var(--pu);margin-bottom:16px;line-height:1.7">
+      <div style="font-family:var(--fh);font-weight:700;color:var(--pu);margin-bottom:6px;font-size:13px">💡 ¿Cómo funcionan los Tokens?</div>
+      <div style="font-size:11px;color:var(--text2)">Cada token representa S/ 1 de inversión tokenizada en la flota Neo Pisk. Los tokens se revalorizan con el crecimiento de la flota y pueden canjearse en plataforma en 2026.</div>
+    </div>
+    ${[['05/03','Rendimiento semana 9','+ 125 tokens','2,500','cpu2'],
+       ['01/03','Bono expansión flota','+ 200 tokens','2,375','cgr2'],
+       ['01/02','Inversión inicial V002','+ 950 tokens','2,175','cpu2'],
+       ['01/01','Inversión inicial V001','+ 800 tokens','1,225','cpu2'],
+    ].map(r=>`
+    <div style="display:flex;align-items:center;gap:11px;padding:10px 0;border-bottom:1px solid var(--border)">
+      <div style="flex:1">
+        <div style="font-size:12px;font-family:var(--fh);font-weight:600">${r[1]}</div>
+        <div style="font-size:10px;color:var(--muted)">${r[0]}</div>
+      </div>
+      <span class="chip ${r[4]}" style="font-size:11px">${r[2]}</span>
+      <div style="font-family:var(--fh);font-weight:700;font-size:12px;min-width:55px;text-align:right">🪙 ${r[3]}</div>
+    </div>`).join('')}
+  </div>
+</div>`;
+}
+
+/* ─── ACTIONS ───────────────────────────────────────── */
+function calcRoi() {
+  const cap = parseFloat(document.getElementById('roi-cap')?.value) || 8000;
+  const pct = parseFloat(document.getElementById('roi-pct')?.value) || 22.5;
+  const anual = cap * pct / 100;
+  const mensual = anual / 12;
+  const meses = (cap / mensual).toFixed(1);
+  const el = document.getElementById('roi-result');
+  if (el) el.innerHTML = `
+    <div style="font-size:10px;color:var(--pu);font-family:var(--fh);font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Proyección</div>
+    <div class="lr" style="padding:6px 0"><div class="ll">Ganancia mensual</div><div class="lv" style="color:var(--pu)">S/ ${mensual.toFixed(0)}</div></div>
+    <div class="lr" style="padding:6px 0"><div class="ll">Ganancia anual</div><div class="lv" style="color:var(--gr)">S/ ${anual.toFixed(0)}</div></div>
+    <div class="lr" style="padding:6px 0;border:none"><div class="ll">Recuperación inversión</div><div class="lv" style="color:var(--or)">~${meses} meses</div></div>`;
+}
+
+function marcarEnt(i) {
+  _cnt = Math.min(_cnt + 1, 10);
+  const bar = document.getElementById('pbar');
+  const cnt = document.getElementById('pcnt');
+  const lbl = document.getElementById('plbl');
+  if (bar) { bar.style.width = (_cnt * 10) + '%'; if (_cnt >= 10) bar.style.background = 'var(--gr)'; }
+  if (cnt) cnt.textContent = _cnt + '/10';
+  if (lbl) lbl.textContent = _cnt + ' de 10 entregas completadas';
+  if (_cnt >= 10) {
+    toast('🎉 ¡Ruta completa! S/ 50 acreditados por Yape ✅');
+    setTimeout(() => sv('mpagos', null), 2200);
+  } else {
+    toast(`Entrega ${_cnt} marcada ✓`);
+  }
+}
+
+function simSpd() {
+  if (_spd) {
+    _spd = false;
+    clearInterval(window._spdInt);
+    const b = document.getElementById('simBtn');
+    if (b) b.textContent = '▶ Simular GPS';
+    return;
+  }
+  _spd = true;
+  const b = document.getElementById('simBtn');
+  if (b) b.textContent = '⏹ Detener';
+  let v = 42;
+  window._spdInt = setInterval(() => {
+    v = Math.max(8, Math.min(90, v + (Math.random() - 0.44) * 14));
+    const vel = Math.round(v);
+    const d = document.getElementById('spd-dsp');
+    const bar = document.getElementById('spd-bar');
+    const cnt = document.getElementById('spd-cnt');
+    if (!d) { clearInterval(window._spdInt); _spd = false; return; }
+    d.textContent = vel;
+    const clr = vel > 60 ? 'var(--rd)' : vel > 45 ? 'var(--or)' : 'var(--gr)';
+    d.style.color = clr;
+    if (bar) { bar.style.width = vel + '%'; bar.style.background = clr; }
+    if (vel > 60 && cnt) {
+      cnt.innerHTML = `<div class="s-alert"><div class="sa-ic">🚨</div><div><div class="sa-ttl">ALERTA: ${vel} km/h — Riesgo Fotomulta</div><div class="sa-body">Notificando al admin en tiempo real · Reduce velocidad.</div></div></div>`;
+      if (vel > 65) toast(`🚨 ${vel} km/h · Alerta enviada al admin`, 'err');
+    } else if (cnt) cnt.innerHTML = '';
+  }, 750);
+}
+
+function tomarRuta(id, dst, pago) {
+  toast(`✅ Ruta ${id} tomada · SJL→${dst} · S/ ${pago} al completar`);
+  setTimeout(() => sv('miruta', null), 900);
+}
+
+/* ─── TOAST ─────────────────────────────────────────── */
+function toast(msg, type) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast' + (type === 'err' ? ' err' : type === 'wrn' ? ' wrn' : '') + ' on';
+  clearTimeout(window._tToast);
+  window._tToast = setTimeout(() => t.classList.remove('on'), 3500);
+}
+
+/* ─── INIT ──────────────────────────────────────────── */
+document.getElementById('lu').placeholder = 'ernesto@neopisk.com';
+
+/* ─── SERVICE WORKER ────────────────────────────────── */
+if ('serviceWorker' in navigator) {
+  const sw = `
+self.addEventListener('install', e => {
+  console.log('[NeoPisk SW] instalado v3');
+  self.skipWaiting();
+});
+self.addEventListener('activate', e => {
+  console.log('[NeoPisk SW] activado');
+});
+self.addEventListener('fetch', e => {
+  e.respondWith(fetch(e.request).catch(() => new Response('Offline')));
+});`;
+  const blob = new Blob([sw], {type:'text/javascript'});
+  const url = URL.createObjectURL(blob);
+  navigator.serviceWorker.register(url)
+    .then(r => console.log('[NeoPisk] SW registrado:', r.scope))
+    .catch(e => console.log('[NeoPisk] SW error:', e));
+}
 </script>
 </body>
 </html>
