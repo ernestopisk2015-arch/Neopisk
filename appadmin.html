@@ -210,6 +210,88 @@ tr:hover td{background:var(--s2);}
   document.head.appendChild(link);
 })();
 </script>
+
+<!-- ═══════════════════════════════════════════════
+     SERVICE WORKER REGISTRATION + PWA INSTALL
+═══════════════════════════════════════════════ -->
+<script>
+// ── Service Worker ──────────────────────────────
+const SW_CODE = `
+const CACHE = 'neopisk-admin-v1';
+const OFFLINE_URL = self.location.href;
+
+self.addEventListener('install', e => {
+  e.waitUntil(
+    caches.open(CACHE).then(c => c.addAll([OFFLINE_URL]))
+  );
+  self.skipWaiting();
+});
+
+self.addEventListener('activate', e => {
+  e.waitUntil(
+    caches.keys().then(keys =>
+      Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)))
+    )
+  );
+  self.clients.claim();
+});
+
+self.addEventListener('fetch', e => {
+  if (e.request.mode === 'navigate') {
+    e.respondWith(
+      fetch(e.request).catch(() => caches.match(OFFLINE_URL))
+    );
+  } else {
+    e.respondWith(
+      caches.match(e.request).then(r => r || fetch(e.request))
+    );
+  }
+});
+`;
+
+// Register SW via blob (works for single HTML files)
+if ('serviceWorker' in navigator) {
+  const blob = new Blob([SW_CODE], { type: 'application/javascript' });
+  const swUrl = URL.createObjectURL(blob);
+  navigator.serviceWorker.register(swUrl, { scope: './' })
+    .then(r => console.log('SW registered', r.scope))
+    .catch(e => console.warn('SW failed:', e));
+}
+
+// ── PWA Install Banner ──────────────────────────
+let deferredPrompt = null;
+
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault();
+  deferredPrompt = e;
+  // Show install banner after 2s
+  setTimeout(showInstallBanner, 2000);
+});
+
+function showInstallBanner() {
+  if (!deferredPrompt) return;
+  const banner = document.getElementById('pwa-banner');
+  if (banner) banner.style.display = 'flex';
+}
+
+function installPWA() {
+  if (!deferredPrompt) return;
+  deferredPrompt.prompt();
+  deferredPrompt.userChoice.then(r => {
+    if (r.outcome === 'accepted') hideBanner();
+    deferredPrompt = null;
+  });
+}
+
+function hideBanner() {
+  const b = document.getElementById('pwa-banner');
+  if (b) { b.style.opacity='0'; setTimeout(()=>b.style.display='none', 300); }
+}
+
+// Auto-hide if already installed
+window.addEventListener('appinstalled', hideBanner);
+</script>
+
 </head>
 <body>
 
@@ -560,5 +642,25 @@ function vAlgo(){
   </div>
 </div>`;}
 </script>
+
+<!-- PWA Install Banner -->
+<div id="pwa-banner" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:10000;
+  background:#e85d00;color:#fff;padding:14px 18px;align-items:center;gap:12px;
+  box-shadow:0 -4px 24px rgba(0,0,0,.25);animation:slideUp .4s ease;">
+  <div style="font-size:26px;flex-shrink:0">🛡️</div>
+  <div style="flex:1;line-height:1.4">
+    <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:13px">NeoPisk Admin</div>
+    <div style="font-size:11px;opacity:.85">Instalar app en tu celular</div>
+  </div>
+  <button onclick="installPWA()" style="background:#fff;color:#e85d00;border:none;
+    padding:9px 16px;border-radius:9px;font-family:'Syne',sans-serif;font-weight:800;
+    font-size:12px;flex-shrink:0;cursor:pointer;">Instalar</button>
+  <button onclick="hideBanner()" style="background:rgba(255,255,255,.2);color:#fff;border:none;
+    width:28px;height:28px;border-radius:7px;font-size:14px;cursor:pointer;flex-shrink:0;">✕</button>
+</div>
+<style>
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+</style>
+
 </body>
 </html>
