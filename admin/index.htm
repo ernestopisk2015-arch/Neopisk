@@ -288,169 +288,54 @@ if ('serviceWorker' in navigator) {
 // ── PWA Install ─────────────────────────────────
 var deferredPrompt = null;
 
+// Capturar el prompt lo antes posible
 window.addEventListener('beforeinstallprompt', function(e) {
   e.preventDefault();
   deferredPrompt = e;
+  // Actualizar botón para indicar que está listo
+  var btn = document.getElementById('install-btn');
+  if (btn) btn.style.opacity = '1';
 });
 
 function installPWA() {
   if (deferredPrompt) {
-    // Native Chrome install prompt
+    // Chrome tiene el prompt listo — instalación nativa
     deferredPrompt.prompt();
     deferredPrompt.userChoice.then(function(r) {
       if (r.outcome === 'accepted') hideBanner();
       deferredPrompt = null;
     });
   } else {
-    // Show step-by-step modal
-    showInstallModal();
+    // Chrome aún no disparó el prompt — usar menú manual
+    // Abrir menú de Chrome directamente
+    var ua = navigator.userAgent.toLowerCase();
+    if (ua.indexOf('android') > -1) {
+      alert('Toca los 3 puntos ⋮ de Chrome → "Añadir a pantalla de inicio"');
+    } else if (ua.indexOf('iphone') > -1 || ua.indexOf('ipad') > -1) {
+      alert('Toca el botón Compartir □↑ → "Añadir a pantalla de inicio"');
+    } else {
+      alert('En Chrome: Menú → Más herramientas → Crear acceso directo');
+    }
   }
-}
-
-function showInstallModal() {
-  var existing = document.getElementById('install-modal');
-  if (existing) { existing.style.display='flex'; return; }
-  var modal = document.createElement('div');
-  modal.id = 'install-modal';
-  modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:99999;display:flex;align-items:flex-end;justify-content:center;padding:0 0 20px 0;animation:fadeIn .2s ease';
-  modal.innerHTML = `
-    <div style="background:#fff;border-radius:20px;padding:24px;width:calc(100vw - 32px);max-width:380px;box-shadow:0 24px 60px rgba(0,0,0,.4)">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px">
-        <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:16px">📲 Instalar App</div>
-        <button onclick="document.getElementById('install-modal').style.display='none'"
-          style="background:#f0f0f0;border:none;width:28px;height:28px;border-radius:7px;font-size:14px;cursor:pointer">✕</button>
-      </div>
-      <div style="font-size:12px;color:#444;line-height:1.9;font-family:'JetBrains Mono',monospace">
-        <div style="padding:10px 12px;background:#f8f8f8;border-radius:10px;margin-bottom:8px;border-left:3px solid #e85d00">
-          <strong style="color:#e85d00">Paso 1</strong><br>
-          Toca los <strong>3 puntos ⋮</strong> arriba a la derecha de Chrome
-        </div>
-        <div style="padding:10px 12px;background:#f8f8f8;border-radius:10px;margin-bottom:8px;border-left:3px solid #e85d00">
-          <strong style="color:#e85d00">Paso 2</strong><br>
-          Selecciona <strong>"Añadir a pantalla de inicio"</strong>
-        </div>
-        <div style="padding:10px 12px;background:#f8f8f8;border-radius:10px;border-left:3px solid #0d7a3e">
-          <strong style="color:#0d7a3e">Paso 3</strong><br>
-          Toca <strong>"Añadir"</strong> para confirmar ✅
-        </div>
-      </div>
-      <button onclick="document.getElementById('install-modal').style.display='none'"
-        style="width:100%;margin-top:16px;padding:13px;background:#0a0a0a;color:#fff;border:none;
-        border-radius:11px;font-family:'Syne',sans-serif;font-weight:800;font-size:13px;cursor:pointer">
-        Entendido 👍
-      </button>
-    </div>`;
-  document.body.appendChild(modal);
 }
 
 function hideBanner() {
   var b = document.getElementById('pwa-banner');
-  if (b) { b.style.opacity='0'; b.style.transition='opacity .3s'; setTimeout(function(){b.style.display='none';},300); }
+  if (b) {
+    b.style.opacity = '0';
+    b.style.transition = 'opacity .3s';
+    setTimeout(function() { b.style.display = 'none'; }, 300);
+  }
 }
 
-// Hide if already installed
+// Ocultar si ya está instalada
 if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true) {
   document.addEventListener('DOMContentLoaded', function() { hideBanner(); });
 }
-window.addEventListener('appinstalled', hideBanner);
-</script>
-</head>
-<body>
-
-<!-- LOGIN -->
-<div class="login-screen" id="loginScreen">
-  <div class="lbox">
-    <div class="l-brand">
-      <div class="l-logo">
-        <div class="l-icon">🍊</div>
-        <div class="l-name">Neo<span>Pisk</span></div>
-      </div>
-      <div class="l-sub">Panel de Administración</div>
-      <div class="l-role">🛡️ Acceso Admin</div>
-    </div>
-    <div class="ff"><label>Usuario Admin</label><input type="email" id="lu" placeholder="ernesto@neopisk.com" autocomplete="email"></div>
-    <div class="ff"><label>Contraseña</label><input type="password" id="lp" placeholder="••••••••" autocomplete="current-password"></div>
-    <button class="btn-login" onclick="doLogin()">Ingresar como Admin →</button>
-    <div class="l-hint">Demo: cualquier usuario · contraseña <strong>123</strong></div>
-    <div class="l-links">
-      <a class="l-link" href="neopisk-conductor.html">🚗 App Conductor</a>
-      <a class="l-link" href="neopisk-cliente.html">🛒 App Cliente</a>
-      <a class="l-link" href="neopisk-inversor.html">💎 App Inversor</a>
-    </div>
-  </div>
-</div>
-
-<!-- APP -->
-<div class="app" id="appScreen">
-  <div class="overlay" id="overlay" onclick="closeSb()"></div>
-  <aside class="sb" id="sidebar">
-    <div class="sb-head">
-      <div class="sb-brand">
-        <div class="sb-icon">🍊</div>
-        <div><div class="sb-name">NeoPisk Admin</div><div class="sb-ver">V3 · Panel Control</div></div>
-      </div>
-      <button class="sb-close" onclick="closeSb()">✕</button>
-    </div>
-    <nav class="sb-nav" id="snav"></nav>
-    <div class="sb-ft">
-      <div class="u-row">
-        <div class="u-av">🛡️</div>
-        <div><div class="u-nm">Ernesto Piskulich</div><div class="u-rl">Administrador</div></div>
-        <button class="btn-out" onclick="doOut()">Salir</button>
-      </div>
-    </div>
-  </aside>
-  <div class="wrap">
-    <div class="topbar">
-      <div class="tb-l">
-        <button class="tb-menu" onclick="openSb()">☰</button>
-        <div class="tb-ttl" id="tbttl">Dashboard</div>
-      </div>
-      <div class="tb-r">
-        <span class="pill p-gr">● Sistema OK</span>
-        <span class="pill p-mu" id="tbclk" style="font-family:var(--fm)"></span>
-      </div>
-    </div>
-    <div class="pgc" id="pgc"></div>
-  </div>
-</div>
-<div class="toast" id="toast"></div>
-
-<script>
-const NAVS = [
-  {sec:'Operaciones'},
-  {id:'dash',  ic:'📊', lb:'Dashboard'},
-  {id:'mapa',  ic:'🗺️',  lb:'Mapa en Vivo', bdg:'3'},
-  {id:'conds', ic:'🚗', lb:'Conductores'},
-  {id:'bunker',ic:'📦', lb:'Búnker · Pedidos'},
-  {sec:'Gestión'},
-  {id:'liq',   ic:'💰', lb:'Liquidación'},
-  {id:'schema',ic:'🗄️', lb:'Base de Datos'},
-  {id:'algo',  ic:'⚙️', lb:'Algoritmo'},
-];
-const TITLES = {dash:'Dashboard General',mapa:'Mapa en Vivo · GPS',conds:'Conductores',bunker:'Búnker · Pedidos',liq:'Liquidación Automática',schema:'Modelo de Datos',algo:'Algoritmo de Asignación'};
-const CONDUCTORES = [
-  {id:'C001',nm:'Carlos Huanca', pl:'ABC-123',st:'En ruta',   doc:'OK',     vel:48,rt:'SJL→San Borja'},
-  {id:'C002',nm:'Pedro Quispe',  pl:'DEF-456',st:'Disponible',doc:'OK',     vel:0, rt:'—'},
-  {id:'C003',nm:'Luis Mamani',   pl:'GHI-789',st:'En ruta',   doc:'Vencido',vel:67,rt:'SJL→Surco'},
-  {id:'C004',nm:'Ana Flores',    pl:'JKL-012',st:'Entregando',doc:'OK',     vel:12,rt:'SJL→Miraflores'},
-];
-const PEDIDOS = [
-  {id:'P001',cli:'Rosa Mamani',  prod:'Naranja 10kg', zona:'San Borja',st:'Listo',   kg:10},
-  {id:'P002',cli:'María García', prod:'Palta Hass',   zona:'San Borja',st:'Listo',   kg:8},
-  {id:'P003',cli:'Luis Torres',  prod:'Naranja 10kg', zona:'Surco',    st:'Listo',   kg:10},
-  {id:'P004',cli:'Carmen Ríos',  prod:'Salchicha 2kg',zona:'San Borja',st:'Listo',   kg:2},
-  {id:'P005',cli:'Jorge Castro', prod:'Naranja 10kg', zona:'San Borja',st:'Listo',   kg:10},
-  {id:'P006',cli:'Sofía Vera',   prod:'Mango caja',   zona:'Surco',    st:'En ruta', kg:5},
-  {id:'P007',cli:'Patricia N.',  prod:'Naranja 10kg', zona:'San Borja',st:'Entregado',kg:10},
-];
-
-function doLogin(){
-  if(document.getElementById('lp').value.trim()!=='123'){toast('Contraseña incorrecta','err');return;}
-  document.getElementById('loginScreen').style.display='none';
-  document.getElementById('appScreen').classList.add('on');
-  buildNav();
-  setInterval(()=>{ document.getElementById('tbclk').textContent=new Date().toLocaleTimeString('es-PE',{hour:'2-digit',minute:'2-digit',second:'2-digit'}); },1000);
+window.addEventListener('appinstalled', function() {
+  hideBanner();
+  console.log('PWA instalada correctamente');
+}); },1000);
   toast('Bienvenido, Ernesto 👋');
 }
 function doOut(){document.getElementById('appScreen').classList.remove('on');document.getElementById('loginScreen').style.display='flex';document.getElementById('lp').value='';}
