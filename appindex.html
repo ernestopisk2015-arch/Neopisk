@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Neo Pisk · Apps</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:#0a0a0a;color:#fff;font-family:'Syne',sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;}
+.logo{font-size:48px;margin-bottom:8px;}
+h1{font-size:28px;font-weight:800;letter-spacing:-1px;margin-bottom:4px;}
+h1 span{color:#e85d00;}
+.sub{font-size:12px;color:#555;text-transform:uppercase;letter-spacing:3px;margin-bottom:40px;}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;width:100%;max-width:360px;}
+.app-card{border-radius:16px;padding:20px;text-decoration:none;color:#fff;display:flex;flex-direction:column;align-items:center;gap:10px;transition:transform .15s,box-shadow .15s;}
+.app-card:hover{transform:translateY(-3px);box-shadow:0 12px 32px rgba(0,0,0,.4);}
+.app-ic{font-size:36px;width:64px;height:64px;border-radius:16px;display:flex;align-items:center;justify-content:center;border:2px solid rgba(255,255,255,.15);}
+.app-nm{font-size:13px;font-weight:800;text-align:center;}
+.app-rl{font-size:10px;opacity:.6;text-align:center;}
+.ca{background:linear-gradient(135deg,#e85d00,#cf5200);}
+.cb{background:linear-gradient(135deg,#c8200a,#a01808);}
+.cc{background:linear-gradient(135deg,#0d7a3e,#0a6533);}
+.cd{background:linear-gradient(135deg,#7c3aed,#5b21b6);}
+.footer{margin-top:40px;font-size:10px;color:#333;text-align:center;line-height:1.8;}
+</style>
+</head>
+<body>
+<div class="logo">🍊</div>
+<h1>Neo<span>Pisk</span></h1>
+<div class="sub">Super App de Logística</div>
+<div class="grid">
+  <a class="app-card ca" href="./admin/">
+    <div class="app-ic">🛡️</div>
+    <div class="app-nm">Admin</div>
+    <div class="app-rl">Panel control</div>
+  </a>
+  <a class="app-card cb" href="./conductor/">
+    <div class="app-ic">🚗</div>
+    <div class="app-nm">Conductor</div>
+    <div class="app-rl">Mi trabajo</div>
+  </a>
+  <a class="app-card cc" href="./cliente/">
+    <div class="app-ic">🛒</div>
+    <div class="app-nm">Cliente</div>
+    <div class="app-rl">Mis pedidos</div>
+  </a>
+  <a class="app-card cd" href="./inversor/">
+    <div class="app-ic">💎</div>
+    <div class="app-nm">Inversor</div>
+    <div class="app-rl">Mi portafolio</div>
+  </a>
+</div>
+<div class="footer">
+  Neo Pisk Logistics · Lima, Perú<br>
+  Abre cada app en Chrome y toca "Instalar"
+</div>
+</body>
+</html>
