@@ -291,25 +291,56 @@ var deferredPrompt = null;
 window.addEventListener('beforeinstallprompt', function(e) {
   e.preventDefault();
   deferredPrompt = e;
-  // Update button to use native prompt
-  var btn = document.getElementById('install-btn');
-  if (btn) btn.textContent = '⬇ Instalar';
 });
 
 function installPWA() {
   if (deferredPrompt) {
+    // Native Chrome install prompt
     deferredPrompt.prompt();
     deferredPrompt.userChoice.then(function(r) {
       if (r.outcome === 'accepted') hideBanner();
       deferredPrompt = null;
     });
   } else {
-    // Fallback: show manual instructions
-    alert('Para instalar:
-1. Toca los 3 puntos (⋮) de Chrome
-2. Selecciona "Agregar a pantalla de inicio"
-3. Confirma tocando "Agregar"');
+    // Show step-by-step modal
+    showInstallModal();
   }
+}
+
+function showInstallModal() {
+  var existing = document.getElementById('install-modal');
+  if (existing) { existing.style.display='flex'; return; }
+  var modal = document.createElement('div');
+  modal.id = 'install-modal';
+  modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:99999;display:flex;align-items:flex-end;justify-content:center;padding:0 0 20px 0;animation:fadeIn .2s ease';
+  modal.innerHTML = `
+    <div style="background:#fff;border-radius:20px;padding:24px;width:calc(100vw - 32px);max-width:380px;box-shadow:0 24px 60px rgba(0,0,0,.4)">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px">
+        <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:16px">📲 Instalar App</div>
+        <button onclick="document.getElementById('install-modal').style.display='none'"
+          style="background:#f0f0f0;border:none;width:28px;height:28px;border-radius:7px;font-size:14px;cursor:pointer">✕</button>
+      </div>
+      <div style="font-size:12px;color:#444;line-height:1.9;font-family:'JetBrains Mono',monospace">
+        <div style="padding:10px 12px;background:#f8f8f8;border-radius:10px;margin-bottom:8px;border-left:3px solid #e85d00">
+          <strong style="color:#e85d00">Paso 1</strong><br>
+          Toca los <strong>3 puntos ⋮</strong> arriba a la derecha de Chrome
+        </div>
+        <div style="padding:10px 12px;background:#f8f8f8;border-radius:10px;margin-bottom:8px;border-left:3px solid #e85d00">
+          <strong style="color:#e85d00">Paso 2</strong><br>
+          Selecciona <strong>"Añadir a pantalla de inicio"</strong>
+        </div>
+        <div style="padding:10px 12px;background:#f8f8f8;border-radius:10px;border-left:3px solid #0d7a3e">
+          <strong style="color:#0d7a3e">Paso 3</strong><br>
+          Toca <strong>"Añadir"</strong> para confirmar ✅
+        </div>
+      </div>
+      <button onclick="document.getElementById('install-modal').style.display='none'"
+        style="width:100%;margin-top:16px;padding:13px;background:#0a0a0a;color:#fff;border:none;
+        border-radius:11px;font-family:'Syne',sans-serif;font-weight:800;font-size:13px;cursor:pointer">
+        Entendido 👍
+      </button>
+    </div>`;
+  document.body.appendChild(modal);
 }
 
 function hideBanner() {
@@ -317,11 +348,10 @@ function hideBanner() {
   if (b) { b.style.opacity='0'; b.style.transition='opacity .3s'; setTimeout(function(){b.style.display='none';},300); }
 }
 
-// Hide banner if already installed (standalone mode)
+// Hide if already installed
 if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true) {
   document.addEventListener('DOMContentLoaded', function() { hideBanner(); });
 }
-
 window.addEventListener('appinstalled', hideBanner);
 </script>
 </head>
