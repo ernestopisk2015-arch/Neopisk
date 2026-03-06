@@ -261,30 +261,43 @@ if ('serviceWorker' in navigator) {
   });
 }
 
-// Install prompt
+// ── PWA Install ─────────────────────────────────
 var deferredPrompt = null;
+
 window.addEventListener('beforeinstallprompt', function(e) {
   e.preventDefault();
   deferredPrompt = e;
-  setTimeout(showInstallBanner, 1500);
+  // Update button to use native prompt
+  var btn = document.getElementById('install-btn');
+  if (btn) btn.textContent = '⬇ Instalar';
 });
-function showInstallBanner() {
-  if (!deferredPrompt) return;
-  var b = document.getElementById('pwa-banner');
-  if (b) b.style.display = 'flex';
-}
+
 function installPWA() {
-  if (!deferredPrompt) return;
-  deferredPrompt.prompt();
-  deferredPrompt.userChoice.then(function(r) {
-    if (r.outcome === 'accepted') hideBanner();
-    deferredPrompt = null;
-  });
+  if (deferredPrompt) {
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.then(function(r) {
+      if (r.outcome === 'accepted') hideBanner();
+      deferredPrompt = null;
+    });
+  } else {
+    // Fallback: show manual instructions
+    alert('Para instalar:
+1. Toca los 3 puntos (⋮) de Chrome
+2. Selecciona "Agregar a pantalla de inicio"
+3. Confirma tocando "Agregar"');
+  }
 }
+
 function hideBanner() {
   var b = document.getElementById('pwa-banner');
-  if (b) { b.style.opacity='0'; setTimeout(function(){b.style.display='none';},300); }
+  if (b) { b.style.opacity='0'; b.style.transition='opacity .3s'; setTimeout(function(){b.style.display='none';},300); }
 }
+
+// Hide banner if already installed (standalone mode)
+if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true) {
+  document.addEventListener('DOMContentLoaded', function() { hideBanner(); });
+}
+
 window.addEventListener('appinstalled', hideBanner);
 </script>
 </head>
@@ -475,29 +488,32 @@ function vTokens(){return`
 </script>
 
 <!-- PWA Install Banner -->
-<div id="pwa-banner" style="display:none;position:fixed;bottom:18px;left:50%;transform:translateX(-50%);z-index:10000;
-  background:#0d7a3e;color:#fff;padding:16px 20px;align-items:center;gap:14px;
-  box-shadow:0 8px 32px rgba(0,0,0,.35);animation:slideUp .4s cubic-bezier(.22,1,.36,1);
-  border-radius:18px;max-width:340px;width:calc(100% - 32px);">
-  <div style="width:52px;height:52px;background:rgba(255,255,255,.15);border-radius:14px;
-    display:flex;align-items:center;justify-content:center;font-size:30px;flex-shrink:0;
-    border:2px solid rgba(255,255,255,.25)">🍐</div>
-  <div style="flex:1;line-height:1.5">
-    <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:14px;letter-spacing:-.3px">Neo Pisk</div>
-    <div style="font-size:11px;opacity:.8;font-family:'JetBrains Mono',monospace">Agregar a pantalla inicio</div>
+<div id="pwa-banner" style="display:flex;position:fixed;bottom:18px;left:50%;transform:translateX(-50%);z-index:10000;
+  background:#0d7a3e;color:#fff;padding:14px 18px;align-items:center;gap:12px;
+  box-shadow:0 8px 32px rgba(0,0,0,.35);border-radius:18px;
+  max-width:340px;width:calc(100vw - 36px);
+  animation:slideUp .5s cubic-bezier(.22,1,.36,1);">
+  <!-- Fruit icon -->
+  <div style="width:50px;height:50px;background:rgba(255,255,255,.18);border-radius:13px;
+    display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0;
+    border:2px solid rgba(255,255,255,.3)">🍊</div>
+  <!-- Text -->
+  <div style="flex:1;min-width:0">
+    <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:14px;white-space:nowrap">Neo Pisk</div>
+    <div style="font-size:10px;opacity:.8;margin-top:1px;font-family:'JetBrains Mono',monospace">📲 Instalar en tu celular</div>
   </div>
-  <div style="display:flex;flex-direction:column;gap:6px;flex-shrink:0;align-items:center">
-    <button onclick="installPWA()" style="background:#fff;color:#0d7a3e;border:none;
-      width:44px;height:44px;border-radius:12px;font-size:22px;cursor:pointer;
-      display:flex;align-items:center;justify-content:center;
-      box-shadow:0 2px 8px rgba(0,0,0,.2);font-weight:800;">⬇️</button>
-    <button onclick="hideBanner()" style="background:rgba(255,255,255,.15);color:#fff;border:none;
-      width:44px;height:20px;border-radius:6px;font-size:10px;cursor:pointer;
-      font-family:'Syne',sans-serif;font-weight:700;letter-spacing:.5px;">NO</button>
-  </div>
+  <!-- Install button -->
+  <button onclick="installPWA()" id="install-btn"
+    style="background:#fff;color:#0d7a3e;border:none;padding:9px 14px;border-radius:10px;
+    font-family:'Syne',sans-serif;font-weight:800;font-size:12px;flex-shrink:0;cursor:pointer;
+    box-shadow:0 2px 8px rgba(0,0,0,.15);white-space:nowrap">⬇ Instalar</button>
+  <!-- Close -->
+  <button onclick="hideBanner()"
+    style="background:rgba(255,255,255,.18);color:#fff;border:none;width:26px;height:26px;
+    border-radius:7px;font-size:12px;cursor:pointer;flex-shrink:0;font-weight:700">✕</button>
 </div>
 <style>
-@keyframes slideUp{{from{{opacity:0;transform:translateX(-50%) translateY(20px)}}to{{opacity:1;transform:translateX(-50%) translateY(0)}}}}
+@keyframes slideUp{from{opacity:0;transform:translateX(-50%) translateY(24px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
 </style>
 
 </body>
