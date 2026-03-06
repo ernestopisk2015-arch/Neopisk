@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<link rel="apple-touch-icon" href="data:image/png;base64,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">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Neo Pisk Admin">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#e85d00">
+<title>Neo Pisk · Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f5f4ee;--surface:#fff;--s2:#eeede6;--border:#dddbd1;
+  --text:#0f0f0f;--text2:#3a3a3a;--muted:#888878;
+  --or:#e85d00;--or-bg:#fff1e6;
+  --gr:#0d7a3e;--gr-bg:#e6f7ee;
+  --rd:#c8200a;--rd-bg:#fde8e5;
+  --bl:#1a5cd8;--bl-bg:#e8eeff;
+  --yl:#c89500;--yl-bg:#fff8de;
+  --dark:#0a0a0a;--dark3:#1e1e1e;
+  --fh:'Syne',sans-serif;--fm:'JetBrains Mono',monospace;
+  --sb-w:240px;--radius:14px;--acent:var(--or);
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{font-size:14px;}
+
+/* ── PWA FIX: no scroll/zoom on load ── */
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  touch-action: pan-y;
+}
+body{background:var(--bg);color:var(--text);font-family:var(--fm);min-height:100vh;overflow-x:hidden;-webkit-font-smoothing:antialiased;}
+button{cursor:pointer;font-family:inherit;}
+::-webkit-scrollbar{width:4px;height:4px;}::-webkit-scrollbar-track{background:var(--s2);}::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px;}
+/* LOGIN */
+.login-screen{display:flex;min-height:100dvh;align-items:center;justify-content:center;padding:20px;background:var(--dark);position:relative;overflow:hidden;}
+.login-screen::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 50% at 20% 10%,rgba(232,93,0,.18) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 80% 90%,rgba(232,93,0,.10) 0%,transparent 60%),repeating-linear-gradient(0deg,transparent,transparent 47px,rgba(255,255,255,.03) 47px,rgba(255,255,255,.03) 48px),repeating-linear-gradient(90deg,transparent,transparent 47px,rgba(255,255,255,.03) 47px,rgba(255,255,255,.03) 48px);pointer-events:none;}
+.login-screen::after{content:'🛡️';position:absolute;font-size:280px;opacity:.04;bottom:-30px;right:-20px;pointer-events:none;}
+.lbox{background:rgba(255,255,255,.97);border-radius:20px;padding:38px 34px;width:100%;max-width:400px;position:relative;z-index:1;box-shadow:0 40px 80px rgba(0,0,0,.5);animation:lIn .45s cubic-bezier(.22,1,.36,1);}
+@keyframes lIn{from{opacity:0;transform:translateY(20px) scale(.97)}to{opacity:1;transform:none}}
+.l-brand{text-align:center;margin-bottom:26px;}
+.l-logo{display:inline-flex;align-items:center;gap:10px;margin-bottom:6px;}
+.l-icon{width:46px;height:46px;background:var(--or);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:24px;box-shadow:0 8px 24px rgba(232,93,0,.3);}
+.l-name{font-family:var(--fh);font-size:26px;font-weight:800;letter-spacing:-1px;}
+.l-name span{color:var(--or);}
+.l-role{display:inline-flex;align-items:center;gap:6px;background:rgba(232,93,0,.1);color:var(--or);font-family:var(--fh);font-weight:700;font-size:11px;padding:4px 12px;border-radius:20px;border:1px solid rgba(232,93,0,.2);}
+.l-sub{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:3px;margin-bottom:8px;font-family:var(--fh);}
+.ff{margin-bottom:14px;}
+.ff label{display:block;font-size:9px;text-transform:uppercase;letter-spacing:2px;color:var(--muted);margin-bottom:5px;font-family:var(--fh);font-weight:600;}
+.ff input{width:100%;background:var(--s2);border:2px solid var(--border);color:var(--text);padding:11px 14px;font-family:var(--fm);font-size:13px;border-radius:10px;outline:none;transition:border-color .15s;}
+.ff input:focus{border-color:var(--or);background:#fff;}
+.btn-login{width:100%;padding:14px;background:var(--or);color:#fff;border:none;border-radius:11px;font-family:var(--fh);font-size:14px;font-weight:800;transition:all .15s;box-shadow:0 6px 20px rgba(232,93,0,.25);}
+.btn-login:hover{background:#cf5200;transform:translateY(-1px);}
+.l-hint{text-align:center;margin-top:13px;font-size:11px;color:var(--muted);}
+.l-hint strong{color:var(--or);}
+.l-links{display:flex;gap:8px;justify-content:center;margin-top:14px;flex-wrap:wrap;}
+.l-link{font-size:10px;padding:6px 12px;border-radius:20px;border:1px solid var(--border);color:var(--muted);text-decoration:none;font-family:var(--fh);font-weight:600;transition:all .12s;}
+.l-link:hover{border-color:var(--or);color:var(--or);}
+/* APP */
+.app{display:none;min-height:100dvh;flex-direction:row;}
+.app.on{display:flex;}
+.sb{width:var(--sb-w);background:var(--dark);display:flex;flex-direction:column;position:fixed;top:0;bottom:0;left:0;z-index:300;transform:translateX(-100%);transition:transform .28s cubic-bezier(.22,1,.36,1);}
+.sb.open{transform:translateX(0);}
+@media(min-width:900px){.sb{transform:translateX(0);}.sb-close,.tb-menu{display:none!important;}.wrap{margin-left:var(--sb-w)!important;}}
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:299;backdrop-filter:blur(2px);}
+.overlay.on{display:block;}
+.wrap{margin-left:0;flex:1;display:flex;flex-direction:column;min-height:100dvh;width:100%;}
+.sb-head{padding:18px 16px 14px;border-bottom:1px solid var(--dark3);display:flex;align-items:center;justify-content:space-between;}
+.sb-brand{display:flex;align-items:center;gap:10px;}
+.sb-icon{width:34px;height:34px;background:var(--or);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.sb-name{font-family:var(--fh);font-size:14px;font-weight:800;color:#fff;}
+.sb-ver{font-size:9px;color:#444;text-transform:uppercase;letter-spacing:1.5px;}
+.sb-close{background:none;border:1px solid #2a2a2a;color:#555;width:26px;height:26px;border-radius:6px;font-size:13px;display:flex;align-items:center;justify-content:center;transition:all .12s;}
+.sb-close:hover{border-color:#555;color:#fff;}
+.sb-nav{flex:1;overflow-y:auto;padding:10px 0;}
+.sb-sec{font-size:9px;text-transform:uppercase;letter-spacing:2px;color:#333;padding:12px 16px 5px;font-family:var(--fh);font-weight:700;}
+.sb-i{display:flex;align-items:center;gap:9px;padding:9px 16px;cursor:pointer;font-size:11px;color:#666;transition:all .12s;text-transform:uppercase;letter-spacing:.7px;border-left:3px solid transparent;font-family:var(--fh);font-weight:600;border-radius:0 8px 8px 0;margin-right:8px;}
+.sb-i:hover{color:#ccc;background:rgba(255,255,255,.05);}
+.sb-i.on{color:#fff;background:rgba(232,93,0,.12);border-left-color:var(--or);}
+.sb-ic{font-size:14px;width:20px;text-align:center;flex-shrink:0;}
+.sb-bdg{margin-left:auto;background:var(--or);color:#fff;font-size:9px;font-weight:700;padding:2px 6px;border-radius:10px;}
+.sb-ft{padding:13px 16px;border-top:1px solid var(--dark3);}
+.u-row{display:flex;align-items:center;gap:9px;}
+.u-av{width:32px;height:32px;background:rgba(232,93,0,.15);border:2px solid var(--or);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
+.u-nm{font-family:var(--fh);font-size:11px;font-weight:700;color:#ddd;}
+.u-rl{font-size:9px;color:#444;text-transform:uppercase;letter-spacing:1px;}
+.btn-out{background:none;border:1px solid #2a2a2a;color:#444;padding:4px 8px;border-radius:6px;font-size:9px;margin-left:auto;transition:all .12s;font-family:var(--fh);font-weight:600;flex-shrink:0;}
+.btn-out:hover{border-color:var(--rd);color:var(--rd);}
+.topbar{background:var(--surface);border-bottom:1.5px solid var(--border);padding:0 18px;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 1px 8px rgba(0,0,0,.04);}
+.tb-l{display:flex;align-items:center;gap:11px;}
+.tb-menu{background:var(--s2);border:1.5px solid var(--border);border-radius:8px;width:34px;height:34px;display:flex;align-items:center;justify-content:center;font-size:16px;color:var(--text);transition:all .12s;}
+.tb-menu:hover{background:var(--border);}
+.tb-ttl{font-family:var(--fh);font-size:16px;font-weight:800;letter-spacing:-.4px;}
+.tb-r{display:flex;align-items:center;gap:8px;}
+.pgc{padding:18px;flex:1;animation:fadeIn .2s ease;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+/* Components */
+.krow{display:grid;gap:12px;margin-bottom:18px;}
+.k4{grid-template-columns:repeat(4,1fr);}
+.k3{grid-template-columns:repeat(3,1fr);}
+.k2{grid-template-columns:repeat(2,1fr);}
+.kpi{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:16px;position:relative;overflow:hidden;transition:all .15s;}
+.kpi:hover{box-shadow:0 4px 20px rgba(0,0,0,.07);transform:translateY(-1px);}
+.kb{position:absolute;top:0;left:0;right:0;height:3px;border-radius:var(--radius) var(--radius) 0 0;}
+.ki{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px;margin-bottom:10px;}
+.kl{font-size:9px;text-transform:uppercase;letter-spacing:2px;color:var(--muted);margin-bottom:3px;font-family:var(--fh);font-weight:600;}
+.kv{font-family:var(--fh);font-size:22px;font-weight:800;line-height:1;}
+.ks{font-size:10px;color:var(--muted);margin-top:3px;}
+.cor .kb{background:var(--or);}.cor .ki{background:var(--or-bg);}
+.cgr .kb{background:var(--gr);}.cgr .ki{background:var(--gr-bg);}
+.cbl .kb{background:var(--bl);}.cbl .ki{background:var(--bl-bg);}
+.crd .kb{background:var(--rd);}.crd .ki{background:var(--rd-bg);}
+.cyl .kb{background:var(--yl);}.cyl .ki{background:var(--yl-bg);}
+.card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:16px;}
+.ch{padding:12px 16px;border-bottom:1.5px solid var(--border);display:flex;align-items:center;justify-content:space-between;background:var(--s2);gap:8px;flex-wrap:wrap;}
+.ct{font-family:var(--fh);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;}
+.cb{padding:16px;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;}
+.tw{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;}
+th{padding:8px 12px;text-align:left;font-size:9px;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);background:var(--s2);border-bottom:1.5px solid var(--border);font-family:var(--fh);white-space:nowrap;}
+td{padding:10px 12px;font-size:12px;border-bottom:1px solid var(--border);color:var(--text2);vertical-align:middle;}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:var(--s2);}
+.bo{font-weight:600;font-family:var(--fh);color:var(--text);}
+.chip{display:inline-flex;align-items:center;gap:3px;padding:3px 8px;border-radius:20px;font-size:10px;font-weight:700;font-family:var(--fh);white-space:nowrap;}
+.cgr2{background:var(--gr-bg);color:var(--gr);}
+.cor2{background:var(--or-bg);color:var(--or);}
+.crd2{background:var(--rd-bg);color:var(--rd);}
+.cbl2{background:var(--bl-bg);color:var(--bl);}
+.cyl2{background:var(--yl-bg);color:var(--yl);}
+.cmu{background:var(--s2);color:var(--muted);border:1px solid var(--border);}
+.pill{padding:4px 10px;border-radius:20px;font-size:10px;font-weight:700;font-family:var(--fh);}
+.p-or{background:var(--or-bg);color:var(--or);}
+.p-gr{background:var(--gr-bg);color:var(--gr);}
+.p-rd{background:var(--rd-bg);color:var(--rd);}
+.p-bl{background:var(--bl-bg);color:var(--bl);}
+.p-mu{background:var(--s2);color:var(--muted);border:1px solid var(--border);}
+.btn{padding:9px 16px;font-family:var(--fh);font-size:11px;font-weight:700;border:none;border-radius:9px;transition:all .12s;display:inline-flex;align-items:center;gap:5px;}
+.bor{background:var(--or);color:#fff;}.bor:hover{background:#cf5200;}
+.bou{background:var(--surface);border:1.5px solid var(--border);color:var(--text2);}.bou:hover{border-color:var(--text);}
+.brd{background:var(--rd);color:#fff;}
+.bsm{padding:5px 11px;font-size:10px;}
+.bfu{width:100%;justify-content:center;}
+.ptrack{height:5px;background:var(--s2);border-radius:3px;overflow:hidden;margin-bottom:5px;border:1px solid var(--border);}
+.pbar{height:100%;border-radius:3px;transition:width .5s;}
+.plbl{font-size:10px;color:var(--muted);}
+.alert-box{background:var(--rd-bg);border:1.5px solid var(--rd);border-radius:11px;padding:12px 15px;margin-bottom:12px;display:flex;align-items:flex-start;gap:10px;animation:shk .3s;}
+@keyframes shk{0%,100%{transform:translateX(0)}25%{transform:translateX(-3px)}75%{transform:translateX(3px)}}
+.al-ic{font-size:20px;flex-shrink:0;}
+.al-ttl{font-family:var(--fh);font-weight:700;color:var(--rd);font-size:12px;margin-bottom:2px;}
+.al-body{font-size:10px;color:var(--rd);opacity:.85;}
+.lr{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);}
+.lr:last-child{border-bottom:none;}
+.ll{font-size:11px;color:var(--text2);}
+.lv{font-family:var(--fh);font-weight:700;font-size:12px;}
+.mapbox{background:linear-gradient(145deg,#cde4cf,#b8d4ba);border-radius:11px;height:240px;position:relative;overflow:hidden;border:1.5px solid var(--border);}
+.map-car{position:absolute;font-size:18px;filter:drop-shadow(0 2px 4px rgba(0,0,0,.3));transition:all .6s;}
+.map-pin{position:absolute;font-size:16px;filter:drop-shadow(0 2px 4px rgba(0,0,0,.3));}
+.map-roads{position:absolute;inset:0;background:repeating-linear-gradient(45deg,transparent,transparent 30px,rgba(255,255,255,.2) 30px,rgba(255,255,255,.2) 32px);}
+.map-leg{position:absolute;bottom:10px;left:10px;background:rgba(255,255,255,.94);backdrop-filter:blur(8px);border-radius:8px;padding:8px 12px;font-size:10px;line-height:1.7;}
+.stbl{background:#0d0d0d;border-radius:11px;padding:16px;margin-bottom:12px;border:1px solid var(--dark3);}
+.sn{font-family:var(--fh);font-size:12px;font-weight:800;color:var(--or);margin-bottom:10px;display:flex;align-items:center;gap:7px;}
+.sf{display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid #181818;font-size:10px;}
+.sf:last-child{border-bottom:none;}
+.sf-n{color:#ddd;font-family:var(--fm);width:130px;flex-shrink:0;}
+.sf-t{color:var(--or);font-family:var(--fm);width:100px;flex-shrink:0;}
+.sf-d{color:#444;flex:1;}
+.spk{color:var(--yl);font-size:8px;font-weight:700;background:#1a1200;padding:1px 4px;border-radius:3px;margin-right:3px;}
+.sfk{color:var(--bl);font-size:8px;font-weight:700;background:#00101a;padding:1px 4px;border-radius:3px;margin-right:3px;}
+.as{display:flex;gap:12px;margin-bottom:14px;align-items:flex-start;}
+.an{width:26px;height:26px;background:var(--or);color:#fff;border-radius:7px;display:flex;align-items:center;justify-content:center;font-family:var(--fh);font-weight:800;font-size:11px;flex-shrink:0;margin-top:2px;}
+.at{font-family:var(--fh);font-weight:700;font-size:12px;margin-bottom:3px;}
+.ad{font-size:11px;color:var(--text2);line-height:1.6;}
+.cl{background:var(--s2);border-radius:6px;padding:4px 8px;font-family:var(--fm);font-size:10px;color:var(--or);margin-top:5px;border-left:3px solid var(--or);overflow-x:auto;white-space:nowrap;}
+.toast{position:fixed;bottom:18px;right:18px;background:var(--dark);color:#fff;border-left:4px solid var(--gr);padding:12px 16px;font-size:11px;border-radius:10px;z-index:9999;transform:translateX(140%);transition:transform .3s cubic-bezier(.22,1,.36,1);font-family:var(--fh);font-weight:600;box-shadow:0 8px 32px rgba(0,0,0,.3);max-width:300px;}
+.toast.on{transform:translateX(0);}
+.toast.err{border-left-color:var(--rd);}
+.toast.wrn{border-left-color:var(--yl);}
+@media(max-width:899px){.k4{grid-template-columns:repeat(2,1fr);}.k3{grid-template-columns:repeat(2,1fr);}.g2{grid-template-columns:1fr;}.g3{grid-template-columns:1fr 1fr;}.kv{font-size:20px;}.pgc{padding:13px;}.topbar{padding:0 13px;}.tb-ttl{font-size:15px;}}
+@media(max-width:480px){.k4,.k3,.k2{grid-template-columns:1fr 1fr;}.g3{grid-template-columns:1fr;}.toast{right:10px;bottom:10px;max-width:calc(100vw - 20px);}}
+</style>
+
+
+
+
+<script>
+
+// Generate icon with emoji using canvas
+function generateIcon(size, bgColor, emoji) {
+  var canvas = document.createElement('canvas');
+  canvas.width = size;
+  canvas.height = size;
+  var ctx = canvas.getContext('2d');
+  var r = size * 0.22;
+  // Rounded rect background
+  ctx.beginPath();
+  ctx.moveTo(r, 0);
+  ctx.lineTo(size - r, 0);
+  ctx.quadraticCurveTo(size, 0, size, r);
+  ctx.lineTo(size, size - r);
+  ctx.quadraticCurveTo(size, size, size - r, size);
+  ctx.lineTo(r, size);
+  ctx.quadraticCurveTo(0, size, 0, size - r);
+  ctx.lineTo(0, r);
+  ctx.quadraticCurveTo(0, 0, r, 0);
+  ctx.closePath();
+  ctx.fillStyle = bgColor;
+  ctx.fill();
+  // Emoji centered
+  ctx.font = (size * 0.55) + 'px serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText(emoji, size / 2, size / 2 + size * 0.03);
+  return canvas.toDataURL('image/png');
+}
+
+
+(function() {
+  // Generate icons with real emoji via canvas
+  var icon192 = generateIcon(192, '#e85d00', '🍊');
+  var icon512 = generateIcon(512, '#e85d00', '🍊');
+
+  // Also set apple-touch-icon dynamically
+  var appleLink = document.querySelector('link[rel="apple-touch-icon"]');
+  if (appleLink) appleLink.href = icon192;
+
+  var m = {
+    name: "Neo Pisk Admin",
+    short_name: "Neo Pisk Admin",
+    start_url: "/admin/",
+    display: "standalone",
+    orientation: "portrait",
+    background_color: "#e85d00",
+    theme_color: "#e85d00",
+    icons: [
+      { src: icon192, sizes: "192x192", type: "image/png", purpose: "any maskable" },
+      { src: icon512, sizes: "512x512", type: "image/png", purpose: "any maskable" }
+    ]
+  };
+  var blob = new Blob([JSON.stringify(m)], {type:'application/json'});
+  var url = URL.createObjectURL(blob);
+  var link = document.createElement('link');
+  link.rel = 'manifest';
+  link.href = url;
+  document.head.appendChild(link);
+})();
+</script>
+<!-- SERVICE WORKER + INSTALL -->
+<script>
+// Service Worker
+const SW_CODE = `
+const CACHE = 'neopisk-admin-v2';
+self.addEventListener('install', e => {
+  e.waitUntil(caches.open(CACHE).then(c => c.addAll([self.location.href])));
+  self.skipWaiting();
+});
+self.addEventListener('activate', e => {
+  e.waitUntil(caches.keys().then(keys =>
+    Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)))
+  ));
+  self.clients.claim();
+});
+self.addEventListener('fetch', e => {
+  if (e.request.mode === 'navigate') {
+    e.respondWith(fetch(e.request).catch(() => caches.match(self.location.href)));
+  } else {
+    e.respondWith(caches.match(e.request).then(r => r || fetch(e.request)));
+  }
+});
+`;
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function() {
+    var blob = new Blob([SW_CODE], {type:'application/javascript'});
+    navigator.serviceWorker.register(URL.createObjectURL(blob), {scope:'./'})
+      .catch(function(e) { console.warn('SW:', e); });
+  });
+}
+
+// ── PWA Install ─────────────────────────────────
+var deferredPrompt = null;
+
+window.addEventListener('beforeinstallprompt', function(e) {
+  e.preventDefault();
+  deferredPrompt = e;
+  // Update button to use native prompt
+  var btn = document.getElementById('install-btn');
+  if (btn) btn.textContent = '⬇ Instalar';
+});
+
+function installPWA() {
+  if (deferredPrompt) {
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.then(function(r) {
+      if (r.outcome === 'accepted') hideBanner();
+      deferredPrompt = null;
+    });
+  } else {
+    // Fallback: show manual instructions
+    alert('Para instalar:
+1. Toca los 3 puntos (⋮) de Chrome
+2. Selecciona "Agregar a pantalla de inicio"
+3. Confirma tocando "Agregar"');
+  }
+}
+
+function hideBanner() {
+  var b = document.getElementById('pwa-banner');
+  if (b) { b.style.opacity='0'; b.style.transition='opacity .3s'; setTimeout(function(){b.style.display='none';},300); }
+}
+
+// Hide banner if already installed (standalone mode)
+if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true) {
+  document.addEventListener('DOMContentLoaded', function() { hideBanner(); });
+}
+
+window.addEventListener('appinstalled', hideBanner);
+</script>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div class="login-screen" id="loginScreen">
+  <div class="lbox">
+    <div class="l-brand">
+      <div class="l-logo">
+        <div class="l-icon">🍊</div>
+        <div class="l-name">Neo<span>Pisk</span></div>
+      </div>
+      <div class="l-sub">Panel de Administración</div>
+      <div class="l-role">🛡️ Acceso Admin</div>
+    </div>
+    <div class="ff"><label>Usuario Admin</label><input type="email" id="lu" placeholder="ernesto@neopisk.com" autocomplete="email"></div>
+    <div class="ff"><label>Contraseña</label><input type="password" id="lp" placeholder="••••••••" autocomplete="current-password"></div>
+    <button class="btn-login" onclick="doLogin()">Ingresar como Admin →</button>
+    <div class="l-hint">Demo: cualquier usuario · contraseña <strong>123</strong></div>
+    <div class="l-links">
+      <a class="l-link" href="neopisk-conductor.html">🚗 App Conductor</a>
+      <a class="l-link" href="neopisk-cliente.html">🛒 App Cliente</a>
+      <a class="l-link" href="neopisk-inversor.html">💎 App Inversor</a>
+    </div>
+  </div>
+</div>
+
+<!-- APP -->
+<div class="app" id="appScreen">
+  <div class="overlay" id="overlay" onclick="closeSb()"></div>
+  <aside class="sb" id="sidebar">
+    <div class="sb-head">
+      <div class="sb-brand">
+        <div class="sb-icon">🍊</div>
+        <div><div class="sb-name">NeoPisk Admin</div><div class="sb-ver">V3 · Panel Control</div></div>
+      </div>
+      <button class="sb-close" onclick="closeSb()">✕</button>
+    </div>
+    <nav class="sb-nav" id="snav"></nav>
+    <div class="sb-ft">
+      <div class="u-row">
+        <div class="u-av">🛡️</div>
+        <div><div class="u-nm">Ernesto Piskulich</div><div class="u-rl">Administrador</div></div>
+        <button class="btn-out" onclick="doOut()">Salir</button>
+      </div>
+    </div>
+  </aside>
+  <div class="wrap">
+    <div class="topbar">
+      <div class="tb-l">
+        <button class="tb-menu" onclick="openSb()">☰</button>
+        <div class="tb-ttl" id="tbttl">Dashboard</div>
+      </div>
+      <div class="tb-r">
+        <span class="pill p-gr">● Sistema OK</span>
+        <span class="pill p-mu" id="tbclk" style="font-family:var(--fm)"></span>
+      </div>
+    </div>
+    <div class="pgc" id="pgc"></div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+const NAVS = [
+  {sec:'Operaciones'},
+  {id:'dash',  ic:'📊', lb:'Dashboard'},
+  {id:'mapa',  ic:'🗺️',  lb:'Mapa en Vivo', bdg:'3'},
+  {id:'conds', ic:'🚗', lb:'Conductores'},
+  {id:'bunker',ic:'📦', lb:'Búnker · Pedidos'},
+  {sec:'Gestión'},
+  {id:'liq',   ic:'💰', lb:'Liquidación'},
+  {id:'schema',ic:'🗄️', lb:'Base de Datos'},
+  {id:'algo',  ic:'⚙️', lb:'Algoritmo'},
+];
+const TITLES = {dash:'Dashboard General',mapa:'Mapa en Vivo · GPS',conds:'Conductores',bunker:'Búnker · Pedidos',liq:'Liquidación Automática',schema:'Modelo de Datos',algo:'Algoritmo de Asignación'};
+const CONDUCTORES = [
+  {id:'C001',nm:'Carlos Huanca', pl:'ABC-123',st:'En ruta',   doc:'OK',     vel:48,rt:'SJL→San Borja'},
+  {id:'C002',nm:'Pedro Quispe',  pl:'DEF-456',st:'Disponible',doc:'OK',     vel:0, rt:'—'},
+  {id:'C003',nm:'Luis Mamani',   pl:'GHI-789',st:'En ruta',   doc:'Vencido',vel:67,rt:'SJL→Surco'},
+  {id:'C004',nm:'Ana Flores',    pl:'JKL-012',st:'Entregando',doc:'OK',     vel:12,rt:'SJL→Miraflores'},
+];
+const PEDIDOS = [
+  {id:'P001',cli:'Rosa Mamani',  prod:'Naranja 10kg', zona:'San Borja',st:'Listo',   kg:10},
+  {id:'P002',cli:'María García', prod:'Palta Hass',   zona:'San Borja',st:'Listo',   kg:8},
+  {id:'P003',cli:'Luis Torres',  prod:'Naranja 10kg', zona:'Surco',    st:'Listo',   kg:10},
+  {id:'P004',cli:'Carmen Ríos',  prod:'Salchicha 2kg',zona:'San Borja',st:'Listo',   kg:2},
+  {id:'P005',cli:'Jorge Castro', prod:'Naranja 10kg', zona:'San Borja',st:'Listo',   kg:10},
+  {id:'P006',cli:'Sofía Vera',   prod:'Mango caja',   zona:'Surco',    st:'En ruta', kg:5},
+  {id:'P007',cli:'Patricia N.',  prod:'Naranja 10kg', zona:'San Borja',st:'Entregado',kg:10},
+];
+
+function doLogin(){
+  if(document.getElementById('lp').value.trim()!=='123'){toast('Contraseña incorrecta','err');return;}
+  document.getElementById('loginScreen').style.display='none';
+  document.getElementById('appScreen').classList.add('on');
+  buildNav();
+  setInterval(()=>{ document.getElementById('tbclk').textContent=new Date().toLocaleTimeString('es-PE',{hour:'2-digit',minute:'2-digit',second:'2-digit'}); },1000);
+  toast('Bienvenido, Ernesto 👋');
+}
+function doOut(){document.getElementById('appScreen').classList.remove('on');document.getElementById('loginScreen').style.display='flex';document.getElementById('lp').value='';}
+function openSb(){document.getElementById('sidebar').classList.add('open');document.getElementById('overlay').classList.add('on');document.body.style.overflow='hidden';}
+function closeSb(){document.getElementById('sidebar').classList.remove('open');document.getElementById('overlay').classList.remove('on');document.body.style.overflow='';}
+function buildNav(){
+  const nav=document.getElementById('snav'); nav.innerHTML='';
+  NAVS.forEach(item=>{
+    if(item.sec){nav.innerHTML+=`<div class="sb-sec">${item.sec}</div>`;}
+    else{nav.innerHTML+=`<div class="sb-i" data-v="${item.id}" onclick="sv('${item.id}',this)"><span class="sb-ic">${item.ic}</span>${item.lb}${item.bdg?`<span class="sb-bdg">${item.bdg}</span>`:''}</div>`;}
+  });
+  const first=NAVS.find(x=>x.id);
+  if(first){sv(first.id,nav.querySelector(`[data-v="${first.id}"]`));}
+}
+function sv(id,el){
+  document.querySelectorAll('.sb-i').forEach(x=>x.classList.remove('on'));
+  if(el)el.classList.add('on');
+  document.getElementById('tbttl').textContent=TITLES[id]||id;
+  const V={dash:vDash,mapa:vMapa,conds:vConds,bunker:vBunker,liq:vLiq,schema:vSchema,algo:vAlgo};
+  document.getElementById('pgc').innerHTML=V[id]?V[id]():'<div style="padding:60px;text-align:center;color:var(--muted)">Vista en desarrollo</div>';
+  closeSb();
+}
+function toast(msg,type){
+  const t=document.getElementById('toast');t.textContent=msg;
+  t.className='toast'+(type==='err'?' err':type==='wrn'?' wrn':'')+' on';
+  clearTimeout(window._tt);window._tt=setTimeout(()=>t.classList.remove('on'),3500);
+}
+
+/* ── VIEWS ── */
+function vDash(){return`
+<div class="krow k4">
+  <div class="kpi cor"><div class="kb"></div><div class="ki">🚗</div><div class="kl">Conductores Activos</div><div class="kv">3</div><div class="ks">de 4 registrados</div></div>
+  <div class="kpi cgr"><div class="kb"></div><div class="ki">📦</div><div class="kl">Pedidos Búnker</div><div class="kv">7</div><div class="ks">2 rutas casi listas</div></div>
+  <div class="kpi cbl"><div class="kb"></div><div class="ki">💰</div><div class="kl">Ganancia Hoy</div><div class="kv">S/ 450</div><div class="ks">3 rutas completadas</div></div>
+  <div class="kpi crd"><div class="kb"></div><div class="ki">⚠️</div><div class="kl">Alertas</div><div class="kv">2</div><div class="ks">velocidad + docs</div></div>
+</div>
+<div class="g2">
+  <div>
+    <div class="card">
+      <div class="ch"><div class="ct">🚨 Alertas en Tiempo Real</div><span class="pill p-rd">2 activas</span></div>
+      <div class="cb">
+        <div class="alert-box"><div class="al-ic">🚨</div><div><div class="al-ttl">Luis Mamani · GHI-789 · 67 km/h</div><div class="al-body">Ruta SJL→Surco · Riesgo fotomulta · Hace 2 min</div></div></div>
+        <div class="alert-box" style="border-color:var(--yl);background:var(--yl-bg)"><div class="al-ic">📋</div><div><div class="al-ttl" style="color:var(--yl)">Luis Mamani · Docs vencidos</div><div class="al-body" style="color:var(--yl)">CITV vencida · Bloquear nueva ruta</div></div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ch"><div class="ct">📊 Liquidaciones de Hoy</div></div>
+      <div class="tw"><table>
+        <thead><tr><th>Conductor</th><th>Ruta</th><th>Pago</th><th>NP</th><th>Estado</th></tr></thead>
+        <tbody>
+          <tr><td class="bo">Carlos H.</td><td>SJL→San Borja</td><td style="color:var(--gr);font-family:var(--fh);font-weight:700">S/ 50</td><td style="color:var(--or);font-family:var(--fh);font-weight:700">S/ 150</td><td><span class="chip cgr2">Acreditado</span></td></tr>
+          <tr><td class="bo">Ana Flores</td><td>SJL→Miraflores</td><td style="color:var(--gr);font-family:var(--fh);font-weight:700">S/ 60</td><td style="color:var(--or);font-family:var(--fh);font-weight:700">S/ 150</td><td><span class="chip cyl2">En proceso</span></td></tr>
+          <tr><td class="bo">Pedro Q.</td><td>SJL→Surco</td><td style="color:var(--muted)">S/ 55</td><td style="color:var(--muted)">S/ 150</td><td><span class="chip cmu">Pendiente</span></td></tr>
+        </tbody>
+      </table></div>
+    </div>
+  </div>
+  <div>
+    <div class="card">
+      <div class="ch"><div class="ct">🗺️ Flota en Vivo</div><span class="pill p-or">3 activos</span></div>
+      <div class="cb" style="padding:10px">
+        <div class="mapbox">
+          <div class="map-roads"></div>
+          <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:.2;flex-direction:column;gap:5px;color:#4a6a4a"><div style="font-size:36px">🗺️</div><div style="font-size:11px;font-weight:600">Lima Metropolitana</div></div>
+          <div class="map-car" style="left:22%;top:32%">🚗</div>
+          <div class="map-car" style="left:58%;top:58%">🚙</div>
+          <div class="map-car" style="left:72%;top:36%">🔴</div>
+          <div class="map-pin" style="left:9%;top:18%;font-size:20px">🏭</div>
+          <div class="map-leg"><div style="font-family:var(--fh);font-weight:700;font-size:10px;margin-bottom:4px">GPS Flota</div><div>🚗 Carlos · 48km/h ✓</div><div>🚙 Ana · 12km/h ✓</div><div style="color:var(--rd)">🔴 Luis · 67km/h ⚠️</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ch"><div class="ct">⚡ Lógica 10×50 · Progreso</div></div>
+      <div class="cb">
+        <div style="margin-bottom:14px"><div style="display:flex;justify-content:space-between;margin-bottom:5px"><span style="font-size:11px;color:var(--muted)">SJL → San Borja</span><span class="chip cor2">7/10</span></div><div class="ptrack"><div class="pbar" style="width:70%;background:var(--or)"></div></div><div class="plbl">S/ 350 · <strong style="color:var(--or)">Activando...</strong></div></div>
+        <div><div style="display:flex;justify-content:space-between;margin-bottom:5px"><span style="font-size:11px;color:var(--muted)">SJL → Surco</span><span class="chip cgr2">10/10</span></div><div class="ptrack"><div class="pbar" style="width:100%;background:var(--gr)"></div></div><div class="plbl">S/ 550 · <strong style="color:var(--gr)">¡Ruta Activa!</strong></div></div>
+      </div>
+    </div>
+  </div>
+</div>`;}
+
+function vMapa(){return`
+<div class="krow k3">
+  <div class="kpi cgr"><div class="kb"></div><div class="ki">🚗</div><div class="kl">En Ruta</div><div class="kv">2</div><div class="ks">Carlos + Luis</div></div>
+  <div class="kpi cor"><div class="kb"></div><div class="ki">📦</div><div class="kl">Entregando</div><div class="kv">1</div><div class="ks">Ana Flores</div></div>
+  <div class="kpi crd"><div class="kb"></div><div class="ki">⚠️</div><div class="kl">Alerta Vel.</div><div class="kv">1</div><div class="ks">67 km/h</div></div>
+</div>
+<div class="g2">
+  <div>
+    <div class="card">
+      <div class="ch"><div class="ct">🗺️ Mapa en Vivo</div><span class="pill p-gr">● Sincronizado</span></div>
+      <div class="cb" style="padding:10px">
+        <div class="mapbox" style="height:320px">
+          <div class="map-roads"></div>
+          <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:.15;flex-direction:column;gap:5px;color:#4a6a4a"><div style="font-size:44px">🗺️</div><div style="font-size:12px;font-weight:600">Lima Metropolitana</div><div style="font-size:10px">Búnker SJL ↔ Distritos</div></div>
+          <div class="map-car" style="left:18%;top:25%">🚗</div>
+          <div class="map-car" style="left:62%;top:62%">🚙</div>
+          <div class="map-car" style="left:74%;top:38%">🔴</div>
+          <div class="map-pin" style="left:7%;top:14%;font-size:20px">🏭</div>
+          <div class="map-leg" style="right:12px;left:auto"><div style="font-family:var(--fh);font-weight:700;font-size:10px;margin-bottom:4px">Leyenda</div><div>🏭 Búnker SJL</div><div>🚗 En ruta OK</div><div style="color:var(--rd)">🔴 Alerta velocidad</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div class="card">
+      <div class="ch"><div class="ct">📡 Telemetría GPS</div></div>
+      <div class="cb">
+        ${CONDUCTORES.filter(c=>c.st!=='Disponible').map(c=>`
+        <div style="padding:11px;background:${c.vel>60?'var(--rd-bg)':'var(--s2)'};border-radius:10px;margin-bottom:9px;border:1.5px solid ${c.vel>60?'var(--rd)':'var(--border)'}">
+          <div style="display:flex;justify-content:space-between;margin-bottom:5px"><div style="font-family:var(--fh);font-weight:700;font-size:12px">${c.nm}</div><span class="chip ${c.vel>60?'crd2':c.vel>40?'cor2':'cgr2'}">${c.vel} km/h</span></div>
+          <div style="font-size:10px;color:var(--muted);margin-bottom:6px">${c.pl} · ${c.rt}</div>
+          <div class="ptrack"><div class="pbar" style="width:${c.vel}%;background:${c.vel>60?'var(--rd)':c.vel>40?'var(--or)':'var(--gr)'}"></div></div>
+          ${c.vel>60?`<div style="font-size:10px;color:var(--rd);font-weight:600;margin-top:4px">🚨 Riesgo fotomulta</div>`:`<div style="font-size:10px;color:var(--gr);margin-top:4px">✅ Velocidad segura</div>`}
+        </div>`).join('')}
+      </div>
+    </div>
+    <div class="card">
+      <div class="ch"><div class="ct">🔗 Anti-fraude GPS</div><span class="pill p-gr">Activo</span></div>
+      <div class="cb">
+        ${CONDUCTORES.map(c=>`<div style="display:flex;align-items:center;gap:9px;padding:8px 0;border-bottom:1px solid var(--border)"><span>🚗</span><div style="flex:1"><div style="font-size:12px;font-weight:600;font-family:var(--fh)">${c.nm}</div><div style="font-size:10px;color:var(--muted)">${c.pl}</div></div><span class="chip cgr2" style="font-size:9px">✓ Match</span></div>`).join('')}
+      </div>
+    </div>
+  </div>
+</div>`;}
+
+function vConds(){return`
+<div class="card">
+  <div class="ch"><div class="ct">🚗 Red de Conductores</div><button class="btn bor bsm" onclick="toast('Invitación enviada por WhatsApp 📱')">+ Agregar</button></div>
+  <div class="tw"><table>
+    <thead><tr><th>Conductor</th><th>Placa</th><th>Estado</th><th>Docs</th><th>Vel.</th><th>Ruta</th><th>Acción</th></tr></thead>
+    <tbody>${CONDUCTORES.map(c=>`
+    <tr>
+      <td class="bo">${c.nm}</td>
+      <td style="font-family:var(--fh);font-weight:700">${c.pl}</td>
+      <td><span class="chip ${c.st==='En ruta'?'cbl2':c.st==='Disponible'?'cgr2':'cor2'}">${c.st}</span></td>
+      <td><span class="chip ${c.doc==='OK'?'cgr2':'crd2'}">${c.doc==='OK'?'✓ OK':'✗ Vencido'}</span></td>
+      <td><span class="chip ${c.vel>60?'crd2':c.vel>0?'cor2':'cmu'}">${c.vel>0?c.vel+' km/h':'—'}</span></td>
+      <td style="color:var(--muted);font-size:10px">${c.rt}</td>
+      <td><button class="btn bou bsm" onclick="toast('Perfil: ${c.nm}')">Ver</button>${c.doc!=='OK'?`<button class="btn brd bsm" style="margin-left:4px" onclick="toast('${c.nm} bloqueado','wrn')">Bloquear</button>`:''}</td>
+    </tr>`).join('')}
+    </tbody>
+  </table></div>
+</div>`;}
+
+function vBunker(){
+  const l=PEDIDOS.filter(p=>p.st==='Listo').length;
+  return`
+<div class="krow k3">
+  <div class="kpi cor"><div class="kb"></div><div class="ki">📦</div><div class="kl">En Búnker</div><div class="kv">${l}</div><div class="ks">listos para despacho</div></div>
+  <div class="kpi cbl"><div class="kb"></div><div class="ki">🚗</div><div class="kl">En Ruta</div><div class="kv">1</div></div>
+  <div class="kpi cgr"><div class="kb"></div><div class="ki">✅</div><div class="kl">Entregados Hoy</div><div class="kv">1</div></div>
+</div>
+<div class="card">
+  <div class="ch"><div class="ct">📦 Búnker SJL · Pedidos</div><div style="display:flex;align-items:center;gap:8px"><span class="pill p-or">${l}/10 San Borja</span><button class="btn bor bsm" onclick="toast('Ruta SJL→San Borja activada ✅')">Activar Ruta</button></div></div>
+  <div class="tw"><table>
+    <thead><tr><th>ID</th><th>Cliente</th><th>Producto</th><th>Zona</th><th>Kg</th><th>Estado</th></tr></thead>
+    <tbody>${PEDIDOS.map(p=>`<tr><td style="font-family:var(--fh);color:var(--or);font-weight:700">${p.id}</td><td class="bo">${p.cli}</td><td>${p.prod}</td><td><span class="chip cbl2">${p.zona}</span></td><td style="color:var(--muted)">${p.kg}</td><td><span class="chip ${p.st==='Listo'?'cgr2':p.st==='En ruta'?'cbl2':'cor2'}">${p.st}</span></td></tr>`).join('')}</tbody>
+  </table></div>
+</div>`;}
+
+function vLiq(){
+  const dias=['Lun','Mar','Mié','Jue','Vie','Sáb','Dom'],vals=[150,300,450,200,150,0,0],mx=450;
+  return`
+<div class="g2">
+  <div>
+    <div class="card">
+      <div class="ch"><div class="ct">💰 Liquidación · Lógica 10×50</div></div>
+      <div class="cb">
+        <div style="background:var(--s2);border-radius:10px;padding:14px;margin-bottom:15px;border:1.5px solid var(--border)">
+          <div style="font-family:var(--fh);font-weight:700;margin-bottom:8px;font-size:12px">Por cada ruta (10 entregas):</div>
+          <div class="lr"><div class="ll">🚗 Pago conductor</div><div class="lv" style="color:var(--gr)">S/ 50</div></div>
+          <div class="lr"><div class="ll">🍊 Ganancia NeoPisk</div><div class="lv" style="color:var(--or)">S/ 150</div></div>
+          <div class="lr"><div class="ll" style="font-weight:700">Total facturado</div><div class="lv">S/ 200</div></div>
+        </div>
+        <div class="lr"><div class="ll">Carlos H. · SJL→San Borja</div><div class="lv" style="color:var(--gr)">S/ 50 ✓</div></div>
+        <div class="lr"><div class="ll">Pedro Q. · SJL→Surco</div><div class="lv" style="color:var(--yl)">S/ 55 ⏳</div></div>
+        <div class="lr"><div class="ll">Ana F. · SJL→Miraflores</div><div class="lv" style="color:var(--yl)">S/ 60 ⏳</div></div>
+        <div style="margin-top:14px;padding:12px;background:var(--or-bg);border-radius:10px;border:2px solid var(--or);display:flex;align-items:center;justify-content:space-between">
+          <div style="font-family:var(--fh);font-weight:700;color:var(--or)">💰 Total NeoPisk hoy</div>
+          <div style="font-family:var(--fh);font-size:22px;font-weight:800;color:var(--or)">S/ 450</div>
+        </div>
+        <button class="btn bor bfu" style="margin-top:12px" onclick="toast('Liquidaciones acreditadas ✅')">Acreditar Todo ✓</button>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div class="card">
+      <div class="ch"><div class="ct">📊 Ingresos Semanales</div></div>
+      <div class="cb">
+        <div style="display:flex;align-items:flex-end;gap:5px;height:90px;margin-bottom:14px">
+          ${vals.map((v,i)=>`<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px"><div style="width:100%;height:${v?Math.round(v/mx*70)+8:4}px;background:${v?'var(--or)':'var(--border)'};border-radius:4px 4px 0 0;opacity:${v?1:.4}"></div><div style="font-size:9px;color:var(--muted);font-family:var(--fh)">${dias[i]}</div></div>`).join('')}
+        </div>
+        ${dias.map((d,i)=>`<div class="lr" style="${i>=5?'opacity:.35':''}"><div class="ll">${d}</div><div style="flex:1;margin:0 10px"><div class="ptrack"><div class="pbar" style="width:${Math.round(vals[i]/mx*100)}%;background:var(--or)"></div></div></div><div class="lv" style="color:var(--or);font-size:11px">S/ ${vals[i]}</div></div>`).join('')}
+        <div style="margin-top:12px;padding:10px;background:var(--s2);border-radius:9px;text-align:center;border:1.5px solid var(--border)">
+          <div style="font-size:9px;color:var(--muted);font-family:var(--fh);font-weight:700;text-transform:uppercase;letter-spacing:2px;margin-bottom:3px">Total semana</div>
+          <div style="font-family:var(--fh);font-size:24px;font-weight:800;color:var(--or)">S/ 1,250</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>`;}
+
+function vSchema(){
+  const tbls=[
+    {nm:'Usuarios',ic:'👤',f:[['id','UUID','PK · Auto'],['nombre','VARCHAR(100)','Nombre'],['email','VARCHAR(150)','Único'],['password_hash','VARCHAR(255)','bcrypt'],['rol','ENUM','admin|conductor|cliente|inversor'],['activo','BOOLEAN','false hasta aprobación']]},
+    {nm:'Vehiculos',ic:'🚗',f:[['id','UUID','PK'],['conductor_id','UUID','FK → Usuarios'],['placa','VARCHAR(8)','Único'],['soat_venc','DATE','Alerta 30 días'],['atu_venc','DATE','Alerta 30 días'],['sinotrack_id','VARCHAR(50)','ID GPS físico']]},
+    {nm:'Rutas',ic:'🛣️',f:[['id','UUID','PK'],['origen','VARCHAR(100)','Búnker SJL'],['destino','VARCHAR(100)','San Borja/Surco'],['pago_conductor','DECIMAL','S/ 50 por ruta'],['ganancia_np','DECIMAL','S/ 150 auto'],['estado','ENUM','pendiente|activa|completada']]},
+    {nm:'Transacciones',ic:'💰',f:[['id','UUID','PK'],['ruta_id','UUID','FK → Rutas'],['conductor_id','UUID','FK → Usuarios'],['monto_conductor','DECIMAL','S/ 50'],['monto_neopisk','DECIMAL','S/ 150'],['estado','ENUM','pendiente|acreditado']]},
+  ];
+  return`<div class="g2">${tbls.map(t=>`<div class="stbl"><div class="sn">${t.ic} ${t.nm}</div>${t.f.map((f,i)=>`<div class="sf"><span class="sf-n">${i===0?'<span class="spk">PK</span>':f[0].includes('_id')?'<span class="sfk">FK</span>':''}${f[0]}</span><span class="sf-t">${f[1]}</span><span class="sf-d">${f[2]}</span></div>`).join('')}</div>`).join('')}</div>`;}
+
+function vAlgo(){
+  const steps=[
+    ['Acumulación 10×50','Búnker monitorea pedidos. Cuando zona llega a 10 y S/ 500 mínimo, dispara activación.','IF pedidos >= 10 AND monto >= 500 → activar_ruta()'],
+    ['Filtro Elegibilidad','Solo conductores: activo=true, docs vigentes, sin ruta activa.','SELECT * FROM conductores WHERE docs_ok AND NOT en_ruta'],
+    ['Score de Prioridad','Score: +20 cercanía GPS, +15 historial OK, -30 alertas velocidad.','score = dist + historial - penalizaciones'],
+    ['Match & Notificación','Mayor score recibe push+WhatsApp. Tiene 3 min para aceptar.','notify(top_score) → timeout 3min → retry'],
+    ['Anti-fraude GPS','GPS del vehículo debe activarse en radio 500m del búnker en 15 min.','IF gps NOT IN radius(500m) → cancelar()'],
+  ];
+  return`
+<div class="g2">
+  <div>
+    <div class="card">
+      <div class="ch"><div class="ct">⚙️ Algoritmo de Asignación de Rutas</div></div>
+      <div class="cb">
+        ${steps.map((s,i)=>`<div class="as"><div class="an">${i+1}</div><div><div class="at">${s[0]}</div><div class="ad">${s[1]}</div><div class="cl">${s[2]}</div></div></div>`).join('')}
+      </div>
+    </div>
+  </div>
+  <div>
+    <div class="card">
+      <div class="ch"><div class="ct">🧮 Simulador de Match</div></div>
+      <div class="cb">
+        <div style="font-size:11px;color:var(--text2);margin-bottom:12px;padding:9px;background:var(--s2);border-radius:8px">Ruta activa: <strong>SJL → San Borja · S/ 50</strong></div>
+        ${[{nm:'Carlos Huanca',sc:92,d:'0.8km',r:12,a:0},{nm:'Pedro Quispe',sc:78,d:'2.1km',r:8,a:0},{nm:'Ana Flores',sc:65,d:'3.5km',r:5,a:1}].map((c,i)=>`
+        <div style="padding:12px;background:${i===0?'var(--gr-bg)':'var(--s2)'};border-radius:10px;border:2px solid ${i===0?'var(--gr)':'var(--border)'};margin-bottom:8px">
+          <div style="display:flex;justify-content:space-between;margin-bottom:4px"><div style="font-family:var(--fh);font-weight:700;font-size:12px">${i===0?'🥇 ':''}${c.nm}</div><span class="chip ${i===0?'cgr2':'cmu'}">Score: ${c.sc}</span></div>
+          <div style="font-size:10px;color:var(--muted)">📍 ${c.d} · ${c.r} rutas OK · ${c.a} alertas</div>
+          ${i===0?`<div style="margin-top:6px;font-size:10px;color:var(--gr);font-weight:700">✓ ASIGNADO — 3 min para aceptar</div>`:''}
+        </div>`).join('')}
+      </div>
+    </div>
+    <div class="card">
+      <div class="ch"><div class="ct">🏗️ Stack Técnico</div></div>
+      <div class="cb">
+        ${[['Backend','Node.js + Express'],['DB','PostgreSQL'],['Auth','JWT RS256'],['GPS','SinoTrack API'],['Push','FCM Firebase'],['Pagos','Yape / BCP']].map(r=>`<div style="display:flex;align-items:center;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border)"><div style="font-size:10px;color:var(--muted);font-family:var(--fh)">${r[0]}</div><div style="font-family:var(--fh);font-weight:700;font-size:11px">${r[1]}</div></div>`).join('')}
+      </div>
+    </div>
+  </div>
+</div>`;}
+</script>
+
+<!-- PWA Install Banner -->
+<div id="pwa-banner" style="display:flex;position:fixed;bottom:18px;left:50%;transform:translateX(-50%);z-index:10000;
+  background:#e85d00;color:#fff;padding:14px 18px;align-items:center;gap:12px;
+  box-shadow:0 8px 32px rgba(0,0,0,.35);border-radius:18px;
+  max-width:340px;width:calc(100vw - 36px);
+  animation:slideUp .5s cubic-bezier(.22,1,.36,1);">
+  <!-- Fruit icon -->
+  <div style="width:50px;height:50px;background:rgba(255,255,255,.18);border-radius:13px;
+    display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0;
+    border:2px solid rgba(255,255,255,.3)">🍊</div>
+  <!-- Text -->
+  <div style="flex:1;min-width:0">
+    <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:14px;white-space:nowrap">Neo Pisk Admin</div>
+    <div style="font-size:10px;opacity:.8;margin-top:1px;font-family:'JetBrains Mono',monospace">📲 Instalar en tu celular</div>
+  </div>
+  <!-- Install button -->
+  <button onclick="installPWA()" id="install-btn"
+    style="background:#fff;color:#e85d00;border:none;padding:9px 14px;border-radius:10px;
+    font-family:'Syne',sans-serif;font-weight:800;font-size:12px;flex-shrink:0;cursor:pointer;
+    box-shadow:0 2px 8px rgba(0,0,0,.15);white-space:nowrap">⬇ Instalar</button>
+  <!-- Close -->
+  <button onclick="hideBanner()"
+    style="background:rgba(255,255,255,.18);color:#fff;border:none;width:26px;height:26px;
+    border-radius:7px;font-size:12px;cursor:pointer;flex-shrink:0;font-weight:700">✕</button>
+</div>
+<style>
+@keyframes slideUp{from{opacity:0;transform:translateX(-50%) translateY(24px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+</style>
+
+</body>
+</html>
