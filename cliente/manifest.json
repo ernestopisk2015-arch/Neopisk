@@ -1,24 +1,15 @@
 {
-  "name": "GruPay · Compra Grupal",
+  "name": "GruPay",
   "short_name": "GruPay",
-  "description": "Compra grupal en Lima — precios de mayorista, entrega en 24h",
-  "start_url": "/grupay-cliente/",
+  "description": "Compra grupal directa del productor · Lima",
+  "start_url": "/cliente/",
+  "scope": "/cliente/",
   "display": "standalone",
-  "background_color": "#f0fdf4",
-  "theme_color": "#16a34a",
   "orientation": "portrait",
+  "background_color": "#16a34a",
+  "theme_color": "#16a34a",
   "icons": [
-    {
-      "src": "https://neopisk.lat/grupay-cliente/icon-192.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "https://neopisk.lat/grupay-cliente/icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
-    }
+    { "src": "/cliente/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "/cliente/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
   ]
 }
