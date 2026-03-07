@@ -835,8 +835,7 @@ footer a{color:var(--g);font-weight:600;}
 <script>
 // ── INSTALAR APP (scope global, fuera del module) ─────────────────────────
 var _dPrompt = null;
-window.addEventListener('beforeinstallprompt', function(e){ e.preventDefault(); _dPrompt = e; });
-window.addEventListener('appinstalled', function(){ _dPrompt = null; });
+// El listener real de beforeinstallprompt está abajo junto al banner
 
 function triggerInstall(){
   if(_dPrompt){ _dPrompt.prompt(); return; }
@@ -877,33 +876,38 @@ function cerrarInstalar(){
   document.getElementById('modal-instalar').classList.remove('on');
 }
 
-// ── PWA Banner helpers ────────────────────────────────────────────────────
+// ── PWA Banner: solo aparece cuando Chrome certifica que el sitio es instalable como app
+window.addEventListener('beforeinstallprompt', function(e){
+  e.preventDefault();
+  _dPrompt = e;
+  // Solo ahora mostramos el banner — significa que Chrome puede instalar como app real
+  var b = document.getElementById('pwa-banner');
+  if(b) b.style.display = 'flex';
+});
+
 function installPWA(){
   if(_dPrompt){
     _dPrompt.prompt();
     _dPrompt.userChoice.then(function(r){
-      if(r.outcome==='accepted') hideBanner();
-      _dPrompt=null;
+      _dPrompt = null;
+      hideBanner();
     });
-  } else {
-    var isIOS=/iphone|ipad|ipod/i.test(navigator.userAgent);
-    if(isIOS){alert('En Safari: toca ⬆ Compartir → "Agregar a pantalla de inicio" → Agregar ✅');}
-    else{alert('En Chrome: toca ⋮ → "Añadir a pantalla de inicio" → Añadir ✅');}
   }
+  // Si no hay _dPrompt, el botón no debería ser visible — no hacemos nada
 }
 function hideBanner(){
-  var b=document.getElementById('pwa-banner');
-  if(b){b.style.opacity='0';b.style.transition='opacity .3s';setTimeout(function(){b.style.display='none';},300);}
+  var b = document.getElementById('pwa-banner');
+  if(b){ b.style.opacity='0'; b.style.transition='opacity .3s'; setTimeout(function(){ b.style.display='none'; }, 300); }
 }
-// Auto-hide if already installed
-if(window.matchMedia('(display-mode: standalone)').matches||window.navigator.standalone===true){
-  document.addEventListener('DOMContentLoaded',hideBanner);
+// Si ya está instalada como app, ocultar banner
+if(window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true){
+  document.addEventListener('DOMContentLoaded', hideBanner);
 }
-window.addEventListener('appinstalled',hideBanner);
+window.addEventListener('appinstalled', function(){ _dPrompt = null; hideBanner(); });
 </script>
 
 <!-- PWA Install Banner -->
-<div id="pwa-banner" style="display:flex;position:fixed;bottom:18px;left:50%;
+<div id="pwa-banner" style="display:none;position:fixed;bottom:18px;left:50%;
   transform:translateX(-50%);z-index:10000;
   background:#16a34a;color:#fff;padding:14px 18px;align-items:center;gap:12px;
   box-shadow:0 8px 32px rgba(0,0,0,.35);border-radius:18px;
