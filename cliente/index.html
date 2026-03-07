@@ -7,8 +7,71 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="GruPay">
 <title>GruPay</title>
-<link rel="manifest" href="/grupay-cliente/manifest.json">
+<link rel="manifest" href="/cliente/manifest.json">
+<link rel="apple-touch-icon" href="" id="apple-icon">
 <meta name="mobile-web-app-capable" content="yes">
+
+<script>
+// Ícono dinámico para apple-touch-icon
+(function(){
+  var c=document.createElement('canvas');c.width=192;c.height=192;
+  var x=c.getContext('2d'),r=42;
+  x.beginPath();x.moveTo(r,0);x.lineTo(192-r,0);x.quadraticCurveTo(192,0,192,r);
+  x.lineTo(192,192-r);x.quadraticCurveTo(192,192,192-r,192);
+  x.lineTo(r,192);x.quadraticCurveTo(0,192,0,192-r);
+  x.lineTo(0,r);x.quadraticCurveTo(0,0,r,0);x.closePath();
+  x.fillStyle='#16a34a';x.fill();
+  x.font='106px serif';x.textAlign='center';x.textBaseline='middle';
+  x.fillText('🛒',96,102);
+  document.getElementById('apple-icon').href=c.toDataURL('image/png');
+})();
+
+// Service Worker
+if('serviceWorker' in navigator){
+  window.addEventListener('load',function(){
+    navigator.serviceWorker.register('/sw.js',{scope:'/cliente/'})
+      .catch(function(e){console.warn('SW:',e);});
+  });
+}
+
+// PWA Install
+var deferredPrompt=null;
+window.addEventListener('beforeinstallprompt',function(e){
+  e.preventDefault();deferredPrompt=e;
+});
+window.addEventListener('appinstalled',function(){
+  var b=document.getElementById('install-banner');
+  if(b)b.classList.remove('show');
+  deferredPrompt=null;
+});
+window.triggerInstall=function(){
+  if(deferredPrompt){
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.then(function(r){
+      if(r.outcome==='accepted'){
+        var b=document.getElementById('install-banner');
+        if(b)b.classList.remove('show');
+      }
+      deferredPrompt=null;
+    });
+    return;
+  }
+  var isIOS=/iphone|ipad|ipod/i.test(navigator.userAgent);
+  var isAndroid=/android/i.test(navigator.userAgent);
+  var msg='';
+  if(isIOS) msg='📱 iPhone/iPad:\n\n1️⃣ Toca ⬆ Compartir (abajo)\n2️⃣ "Agregar a pantalla de inicio"\n3️⃣ Toca "Agregar" ✅';
+  else if(isAndroid) msg='🤖 Android:\n\n1️⃣ Toca menú ⋮ (arriba derecha)\n2️⃣ "Añadir a pantalla de inicio"\n3️⃣ Toca "Añadir" ✅';
+  else msg='💻 En Chrome: busca ícono ⊕ en la barra\nO menú ⋮ → Instalar GruPay';
+  alert(msg);
+};
+// Ocultar banner si ya está instalado
+if(window.matchMedia('(display-mode: standalone)').matches||window.navigator.standalone===true){
+  document.addEventListener('DOMContentLoaded',function(){
+    var b=document.getElementById('install-banner');
+    if(b)b.classList.remove('show');
+  });
+}
+</script>
 
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800;900&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -318,34 +381,8 @@ html,body{height:100%;background:var(--bg);color:var(--txt);
 .btn-auth{width:100%;padding:14px;background:linear-gradient(135deg,var(--gd),var(--g));
   color:#fff;border:none;border-radius:13px;font-family:'Syne',sans-serif;
   font-weight:900;font-size:15px;cursor:pointer;
-  box-shadow:0 4px 14px rgba(22,163,74,.26);margin-bottom:10px;}
-.btn-auth:disabled{background:#e2e8f0;color:var(--mut);box-shadow:none;}
-.auth-switch{text-align:center;font-size:12px;color:var(--mut);}
-.auth-switch b{color:var(--g);cursor:pointer;}
-
-/* ── AUTH MODAL ── */
-.auth-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);
-  z-index:400;align-items:flex-end;justify-content:center;}
-.auth-modal.on{display:flex;}
-.auth-box{background:#fff;border-radius:22px 22px 0 0;
-  padding:22px 18px calc(32px + env(safe-area-inset-bottom));
-  width:100%;max-width:430px;animation:up .28s cubic-bezier(.22,1,.36,1);}
-.auth-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;}
-.auth-t{font-family:'Syne',sans-serif;font-size:17px;font-weight:900;}
-.auth-x{background:none;border:none;font-size:22px;color:var(--mut);cursor:pointer;}
-.auth-lbl{font-size:10px;font-weight:700;color:var(--mut);display:block;
-  margin-bottom:5px;text-transform:uppercase;letter-spacing:.5px;}
-.auth-inp{width:100%;padding:13px 14px;border:2px solid var(--bdr);
-  border-radius:12px;font-size:15px;font-family:'DM Sans',sans-serif;
-  color:var(--txt);outline:none;margin-bottom:13px;background:#fff;}
-.auth-inp:focus{border-color:var(--g);}
-.auth-tel-row{display:flex;gap:8px;margin-bottom:13px;}
-.auth-pre{padding:13px 11px;background:var(--bg);border:2px solid var(--bdr);
-  border-radius:12px;font-weight:700;font-size:13px;color:var(--mut);white-space:nowrap;}
-.btn-auth{width:100%;padding:14px;background:linear-gradient(135deg,var(--gd),var(--g));
-  color:#fff;border:none;border-radius:13px;font-family:'Syne',sans-serif;
-  font-weight:900;font-size:15px;cursor:pointer;
   box-shadow:0 4px 14px rgba(22,163,74,.26);margin-bottom:12px;}
+.btn-auth:disabled{background:#e2e8f0;color:var(--mut);box-shadow:none;}
 .auth-switch{text-align:center;font-size:13px;color:var(--mut);}
 .auth-switch b{color:var(--g);cursor:pointer;}
 
@@ -416,7 +453,6 @@ html,body{height:100%;background:var(--bg);color:var(--txt);
           <div class="hs"><div class="hs-v">-40%</div><div class="hs-l">vs mercado</div></div>
           <div class="hs"><div class="hs-v">24h</div><div class="hs-l">Entrega</div></div>
         </div>
-        <!-- Auth buttons — se ocultan si hay sesión -->
         <div id="hero-auth" style="display:flex;gap:9px;margin-top:13px;">
           <button onclick="abrirAuth('crear')"
             style="flex:1;padding:11px 6px;background:#fff;color:var(--gd);
@@ -432,10 +468,9 @@ html,body{height:100%;background:var(--bg);color:var(--txt);
             → Iniciar sesión
           </button>
         </div>
-        <!-- Saludo si hay sesión -->
         <div id="hero-user" style="display:none;margin-top:11px;
           background:rgba(255,255,255,.15);border-radius:11px;
-          padding:9px 13px;display:none;align-items:center;justify-content:space-between;">
+          padding:9px 13px;align-items:center;justify-content:space-between;">
           <span id="hero-saludo" style="font-size:13px;font-weight:700;">Hola 👋</span>
           <button onclick="cerrarSesion()"
             style="background:rgba(255,255,255,.2);border:none;color:#fff;
@@ -445,7 +480,6 @@ html,body{height:100%;background:var(--bg);color:var(--txt);
         </div>
       </div>
 
-      <!-- Zonas -->
       <div class="zonas">
         <div class="zc on" data-zona="todas">📍 Todas</div>
         <div class="zc" data-zona="San Borja">San Borja</div>
@@ -457,9 +491,8 @@ html,body{height:100%;background:var(--bg);color:var(--txt);
         <div class="zc" data-zona="Surquillo">Surquillo</div>
       </div>
 
-
       <!-- Install banner PWA -->
-      <div class="install-banner" id="install-banner">
+      <div class="install-banner show" id="install-banner">
         <div class="install-ic">📲</div>
         <div class="install-text">
           <div class="install-title">Instalar App</div>
@@ -493,7 +526,6 @@ html,body{height:100%;background:var(--bg);color:var(--txt);
     <!-- MÁS -->
     <div class="pg" id="pg-mas">
       <div style="padding:14px 13px;">
-
         <div style="background:#fff;border:2px solid var(--bdr);border-radius:16px;
           overflow:hidden;margin-bottom:12px;">
           <div style="padding:16px;border-bottom:1.5px solid var(--bdr);
@@ -521,7 +553,6 @@ html,body{height:100%;background:var(--bg);color:var(--txt);
             <span style="color:var(--mut);">Entrega</span><span style="font-weight:700;">En 24 horas</span>
           </div>
         </div>
-
         <a href="https://wa.me/51999999999?text=Hola%20Karla%20de%20GruPay%20👋"
           target="_blank"
           style="display:flex;align-items:center;justify-content:center;gap:8px;
@@ -559,7 +590,7 @@ html,body{height:100%;background:var(--bg);color:var(--txt);
 </div>
 
 
-<!-- ══ MODAL CREAR CUENTA ═══════════════════════════════════════════════════ -->
+<!-- MODAL CREAR CUENTA -->
 <div class="auth-modal" id="modal-crear">
   <div class="auth-box">
     <div class="auth-hdr">
@@ -583,7 +614,7 @@ html,body{height:100%;background:var(--bg);color:var(--txt);
   </div>
 </div>
 
-<!-- ══ MODAL INICIAR SESIÓN ══════════════════════════════════════════════════ -->
+<!-- MODAL INICIAR SESIÓN -->
 <div class="auth-modal" id="modal-sesion">
   <div class="auth-box">
     <div class="auth-hdr">
@@ -681,14 +712,12 @@ const db  = getFirestore(initializeApp({
 }));
 const storage = getStorage();
 
-// ── ESTADO ──────────────────────────────────────────────────────────────────
 let grupos   = {};
 let carrito  = JSON.parse(localStorage.getItem("gp_carrito") || "{}");
 let historial= JSON.parse(localStorage.getItem("gp_pedidos") || "[]");
 let zonaActiva = "todas";
 let catActiva  = null;
 
-// Categorías
 const CATS = [
   { id:"frutas",  ic:"🥑", lb:"Frutas y Verduras",
     em:["🥑","🍋","🍊","🥭","🍎","🍇","🌽","🍓","🍑","🫐","🍅","🥬","🫛","🥝"] },
@@ -703,7 +732,6 @@ function getCat(g){
   return "otros";
 }
 
-// ── FIRESTORE REALTIME ───────────────────────────────────────────────────────
 onSnapshot(
   query(collection(db,"grupay_groups"), orderBy("created_at","desc")),
   snap => {
@@ -719,14 +747,12 @@ onSnapshot(
   }
 );
 
-// ── RENDER INICIO ────────────────────────────────────────────────────────────
 function renderInicio(){
   const lista = Object.values(grupos)
     .filter(g=>g.status!=="cancelled")
     .filter(g=> zonaActiva==="todas" ||
       (g.zone||g.delivery_point||"").toLowerCase()
        .includes(zonaActiva.toLowerCase()));
-
   const el = document.getElementById("inicio-body");
   if(!lista.length){
     el.innerHTML=`<div class="empty"><span>📭</span>
@@ -734,7 +760,6 @@ function renderInicio(){
       <div class="empty-s">Prueba otra zona o vuelve pronto</div></div>`;
     return;
   }
-
   let html="";
   for(const cat of CATS){
     const items = lista.filter(g=>getCat(g)===cat.id);
@@ -745,7 +770,6 @@ function renderInicio(){
   el.innerHTML = html;
 }
 
-// ── RENDER CATEGORÍAS ────────────────────────────────────────────────────────
 function renderCats(){
   const lista = Object.values(grupos).filter(g=>g.status!=="cancelled");
   document.getElementById("cat-grid").innerHTML = CATS.map(c=>{
@@ -773,7 +797,6 @@ function renderCatProds(){
     <div class="grid">${lista.map(cardHTML).join("")}</div>`;
 }
 
-// ── CARD ─────────────────────────────────────────────────────────────────────
 function cardHTML(g){
   const pct  = Math.min(((g.current_count||0)/(g.min_members||5))*100,100);
   const falt = Math.max((g.min_members||5)-(g.current_count||0),0);
@@ -811,7 +834,6 @@ function cardHTML(g){
   </div>`;
 }
 
-// ── CARRITO ──────────────────────────────────────────────────────────────────
 window.toggleCart = function(gid){
   const g=grupos[gid];
   if(!g||(g.status==="active"&&!carrito[gid])) return;
@@ -833,7 +855,6 @@ function renderDrawer(){
   const badge=document.getElementById("badge");
   badge.textContent=items.length;
   badge.style.display=items.length?"flex":"none";
-
   const body=document.getElementById("dr-body");
   if(!items.length){
     body.innerHTML=`<div class="dr-empty">
@@ -878,7 +899,6 @@ function renderDrawer(){
   </a>`;
 }
 
-// ── MIS PEDIDOS ──────────────────────────────────────────────────────────────
 function renderPedidos(){
   const el=document.getElementById("pedidos-body");
   if(!historial.length){
@@ -929,7 +949,6 @@ function renderPedidos(){
   }).join("");
 }
 
-// ── CHECKOUT ─────────────────────────────────────────────────────────────────
 window.abrirModal = function(){
   const items=Object.values(carrito);
   if(!items.length) return;
@@ -948,11 +967,7 @@ window.abrirModal = function(){
   ["paso1","paso2","paso3"].forEach((id,i)=>document.getElementById(id).style.display=i===0?"block":"none");
   document.getElementById("modal").classList.add("on");
 };
-
-window.cerrar = function(){
-  document.getElementById("modal").classList.remove("on");
-};
-
+window.cerrar = function(){ document.getElementById("modal").classList.remove("on"); };
 window.paso2 = function(){
   const nombre=document.getElementById("m-nombre").value.trim();
   const tel=document.getElementById("m-tel").value.trim().replace(/\D/g,"");
@@ -961,7 +976,6 @@ window.paso2 = function(){
   document.getElementById("paso1").style.display="none";
   document.getElementById("paso2").style.display="block";
 };
-
 window.confirmar = async function(){
   const nombre=document.getElementById("m-nombre").value.trim();
   const tel=document.getElementById("m-tel").value.trim().replace(/\D/g,"");
@@ -1009,7 +1023,6 @@ window.confirmar = async function(){
     btn.textContent="✅ Confirmar pedido"; btn.disabled=false;
   }
 };
-
 window.prevFile = function(inp){
   const f=inp.files[0]; if(!f) return;
   const r=new FileReader();
@@ -1021,7 +1034,6 @@ window.prevFile = function(inp){
   r.readAsDataURL(f);
 };
 
-// ── TABS ──────────────────────────────────────────────────────────────────────
 window.tab = function(t){
   document.querySelectorAll(".pg").forEach(p=>p.classList.remove("on"));
   document.querySelectorAll(".bni").forEach(b=>b.classList.remove("on"));
@@ -1031,8 +1043,6 @@ window.tab = function(t){
   if(t==="categorias") renderCats();
   document.querySelector(".scroll").scrollTop=0;
 };
-
-// ── ZONAS ────────────────────────────────────────────────────────────────────
 document.querySelectorAll(".zc").forEach(el=>{
   el.addEventListener("click",()=>{
     document.querySelectorAll(".zc").forEach(z=>z.classList.remove("on"));
@@ -1041,14 +1051,10 @@ document.querySelectorAll(".zc").forEach(el=>{
     renderInicio();
   });
 });
-
-// ── CATEGORÍA SELECCIÓN ──────────────────────────────────────────────────────
 window.selCat = function(id){
   catActiva = catActiva===id ? null : id;
   renderCats();
 };
-
-// ── TOAST ─────────────────────────────────────────────────────────────────────
 let _tt;
 window.toast = function(msg,dur=2400){
   const el=document.getElementById("toast");
@@ -1056,16 +1062,9 @@ window.toast = function(msg,dur=2400){
   clearTimeout(_tt); _tt=setTimeout(()=>el.classList.remove("on"),dur);
 };
 
-
-// ── AUTH ──────────────────────────────────────────────────────────────────
 let miNombre = localStorage.getItem("gp_nombre") || "";
 let miTel    = localStorage.getItem("gp_tel")    || "";
-
-// Al cargar: actualizar hero según estado de sesión
-(function initAuth(){
-  actualizarHeroAuth();
-})();
-
+(function initAuth(){ actualizarHeroAuth(); })();
 function actualizarHeroAuth(){
   const btnArea  = document.getElementById("hero-auth");
   const userArea = document.getElementById("hero-user");
@@ -1079,14 +1078,8 @@ function actualizarHeroAuth(){
     userArea.style.display = "none";
   }
 }
-
-window.abrirAuth = function(tipo){
-  document.getElementById("modal-"+tipo).classList.add("on");
-};
-window.cerrarAuth = function(tipo){
-  document.getElementById("modal-"+tipo).classList.remove("on");
-};
-
+window.abrirAuth = function(tipo){ document.getElementById("modal-"+tipo).classList.add("on"); };
+window.cerrarAuth = function(tipo){ document.getElementById("modal-"+tipo).classList.remove("on"); };
 window.crearCuenta = function(){
   const nombre = document.getElementById("c-nombre").value.trim();
   const tel    = document.getElementById("c-tel").value.trim().replace(/\D/g,"");
@@ -1100,20 +1093,17 @@ window.crearCuenta = function(){
   toast("✅ Bienvenida/o, " + nombre + "!");
   renderPedidos();
 };
-
 window.iniciarSesion = function(){
-  const tel    = document.getElementById("s-tel").value.trim().replace(/\D/g,"");
+  const tel = document.getElementById("s-tel").value.trim().replace(/\D/g,"");
   if(tel.length<9){ toast("⚠ WhatsApp debe tener 9 dígitos"); return; }
   const nombre = localStorage.getItem("gp_nombre") || "";
   localStorage.setItem("gp_tel", tel);
-  miTel    = tel;
-  miNombre = nombre;
+  miTel = tel; miNombre = nombre;
   cerrarAuth("sesion");
   actualizarHeroAuth();
   toast("✅ Sesión iniciada" + (nombre ? ", " + nombre : "") + "!");
   renderPedidos();
 };
-
 window.cerrarSesion = function(){
   if(!confirm("¿Cerrar sesión?")) return;
   localStorage.removeItem("gp_nombre");
@@ -1123,45 +1113,6 @@ window.cerrarSesion = function(){
   renderPedidos();
   toast("Sesión cerrada");
 };
-
-// ── PWA INSTALL BANNER ────────────────────────────────────────────────────
-let deferredPrompt = null;
-// Siempre mostrar el banner
-document.addEventListener('DOMContentLoaded', () => {
-  document.getElementById('install-banner').classList.add('show');
-});
-window.addEventListener('beforeinstallprompt', e => {
-  e.preventDefault();
-  deferredPrompt = e;
-});
-window.addEventListener('appinstalled', () => {
-  document.getElementById('install-banner').classList.remove('show');
-  deferredPrompt = null;
-});
-window.triggerInstall = function() {
-  if(deferredPrompt){
-    deferredPrompt.prompt();
-    deferredPrompt.userChoice.then(r => {
-      if(r.outcome === 'accepted')
-        document.getElementById('install-banner').classList.remove('show');
-      deferredPrompt = null;
-    });
-    return;
-  }
-  // Sin prompt — mostrar instrucciones según dispositivo
-  const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
-  const isAndroid = /android/i.test(navigator.userAgent);
-  let msg = '';
-  if(isIOS){
-    msg = '📱 iPhone/iPad:\n\n1️⃣ Toca ⬆ Compartir (abajo)\n2️⃣ "Agregar a pantalla de inicio"\n3️⃣ Toca "Agregar" ✅';
-  } else if(isAndroid){
-    msg = '🤖 Android:\n\n1️⃣ Toca menú ⋮ (arriba derecha)\n2️⃣ "Añadir a pantalla de inicio"\n3️⃣ Toca "Añadir" ✅';
-  } else {
-    msg = '💻 En Chrome: busca ícono ⊕ en la barra\nO menú ⋮ → Instalar GruPay';
-  }
-  alert(msg);
-};
-
 </script>
 </body>
 </html>
