@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Subir Productos GruPay</title>
+<style>
+body{font-family:sans-serif;padding:20px;background:#f0fdf4;}
+h2{color:#15803d;}
+button{background:#16a34a;color:#fff;border:none;padding:14px 28px;
+  border-radius:10px;font-size:16px;font-weight:700;cursor:pointer;margin:10px 0;}
+button:disabled{background:#9ca3af;}
+#log{background:#fff;border:2px solid #bbf7d0;border-radius:12px;
+  padding:16px;margin-top:16px;font-size:13px;line-height:2;max-height:400px;overflow-y:auto;}
+.ok{color:#16a34a;font-weight:700;}
+.err{color:#dc2626;font-weight:700;}
+</style>
+</head>
+<body>
+<h2>🛒 Subir Productos a GruPay</h2>
+<p>Haz clic para subir todos los productos a Firebase Firestore.</p>
+<button onclick="subirTodo()" id="btn">⬆ Subir todos los productos</button>
+<div id="log"></div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, addDoc, collection, serverTimestamp, Timestamp }
+  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const app = initializeApp({
+  apiKey:"AIzaSyBhnAKQfADIdNX4brbG-YdTEr-DKFta7jE",
+  authDomain:"neopisk.firebaseapp.com",
+  projectId:"neopisk",
+  storageBucket:"neopisk.appspot.com",
+  messagingSenderId:"873475816427",
+  appId:"1:873475816427:web:fa8ca59cb85a2c1d00f7ae"
+});
+const db = getFirestore(app);
+
+const ZONAS = ["San Borja","La Molina","Surco","Jesús María","San Isidro","Miraflores","Surquillo"];
+
+const PRODUCTOS = [
+  { product_name:"Arándanos Frescos",      emoji:"🫐", price_per_unit:30,  min_ticket:30,  unit:"kg"  },
+  { product_name:"Pecanas",               emoji:"🌰", price_per_unit:68,  min_ticket:68,  unit:"kg"  },
+  { product_name:"Queso Fresco Cajamarca",emoji:"🧀", price_per_unit:22,  min_ticket:22,  unit:"kg"  },
+  { product_name:"Queso Mantecoso",       emoji:"🧀", price_per_unit:28,  min_ticket:28,  unit:"kg"  },
+  { product_name:"Queso Tipo Suizo Cajamarca", emoji:"🧀", price_per_unit:35, min_ticket:35, unit:"kg" },
+  { product_name:"Queso Parmesano 250g",  emoji:"🧀", price_per_unit:14,  min_ticket:14,  unit:"250g"},
+  { product_name:"Maca Snack Salado",     emoji:"🌾", price_per_unit:12,  min_ticket:12,  unit:"kg"  },
+  { product_name:"Maní Salado",           emoji:"🥜", price_per_unit:19,  min_ticket:19,  unit:"kg"  },
+  { product_name:"Uvas Pasas",            emoji:"🍇", price_per_unit:26,  min_ticket:26,  unit:"kg"  },
+  { product_name:"Nuez",                  emoji:"🌰", price_per_unit:68,  min_ticket:68,  unit:"kg"  },
+  { product_name:"Cancha Inflada Caramelada", emoji:"🍿", price_per_unit:12, min_ticket:12, unit:"kg" },
+  { product_name:"Maíz Cusco Mote Inflado",emoji:"🌽", price_per_unit:23, min_ticket:23,  unit:"kg"  },
+  { product_name:"Fideo Inflado",         emoji:"🍜", price_per_unit:16,  min_ticket:16,  unit:"kg"  },
+  { product_name:"Kiwicha con Maní en Barra (x15)", emoji:"🌾", price_per_unit:21, min_ticket:21, unit:"pack" },
+  { product_name:"Chifle Norteño",        emoji:"🍌", price_per_unit:22,  min_ticket:22,  unit:"kg"  },
+  { product_name:"Maní Confitado",        emoji:"🥜", price_per_unit:18,  min_ticket:18,  unit:"kg"  },
+  { product_name:"Biscotela 250g",        emoji:"🍪", price_per_unit:12,  min_ticket:12,  unit:"250g"},
+  { product_name:"Kiwi Glaseado",         emoji:"🥝", price_per_unit:30,  min_ticket:30,  unit:"kg"  },
+  { product_name:"Dátiles Glaseados",     emoji:"🍯", price_per_unit:30,  min_ticket:30,  unit:"kg"  },
+];
+
+const log = (msg, tipo="ok") => {
+  const d = document.getElementById("log");
+  d.innerHTML += `<div class="${tipo}">${msg}</div>`;
+  d.scrollTop = d.scrollHeight;
+};
+
+window.subirTodo = async function(){
+  const btn = document.getElementById("btn");
+  btn.disabled = true;
+  btn.textContent = "Subiendo...";
+  let ok=0, err=0;
+
+  const expires = Timestamp.fromDate(new Date(Date.now() + 24*60*60*1000));
+
+  for(const p of PRODUCTOS){
+    for(const zona of ZONAS){
+      try {
+        await addDoc(collection(db,"grupay_groups"),{
+          ...p,
+          zone: zona,
+          delivery_point: zona,
+          min_members: 3,
+          current_count: 0,
+          status: "open",
+          hours_left: 24,
+          created_at: serverTimestamp(),
+          expires_at: expires,
+        });
+        ok++;
+        log(`✅ ${p.emoji} ${p.product_name} — ${zona}`);
+      } catch(e){
+        err++;
+        log(`❌ Error: ${p.product_name} ${zona} — ${e.message}`, "err");
+      }
+    }
+  }
+
+  log(`<br>🎉 Listo: ${ok} grupos creados, ${err} errores.`);
+  btn.textContent = `✅ Completado (${ok} grupos)`;
+};
+</script>
+</body>
+</html>
