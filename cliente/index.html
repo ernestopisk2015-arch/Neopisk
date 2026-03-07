@@ -1125,11 +1125,14 @@ window.cerrarSesion = function(){
 };
 
 // ── PWA INSTALL BANNER ────────────────────────────────────────────────────
-let deferredPrompt;
+let deferredPrompt = null;
+// Siempre mostrar el banner
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('install-banner').classList.add('show');
+});
 window.addEventListener('beforeinstallprompt', e => {
   e.preventDefault();
   deferredPrompt = e;
-  document.getElementById('install-banner').classList.add('show');
 });
 window.addEventListener('appinstalled', () => {
   document.getElementById('install-banner').classList.remove('show');
@@ -1143,7 +1146,20 @@ window.triggerInstall = function() {
         document.getElementById('install-banner').classList.remove('show');
       deferredPrompt = null;
     });
+    return;
   }
+  // Sin prompt — mostrar instrucciones según dispositivo
+  const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+  const isAndroid = /android/i.test(navigator.userAgent);
+  let msg = '';
+  if(isIOS){
+    msg = '📱 iPhone/iPad:\n\n1️⃣ Toca ⬆ Compartir (abajo)\n2️⃣ "Agregar a pantalla de inicio"\n3️⃣ Toca "Agregar" ✅';
+  } else if(isAndroid){
+    msg = '🤖 Android:\n\n1️⃣ Toca menú ⋮ (arriba derecha)\n2️⃣ "Añadir a pantalla de inicio"\n3️⃣ Toca "Añadir" ✅';
+  } else {
+    msg = '💻 En Chrome: busca ícono ⊕ en la barra\nO menú ⋮ → Instalar GruPay';
+  }
+  alert(msg);
 };
 
 </script>
