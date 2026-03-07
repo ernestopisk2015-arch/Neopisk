@@ -813,5 +813,23 @@ footer a{color:var(--g);font-weight:600;}
   <a href="https://wa.me/51999999999">💬 Karla · WhatsApp</a>
 </footer>
 
+
+<!-- MODAL INSTRUCCIONES INSTALAR -->
+<div class="modal" id="modal-instalar" style="z-index:200;">
+  <div class="mbox" style="max-height:70vh;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+      <div style="font-family:'Syne',sans-serif;font-size:15px;font-weight:900;">📲 Descargar App</div>
+      <button onclick="document.getElementById('modal-instalar').classList.remove('on')"
+        style="background:none;border:none;font-size:22px;color:#64748b;cursor:pointer;">✕</button>
+    </div>
+    <div id="modal-instalar-body"></div>
+    <button onclick="document.getElementById('modal-instalar').classList.remove('on')"
+      style="width:100%;margin-top:14px;padding:13px;background:#f4f6f9;color:#64748b;
+      border:none;border-radius:12px;font-family:'Syne',sans-serif;
+      font-weight:700;font-size:13px;cursor:pointer;">
+      Cerrar
+    </button>
+  </div>
+</div>
 </body>
 </html>
