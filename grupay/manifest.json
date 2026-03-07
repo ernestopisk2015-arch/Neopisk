@@ -1,0 +1,15 @@
+{
+  "name": "GruPay",
+  "short_name": "GruPay",
+  "description": "Compra grupal directa del productor · Lima",
+  "start_url": "/grupay/",
+  "scope": "/grupay/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#16a34a",
+  "theme_color": "#16a34a",
+  "icons": [
+    { "src": "/grupay/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "/grupay/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}
