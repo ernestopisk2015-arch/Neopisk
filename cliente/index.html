@@ -190,7 +190,7 @@ html,body{height:100%;background:var(--bg);color:var(--txt);font-family:'DM Sans
     </div>
     <div class="hdr-btns" id="hdr-btns">
       <button class="btn-login" onclick="goScreen('login')">Iniciar sesión</button>
-      <button class="btn-register" onclick="crearCuenta()">Registrarme</button>
+      <button class="btn-register" onclick="goScreen('login');switchTab('registro')">Registrarme</button>
     </div>
     <div id="hdr-user" style="display:none;align-items:center;gap:8px;">
       <div style="background:var(--gl);border:1.5px solid var(--gb);color:var(--gd);font-size:11px;font-weight:700;padding:4px 10px;border-radius:99px;" id="hdr-nombre"></div>
@@ -210,7 +210,7 @@ html,body{height:100%;background:var(--bg);color:var(--txt);font-family:'DM Sans
         <div class="pill">⏱ 24h para completar</div>
       </div>
       <div class="hero-cta" id="hero-cta-guest">
-        <button class="btn-hero-register" onclick="crearCuenta()">🤖 Crear mi cuenta</button>
+        <button class="btn-hero-register" onclick="goScreen('login');switchTab('registro')">🤖 Crear mi cuenta</button>
         <button class="btn-hero-login" onclick="goScreen('login')">🔑 Iniciar sesión</button>
       </div>
       <div id="hero-cta-user" style="display:none;background:rgba(255,255,255,.15);border-radius:12px;padding:12px;border:1px solid rgba(255,255,255,.2);">
@@ -224,7 +224,7 @@ html,body{height:100%;background:var(--bg);color:var(--txt);font-family:'DM Sans
       <div class="how-card">
         <div class="how-title">¿Cómo funciona? 🤔</div>
         <div class="how-steps">
-          <div class="how-step"><div class="step-num">1</div><div class="step-txt">Regístrate con Karla</div></div>
+          <div class="how-step"><div class="step-num">1</div><div class="step-txt">Regístrate</div></div>
           <div class="how-step"><div class="step-num">2</div><div class="step-txt">Elige producto</div></div>
           <div class="how-step"><div class="step-num">3</div><div class="step-txt">5 vecinos se unen</div></div>
           <div class="how-step"><div class="step-num">4</div><div class="step-txt">¡10% descuento!</div></div>
@@ -850,3 +850,4 @@ function renderHist(){
 </script>
 </body>
 </html>
+  
