@@ -169,6 +169,19 @@ html,body{height:100%;background:var(--bg);color:var(--txt);font-family:'DM Sans
 #toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);background:#0f172a;color:#fff;padding:10px 20px;border-radius:99px;font-size:13px;font-weight:600;opacity:0;transition:all .3s;pointer-events:none;z-index:999;white-space:nowrap;}
 #toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 
+/* CARRITO */
+.cart-btn{position:relative;background:linear-gradient(135deg,var(--gd),var(--g));color:#fff;border:none;border-radius:10px;padding:6px 12px;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:5px;}
+.cart-badge{position:absolute;top:-6px;right:-6px;background:#dc2626;color:#fff;font-size:10px;font-weight:900;width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:2px solid #fff;}
+.cart-item{background:#fff;border-radius:12px;padding:10px 12px;box-shadow:0 1px 6px rgba(0,0,0,.06);display:flex;align-items:center;gap:10px;border:1.5px solid var(--bdr);}
+.cart-item-em{font-size:28px;flex-shrink:0;}
+.cart-item-info{flex:1;}
+.cart-item-nm{font-weight:700;font-size:13px;}
+.cart-item-pr{font-size:12px;color:var(--g);font-weight:700;}
+.cart-item-del{background:none;border:none;color:#ef4444;font-size:18px;cursor:pointer;padding:4px;flex-shrink:0;}
+.cart-total-box{background:linear-gradient(135deg,#14532d,#166534);border-radius:14px;padding:14px;color:#fff;}
+.cart-total-row{display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px;opacity:.85;}
+.cart-total-final{display:flex;justify-content:space-between;font-family:'Syne',sans-serif;font-size:18px;font-weight:900;border-top:1px solid rgba(255,255,255,.2);padding-top:8px;margin-top:2px;}
+
 .empty{text-align:center;color:var(--mut);padding:40px 20px;}
 .empty span{font-size:48px;display:block;margin-bottom:10px;}
 .loading{display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;gap:10px;color:var(--mut);padding:40px;}
@@ -188,13 +201,20 @@ html,body{height:100%;background:var(--bg);color:var(--txt);font-family:'DM Sans
         <div class="logo-s">COMPRA EN GRUPO · AHORRA</div>
       </div>
     </div>
-    <div class="hdr-btns" id="hdr-btns">
-      <button class="btn-login" onclick="goScreen('login')">Iniciar sesión</button>
-      <button class="btn-register" onclick="goScreen('login');switchTab('registro')">Registrarme</button>
-    </div>
-    <div id="hdr-user" style="display:none;align-items:center;gap:8px;">
-      <div style="background:var(--gl);border:1.5px solid var(--gb);color:var(--gd);font-size:11px;font-weight:700;padding:4px 10px;border-radius:99px;" id="hdr-nombre"></div>
-      <button onclick="cerrarSesion()" style="background:none;border:none;font-size:11px;color:var(--mut);cursor:pointer;">Salir</button>
+    <div style="display:flex;align-items:center;gap:8px;">
+      <!-- Botón carrito fijo -->
+      <button class="cart-btn" onclick="goScreen('carrito')" id="hdr-cart" style="display:none;">
+        🛒 Ver carrito
+        <span class="cart-badge" id="cart-badge">0</span>
+      </button>
+      <div class="hdr-btns" id="hdr-btns">
+        <button class="btn-login" onclick="goScreen('login')">Iniciar sesión</button>
+        <button class="btn-register" onclick="goScreen('login');switchTab('registro')">Registrarme</button>
+      </div>
+      <div id="hdr-user" style="display:none;align-items:center;gap:8px;">
+        <div style="background:var(--gl);border:1.5px solid var(--gb);color:var(--gd);font-size:11px;font-weight:700;padding:4px 10px;border-radius:99px;" id="hdr-nombre"></div>
+        <button onclick="cerrarSesion()" style="background:none;border:none;font-size:11px;color:var(--mut);cursor:pointer;">Salir</button>
+      </div>
     </div>
   </div>
 
@@ -341,6 +361,17 @@ html,body{height:100%;background:var(--bg);color:var(--txt);font-family:'DM Sans
       </div>
       <button class="share-btn" onclick="compartirWA()">💬 Invitar vecinos (¡10% OFF juntos!)</button>
       <button class="btn-confirmar" id="btn-confirmar" onclick="confirmarPedido()">✅ Confirmar y unirme al grupo</button>
+    </div>
+  </div>
+
+  <!-- ═══════════════ SCREEN: CARRITO ═══════════════ -->
+  <div class="screen" id="screen-carrito">
+    <div class="checkout-hdr">
+      <button class="checkout-back" onclick="goScreen('inicio')">←</button>
+      <div class="checkout-title">🛒 Mi carrito</div>
+    </div>
+    <div class="scroll-body" id="carrito-body">
+      <!-- se renderiza con JS -->
     </div>
   </div>
 
@@ -503,7 +534,185 @@ const CATS = {
 };
 
 let grupos={}, historial=[], productoActual=null, catActual='todas', fileData=null;
+let carrito=[];
 try{ historial=JSON.parse(localStorage.getItem("gp_hist")||"[]"); }catch(e){}
+try{ carrito=JSON.parse(localStorage.getItem("gp_cart")||"[]"); }catch(e){}
+
+function guardarCarrito(){ localStorage.setItem("gp_cart",JSON.stringify(carrito)); }
+function actualizarBadgeCarrito(){
+  const n=carrito.length;
+  const btn=document.getElementById("hdr-cart");
+  const badge=document.getElementById("cart-badge");
+  if(n>0){ btn.style.display="flex"; badge.textContent=n; }
+  else { btn.style.display="none"; }
+}
+
+window.agregarAlCarrito=function(gid){
+  const g=grupos[gid]; if(!g) return;
+  if(carrito.find(i=>i.id===gid)){ toast("⚠ Ya está en tu carrito"); return; }
+  carrito.push({id:gid, product_name:g.product_name, emoji:g.emoji||"📦",
+    price_per_unit:g.price_per_unit||0, unit:g.unit||"kg", has_discount:g.has_discount!==false});
+  guardarCarrito(); actualizarBadgeCarrito();
+  toast("✅ "+g.product_name+" agregado al carrito");
+};
+
+window.quitarDelCarrito=function(gid){
+  carrito=carrito.filter(i=>i.id!==gid);
+  guardarCarrito(); actualizarBadgeCarrito(); renderCarrito();
+};
+
+function renderCarrito(){
+  const el=document.getElementById("carrito-body");
+  if(!carrito.length){
+    el.innerHTML=`<div class="empty"><span>🛒</span>Tu carrito está vacío<br><br><button class="btn-confirmar" onclick="goScreen('inicio')" style="max-width:220px;">Ver productos</button></div>`;
+    return;
+  }
+  const totalNormal=carrito.reduce((s,i)=>s+i.price_per_unit,0);
+  const totalGrupal=carrito.reduce((s,i)=>s+(i.has_discount?Math.round(i.price_per_unit*0.9*10)/10:i.price_per_unit),0);
+  const hayDesc=carrito.some(i=>i.has_discount);
+
+  el.innerHTML=`
+    <div style="display:flex;flex-direction:column;gap:10px;">
+      ${carrito.map(i=>{
+        const pG=i.has_discount?Math.round(i.price_per_unit*0.9*10)/10:i.price_per_unit;
+        return `<div class="cart-item">
+          <div class="cart-item-em">${i.emoji}</div>
+          <div class="cart-item-info">
+            <div class="cart-item-nm">${i.product_name}</div>
+            <div class="cart-item-pr">S/${pG}/${i.unit} ${i.has_discount?`<span style="background:#dcfce7;color:var(--gd);font-size:9px;font-weight:800;padding:1px 5px;border-radius:99px;">10% OFF</span>`:""}</div>
+          </div>
+          <button class="cart-item-del" onclick="quitarDelCarrito('${i.id}')">✕</button>
+        </div>`;
+      }).join("")}
+
+      <div class="cart-total-box">
+        ${hayDesc?`<div class="cart-total-row"><span>Precio sin descuento</span><span>S/${totalNormal.toFixed(1)}</span></div>
+        <div class="cart-total-row"><span>Ahorro grupal (10% OFF)</span><span>−S/${(totalNormal-totalGrupal).toFixed(1)}</span></div>`:""}
+        <div class="cart-total-final"><span>Total a pagar</span><span>S/${totalGrupal.toFixed(1)}</span></div>
+      </div>
+
+      <!-- SECTOR ÚNICO -->
+      <div class="form-card">
+        <div style="font-family:'Syne',sans-serif;font-size:14px;font-weight:900;margin-bottom:8px;">📍 Tu sector (para todos los productos)</div>
+        <div style="font-size:12px;color:var(--mut);margin-bottom:10px;">Todos los pedidos del carrito se asignan al mismo sector.</div>
+        <label class="form-label">SECTOR / URBANIZACIÓN</label>
+        <input class="form-input" id="cart-sector" placeholder="Ej: Huachipa, Sol de La Molina...">
+      </div>
+
+      <!-- DATOS -->
+      <div class="form-card">
+        <div style="font-family:'Syne',sans-serif;font-size:14px;font-weight:900;margin-bottom:8px;">👤 Tus datos</div>
+        <label class="form-label">NOMBRE COMPLETO</label>
+        <input class="form-input" id="cart-nombre" placeholder="Juan Pérez" style="margin-bottom:10px;" value="${usuarioActual?.nombre||''}">
+        <label class="form-label">WHATSAPP</label>
+        <input class="form-input" id="cart-tel" placeholder="9XX XXX XXX" type="tel" value="${usuarioActual?.telefono||''}">
+      </div>
+
+      <!-- PAGO -->
+      <div class="form-card">
+        <div style="font-family:'Syne',sans-serif;font-size:14px;font-weight:900;margin-bottom:10px;">📸 Un solo comprobante de pago</div>
+        <div style="font-size:12px;color:var(--mut);margin-bottom:10px;">Paga S/${totalGrupal.toFixed(1)} por Yape/Plin y sube una captura para todos los productos.</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;">
+          <div style="background:#f0fdf4;border:1.5px solid var(--gb);border-radius:10px;padding:10px;text-align:center;"><div style="font-size:20px;">💜</div><div style="font-size:11px;font-weight:700;color:var(--gd);">Yape / Plin</div><div style="font-size:10px;color:var(--mut);">992-228-824</div></div>
+          <div style="background:#f0fdf4;border:1.5px solid var(--gb);border-radius:10px;padding:10px;text-align:center;"><div style="font-size:20px;">🍋</div><div style="font-size:11px;font-weight:700;color:var(--gd);">Lemon / Interbank</div><div style="font-size:10px;color:var(--mut);">Cuenta de ahorro</div></div>
+        </div>
+        <div class="upload-box" onclick="document.getElementById('cart-file').click()">
+          <div style="font-size:28px;margin-bottom:6px;">📎</div>
+          <div style="font-size:13px;font-weight:600;">Subir captura de Yape</div>
+          <div style="font-size:11px;color:var(--mut);margin-top:3px;">JPG, PNG o WebP</div>
+          <input type="file" id="cart-file" accept="image/*" onchange="previewCartFile(this)">
+          <img class="upload-preview" id="cart-preview">
+        </div>
+      </div>
+
+      <button class="btn-confirmar" id="btn-confirmar-carrito" onclick="confirmarCarrito()">✅ Confirmar pedido (${carrito.length} producto${carrito.length!==1?"s":""})</button>
+    </div>`;
+}
+
+window.previewCartFile=function(input){
+  const file=input.files[0]; if(!file) return; fileData=file;
+  const r=new FileReader(); r.onload=e=>{ const p=document.getElementById("cart-preview"); p.src=e.target.result; p.style.display="block"; }; r.readAsDataURL(file);
+};
+
+window.confirmarCarrito=async function(){
+  const nombre=document.getElementById("cart-nombre").value.trim();
+  const tel=document.getElementById("cart-tel").value.trim();
+  const sector=document.getElementById("cart-sector").value.trim();
+  if(!nombre){toast("⚠ Ingresa tu nombre");return;}
+  if(!tel){toast("⚠ Ingresa tu WhatsApp");return;}
+  if(!sector){toast("⚠ Escribe tu sector/urbanización");return;}
+  if(!carrito.length){toast("⚠ El carrito está vacío");return;}
+  const btn=document.getElementById("btn-confirmar-carrito");
+  btn.disabled=true; btn.textContent="Procesando...";
+  try{
+    // 1. Subir captura única a Cloudinary
+    let shotUrl="";
+    if(fileData){
+      try{
+        const formData=new FormData();
+        formData.append("file",fileData);
+        formData.append("upload_preset","grupay_unsigned");
+        formData.append("folder","grupay/proofs");
+        const res=await fetch("https://api.cloudinary.com/v1_1/dyi3mbeqo/image/upload",{method:"POST",body:formData});
+        const json=await res.json();
+        if(json.secure_url) shotUrl=json.secure_url;
+      }catch(e){
+        shotUrl=await new Promise(res=>{
+          const canvas=document.createElement("canvas");
+          const img=new Image();
+          img.onload=()=>{ const max=600; let w=img.width,h=img.height; if(w>max){h=h*(max/w);w=max;} canvas.width=w;canvas.height=h; canvas.getContext("2d").drawImage(img,0,0,w,h); res(canvas.toDataURL("image/jpeg",0.7)); };
+          img.src=URL.createObjectURL(fileData);
+        });
+      }
+    }
+
+    // 2. Para cada producto del carrito: buscar/crear sector + agregar miembro + guardar pedido
+    const totalGrupal=carrito.reduce((s,i)=>s+(i.has_discount?Math.round(i.price_per_unit*0.9*10)/10:i.price_per_unit),0);
+    for(const item of carrito){
+      const sectoresRef=collection(db,"grupay_groups",item.id,"sectors");
+      const snap=await getDocs(sectoresRef);
+      let sectorDoc=null;
+      snap.forEach(d=>{ if((d.data().sector_name||"").toLowerCase()===sector.toLowerCase()) sectorDoc={id:d.id,...d.data()}; });
+      let sectorId;
+      if(sectorDoc){
+        sectorId=sectorDoc.id;
+        await updateDoc(doc(db,"grupay_groups",item.id,"sectors",sectorId),{
+          member_count:increment(1), status:(sectorDoc.member_count||0)+1>=5?"active":"open"
+        });
+      } else {
+        const nd=await addDoc(sectoresRef,{sector_name:sector,member_count:1,status:"open",created_at:serverTimestamp()});
+        sectorId=nd.id;
+      }
+      await addDoc(collection(db,"grupay_groups",item.id,"sectors",sectorId,"members"),{
+        nombre,tel,sector,payment_status:"uploaded",payment_screenshot_url:shotUrl,joined_at:serverTimestamp()
+      });
+      const pedidoRef=await addDoc(collection(db,"grupay_pedidos"),{
+        nombre,tel,sector,
+        producto_id:item.id, producto_nombre:item.product_name, producto_emoji:item.emoji,
+        precio_normal:item.price_per_unit, sector_id:sectorId,
+        payment_status:"uploaded", payment_screenshot_url:shotUrl,
+        monto:totalGrupal.toFixed(1), carrito:true, fecha:serverTimestamp()
+      });
+      historial.unshift({
+        id:pedidoRef.id, groupId:item.id, product_name:item.product_name, emoji:item.emoji,
+        sector, payment_status:"uploaded", payment_screenshot_url:shotUrl,
+        fecha:new Date().toLocaleDateString("es-PE",{day:"numeric",month:"short"})
+      });
+    }
+    localStorage.setItem("gp_hist",JSON.stringify(historial));
+
+    // 3. Notificar admin
+    const lista=carrito.map(i=>`${i.emoji} ${i.product_name}`).join(", ");
+    const adminMsg=encodeURIComponent(`🛒 *CARRITO GruPay*\n👤 ${nombre} (${tel})\n📍 Sector: ${sector}\n📦 Productos: ${lista}\n💰 Total: S/${totalGrupal.toFixed(1)}\n📸 Comprobante: ${shotUrl?"Adjunto ✅":"Sin comprobante ⚠"}\n🔗 Ver en admin: https://admin.neopisk.lat`);
+    window.open(`https://wa.me/51992228824?text=${adminMsg}`,"_blank");
+
+    // 4. Limpiar carrito
+    carrito=[];
+    guardarCarrito(); actualizarBadgeCarrito(); fileData=null;
+    toast("🎉 ¡Pedido confirmado! "+historial.length+" producto(s)");
+    setTimeout(()=>goScreen("pedidos"),1500);
+  }catch(e){ toast("❌ Error: "+e.message); btn.disabled=false; btn.textContent=`✅ Confirmar pedido`; }
+};
 
 function toast(msg){ const t=document.getElementById("toast"); t.textContent=msg; t.classList.add("show"); setTimeout(()=>t.classList.remove("show"),2500); }
 window.toast=toast;
@@ -514,12 +723,14 @@ window.goScreen=function(name){
   document.getElementById("screen-"+name).classList.add("active");
   const nb=document.getElementById("nav-"+name); if(nb) nb.classList.add("active");
   if(name==="pedidos") renderHist();
+  if(name==="carrito") renderCarrito();
 };
 
 /* AUTH */
 let usuarioActual = null;
 try{ usuarioActual=JSON.parse(localStorage.getItem("gp_user")||"null"); }catch(e){}
 if(usuarioActual) mostrarUsuario(usuarioActual);
+actualizarBadgeCarrito();
 
 function mostrarUsuario(u){
   usuarioActual=u;
@@ -678,7 +889,7 @@ function cardHTML(g){
   const pG=tieneDesc?Math.round(pN*0.9*10)/10:pN;
   const imgSrc=IMGS[g.id];
   const imgEl=imgSrc?`<img class="pc-img" src="${imgSrc}" alt="${g.product_name}" loading="lazy">`:`<div class="pc-img-em">${g.emoji||"📦"}</div>`;
-  return `<div class="pc" onclick="abrirSectores('${g.id}')">
+  return `<div class="pc">
     ${tieneDesc?`<div class="ribbon-desc">10% OFF</div>`:""}
     ${imgEl}
     <div class="pc-bd">
@@ -690,7 +901,7 @@ function cardHTML(g){
       </div>
       ${tieneDesc?`<div class="pc-sub">Precio fijo: S/${pN}/${g.unit||"kg"}</div>`:""}
     </div>
-    <button class="pc-btn-join">👥 Unirme al grupo</button>
+    <button class="pc-btn-join" onclick="event.stopPropagation();agregarAlCarrito('${g.id}')">🛒 Agregar al carrito</button>
   </div>`;
 }
 
