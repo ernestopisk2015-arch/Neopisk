@@ -188,9 +188,13 @@ html,body{height:100%;background:var(--bg);color:var(--txt);font-family:'DM Sans
         <div class="logo-s">COMPRA EN GRUPO · AHORRA</div>
       </div>
     </div>
-    <div class="hdr-btns">
-      <button class="btn-login" onclick="iniciarSesion()">Iniciar sesión</button>
-      <button class="btn-register" onclick="crearCuenta()">Registrarme</button>
+    <div class="hdr-btns" id="hdr-btns">
+      <button class="btn-login" onclick="goScreen('login')">Iniciar sesión</button>
+      <button class="btn-register" onclick="goScreen('login')">Registrarme</button>
+    </div>
+    <div id="hdr-user" style="display:none;align-items:center;gap:8px;">
+      <div style="background:var(--gl);border:1.5px solid var(--gb);color:var(--gd);font-size:11px;font-weight:700;padding:4px 10px;border-radius:99px;" id="hdr-nombre"></div>
+      <button onclick="cerrarSesion()" style="background:none;border:none;font-size:11px;color:var(--mut);cursor:pointer;">Salir</button>
     </div>
   </div>
 
@@ -205,9 +209,13 @@ html,body{height:100%;background:var(--bg);color:var(--txt);font-family:'DM Sans
         <div class="pill">📍 Mismo sector</div>
         <div class="pill">⏱ 24h para completar</div>
       </div>
-      <div class="hero-cta">
-        <button class="btn-hero-register" onclick="crearCuenta()">🤖 Crear mi cuenta</button>
-        <button class="btn-hero-login" onclick="iniciarSesion()">🔑 Iniciar sesión</button>
+      <div class="hero-cta" id="hero-cta-guest">
+        <button class="btn-hero-register" onclick="goScreen('login')">🤖 Crear mi cuenta</button>
+        <button class="btn-hero-login" onclick="goScreen('login')">🔑 Iniciar sesión</button>
+      </div>
+      <div id="hero-cta-user" style="display:none;background:rgba(255,255,255,.15);border-radius:12px;padding:12px;border:1px solid rgba(255,255,255,.2);">
+        <div style="font-family:'Syne',sans-serif;font-size:16px;font-weight:900;color:#fff;margin-bottom:4px;">👋 Hola, <span id="hero-nombre"></span>!</div>
+        <div style="font-size:12px;color:rgba(255,255,255,.8);">Elige tu producto y únete a un grupo 🛒</div>
       </div>
     </div>
     <div class="scroll-body">
@@ -396,12 +404,40 @@ html,body{height:100%;background:var(--bg);color:var(--txt);font-family:'DM Sans
     </div>
   </div>
 
+  <!-- ═══════════════ SCREEN: LOGIN ═══════════════ -->
+  <div class="screen" id="screen-login">
+    <div class="scroll-body" style="justify-content:center;">
+      <div style="text-align:center;padding:20px 0 10px;">
+        <div style="font-size:48px;margin-bottom:8px;">🛒</div>
+        <div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:900;">Gru<span style="color:var(--g)">Pay</span></div>
+        <div style="font-size:12px;color:var(--mut);margin-top:4px;">Compra en grupo, ahorra en grande</div>
+      </div>
+      <div class="form-card">
+        <div style="font-family:'Syne',sans-serif;font-size:15px;font-weight:900;margin-bottom:6px;">📱 Ingresa con tu WhatsApp</div>
+        <div style="font-size:12px;color:var(--mut);margin-bottom:14px;">Usa el mismo número con el que hablaste con Karla</div>
+        <label class="form-label">TU NÚMERO WHATSAPP</label>
+        <div style="display:flex;gap:8px;margin-bottom:14px;">
+          <div style="background:#f1f5f9;border:2px solid var(--bdr);border-radius:10px;padding:11px 13px;font-size:15px;font-weight:700;color:var(--mut);">+51</div>
+          <input class="form-input" id="login-tel" placeholder="9XX XXX XXX" type="tel" style="flex:1;" oninput="this.value=this.value.replace(/\D/g,'').slice(0,9)">
+        </div>
+        <button class="btn-confirmar" onclick="verificarUsuario()">Ingresar →</button>
+        <div id="login-msg" style="text-align:center;font-size:12px;color:var(--mut);margin-top:10px;display:none;"></div>
+      </div>
+      <div style="background:#f0fdf4;border:1.5px solid var(--gb);border-radius:14px;padding:14px;text-align:center;">
+        <div style="font-size:13px;font-weight:700;color:var(--gd);margin-bottom:6px;">¿Primera vez en GruPay?</div>
+        <div style="font-size:12px;color:var(--mut);margin-bottom:10px;">Escríbele a Karla por WhatsApp y ella te registra automáticamente</div>
+        <button onclick="crearCuenta()" style="background:#25d366;color:#fff;border:none;padding:10px 20px;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;width:100%;">💬 Registrarme con Karla</button>
+      </div>
+    </div>
+  </div>
+
   <!-- NAV -->
   <nav class="nav">
     <button class="nav-btn active" id="nav-inicio" onclick="goScreen('inicio')"><span>🏠</span><span>Inicio</span></button>
     <button class="nav-btn" id="nav-categorias" onclick="goScreen('categorias')"><span>🗂</span><span>Categorías</span></button>
     <button class="nav-btn" id="nav-pedidos" onclick="goScreen('pedidos')"><span>📦</span><span>Mis pedidos</span></button>
     <button class="nav-btn" id="nav-contacto" onclick="goScreen('contacto')"><span>📞</span><span>Soporte</span></button>
+    <button class="nav-btn" id="nav-login" onclick="goScreen('login')" id="nav-login-btn"><span>👤</span><span>Cuenta</span></button>
   </nav>
 </div>
 
@@ -464,20 +500,75 @@ window.goScreen=function(name){
   if(name==="pedidos") renderHist();
 };
 
-/* AUTH VIA KARLA */
+/* AUTH */
+let usuarioActual = null;
+try{ usuarioActual=JSON.parse(localStorage.getItem("gp_user")||"null"); }catch(e){}
+if(usuarioActual) mostrarUsuario(usuarioActual);
+
+function mostrarUsuario(u){
+  usuarioActual=u;
+  document.getElementById("hdr-btns").style.display="none";
+  document.getElementById("hdr-user").style.display="flex";
+  document.getElementById("hdr-nombre").textContent="👤 "+u.nombre.split(" ")[0];
+  document.getElementById("hero-cta-guest").style.display="none";
+  document.getElementById("hero-cta-user").style.display="block";
+  document.getElementById("hero-nombre").textContent=u.nombre.split(" ")[0];
+}
+
+window.verificarUsuario=async function(){
+  const tel=document.getElementById("login-tel").value.trim();
+  if(!tel||tel.length<9){toast("⚠ Ingresa tu número completo");return;}
+  const msg=document.getElementById("login-msg");
+  const btn=document.querySelector("#screen-login .btn-confirmar");
+  btn.disabled=true; btn.textContent="Buscando...";
+  msg.style.display="block"; msg.textContent="🔍 Verificando tu número...";
+  try{
+    const telInput=tel.replace(/\D/g,"").slice(-9);
+    const snap=await getDocs(collection(db,"grupay_users"));
+    let encontrado=null;
+    snap.forEach(d=>{
+      const data=d.data();
+      // Buscar por los últimos 9 dígitos en cualquier formato
+      const telDoc=(data.telefono||"").replace(/\D/g,"").slice(-9);
+      const waDoc=(data.whatsapp||"").replace(/\D/g,"").slice(-9);
+      if(telDoc===telInput||waDoc===telInput) encontrado={id:d.id,...data};
+    });
+    if(encontrado){
+      localStorage.setItem("gp_user",JSON.stringify(encontrado));
+      mostrarUsuario(encontrado);
+      toast("✅ Bienvenido "+encontrado.nombre.split(" ")[0]+"!");
+      goScreen("inicio");
+    } else {
+      msg.textContent="⚠ Número no encontrado. ¿Ya hablaste con Karla para registrarte?";
+      msg.style.color="var(--r)";
+      btn.disabled=false; btn.textContent="Ingresar →";
+    }
+  }catch(e){
+    msg.textContent="❌ Error: "+e.message;
+    btn.disabled=false; btn.textContent="Ingresar →";
+  }
+};
+
+window.cerrarSesion=function(){
+  usuarioActual=null;
+  localStorage.removeItem("gp_user");
+  document.getElementById("hdr-btns").style.display="flex";
+  document.getElementById("hdr-user").style.display="none";
+  document.getElementById("hero-cta-guest").style.display="flex";
+  document.getElementById("hero-cta-user").style.display="none";
+  toast("👋 Sesión cerrada");
+};
+
 window.crearCuenta=function(){
   const msg=encodeURIComponent("Hola Karla 👋, quiero registrarme en GruPay. ¿Cómo lo hago?");
-  window.open(`https://wa.me/${KARLA}?text=${msg}`,"_blank");
+  window.open(`https://wa.me/51948115030?text=${msg}`,"_blank");
 };
-window.iniciarSesion=function(){
-  const msg=encodeURIComponent("Hola Karla, quiero iniciar sesión en GruPay.");
-  window.open(`https://wa.me/${KARLA}?text=${msg}`,"_blank");
-};
+window.iniciarSesion=function(){ goScreen("login"); };
 window.abrirKarla=function(tipo){
   const msgs={soporte:"Hola Karla, necesito soporte con mi pedido GruPay.",registro:"Hola Karla, quiero registrarme en GruPay."};
-  window.open(`https://wa.me/${KARLA}?text=${encodeURIComponent(msgs[tipo]||msgs.soporte)}`,"_blank");
+  window.open(`https://wa.me/51948115030?text=${encodeURIComponent(msgs[tipo]||msgs.soporte)}`,"_blank");
 };
-window.abrirWA=function(){ window.open(`https://wa.me/${KARLA}`,"_blank"); };
+window.abrirWA=function(){ window.open(`https://wa.me/51948115030`,"_blank"); };
 
 /* CATEGORIAS */
 window.selCat=function(cat,btn){
