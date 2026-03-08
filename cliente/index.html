@@ -233,9 +233,17 @@ html,body{height:100%;background:var(--bg);color:var(--txt);font-family:'DM Sans
         <button class="btn-hero-register" onclick="goScreen('login');switchTab('registro')">🤖 Crear mi cuenta</button>
         <button class="btn-hero-login" onclick="goScreen('login')">🔑 Iniciar sesión</button>
       </div>
-      <div id="hero-cta-user" style="display:none;background:rgba(255,255,255,.15);border-radius:12px;padding:12px;border:1px solid rgba(255,255,255,.2);">
+      <div id="hero-cta-user" style="display:none;background:rgba(255,255,255,.15);border-radius:12px;padding:14px;border:1px solid rgba(255,255,255,.2);">
         <div style="font-family:'Syne',sans-serif;font-size:16px;font-weight:900;color:#fff;margin-bottom:4px;">👋 Hola, <span id="hero-nombre"></span>!</div>
-        <div style="font-size:12px;color:rgba(255,255,255,.8);">Elige tu producto y únete a un grupo 🛒</div>
+        <div style="font-size:12px;color:rgba(255,255,255,.8);margin-bottom:12px;">¿Qué quieres hacer hoy?</div>
+        <div style="display:flex;gap:8px;">
+          <button onclick="scrollToProductos()" style="flex:1;padding:10px 8px;background:#fff;color:#14532d;border:none;border-radius:10px;font-size:12px;font-weight:800;cursor:pointer;font-family:'Syne',sans-serif;display:flex;align-items:center;justify-content:center;gap:5px;">
+            👥 Unirme a un grupo
+          </button>
+          <button onclick="goScreen('carrito')" style="flex:1;padding:10px 8px;background:rgba(255,255,255,.2);color:#fff;border:1.5px solid rgba(255,255,255,.4);border-radius:10px;font-size:12px;font-weight:800;cursor:pointer;font-family:'Syne',sans-serif;display:flex;align-items:center;justify-content:center;gap:5px;">
+            🛒 Mi carrito <span id="hero-cart-count" style="background:#dc2626;color:#fff;font-size:9px;font-weight:900;width:16px;height:16px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;"></span>
+          </button>
+        </div>
       </div>
     </div>
     <div class="scroll-body">
@@ -564,15 +572,26 @@ function actualizarBadgeCarrito(){
   const n=carrito.length;
   const btn=document.getElementById("hdr-cart");
   const badge=document.getElementById("cart-badge");
-  // Solo mostrar si el usuario está logueado
+  const heroCnt=document.getElementById("hero-cart-count");
   if(usuarioActual){
     btn.style.display="flex";
     badge.textContent=n;
     badge.style.display=n>0?"flex":"none";
+    if(heroCnt){ heroCnt.textContent=n||""; heroCnt.style.display=n>0?"inline-flex":"none"; }
   } else {
     btn.style.display="none";
+    if(heroCnt) heroCnt.style.display="none";
   }
 }
+
+window.scrollToProductos=function(){
+  if(!document.getElementById("screen-inicio").classList.contains("active")){
+    goScreen("inicio");
+    setTimeout(()=>document.getElementById("inicio-body")?.scrollIntoView({behavior:"smooth",block:"start"}),350);
+  } else {
+    document.getElementById("inicio-body")?.scrollIntoView({behavior:"smooth",block:"start"});
+  }
+};
 
 window.agregarAlCarrito=function(gid){
   if(!usuarioActual){ toast("⚠ Inicia sesión para agregar al carrito"); goScreen('login'); return; }
@@ -1115,6 +1134,7 @@ function cardHTML(g){
   const pG=tieneDesc?Math.round(pN*0.9*10)/10:pN;
   const imgSrc=IMGS[g.id];
   const imgEl=imgSrc?`<img class="pc-img" src="${imgSrc}" alt="${g.product_name}" loading="lazy">`:`<div class="pc-img-em">${g.emoji||"📦"}</div>`;
+  const yaEnCarrito=carrito.find(i=>i.id===g.id);
   return `<div class="pc">
     ${tieneDesc?`<div class="ribbon-desc">10% OFF</div>`:""}
     ${imgEl}
@@ -1127,7 +1147,19 @@ function cardHTML(g){
       </div>
       ${tieneDesc?`<div class="pc-sub">Precio fijo: S/${pN}/${g.unit||"kg"}</div>`:""}
     </div>
-    <button class="pc-btn-join" onclick="event.stopPropagation();agregarAlCarrito('${g.id}')">🛒 Agregar al carrito</button>
+    <div style="display:flex;gap:6px;padding:0 8px 8px;">
+      <button onclick="abrirSectores('${g.id}')"
+        style="flex:1;padding:7px 4px;border:2px solid var(--gb);border-radius:8px;
+        background:var(--gl);color:var(--gd);font-size:10px;font-weight:700;cursor:pointer;">
+        👥 Ver grupos
+      </button>
+      <button onclick="event.stopPropagation();agregarAlCarrito('${g.id}')"
+        style="flex:1;padding:7px 4px;border:none;border-radius:8px;
+        background:${yaEnCarrito?'#bbf7d0':'linear-gradient(135deg,var(--gd),var(--g))'};
+        color:${yaEnCarrito?'var(--gd)':'#fff'};font-size:10px;font-weight:700;cursor:pointer;">
+        ${yaEnCarrito?'✅ En carrito':'🛒 Agregar'}
+      </button>
+    </div>
   </div>`;
 }
 
