@@ -478,13 +478,21 @@ html,body{height:100%;background:var(--bg);color:var(--txt);font-family:'DM Sans
     </div>
   </div>
 
+  <!-- ═══════════════ SCREEN: PERFIL ═══════════════ -->
+  <div class="screen" id="screen-perfil">
+    <div class="scroll-body">
+      <div class="sec-t" style="padding:4px 0;">👤 Mi perfil</div>
+      <div id="perfil-body"></div>
+    </div>
+  </div>
+
   <!-- NAV -->
   <nav class="nav">
     <button class="nav-btn active" id="nav-inicio" onclick="goScreen('inicio')"><span>🏠</span><span>Inicio</span></button>
     <button class="nav-btn" id="nav-categorias" onclick="goScreen('categorias')"><span>🗂</span><span>Categorías</span></button>
     <button class="nav-btn" id="nav-pedidos" onclick="goScreen('pedidos')"><span>📦</span><span>Mis pedidos</span></button>
     <button class="nav-btn" id="nav-contacto" onclick="goScreen('contacto')"><span>📞</span><span>Soporte</span></button>
-    <button class="nav-btn" id="nav-login" onclick="goScreen('login')" id="nav-login-btn"><span>👤</span><span>Cuenta</span></button>
+    <button class="nav-btn" id="nav-perfil" onclick="goScreen('perfil')"><span>👤</span><span>Perfil</span></button>
   </nav>
 </div>
 
@@ -543,11 +551,18 @@ function actualizarBadgeCarrito(){
   const n=carrito.length;
   const btn=document.getElementById("hdr-cart");
   const badge=document.getElementById("cart-badge");
-  if(n>0){ btn.style.display="flex"; badge.textContent=n; }
-  else { btn.style.display="none"; }
+  // Solo mostrar si el usuario está logueado
+  if(usuarioActual){
+    btn.style.display="flex";
+    badge.textContent=n;
+    badge.style.display=n>0?"flex":"none";
+  } else {
+    btn.style.display="none";
+  }
 }
 
 window.agregarAlCarrito=function(gid){
+  if(!usuarioActual){ toast("⚠ Inicia sesión para agregar al carrito"); goScreen('login'); return; }
   const g=grupos[gid]; if(!g) return;
   if(carrito.find(i=>i.id===gid)){ toast("⚠ Ya está en tu carrito"); return; }
   carrito.push({id:gid, product_name:g.product_name, emoji:g.emoji||"📦",
@@ -724,6 +739,7 @@ window.goScreen=function(name){
   const nb=document.getElementById("nav-"+name); if(nb) nb.classList.add("active");
   if(name==="pedidos") renderHist();
   if(name==="carrito") renderCarrito();
+  if(name==="perfil") renderPerfil();
 };
 
 /* AUTH */
@@ -740,6 +756,7 @@ function mostrarUsuario(u){
   document.getElementById("hero-cta-guest").style.display="none";
   document.getElementById("hero-cta-user").style.display="block";
   document.getElementById("hero-nombre").textContent=u.nombre.split(" ")[0];
+  actualizarBadgeCarrito();
 }
 
 window.verificarUsuario=async function(){
@@ -819,6 +836,74 @@ window.registrarUsuarioApp=async function(){
   }
 };
 
+function renderPerfil(){
+  const el=document.getElementById("perfil-body");
+  if(!usuarioActual){
+    el.innerHTML=`<div style="display:flex;flex-direction:column;gap:12px;">
+      <div style="background:#fff;border-radius:16px;padding:20px;box-shadow:0 2px 12px rgba(0,0,0,.06);text-align:center;">
+        <div style="font-size:52px;margin-bottom:10px;">👤</div>
+        <div style="font-family:'Syne',sans-serif;font-size:16px;font-weight:900;margin-bottom:6px;">No has iniciado sesión</div>
+        <div style="font-size:13px;color:var(--mut);margin-bottom:16px;">Inicia sesión para ver tu perfil y gestionar tus pedidos.</div>
+        <button class="btn-confirmar" onclick="goScreen('login')" style="max-width:200px;margin:0 auto;">Iniciar sesión →</button>
+      </div>
+    </div>`;
+    return;
+  }
+  const u=usuarioActual;
+  const nPedidos=historial.length;
+  const nVerificados=historial.filter(h=>h.payment_status==="verified").length;
+  el.innerHTML=`<div style="display:flex;flex-direction:column;gap:12px;">
+
+    <!-- Avatar + nombre -->
+    <div style="background:linear-gradient(135deg,#14532d,#166534);border-radius:16px;padding:20px;color:#fff;display:flex;align-items:center;gap:14px;">
+      <div style="width:54px;height:54px;border-radius:50%;background:rgba(255,255,255,.2);border:2px solid rgba(255,255,255,.4);display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0;">
+        ${u.nombre?u.nombre[0].toUpperCase():"👤"}
+      </div>
+      <div>
+        <div style="font-family:'Syne',sans-serif;font-size:18px;font-weight:900;">${u.nombre}</div>
+        <div style="font-size:12px;opacity:.8;margin-top:2px;">📱 ${u.telefono_completo||u.telefono||"—"}</div>
+        <div style="font-size:11px;opacity:.7;margin-top:2px;">Miembro GruPay</div>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+      <div style="background:#fff;border-radius:14px;padding:14px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.06);">
+        <div style="font-family:'Syne',sans-serif;font-size:26px;font-weight:900;color:var(--g);">${nPedidos}</div>
+        <div style="font-size:11px;color:var(--mut);font-weight:600;">Pedidos totales</div>
+      </div>
+      <div style="background:#fff;border-radius:14px;padding:14px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.06);">
+        <div style="font-family:'Syne',sans-serif;font-size:26px;font-weight:900;color:var(--g);">${nVerificados}</div>
+        <div style="font-size:11px;color:var(--mut);font-weight:600;">Verificados ✅</div>
+      </div>
+    </div>
+
+    <!-- Acciones -->
+    <div style="background:#fff;border-radius:14px;padding:4px;box-shadow:0 2px 8px rgba(0,0,0,.06);">
+      <div onclick="goScreen('pedidos')" style="display:flex;align-items:center;gap:12px;padding:14px;cursor:pointer;border-bottom:1px solid var(--bdr);">
+        <span style="font-size:22px;">📦</span>
+        <div style="flex:1;"><div style="font-weight:700;font-size:13px;">Mis pedidos</div><div style="font-size:11px;color:var(--mut);">Ver historial de compras</div></div>
+        <span style="color:var(--mut);">›</span>
+      </div>
+      <div onclick="goScreen('carrito')" style="display:flex;align-items:center;gap:12px;padding:14px;cursor:pointer;border-bottom:1px solid var(--bdr);">
+        <span style="font-size:22px;">🛒</span>
+        <div style="flex:1;"><div style="font-weight:700;font-size:13px;">Mi carrito</div><div style="font-size:11px;color:var(--mut);">${carrito.length} producto${carrito.length!==1?"s":""} agregado${carrito.length!==1?"s":""}</div></div>
+        <span style="color:var(--mut);">›</span>
+      </div>
+      <div onclick="abrirKarla('soporte')" style="display:flex;align-items:center;gap:12px;padding:14px;cursor:pointer;">
+        <span style="font-size:22px;">🤖</span>
+        <div style="flex:1;"><div style="font-weight:700;font-size:13px;">Soporte con Karla</div><div style="font-size:11px;color:var(--mut);">Ayuda 24/7 por WhatsApp</div></div>
+        <span style="color:var(--mut);">›</span>
+      </div>
+    </div>
+
+    <!-- Cerrar sesión -->
+    <button onclick="cerrarSesion()" style="width:100%;padding:13px;background:#fff;border:2px solid #fecaca;border-radius:12px;color:#dc2626;font-size:14px;font-weight:700;cursor:pointer;">
+      🚪 Cerrar sesión
+    </button>
+  </div>`;
+}
+
 window.cerrarSesion=function(){
   usuarioActual=null;
   localStorage.removeItem("gp_user");
@@ -826,7 +911,9 @@ window.cerrarSesion=function(){
   document.getElementById("hdr-user").style.display="none";
   document.getElementById("hero-cta-guest").style.display="flex";
   document.getElementById("hero-cta-user").style.display="none";
+  actualizarBadgeCarrito();
   toast("👋 Sesión cerrada");
+  goScreen("inicio");
 };
 
 window.crearCuenta=function(){
