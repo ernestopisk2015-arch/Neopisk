@@ -1278,26 +1278,76 @@ window.compartirWA=function(){
 (function detectDeepLink(){
   const p=new URLSearchParams(window.location.search);
   const productoId=p.get('producto');
-  const sector=p.get('sector');
-  if(productoId){
-    // Esperar a que carguen los grupos y abrir directo
-    const intentar=(intentos)=>{
-      if(intentos>20) return;
-      if(Object.keys(grupos).length>0){
-        abrirSectores(productoId);
-        if(sector){
-          setTimeout(()=>{
+  const sector=p.get('sector') ? decodeURIComponent(p.get('sector')) : null;
+  if(!productoId) return;
+
+  const intentar=(intentos)=>{
+    if(intentos>20) return;
+    if(Object.keys(grupos).length>0){
+      abrirSectores(productoId);
+      if(sector){
+        // Esperar a que cargarSectores termine y luego mostrar invitación
+        setTimeout(async ()=>{
+          const g=grupos[productoId];
+          if(!g) return;
+          // Buscar si el sector ya existe en Firestore
+          try{
+            const snap=await getDocs(collection(db,"grupay_groups",productoId,"sectors"));
+            let sectorExiste=null;
+            snap.forEach(d=>{
+              if((d.data().sector_name||"").toLowerCase()===sector.toLowerCase())
+                sectorExiste={id:d.id,...d.data()};
+            });
+
+            const formEl=document.getElementById("form-nuevo-sector");
+            if(sectorExiste){
+              // Sector existe — mostrar banner de invitación destacado
+              const pct=Math.min((sectorExiste.member_count||0)/5*100,100);
+              const faltan=5-(sectorExiste.member_count||0);
+              formEl.innerHTML=`
+                <div style="background:linear-gradient(135deg,#14532d,#166534);border-radius:16px;padding:18px;color:#fff;margin-top:8px;">
+                  <div style="font-size:11px;font-weight:700;opacity:.7;letter-spacing:1px;margin-bottom:8px;">📩 INVITACIÓN AL GRUPO</div>
+                  <div style="font-family:'Syne',sans-serif;font-size:18px;font-weight:900;margin-bottom:4px;">
+                    ${g.emoji||"📦"} ${g.product_name}
+                  </div>
+                  <div style="font-size:13px;opacity:.9;margin-bottom:12px;">
+                    📍 Sector: <b>${sector}</b> · ${sectorExiste.member_count||0}/5 vecinos
+                  </div>
+                  <div style="background:rgba(255,255,255,.15);border-radius:8px;height:8px;margin-bottom:12px;overflow:hidden;">
+                    <div style="width:${pct}%;height:100%;background:#86efac;border-radius:8px;transition:width .5s;"></div>
+                  </div>
+                  <div style="font-size:12px;opacity:.8;margin-bottom:14px;">
+                    ${faltan>0?`⏳ Faltan <b>${faltan} vecino${faltan!==1?"s":""}</b> para activar el 10% OFF`:"🎉 ¡Grupo completo! Descuento activado"}
+                  </div>
+                  <button onclick="seleccionarSector('${sector}')"
+                    style="width:100%;padding:13px;background:#fff;color:#14532d;border:none;
+                    border-radius:12px;font-family:'Syne',sans-serif;font-size:14px;font-weight:900;cursor:pointer;">
+                    👥 Unirme al grupo de ${sector} →
+                  </button>
+                </div>`;
+            } else {
+              // Sector no existe — mostrar form para crearlo con el nombre pre-llenado
+              formEl.innerHTML=`
+                <div style="background:#fff;border-radius:14px;padding:16px;border:2px solid var(--gb);margin-top:8px;">
+                  <div style="font-size:13px;font-weight:800;color:var(--gd);margin-bottom:4px;">📍 Tu amigo te invitó desde <b>${sector}</b></div>
+                  <div style="font-size:12px;color:var(--mut);margin-bottom:12px;">Aún no hay grupo en este sector. ¡Sé el primero en crearlo!</div>
+                  <input class="form-input" id="nuevo-sector-input" value="${sector}" style="margin-bottom:10px;">
+                  <button class="btn-confirmar" onclick="crearNuevoSector()">Crear grupo en ${sector} →</button>
+                </div>`;
+            }
+          }catch(e){
+            // Fallback: pre-llenar formulario
             mostrarFormNuevoSector();
-            const inp=document.getElementById('ns-sector');
-            if(inp) inp.value=decodeURIComponent(sector);
-          },600);
-        }
-      } else {
-        setTimeout(()=>intentar(intentos+1),300);
+            const inp=document.getElementById('nuevo-sector-input');
+            if(inp) inp.value=sector;
+          }
+        }, 800);
       }
-    };
-    setTimeout(()=>intentar(0),800);
-  }
+    } else {
+      setTimeout(()=>intentar(intentos+1),300);
+    }
+  };
+  setTimeout(()=>intentar(0),800);
 })();
 
 window.confirmarPedido=async function(){
