@@ -412,21 +412,37 @@ html,body{height:100%;background:var(--bg);color:var(--txt);font-family:'DM Sans
         <div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:900;">Gru<span style="color:var(--g)">Pay</span></div>
         <div style="font-size:12px;color:var(--mut);margin-top:4px;">Compra en grupo, ahorra en grande</div>
       </div>
-      <div class="form-card">
+
+      <!-- TAB: Iniciar sesión -->
+      <div style="display:flex;gap:0;margin-bottom:16px;border:2px solid var(--bdr);border-radius:12px;overflow:hidden;">
+        <button id="tab-login" onclick="switchTab('login')" style="flex:1;padding:10px;font-size:13px;font-weight:700;border:none;background:var(--gd);color:#fff;cursor:pointer;">Iniciar sesión</button>
+        <button id="tab-registro" onclick="switchTab('registro')" style="flex:1;padding:10px;font-size:13px;font-weight:700;border:none;background:#fff;color:var(--mut);cursor:pointer;">Crear cuenta</button>
+      </div>
+
+      <!-- Panel Login -->
+      <div id="panel-login" class="form-card">
         <div style="font-family:'Syne',sans-serif;font-size:15px;font-weight:900;margin-bottom:6px;">📱 Ingresa con tu WhatsApp</div>
-        <div style="font-size:12px;color:var(--mut);margin-bottom:14px;">Usa el mismo número con el que hablaste con Karla</div>
         <label class="form-label">TU NÚMERO WHATSAPP</label>
         <div style="display:flex;gap:8px;margin-bottom:14px;">
           <div style="background:#f1f5f9;border:2px solid var(--bdr);border-radius:10px;padding:11px 13px;font-size:15px;font-weight:700;color:var(--mut);">+51</div>
           <input class="form-input" id="login-tel" placeholder="9XX XXX XXX" type="tel" style="flex:1;" oninput="this.value=this.value.replace(/\D/g,'').slice(0,9)">
         </div>
         <button class="btn-confirmar" onclick="verificarUsuario()">Ingresar →</button>
-        <div id="login-msg" style="text-align:center;font-size:12px;color:var(--mut);margin-top:10px;display:none;"></div>
+        <div id="login-msg" style="text-align:center;font-size:12px;margin-top:10px;display:none;"></div>
       </div>
-      <div style="background:#f0fdf4;border:1.5px solid var(--gb);border-radius:14px;padding:14px;text-align:center;">
-        <div style="font-size:13px;font-weight:700;color:var(--gd);margin-bottom:6px;">¿Primera vez en GruPay?</div>
-        <div style="font-size:12px;color:var(--mut);margin-bottom:10px;">Escríbele a Karla por WhatsApp y ella te registra automáticamente</div>
-        <button onclick="crearCuenta()" style="background:#25d366;color:#fff;border:none;padding:10px 20px;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;width:100%;">💬 Registrarme con Karla</button>
+
+      <!-- Panel Registro -->
+      <div id="panel-registro" class="form-card" style="display:none;">
+        <div style="font-family:'Syne',sans-serif;font-size:15px;font-weight:900;margin-bottom:6px;">👤 Crear mi cuenta</div>
+        <label class="form-label">TU NOMBRE</label>
+        <input class="form-input" id="reg-nombre" placeholder="Ej: Juan Pérez" style="margin-bottom:12px;">
+        <label class="form-label">TU NÚMERO WHATSAPP</label>
+        <div style="display:flex;gap:8px;margin-bottom:14px;">
+          <div style="background:#f1f5f9;border:2px solid var(--bdr);border-radius:10px;padding:11px 13px;font-size:15px;font-weight:700;color:var(--mut);">+51</div>
+          <input class="form-input" id="reg-tel" placeholder="9XX XXX XXX" type="tel" style="flex:1;" oninput="this.value=this.value.replace(/\D/g,'').slice(0,9)">
+        </div>
+        <button class="btn-confirmar" onclick="registrarUsuarioApp()">Crear cuenta →</button>
+        <div id="reg-msg" style="text-align:center;font-size:12px;margin-top:10px;display:none;"></div>
       </div>
     </div>
   </div>
@@ -446,7 +462,7 @@ html,body{height:100%;background:var(--bg);color:var(--txt);font-family:'DM Sans
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getFirestore, collection, doc, onSnapshot, addDoc, updateDoc,
-         query, orderBy, serverTimestamp, increment, getDocs }
+         query, orderBy, serverTimestamp, increment, getDocs, getDoc, setDoc }
   from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 import { getStorage, ref, uploadBytes, getDownloadURL }
   from "https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js";
@@ -546,6 +562,49 @@ window.verificarUsuario=async function(){
   }catch(e){
     msg.textContent="❌ Error: "+e.message;
     btn.disabled=false; btn.textContent="Ingresar →";
+  }
+};
+
+window.switchTab=function(tab){
+  document.getElementById('panel-login').style.display=tab==='login'?'block':'none';
+  document.getElementById('panel-registro').style.display=tab==='registro'?'block':'none';
+  document.getElementById('tab-login').style.background=tab==='login'?'var(--gd)':'#fff';
+  document.getElementById('tab-login').style.color=tab==='login'?'#fff':'var(--mut)';
+  document.getElementById('tab-registro').style.background=tab==='registro'?'var(--gd)':'#fff';
+  document.getElementById('tab-registro').style.color=tab==='registro'?'#fff':'var(--mut)';
+};
+
+window.registrarUsuarioApp=async function(){
+  const nombre=document.getElementById('reg-nombre').value.trim();
+  const tel=document.getElementById('reg-tel').value.trim();
+  if(!nombre){toast("⚠ Ingresa tu nombre");return;}
+  if(!tel||tel.length<9){toast("⚠ Ingresa tu número completo");return;}
+  const msg=document.getElementById('reg-msg');
+  const btn=document.querySelector('#panel-registro .btn-confirmar');
+  btn.disabled=true; btn.textContent="Guardando...";
+  msg.style.display="block"; msg.textContent="⏳ Creando tu cuenta...";
+  try{
+    const tel9=tel.replace(/\D/g,'').slice(-9);
+    const ref=doc(db,'grupay_users',tel9);
+    const snap=await getDoc(ref);
+    if(snap.exists()){
+      const data=snap.data();
+      localStorage.setItem('gp_user',JSON.stringify({id:tel9,...data}));
+      mostrarUsuario({id:tel9,...data});
+      toast("✅ Ya tienes cuenta! Bienvenido "+data.nombre.split(' ')[0]+"!");
+      goScreen('inicio');
+      return;
+    }
+    const userData={nombre,telefono:tel9,telefono_completo:'51'+tel9,fecha_registro:serverTimestamp(),activo:true};
+    await setDoc(ref,userData);
+    localStorage.setItem('gp_user',JSON.stringify({id:tel9,...userData}));
+    mostrarUsuario({id:tel9,...userData});
+    toast("🎉 Cuenta creada! Bienvenido "+nombre.split(' ')[0]+"!");
+    goScreen('inicio');
+  }catch(e){
+    msg.textContent="❌ Error: "+e.message;
+    msg.style.color="var(--r)";
+    btn.disabled=false; btn.textContent="Crear cuenta →";
   }
 };
 
