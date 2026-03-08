@@ -465,13 +465,26 @@ html,body{height:100%;background:var(--bg);color:var(--txt);font-family:'DM Sans
       <!-- Panel Registro -->
       <div id="panel-registro" class="form-card" style="display:none;">
         <div style="font-family:'Syne',sans-serif;font-size:15px;font-weight:900;margin-bottom:6px;">👤 Crear mi cuenta</div>
-        <label class="form-label">TU NOMBRE</label>
+        <div style="font-size:12px;color:var(--mut);margin-bottom:14px;">Estos datos se usarán para coordinar tu entrega.</div>
+        <label class="form-label">TU NOMBRE COMPLETO</label>
         <input class="form-input" id="reg-nombre" placeholder="Ej: Juan Pérez" style="margin-bottom:12px;">
         <label class="form-label">TU NÚMERO WHATSAPP</label>
-        <div style="display:flex;gap:8px;margin-bottom:14px;">
+        <div style="display:flex;gap:8px;margin-bottom:12px;">
           <div style="background:#f1f5f9;border:2px solid var(--bdr);border-radius:10px;padding:11px 13px;font-size:15px;font-weight:700;color:var(--mut);">+51</div>
           <input class="form-input" id="reg-tel" placeholder="9XX XXX XXX" type="tel" style="flex:1;" oninput="this.value=this.value.replace(/\D/g,'').slice(0,9)">
         </div>
+        <label class="form-label">📍 DIRECCIÓN DE ENTREGA</label>
+        <input class="form-input" id="reg-direccion" placeholder="Ej: Jr. Los Cactus 340, Piso 2" style="margin-bottom:12px;">
+        <label class="form-label">🚪 REFERENCIA (color de puerta, piso, etc.)</label>
+        <input class="form-input" id="reg-referencia" placeholder="Ej: Puerta azul, portón negro" style="margin-bottom:12px;">
+        <label class="form-label">🕐 HORARIO DE ENTREGA PREFERIDO</label>
+        <select class="form-input" id="reg-horario" style="margin-bottom:14px;">
+          <option value="">Selecciona un horario...</option>
+          <option value="Mañana (8am - 12pm)">🌅 Mañana (8am - 12pm)</option>
+          <option value="Mediodía (12pm - 3pm)">☀️ Mediodía (12pm - 3pm)</option>
+          <option value="Tarde (3pm - 7pm)">🌆 Tarde (3pm - 7pm)</option>
+          <option value="Cualquier horario">✅ Cualquier horario</option>
+        </select>
         <button class="btn-confirmar" onclick="registrarUsuarioApp()">Crear cuenta →</button>
         <div id="reg-msg" style="text-align:center;font-size:12px;margin-top:10px;display:none;"></div>
       </div>
@@ -706,7 +719,11 @@ window.confirmarCarrito=async function(){
         producto_id:item.id, producto_nombre:item.product_name, producto_emoji:item.emoji,
         precio_normal:item.price_per_unit, sector_id:sectorId,
         payment_status:"uploaded", payment_screenshot_url:shotUrl,
-        monto:totalGrupal.toFixed(1), carrito:true, fecha:serverTimestamp()
+        monto:totalGrupal.toFixed(1), carrito:true, fecha:serverTimestamp(),
+        // Datos de entrega del perfil
+        direccion: usuarioActual?.direccion||"",
+        referencia: usuarioActual?.referencia||"",
+        horario: usuarioActual?.horario||""
       });
       historial.unshift({
         id:pedidoRef.id, groupId:item.id, product_name:item.product_name, emoji:item.emoji,
@@ -803,10 +820,14 @@ window.switchTab=function(tab){
 };
 
 window.registrarUsuarioApp=async function(){
-  const nombre=document.getElementById('reg-nombre').value.trim();
-  const tel=document.getElementById('reg-tel').value.trim();
+  const nombre    = document.getElementById('reg-nombre').value.trim();
+  const tel       = document.getElementById('reg-tel').value.trim();
+  const direccion = document.getElementById('reg-direccion').value.trim();
+  const referencia= document.getElementById('reg-referencia').value.trim();
+  const horario   = document.getElementById('reg-horario').value;
   if(!nombre){toast("⚠ Ingresa tu nombre");return;}
   if(!tel||tel.length<9){toast("⚠ Ingresa tu número completo");return;}
+  if(!direccion){toast("⚠ Ingresa tu dirección de entrega");return;}
   const msg=document.getElementById('reg-msg');
   const btn=document.querySelector('#panel-registro .btn-confirmar');
   btn.disabled=true; btn.textContent="Guardando...";
@@ -823,7 +844,11 @@ window.registrarUsuarioApp=async function(){
       goScreen('inicio');
       return;
     }
-    const userData={nombre,telefono:tel9,telefono_completo:'51'+tel9,fecha_registro:serverTimestamp(),activo:true};
+    const userData={
+      nombre, telefono:tel9, telefono_completo:'51'+tel9,
+      direccion, referencia, horario,
+      fecha_registro:serverTimestamp(), activo:true
+    };
     await setDoc(ref,userData);
     localStorage.setItem('gp_user',JSON.stringify({id:tel9,...userData}));
     mostrarUsuario({id:tel9,...userData});
@@ -852,9 +877,11 @@ function renderPerfil(){
   const u=usuarioActual;
   const nPedidos=historial.length;
   const nVerificados=historial.filter(h=>h.payment_status==="verified").length;
+  const faltaDireccion=!u.direccion;
+
   el.innerHTML=`<div style="display:flex;flex-direction:column;gap:12px;">
 
-    <!-- Avatar + nombre -->
+    <!-- Avatar -->
     <div style="background:linear-gradient(135deg,#14532d,#166534);border-radius:16px;padding:20px;color:#fff;display:flex;align-items:center;gap:14px;">
       <div style="width:54px;height:54px;border-radius:50%;background:rgba(255,255,255,.2);border:2px solid rgba(255,255,255,.4);display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0;">
         ${u.nombre?u.nombre[0].toUpperCase():"👤"}
@@ -862,7 +889,68 @@ function renderPerfil(){
       <div>
         <div style="font-family:'Syne',sans-serif;font-size:18px;font-weight:900;">${u.nombre}</div>
         <div style="font-size:12px;opacity:.8;margin-top:2px;">📱 ${u.telefono_completo||u.telefono||"—"}</div>
-        <div style="font-size:11px;opacity:.7;margin-top:2px;">Miembro GruPay</div>
+      </div>
+    </div>
+
+    <!-- ALERTA si falta dirección -->
+    ${faltaDireccion?`
+    <div style="background:#fef9c3;border:2px solid #fde68a;border-radius:14px;padding:14px;display:flex;gap:10px;align-items:flex-start;">
+      <span style="font-size:22px;">⚠️</span>
+      <div>
+        <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:900;color:#854d0e;margin-bottom:3px;">Completa tu dirección de entrega</div>
+        <div style="font-size:12px;color:#92400e;">Sin dirección no podemos coordinar tu pedido.</div>
+      </div>
+    </div>`:""}
+
+    <!-- Datos de entrega -->
+    <div style="background:#fff;border-radius:14px;padding:16px;box-shadow:0 2px 8px rgba(0,0,0,.06);" id="perfil-entrega-view">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+        <div style="font-family:'Syne',sans-serif;font-size:14px;font-weight:900;">📦 Datos de entrega</div>
+        <button onclick="mostrarEditarEntrega()" style="background:var(--gl);border:1.5px solid var(--gb);color:var(--gd);font-size:11px;font-weight:700;padding:5px 12px;border-radius:99px;cursor:pointer;">✏️ Editar</button>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <div style="display:flex;gap:10px;align-items:flex-start;">
+          <span style="font-size:16px;flex-shrink:0;">📍</span>
+          <div>
+            <div style="font-size:10px;font-weight:700;color:var(--mut);text-transform:uppercase;letter-spacing:.5px;">Dirección</div>
+            <div style="font-size:13px;font-weight:600;color:${faltaDireccion?"var(--r)":"var(--txt)"};">${u.direccion||"No ingresada aún"}</div>
+          </div>
+        </div>
+        <div style="display:flex;gap:10px;align-items:flex-start;">
+          <span style="font-size:16px;flex-shrink:0;">🚪</span>
+          <div>
+            <div style="font-size:10px;font-weight:700;color:var(--mut);text-transform:uppercase;letter-spacing:.5px;">Referencia</div>
+            <div style="font-size:13px;font-weight:600;">${u.referencia||"—"}</div>
+          </div>
+        </div>
+        <div style="display:flex;gap:10px;align-items:flex-start;">
+          <span style="font-size:16px;flex-shrink:0;">🕐</span>
+          <div>
+            <div style="font-size:10px;font-weight:700;color:var(--mut);text-transform:uppercase;letter-spacing:.5px;">Horario preferido</div>
+            <div style="font-size:13px;font-weight:600;">${u.horario||"—"}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Formulario editar (oculto) -->
+    <div id="perfil-entrega-edit" style="display:none;background:#fff;border-radius:14px;padding:16px;box-shadow:0 2px 8px rgba(0,0,0,.06);border:2px solid var(--gb);">
+      <div style="font-family:'Syne',sans-serif;font-size:14px;font-weight:900;margin-bottom:12px;">✏️ Editar datos de entrega</div>
+      <label class="form-label">📍 DIRECCIÓN EXACTA</label>
+      <input class="form-input" id="edit-direccion" placeholder="Ej: Jr. Los Cactus 340, Piso 2" value="${u.direccion||''}" style="margin-bottom:10px;">
+      <label class="form-label">🚪 REFERENCIA</label>
+      <input class="form-input" id="edit-referencia" placeholder="Ej: Puerta azul, portón negro" value="${u.referencia||''}" style="margin-bottom:10px;">
+      <label class="form-label">🕐 HORARIO PREFERIDO</label>
+      <select class="form-input" id="edit-horario" style="margin-bottom:14px;">
+        <option value="">Selecciona...</option>
+        <option value="Mañana (8am - 12pm)" ${u.horario==="Mañana (8am - 12pm)"?"selected":""}>🌅 Mañana (8am - 12pm)</option>
+        <option value="Mediodía (12pm - 3pm)" ${u.horario==="Mediodía (12pm - 3pm)"?"selected":""}>☀️ Mediodía (12pm - 3pm)</option>
+        <option value="Tarde (3pm - 7pm)" ${u.horario==="Tarde (3pm - 7pm)"?"selected":""}>🌆 Tarde (3pm - 7pm)</option>
+        <option value="Cualquier horario" ${u.horario==="Cualquier horario"?"selected":""}>✅ Cualquier horario</option>
+      </select>
+      <div style="display:flex;gap:8px;">
+        <button onclick="guardarEntrega()" class="btn-confirmar" style="flex:2;">💾 Guardar</button>
+        <button onclick="cancelarEditarEntrega()" style="flex:1;padding:13px;background:#fff;border:2px solid var(--bdr);border-radius:12px;font-size:13px;font-weight:700;cursor:pointer;">Cancelar</button>
       </div>
     </div>
 
@@ -897,12 +985,39 @@ function renderPerfil(){
       </div>
     </div>
 
-    <!-- Cerrar sesión -->
     <button onclick="cerrarSesion()" style="width:100%;padding:13px;background:#fff;border:2px solid #fecaca;border-radius:12px;color:#dc2626;font-size:14px;font-weight:700;cursor:pointer;">
       🚪 Cerrar sesión
     </button>
   </div>`;
 }
+
+window.mostrarEditarEntrega=function(){
+  document.getElementById("perfil-entrega-view").style.display="none";
+  document.getElementById("perfil-entrega-edit").style.display="block";
+};
+window.cancelarEditarEntrega=function(){
+  document.getElementById("perfil-entrega-view").style.display="block";
+  document.getElementById("perfil-entrega-edit").style.display="none";
+};
+window.guardarEntrega=async function(){
+  const direccion  = document.getElementById("edit-direccion").value.trim();
+  const referencia = document.getElementById("edit-referencia").value.trim();
+  const horario    = document.getElementById("edit-horario").value;
+  if(!direccion){toast("⚠ Ingresa tu dirección");return;}
+  const btn=document.querySelector("#perfil-entrega-edit .btn-confirmar");
+  btn.disabled=true; btn.textContent="Guardando...";
+  try{
+    const tel9=usuarioActual.telefono||usuarioActual.id;
+    await updateDoc(doc(db,"grupay_users",tel9),{direccion,referencia,horario});
+    usuarioActual={...usuarioActual,direccion,referencia,horario};
+    localStorage.setItem("gp_user",JSON.stringify(usuarioActual));
+    toast("✅ Datos de entrega actualizados");
+    renderPerfil();
+  }catch(e){
+    toast("❌ Error: "+e.message);
+    btn.disabled=false; btn.textContent="💾 Guardar";
+  }
+};
 
 window.cerrarSesion=function(){
   usuarioActual=null;
@@ -921,11 +1036,35 @@ window.crearCuenta=function(){
   window.open(`https://wa.me/51948115030?text=${msg}`,"_blank");
 };
 window.iniciarSesion=function(){ goScreen("login"); };
-window.abrirKarla=function(tipo){
+window.abrirKarla=async function(tipo){
   const msgs={soporte:"Hola Karla, necesito soporte con mi pedido GruPay.",registro:"Hola Karla, quiero registrarme en GruPay."};
+  // Registrar consulta en Firestore
+  if(tipo==="soporte"){
+    try{
+      await addDoc(collection(db,"grupay_soporte"),{
+        nombre: usuarioActual?.nombre || "Visitante",
+        tel:    usuarioActual?.telefono || "",
+        sector: usuarioActual?.sector || "",
+        fecha:  serverTimestamp(),
+        estado: "pendiente",
+        canal:  "whatsapp_karla"
+      });
+    }catch(e){ console.warn("soporte log:", e.message); }
+  }
   window.open(`https://wa.me/51948115030?text=${encodeURIComponent(msgs[tipo]||msgs.soporte)}`,"_blank");
 };
-window.abrirWA=function(){ window.open(`https://wa.me/51948115030`,"_blank"); };
+window.abrirWA=async function(){
+  try{
+    await addDoc(collection(db,"grupay_soporte"),{
+      nombre: usuarioActual?.nombre || "Visitante",
+      tel:    usuarioActual?.telefono || "",
+      fecha:  serverTimestamp(),
+      estado: "pendiente",
+      canal:  "whatsapp_directo"
+    });
+  }catch(e){}
+  window.open(`https://wa.me/51948115030`,"_blank");
+};
 
 /* CATEGORIAS */
 window.selCat=function(cat,btn){
