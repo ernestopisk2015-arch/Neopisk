@@ -602,27 +602,19 @@ window.agregarAlCarrito=function(gid){
   const g=grupos[gid]; if(!g) return;
   if(carrito.find(i=>i.id===gid)){ toast("⚠ Ya está en tu carrito"); return; }
 
-  // Verificar que el usuario se unió a un sector para este producto
+  // Si tiene sector activo → aplica descuento grupal; si no → precio normal, delivery según total
   const sectorInfo=window._sectoresActivos&&window._sectoresActivos[gid];
-  if(!sectorInfo){
-    toast("👥 Únete a un grupo primero para obtener el 10% OFF");
-    productoActual=g;
-    renderSectores();
-    goScreen("sectores");
-    return;
-  }
+  const tieneDescReal=sectorInfo?(g.has_discount!==false)&&(!sectorInfo.sinDescuento):false;
 
-  // El descuento depende de si el usuario está cerca del líder (no lejos por distancia)
-  const tieneDescReal=(g.has_discount!==false)&&(!sectorInfo.sinDescuento);
   carrito.push({
     id:gid, product_name:g.product_name, emoji:g.emoji||"📦",
     price_per_unit:g.price_per_unit||0, unit:g.unit||"kg",
     has_discount:tieneDescReal,
-    sector_name:sectorInfo.sectorName,
-    sector_id:sectorInfo.sectorId||"",
-    es_lider:sectorInfo.esLider||false,
-    sin_descuento:sectorInfo.sinDescuento||false,
-    distancia_lider:sectorInfo.distancia||0
+    sector_name:sectorInfo?.sectorName||"",
+    sector_id:sectorInfo?.sectorId||"",
+    es_lider:sectorInfo?.esLider||false,
+    sin_descuento:sectorInfo?.sinDescuento||false,
+    distancia_lider:sectorInfo?.distancia||0
   });
   guardarCarrito(); actualizarBadgeCarrito();
   toast("✅ "+g.product_name+" agregado al carrito");
@@ -633,6 +625,19 @@ window.quitarDelCarrito=function(gid){
   guardarCarrito(); actualizarBadgeCarrito(); renderCarrito();
 };
 
+// ── CÁLCULO DE DELIVERY ────────────────────────────────────────────────────
+function calcularDelivery(numItems){
+  // 1-2 items ≈ hasta 2kg | 3-5 ≈ 2-5kg | 6+ ≈ más de 5kg
+  // Distancia fija: hasta 6km (rango típico Lima)
+  // Tabla: [hasta2kg, 2-5kg, mas5kg] para distancia 3-6km
+  let peso;
+  if(numItems<=2) peso="ligero";
+  else if(numItems<=5) peso="medio";
+  else peso="pesado";
+  const tabla={ligero:12, medio:12, pesado:15};
+  return tabla[peso];
+}
+
 function renderCarrito(){
   const el=document.getElementById("carrito-body");
   if(!carrito.length){
@@ -640,8 +645,20 @@ function renderCarrito(){
     return;
   }
   const totalNormal=carrito.reduce((s,i)=>s+i.price_per_unit,0);
-  const totalGrupal=carrito.reduce((s,i)=>s+(i.has_discount?Math.round(i.price_per_unit*0.9*10)/10:i.price_per_unit),0);
+  const totalProductos=carrito.reduce((s,i)=>s+(i.has_discount?Math.round(i.price_per_unit*0.9*10)/10:i.price_per_unit),0);
   const hayDesc=carrito.some(i=>i.has_discount);
+  const estaEnGrupo=carrito.some(i=>i.sector_name);
+
+  // Lógica de delivery:
+  // - En grupo → gratis
+  // - Sin grupo pero total >= S/150 → gratis
+  // - Sin grupo y total < S/150 → cobro según tabla
+  const deliveryCosto=estaEnGrupo||totalProductos>=150?0:calcularDelivery(carrito.length);
+  const totalFinal=totalProductos+deliveryCosto;
+
+  // Badge de motivación si le falta poco para S/150
+  const faltaParaGratis=150-totalProductos;
+  const mostrarMotivacion=!estaEnGrupo&&faltaParaGratis>0&&faltaParaGratis<=60;
 
   el.innerHTML=`
     <div style="display:flex;flex-direction:column;gap:10px;">
@@ -651,16 +668,51 @@ function renderCarrito(){
           <div class="cart-item-em">${i.emoji}</div>
           <div class="cart-item-info">
             <div class="cart-item-nm">${i.product_name}</div>
-            <div class="cart-item-pr">S/${pG}/${i.unit} ${i.has_discount?`<span style="background:#dcfce7;color:var(--gd);font-size:9px;font-weight:800;padding:1px 5px;border-radius:99px;">10% OFF</span>`:""}</div>
+            <div class="cart-item-pr">S/${pG}/${i.unit}
+              ${i.has_discount?`<span style="background:#dcfce7;color:var(--gd);font-size:9px;font-weight:800;padding:1px 5px;border-radius:99px;">10% OFF</span>`:""}
+              ${i.sector_name?`<span style="background:#dbeafe;color:#1e40af;font-size:9px;font-weight:800;padding:1px 5px;border-radius:99px;">👥 ${i.sector_name}</span>`:""}
+            </div>
           </div>
           <button class="cart-item-del" onclick="quitarDelCarrito('${i.id}')">✕</button>
         </div>`;
       }).join("")}
 
+      <!-- MOTIVACIÓN: falta poco para delivery gratis -->
+      ${mostrarMotivacion?`
+      <div style="background:#fef9c3;border:2px solid #fde68a;border-radius:12px;padding:12px;display:flex;gap:10px;align-items:center;">
+        <span style="font-size:22px;">🎯</span>
+        <div>
+          <div style="font-family:'Syne',sans-serif;font-size:12px;font-weight:900;color:#854d0e;">¡Te faltan S/${faltaParaGratis.toFixed(1)} para delivery gratis!</div>
+          <div style="font-size:11px;color:#92400e;margin-top:2px;">Agrega más productos o <b onclick="goScreen('inicio')" style="cursor:pointer;text-decoration:underline;">invita a un vecino al grupo</b></div>
+        </div>
+      </div>`:""}
+
+      <!-- BANNER grupo = delivery gratis -->
+      ${estaEnGrupo?`
+      <div style="background:linear-gradient(135deg,#14532d,#166534);border-radius:12px;padding:12px;display:flex;gap:10px;align-items:center;color:#fff;">
+        <span style="font-size:22px;">🚚</span>
+        <div>
+          <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:900;">¡Delivery GRATIS por compra grupal!</div>
+          <div style="font-size:11px;opacity:.85;margin-top:2px;">Estás en un grupo → sin costo de envío 🎉</div>
+        </div>
+      </div>`:""}
+
+      <!-- BANNER S/150 = delivery gratis -->
+      ${!estaEnGrupo&&totalProductos>=150?`
+      <div style="background:linear-gradient(135deg,#14532d,#166534);border-radius:12px;padding:12px;display:flex;gap:10px;align-items:center;color:#fff;">
+        <span style="font-size:22px;">🚚</span>
+        <div>
+          <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:900;">¡Delivery GRATIS por compra mayor a S/150!</div>
+          <div style="font-size:11px;opacity:.85;margin-top:2px;">Tu pedido supera el mínimo → sin costo de envío 🎉</div>
+        </div>
+      </div>`:""}
+
       <div class="cart-total-box">
         ${hayDesc?`<div class="cart-total-row"><span>Precio sin descuento</span><span>S/${totalNormal.toFixed(1)}</span></div>
-        <div class="cart-total-row"><span>Ahorro grupal (10% OFF)</span><span>−S/${(totalNormal-totalGrupal).toFixed(1)}</span></div>`:""}
-        <div class="cart-total-final"><span>Total a pagar</span><span>S/${totalGrupal.toFixed(1)}</span></div>
+        <div class="cart-total-row"><span>Ahorro grupal (10% OFF)</span><span>−S/${(totalNormal-totalProductos).toFixed(1)}</span></div>`:""}
+        <div class="cart-total-row"><span>Subtotal productos</span><span>S/${totalProductos.toFixed(1)}</span></div>
+        <div class="cart-total-row"><span>🚚 Delivery</span><span>${deliveryCosto===0?`<span style="color:#86efac;font-weight:900;">GRATIS</span>`:`S/${deliveryCosto.toFixed(1)}`}</span></div>
+        <div class="cart-total-final"><span>Total a pagar</span><span>S/${totalFinal.toFixed(1)}</span></div>
       </div>
 
       <!-- SECTOR ÚNICO -->
@@ -683,7 +735,7 @@ function renderCarrito(){
       <!-- PAGO -->
       <div class="form-card">
         <div style="font-family:'Syne',sans-serif;font-size:14px;font-weight:900;margin-bottom:10px;">📸 Un solo comprobante de pago</div>
-        <div style="font-size:12px;color:var(--mut);margin-bottom:10px;">Paga S/${totalGrupal.toFixed(1)} por Yape/Plin y sube una captura para todos los productos.</div>
+        <div style="font-size:12px;color:var(--mut);margin-bottom:10px;">Paga S/${totalFinal.toFixed(1)} por Yape/Plin y sube una captura para todos los productos.</div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;">
           <div style="background:#f0fdf4;border:1.5px solid var(--gb);border-radius:10px;padding:10px;text-align:center;"><div style="font-size:20px;">💜</div><div style="font-size:11px;font-weight:700;color:var(--gd);">Yape / Plin</div><div style="font-size:10px;color:var(--mut);">992-228-824</div></div>
           <div style="background:#f0fdf4;border:1.5px solid var(--gb);border-radius:10px;padding:10px;text-align:center;"><div style="font-size:20px;">🍋</div><div style="font-size:11px;font-weight:700;color:var(--gd);">Lemon / Interbank</div><div style="font-size:10px;color:var(--mut);">Cuenta de ahorro</div></div>
@@ -738,8 +790,13 @@ window.confirmarCarrito=async function(){
       }
     }
 
-    // 2. Para cada producto del carrito: buscar/crear sector + agregar miembro + guardar pedido
-    const totalGrupal=carrito.reduce((s,i)=>s+(i.has_discount?Math.round(i.price_per_unit*0.9*10)/10:i.price_per_unit),0);
+    // 2. Calcular totales y delivery
+    const estaEnGrupo=carrito.some(i=>i.sector_name);
+    const totalProductos=carrito.reduce((s,i)=>s+(i.has_discount?Math.round(i.price_per_unit*0.9*10)/10:i.price_per_unit),0);
+    const deliveryCosto=estaEnGrupo||totalProductos>=150?0:calcularDelivery(carrito.length);
+    const totalFinal=totalProductos+deliveryCosto;
+
+    // 3. Para cada producto del carrito: buscar/crear sector + agregar miembro + guardar pedido
     for(const item of carrito){
       const sectorInfo=(window._sectoresActivos&&window._sectoresActivos[item.id])||{};
       const itemSectorName=item.sector_name||sector;
@@ -771,7 +828,12 @@ window.confirmarCarrito=async function(){
         producto_id:item.id, producto_nombre:item.product_name, producto_emoji:item.emoji,
         precio_normal:item.price_per_unit, sector_id:sectorId,
         payment_status:"uploaded", payment_screenshot_url:shotUrl,
-        monto:totalGrupal.toFixed(1), carrito:true, fecha:serverTimestamp(),
+        monto:totalFinal.toFixed(1),
+        subtotal_productos:totalProductos.toFixed(1),
+        delivery_costo:deliveryCosto,
+        delivery_gratis:deliveryCosto===0,
+        delivery_motivo:deliveryCosto===0?(estaEnGrupo?"grupo":"monto_mayor_150"):"cobrado",
+        carrito:true, fecha:serverTimestamp(),
         direccion: usuarioActual?.direccion||"",
         referencia: usuarioActual?.referencia||"",
         horario: usuarioActual?.horario||"",
@@ -785,12 +847,25 @@ window.confirmarCarrito=async function(){
     }
     localStorage.setItem("gp_hist",JSON.stringify(historial));
 
-    // 3. Notificar admin
+    // 4. Notificar admin
     const lista=carrito.map(i=>`${i.emoji} ${i.product_name}`).join(", ");
-    const adminMsg=encodeURIComponent(`🛒 *CARRITO GruPay*\n👤 ${nombre} (${tel})\n📍 Sector: ${sector}\n📦 Productos: ${lista}\n💰 Total: S/${totalGrupal.toFixed(1)}\n📸 Comprobante: ${shotUrl?"Adjunto ✅":"Sin comprobante ⚠"}\n🔗 Ver en admin: https://admin.neopisk.lat`);
+    const deliveryLinea=deliveryCosto===0
+      ?`🚚 Delivery: GRATIS ${estaEnGrupo?"(compra grupal)":"(monto ≥ S/150)"}`
+      :`🚚 Delivery: S/${deliveryCosto.toFixed(1)}`;
+    const adminMsg=encodeURIComponent(
+      `🛒 *CARRITO GruPay*\n`+
+      `👤 ${nombre} (${tel})\n`+
+      `📍 Sector: ${sector}\n`+
+      `📦 Productos: ${lista}\n`+
+      `💰 Subtotal: S/${totalProductos.toFixed(1)}\n`+
+      `${deliveryLinea}\n`+
+      `✅ *Total: S/${totalFinal.toFixed(1)}*\n`+
+      `📸 Comprobante: ${shotUrl?"Adjunto ✅":"Sin comprobante ⚠"}\n`+
+      `🔗 Ver en admin: https://admin.neopisk.lat`
+    );
     window.open(`https://wa.me/51992228824?text=${adminMsg}`,"_blank");
 
-    // 4. Limpiar carrito y sectores activos
+    // 5. Limpiar carrito y sectores activos
     carrito=[];
     window._sectoresActivos={};
     guardarSectoresActivos();
