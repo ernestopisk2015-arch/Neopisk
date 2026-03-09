@@ -1219,8 +1219,34 @@ async function cargarSectores(gid){
   }catch(e){ el.innerHTML=`<div class="empty"><span>⚠️</span><p>Error cargando sectores</p></div>`; }
 }
 
-window.seleccionarSector=function(sectorName){
+window.seleccionarSector=async function(sectorName){
   document.getElementById("c-sector").value=sectorName;
+  window._nuevoSectorCoords={esLider:false};
+
+  // Buscar datos del sector para obtener coords del líder
+  if(productoActual&&usuarioActual?.direccion){
+    try{
+      const snap=await getDocs(collection(db,"grupay_groups",productoActual.id,"sectors"));
+      let sectorData=null;
+      snap.forEach(d=>{ if((d.data().sector_name||d.id)===sectorName) sectorData=d.data(); });
+      if(sectorData?.lider_lat){
+        toast("📍 Verificando cercanía...");
+        const dist=await verificarCercaniaLider(sectorData);
+        if(dist!==null){
+          window._distanciaLider=dist;
+          window._nuevoSectorCoords.liderNombre=sectorData.lider_nombre||"el líder";
+          if(dist>1000){
+            // Mostrar aviso de distancia antes de ir al checkout
+            const ok=confirm(`⚠️ Estás a ${dist>1000?(dist/1000).toFixed(1)+"km":dist+"m"} del líder del grupo (${sectorData.lider_nombre||"el líder"}).\n\nÉl recibirá el pedido y te lo entregará. Si estás de acuerdo, continúa.\n\n¿Continuar sin descuento del 10%?`);
+            if(!ok) return;
+            window._sinDescuentoDistancia=true;
+          } else {
+            window._sinDescuentoDistancia=false;
+          }
+        }
+      }
+    }catch(e){ console.warn("sector check:",e); }
+  }
   renderResumen(); goScreen("checkout");
 };
 
@@ -1235,9 +1261,49 @@ window.mostrarFormNuevoSector=function(){
   document.getElementById("nuevo-sector-input").focus();
 };
 
-window.crearNuevoSector=function(){
+// ── GEOCODIFICACIÓN Y DISTANCIA ──────────────────────────────────────────────
+async function geocodificarDireccion(direccion){
+  try{
+    const q=encodeURIComponent(direccion+", Lima, Perú");
+    const r=await fetch(`https://nominatim.openstreetmap.org/search?q=${q}&format=json&limit=1`,{
+      headers:{"Accept-Language":"es","User-Agent":"GruPay/1.0"}
+    });
+    const data=await r.json();
+    if(data&&data[0]) return {lat:parseFloat(data[0].lat),lng:parseFloat(data[0].lon)};
+  }catch(e){ console.warn("Geocoding error:",e); }
+  return null;
+}
+
+function calcularDistanciaMetros(lat1,lng1,lat2,lng2){
+  const R=6371000;
+  const dLat=(lat2-lat1)*Math.PI/180;
+  const dLng=(lng2-lng1)*Math.PI/180;
+  const a=Math.sin(dLat/2)**2+Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLng/2)**2;
+  return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));
+}
+
+async function verificarCercaniaLider(sectorData){
+  // Si no hay coords del líder o no hay dirección del usuario, skip
+  if(!sectorData?.lider_lat||!sectorData?.lider_lng) return null;
+  if(!usuarioActual?.direccion) return null;
+  const coords=await geocodificarDireccion(usuarioActual.direccion);
+  if(!coords) return null;
+  const dist=calcularDistanciaMetros(coords.lat,coords.lng,sectorData.lider_lat,sectorData.lider_lng);
+  return Math.round(dist);
+}
+
+window.crearNuevoSector=async function(){
   const nombre=document.getElementById("nuevo-sector-input").value.trim();
   if(!nombre){ toast("⚠ Escribe el nombre de tu sector"); return; }
+  const btn=document.querySelector("#form-nuevo-sector .btn-confirmar");
+  if(btn){ btn.disabled=true; btn.textContent="Verificando ubicación..."; }
+  // Guardar coords del líder en el sector (Firestore se actualiza en confirmarPedido)
+  let liderLat=null, liderLng=null;
+  if(usuarioActual?.direccion){
+    const coords=await geocodificarDireccion(usuarioActual.direccion);
+    if(coords){ liderLat=coords.lat; liderLng=coords.lng; }
+  }
+  window._nuevoSectorCoords={liderLat,liderLng,esLider:true};
   document.getElementById("c-sector").value=nombre;
   renderResumen(); goScreen("checkout");
 };
@@ -1247,12 +1313,27 @@ function renderResumen(){
   const tieneDesc=productoActual.has_discount!==false;
   const pN=productoActual.price_per_unit||0;
   const pG=tieneDesc?Math.round(pN*0.9*10)/10:pN;
+  const lejos=window._sinDescuentoDistancia===true;
+  const dist=window._distanciaLider;
+  const esLider=window._nuevoSectorCoords?.esLider;
+
   document.getElementById("resumen-items").innerHTML=`
     <div class="resumen-item"><span>${productoActual.emoji} ${productoActual.product_name}</span><span>S/${pN}/${productoActual.unit||"kg"}</span></div>
-    <div class="resumen-item"><span>Precio grupal (5 vecinos)</span><span style="color:var(--g)">S/${pG}/${productoActual.unit||"kg"}</span></div>`;
+    ${tieneDesc&&!lejos?`<div class="resumen-item"><span>Precio grupal (5 vecinos)</span><span style="color:var(--g)">S/${pG}/${productoActual.unit||"kg"}</span></div>`:""}
+    ${lejos?`<div class="resumen-item"><span style="color:#d97706;">⚠ Lejos del líder (${dist>1000?(dist/1000).toFixed(1)+"km":dist+"m"})</span><span style="color:#d97706;">Precio normal</span></div>`:""}`;
+
   const descBox=document.getElementById("desc-info-box");
-  if(tieneDesc){
-    descBox.innerHTML=`<div class="desc-box"><div class="desc-box-t">🎉 Con 5 vecinos del mismo sector → S/${pG}/${productoActual.unit||"kg"}</div><div class="desc-box-s">Comparte con tus vecinos para activar el 10% OFF</div></div>`;
+  if(lejos){
+    descBox.innerHTML=`<div style="background:#fef9c3;border:1.5px solid #fde68a;border-radius:12px;padding:12px;">
+      <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:900;color:#854d0e;margin-bottom:4px;">⚠️ Estás fuera del radio del grupo</div>
+      <div style="font-size:12px;color:#92400e;">Estás a ${dist>1000?(dist/1000).toFixed(1)+"km":dist+"m"} del líder. Pagas precio normal S/${pN}/${productoActual.unit||"kg"}. El líder coordinará la entrega contigo.</div>
+    </div>`;
+  } else if(tieneDesc){
+    const txt=esLider?"🎉 Eres el líder del grupo — recibirás el pedido y lo repartes a tus vecinos":"🎉 Con 5 vecinos del mismo sector → S/${pG}/${productoActual.unit||\"kg\"}";
+    descBox.innerHTML=`<div class="desc-box">
+      <div class="desc-box-t">${esLider?`👑 Eres el líder del grupo`:`🎉 Con 5 vecinos → S/${pG}/${productoActual.unit||"kg"}`}</div>
+      <div class="desc-box-s">${esLider?"Recibirás el pedido completo y coordinas la entrega a tus vecinos":"Comparte con tus vecinos para activar el 10% OFF"}</div>
+    </div>`;
   } else descBox.innerHTML="";
 }
 
@@ -1397,19 +1478,30 @@ window.confirmarPedido=async function(){
     let sectorDoc=null;
     snap.forEach(d=>{ if((d.data().sector_name||"").toLowerCase()===sector.toLowerCase()) sectorDoc={id:d.id,...d.data()}; });
     let sectorId;
+    const coords=window._nuevoSectorCoords||{};
     if(sectorDoc){
       sectorId=sectorDoc.id;
       await updateDoc(doc(db,"grupay_groups",productoActual.id,"sectors",sectorId),{
         member_count:increment(1), status:(sectorDoc.member_count||0)+1>=5?"active":"open"
       });
     } else {
-      const nd=await addDoc(sectoresRef,{sector_name:sector,member_count:1,status:"open",created_at:serverTimestamp()});
+      // Crear sector nuevo — guardar coords del líder
+      const sectorData={sector_name:sector,member_count:1,status:"open",created_at:serverTimestamp(),
+        lider_nombre:nombre, lider_tel:tel};
+      if(coords.liderLat){ sectorData.lider_lat=coords.liderLat; sectorData.lider_lng=coords.liderLng; }
+      const nd=await addDoc(sectoresRef,sectorData);
       sectorId=nd.id;
     }
 
+    const esLider=coords.esLider||false;
+    const sinDescuento=window._sinDescuentoDistancia===true;
+    const distancia=window._distanciaLider||null;
+
     // 3. Agregar miembro al sector
     await addDoc(collection(db,"grupay_groups",productoActual.id,"sectors",sectorId,"members"),{
-      nombre,tel,sector,payment_status:"uploaded",payment_screenshot_url:shotUrl,joined_at:serverTimestamp()
+      nombre,tel,sector,payment_status:"uploaded",payment_screenshot_url:shotUrl,
+      es_lider:esLider, sin_descuento:sinDescuento,
+      distancia_lider:distancia, joined_at:serverTimestamp()
     });
 
     // 4. Guardar pedido en grupay_pedidos (para el admin)
@@ -1423,6 +1515,9 @@ window.confirmarPedido=async function(){
       payment_status:"uploaded",
       payment_screenshot_url:shotUrl,
       monto:monto||"",
+      es_lider:esLider,
+      sin_descuento:sinDescuento,
+      distancia_lider:distancia,
       fecha:serverTimestamp()
     });
 
