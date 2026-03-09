@@ -566,6 +566,10 @@ let grupos={}, historial=[], productoActual=null, catActual='todas', fileData=nu
 let carrito=[];
 try{ historial=JSON.parse(localStorage.getItem("gp_hist")||"[]"); }catch(e){}
 try{ carrito=JSON.parse(localStorage.getItem("gp_cart")||"[]"); }catch(e){}
+// Sectores activos: {[productoId]: {sectorName, sectorId, esLider, sinDescuento, distancia}}
+window._sectoresActivos={};
+try{ window._sectoresActivos=JSON.parse(localStorage.getItem("gp_sectores")||"{}"); }catch(e){}
+function guardarSectoresActivos(){ localStorage.setItem("gp_sectores",JSON.stringify(window._sectoresActivos||{})); }
 
 function guardarCarrito(){ localStorage.setItem("gp_cart",JSON.stringify(carrito)); }
 function actualizarBadgeCarrito(){
@@ -597,8 +601,34 @@ window.agregarAlCarrito=function(gid){
   if(!usuarioActual){ toast("⚠ Inicia sesión para agregar al carrito"); goScreen('login'); return; }
   const g=grupos[gid]; if(!g) return;
   if(carrito.find(i=>i.id===gid)){ toast("⚠ Ya está en tu carrito"); return; }
-  carrito.push({id:gid, product_name:g.product_name, emoji:g.emoji||"📦",
-    price_per_unit:g.price_per_unit||0, unit:g.unit||"kg", has_discount:g.has_discount!==false});
+
+  // Verificar que el usuario se unió a un sector para este producto
+  const sectorInfo=window._sectoresActivos&&window._sectoresActivos[gid];
+  if(!sectorInfo){
+    toast("⚠ Primero únete a un grupo para este producto");
+    // Abrir la vista de grupos de este producto
+    productoActual=g;
+    document.getElementById("det-title").textContent=g.product_name;
+    document.getElementById("det-emoji").textContent=g.emoji||"📦";
+    document.getElementById("det-price").textContent="S/"+g.price_per_unit;
+    document.getElementById("det-unit").textContent="/"+g.unit;
+    renderSectores();
+    goScreen("detalle");
+    return;
+  }
+
+  // El descuento depende de si el usuario está cerca del líder (no lejos por distancia)
+  const tieneDescReal=(g.has_discount!==false)&&(!sectorInfo.sinDescuento);
+  carrito.push({
+    id:gid, product_name:g.product_name, emoji:g.emoji||"📦",
+    price_per_unit:g.price_per_unit||0, unit:g.unit||"kg",
+    has_discount:tieneDescReal,
+    sector_name:sectorInfo.sectorName,
+    sector_id:sectorInfo.sectorId||"",
+    es_lider:sectorInfo.esLider||false,
+    sin_descuento:sectorInfo.sinDescuento||false,
+    distancia_lider:sectorInfo.distancia||0
+  });
   guardarCarrito(); actualizarBadgeCarrito();
   toast("✅ "+g.product_name+" agregado al carrito");
 };
@@ -716,10 +746,16 @@ window.confirmarCarrito=async function(){
     // 2. Para cada producto del carrito: buscar/crear sector + agregar miembro + guardar pedido
     const totalGrupal=carrito.reduce((s,i)=>s+(i.has_discount?Math.round(i.price_per_unit*0.9*10)/10:i.price_per_unit),0);
     for(const item of carrito){
+      const sectorInfo=(window._sectoresActivos&&window._sectoresActivos[item.id])||{};
+      const itemSectorName=item.sector_name||sector;
+      const esLiderItem=item.es_lider||false;
+      const sinDescItem=item.sin_descuento||false;
+      const distItem=item.distancia_lider||0;
+
       const sectoresRef=collection(db,"grupay_groups",item.id,"sectors");
       const snap=await getDocs(sectoresRef);
       let sectorDoc=null;
-      snap.forEach(d=>{ if((d.data().sector_name||"").toLowerCase()===sector.toLowerCase()) sectorDoc={id:d.id,...d.data()}; });
+      snap.forEach(d=>{ if((d.data().sector_name||"").toLowerCase()===itemSectorName.toLowerCase()) sectorDoc={id:d.id,...d.data()}; });
       let sectorId;
       if(sectorDoc){
         sectorId=sectorDoc.id;
@@ -727,22 +763,24 @@ window.confirmarCarrito=async function(){
           member_count:increment(1), status:(sectorDoc.member_count||0)+1>=5?"active":"open"
         });
       } else {
-        const nd=await addDoc(sectoresRef,{sector_name:sector,member_count:1,status:"open",created_at:serverTimestamp()});
+        const nd=await addDoc(sectoresRef,{sector_name:itemSectorName,member_count:1,status:"open",created_at:serverTimestamp()});
         sectorId=nd.id;
       }
       await addDoc(collection(db,"grupay_groups",item.id,"sectors",sectorId,"members"),{
-        nombre,tel,sector,payment_status:"uploaded",payment_screenshot_url:shotUrl,joined_at:serverTimestamp()
+        nombre,tel,sector:itemSectorName,payment_status:"uploaded",payment_screenshot_url:shotUrl,
+        es_lider:esLiderItem, sin_descuento:sinDescItem, distancia_lider:distItem,
+        joined_at:serverTimestamp()
       });
       const pedidoRef=await addDoc(collection(db,"grupay_pedidos"),{
-        nombre,tel,sector,
+        nombre,tel,sector:itemSectorName,
         producto_id:item.id, producto_nombre:item.product_name, producto_emoji:item.emoji,
         precio_normal:item.price_per_unit, sector_id:sectorId,
         payment_status:"uploaded", payment_screenshot_url:shotUrl,
         monto:totalGrupal.toFixed(1), carrito:true, fecha:serverTimestamp(),
-        // Datos de entrega del perfil
         direccion: usuarioActual?.direccion||"",
         referencia: usuarioActual?.referencia||"",
-        horario: usuarioActual?.horario||""
+        horario: usuarioActual?.horario||"",
+        es_lider:esLiderItem, sin_descuento:sinDescItem, distancia_lider:distItem
       });
       historial.unshift({
         id:pedidoRef.id, groupId:item.id, product_name:item.product_name, emoji:item.emoji,
@@ -757,8 +795,10 @@ window.confirmarCarrito=async function(){
     const adminMsg=encodeURIComponent(`🛒 *CARRITO GruPay*\n👤 ${nombre} (${tel})\n📍 Sector: ${sector}\n📦 Productos: ${lista}\n💰 Total: S/${totalGrupal.toFixed(1)}\n📸 Comprobante: ${shotUrl?"Adjunto ✅":"Sin comprobante ⚠"}\n🔗 Ver en admin: https://admin.neopisk.lat`);
     window.open(`https://wa.me/51992228824?text=${adminMsg}`,"_blank");
 
-    // 4. Limpiar carrito
+    // 4. Limpiar carrito y sectores activos
     carrito=[];
+    window._sectoresActivos={};
+    guardarSectoresActivos();
     guardarCarrito(); actualizarBadgeCarrito(); fileData=null;
     toast("🎉 ¡Pedido confirmado! "+historial.length+" producto(s)");
     setTimeout(()=>goScreen("pedidos"),1500);
@@ -1135,6 +1175,10 @@ function cardHTML(g){
   const imgSrc=IMGS[g.id];
   const imgEl=imgSrc?`<img class="pc-img" src="${imgSrc}" alt="${g.product_name}" loading="lazy">`:`<div class="pc-img-em">${g.emoji||"📦"}</div>`;
   const yaEnCarrito=carrito.find(i=>i.id===g.id);
+  const tieneSector=window._sectoresActivos&&window._sectoresActivos[g.id];
+  const lblAgregar=yaEnCarrito?'✅ En carrito':tieneSector?'🛒 Agregar':'👥 Únete primero';
+  const bgAgregar=yaEnCarrito?'#bbf7d0':tieneSector?'linear-gradient(135deg,var(--gd),var(--g))':'#e5e7eb';
+  const colorAgregar=yaEnCarrito?'var(--gd)':tieneSector?'#fff':'#6b7280';
   return `<div class="pc">
     ${tieneDesc?`<div class="ribbon-desc">10% OFF</div>`:""}
     ${imgEl}
@@ -1151,13 +1195,13 @@ function cardHTML(g){
       <button onclick="abrirSectores('${g.id}')"
         style="flex:1;padding:7px 4px;border:2px solid var(--gb);border-radius:8px;
         background:var(--gl);color:var(--gd);font-size:10px;font-weight:700;cursor:pointer;">
-        👥 Ver grupos
+        👥 ${tieneSector?'Mi grupo':'Ver grupos'}
       </button>
       <button onclick="event.stopPropagation();agregarAlCarrito('${g.id}')"
         style="flex:1;padding:7px 4px;border:none;border-radius:8px;
-        background:${yaEnCarrito?'#bbf7d0':'linear-gradient(135deg,var(--gd),var(--g))'};
-        color:${yaEnCarrito?'var(--gd)':'#fff'};font-size:10px;font-weight:700;cursor:pointer;">
-        ${yaEnCarrito?'✅ En carrito':'🛒 Agregar'}
+        background:${bgAgregar};
+        color:${colorAgregar};font-size:10px;font-weight:700;cursor:pointer;">
+        ${lblAgregar}
       </button>
     </div>
   </div>`;
@@ -1222,31 +1266,43 @@ async function cargarSectores(gid){
 window.seleccionarSector=async function(sectorName){
   document.getElementById("c-sector").value=sectorName;
   window._nuevoSectorCoords={esLider:false};
+  window._sinDescuentoDistancia=false;
+
+  let sectorId="", sinDescuento=false, distancia=0;
 
   // Buscar datos del sector para obtener coords del líder
   if(productoActual&&usuarioActual?.direccion){
     try{
       const snap=await getDocs(collection(db,"grupay_groups",productoActual.id,"sectors"));
-      let sectorData=null;
-      snap.forEach(d=>{ if((d.data().sector_name||d.id)===sectorName) sectorData=d.data(); });
+      let sectorData=null; let sectorDocId="";
+      snap.forEach(d=>{ if((d.data().sector_name||d.id)===sectorName){ sectorData=d.data(); sectorDocId=d.id; } });
+      sectorId=sectorDocId;
       if(sectorData?.lider_lat){
         toast("📍 Verificando cercanía...");
         const dist=await verificarCercaniaLider(sectorData);
         if(dist!==null){
+          distancia=dist;
           window._distanciaLider=dist;
           window._nuevoSectorCoords.liderNombre=sectorData.lider_nombre||"el líder";
           if(dist>1000){
-            // Mostrar aviso de distancia antes de ir al checkout
-            const ok=confirm(`⚠️ Estás a ${dist>1000?(dist/1000).toFixed(1)+"km":dist+"m"} del líder del grupo (${sectorData.lider_nombre||"el líder"}).\n\nÉl recibirá el pedido y te lo entregará. Si estás de acuerdo, continúa.\n\n¿Continuar sin descuento del 10%?`);
+            const ok=confirm(`⚠️ Estás a ${(dist/1000).toFixed(1)}km del líder del grupo (${sectorData.lider_nombre||"el líder"}).\n\nÉl recibirá el pedido y te lo entregará. Si estás de acuerdo, continúa.\n\n¿Continuar sin descuento del 10%?`);
             if(!ok) return;
+            sinDescuento=true;
             window._sinDescuentoDistancia=true;
-          } else {
-            window._sinDescuentoDistancia=false;
           }
         }
       }
     }catch(e){ console.warn("sector check:",e); }
   }
+
+  // Guardar sector activo para este producto (permite agregar al carrito con descuento correcto)
+  if(productoActual){
+    window._sectoresActivos[productoActual.id]={
+      sectorName, sectorId, esLider:false, sinDescuento, distancia
+    };
+    guardarSectoresActivos();
+  }
+
   renderResumen(); goScreen("checkout");
 };
 
@@ -1305,6 +1361,15 @@ window.crearNuevoSector=async function(){
   }
   window._nuevoSectorCoords={liderLat,liderLng,esLider:true};
   document.getElementById("c-sector").value=nombre;
+
+  // Guardar sector activo para este producto (es líder, siempre tiene descuento)
+  if(productoActual){
+    window._sectoresActivos[productoActual.id]={
+      sectorName:nombre, sectorId:"", esLider:true, sinDescuento:false, distancia:0
+    };
+    guardarSectoresActivos();
+  }
+
   renderResumen(); goScreen("checkout");
 };
 
