@@ -605,15 +605,10 @@ window.agregarAlCarrito=function(gid){
   // Verificar que el usuario se unió a un sector para este producto
   const sectorInfo=window._sectoresActivos&&window._sectoresActivos[gid];
   if(!sectorInfo){
-    toast("⚠ Primero únete a un grupo para este producto");
-    // Abrir la vista de grupos de este producto
+    toast("👥 Únete a un grupo primero para obtener el 10% OFF");
     productoActual=g;
-    document.getElementById("det-title").textContent=g.product_name;
-    document.getElementById("det-emoji").textContent=g.emoji||"📦";
-    document.getElementById("det-price").textContent="S/"+g.price_per_unit;
-    document.getElementById("det-unit").textContent="/"+g.unit;
     renderSectores();
-    goScreen("detalle");
+    goScreen("sectores");
     return;
   }
 
@@ -1176,9 +1171,7 @@ function cardHTML(g){
   const imgEl=imgSrc?`<img class="pc-img" src="${imgSrc}" alt="${g.product_name}" loading="lazy">`:`<div class="pc-img-em">${g.emoji||"📦"}</div>`;
   const yaEnCarrito=carrito.find(i=>i.id===g.id);
   const tieneSector=window._sectoresActivos&&window._sectoresActivos[g.id];
-  const lblAgregar=yaEnCarrito?'✅ En carrito':tieneSector?'🛒 Agregar':'👥 Únete primero';
-  const bgAgregar=yaEnCarrito?'#bbf7d0':tieneSector?'linear-gradient(135deg,var(--gd),var(--g))':'#e5e7eb';
-  const colorAgregar=yaEnCarrito?'var(--gd)':tieneSector?'#fff':'#6b7280';
+
   return `<div class="pc">
     ${tieneDesc?`<div class="ribbon-desc">10% OFF</div>`:""}
     ${imgEl}
@@ -1199,9 +1192,9 @@ function cardHTML(g){
       </button>
       <button onclick="event.stopPropagation();agregarAlCarrito('${g.id}')"
         style="flex:1;padding:7px 4px;border:none;border-radius:8px;
-        background:${bgAgregar};
-        color:${colorAgregar};font-size:10px;font-weight:700;cursor:pointer;">
-        ${lblAgregar}
+        background:${yaEnCarrito?'#bbf7d0':'linear-gradient(135deg,var(--gd),var(--g))'};
+        color:${yaEnCarrito?'var(--gd)':'#fff'};font-size:10px;font-weight:700;cursor:pointer;">
+        ${yaEnCarrito?'✅ En carrito':'🛒 Agregar'}
       </button>
     </div>
   </div>`;
