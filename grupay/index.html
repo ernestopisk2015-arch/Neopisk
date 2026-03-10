@@ -6,6 +6,7 @@
 <title>GruPay · Compra Grupal Lima</title>
 <meta name="description" content="Únete a vecinos de Lima, compra en grupo y ahorra hasta 40%. Paga con Yape, recibe mañana.">
 <meta name="theme-color" content="#16a34a">
+<link rel="manifest" href="/grupay/manifest.json">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <script>
@@ -391,7 +392,7 @@ footer{background:var(--ink);color:#fff;padding:24px 16px;text-align:center;}
 .wa-float{position:fixed;bottom:24px;right:18px;z-index:50;width:54px;height:54px;background:#25d366;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 24px rgba(37,211,102,.4);text-decoration:none;}
 
 .btn-instalar{display:flex;align-items:center;gap:6px;padding:8px 14px;background:var(--green);color:#fff;border:none;border-radius:10px;font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:11px;cursor:pointer;white-space:nowrap;box-shadow:0 2px 8px rgba(22,163,74,.3);}
-#pwa-btn{display:none;}
+#pwa-btn{display:flex;}
 #pwa-banner{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:150;background:var(--ink);color:#fff;padding:13px 16px;border-radius:18px;display:flex;align-items:center;gap:12px;box-shadow:0 8px 32px rgba(0,0,0,.35);max-width:340px;width:calc(100vw - 36px);animation:slideUp .5s cubic-bezier(.22,1,.36,1);}
 @keyframes slideUp{from{opacity:0;transform:translateX(-50%) translateY(24px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
 .pwa-ic{width:46px;height:46px;background:var(--green);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;}
@@ -400,6 +401,9 @@ footer{background:var(--ink);color:#fff;padding:24px 16px;text-align:center;}
 .pwa-s{font-size:10px;opacity:.7;margin-top:1px;}
 .pwa-install{background:#fff;color:var(--ink);border:none;padding:8px 14px;border-radius:10px;font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:12px;cursor:pointer;white-space:nowrap;}
 .pwa-close{background:rgba(255,255,255,.15);color:#fff;border:none;width:26px;height:26px;border-radius:7px;font-size:12px;cursor:pointer;flex-shrink:0;font-weight:700;}
+
+.hero-cta-apk{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.15);color:#fff;border:2px solid rgba(255,255,255,.4);border-radius:14px;padding:13px 24px;font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:13px;cursor:pointer;text-decoration:none;transition:background .2s;}
+.hero-cta-apk:hover{background:rgba(255,255,255,.25);}
 </style>
 </head>
 <body>
@@ -428,7 +432,13 @@ footer{background:var(--ink);color:#fff;padding:24px 16px;text-align:center;}
     </div>
     <div class="hs"><div class="hs-n">24h</div><div class="hs-l">entrega</div></div>
   </div>
-  <button class="hero-cta" onclick="document.getElementById('grilla').scrollIntoView({behavior:'smooth'})">Ver grupos disponibles &#x2193;</button>
+  <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:4px;">
+    <button class="hero-cta" onclick="document.getElementById('grilla').scrollIntoView({behavior:'smooth'})">🛒 Ver grupos disponibles ↓</button>
+    <a class="hero-cta-apk" href="/grupay/GruPay.apk" download="GruPay.apk">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 16l-5-5h3V4h4v7h3l-5 5zm-7 2h14v2H5v-2z"/></svg>
+      Descargar App Android
+    </a>
+  </div>
 </div>
 <div class="como">
   <div class="section-title">&#x00BF;C&#243;mo funciona? Es simple.</div>
