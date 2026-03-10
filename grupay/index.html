@@ -13,12 +13,43 @@
 var _dPrompt=null;
 window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();_dPrompt=e;var b=document.getElementById('pwa-btn');if(b)b.style.display='flex';});
 window.triggerInstall=function(){
-  if(_dPrompt){_dPrompt.prompt();_dPrompt.userChoice.then(function(){_dPrompt=null;ocultarPWA();});return;}
-  var isIOS=/iphone|ipad|ipod/i.test(navigator.userAgent),isAndroid=/android/i.test(navigator.userAgent),body='';
-  if(isIOS)body='<div style="font-size:42px;margin-bottom:10px">📱</div><b style="font-size:15px">iPhone/iPad</b><div style="background:#f4f6f9;border-radius:12px;padding:14px;text-align:left;font-size:13px;line-height:2.6;margin-top:12px"><div>1️⃣ Toca <b style="background:#e2e8f0;padding:2px 8px;border-radius:5px">⬆ Compartir</b> en Safari</div><div>2️⃣ Toca <b>"Agregar a inicio"</b></div><div>3️⃣ Toca <b>"Agregar"</b> ✅</div></div>';
-  else if(isAndroid)body='<div style="font-size:42px;margin-bottom:10px">🤖</div><b style="font-size:15px">Android Chrome</b><div style="background:#f4f6f9;border-radius:12px;padding:14px;text-align:left;font-size:13px;line-height:2.6;margin-top:12px"><div>1️⃣ Toca menú <b style="background:#e2e8f0;padding:2px 8px;border-radius:5px">⋮</b> arriba</div><div>2️⃣ Toca <b>"Añadir a inicio"</b></div><div>3️⃣ Toca <b>"Añadir"</b> ✅</div></div>';
-  else body='<div style="font-size:42px;margin-bottom:10px">💻</div><b>Chrome Escritorio</b><div style="margin-top:12px;font-size:13px">Busca el ícono <b>⊕</b> en la barra de dirección o menú ⋮ → Instalar GruPay</div>';
-  document.getElementById('modal-instalar-body').innerHTML='<div style="text-align:center;padding:8px 0">'+body+'</div>';
+  var isIOS=/iphone|ipad|ipod/i.test(navigator.userAgent);
+  var isAndroid=/android/i.test(navigator.userAgent);
+
+  // Android: si hay prompt nativo úsalo, sino descarga APK directo
+  if(isAndroid){
+    if(_dPrompt){_dPrompt.prompt();_dPrompt.userChoice.then(function(){_dPrompt=null;ocultarPWA();});return;}
+    window.location.href='https://ernestopisk2015-arch.github.io/Neopisk/grupay/GruPay.apk';
+    return;
+  }
+
+  // iPhone/iPad en Safari: mostrar instrucciones PWA
+  if(isIOS){
+    document.getElementById('modal-instalar-body').innerHTML=
+      '<div style="text-align:center;padding:8px 0">'+
+      '<div style="font-size:52px;margin-bottom:10px">🍎</div>'+
+      '<b style="font-family:Bebas Neue,sans-serif;font-size:18px;letter-spacing:1px">iPhone / iPad</b>'+
+      '<div style="background:#f0fdf4;border:2px solid #bbf7d0;border-radius:12px;padding:16px;text-align:left;font-size:13px;line-height:2.8;margin-top:14px;color:#111">'+
+      '<div>1️⃣ Abre esta página en <b>Safari</b></div>'+
+      '<div>2️⃣ Toca <b style="background:#e2e8f0;padding:2px 9px;border-radius:6px">⬆ Compartir</b> abajo</div>'+
+      '<div>3️⃣ Toca <b>"Agregar a pantalla de inicio"</b></div>'+
+      '<div>4️⃣ Toca <b>"Agregar"</b> ✅</div>'+
+      '</div>'+
+      '<div style="margin-top:14px;font-size:11px;color:#6b7280">La app quedará en tu pantalla de inicio<br>con el ícono de GruPay 🥭</div>'+
+      '</div>';
+    document.getElementById('modal-instalar').classList.add('on');
+    return;
+  }
+
+  // Desktop
+  document.getElementById('modal-instalar-body').innerHTML=
+    '<div style="text-align:center;padding:8px 0">'+
+    '<div style="font-size:52px;margin-bottom:10px">💻</div>'+
+    '<b style="font-family:Bebas Neue,sans-serif;font-size:18px;letter-spacing:1px">Escritorio</b>'+
+    '<div style="background:#f4f6f9;border-radius:12px;padding:14px;text-align:left;font-size:13px;line-height:2.6;margin-top:12px">'+
+    '<div>Chrome: busca el ícono <b>⊕</b> en la barra de dirección</div>'+
+    '<div>O menú <b>⋮ → Instalar GruPay</b></div>'+
+    '</div></div>';
   document.getElementById('modal-instalar').classList.add('on');
 };
 window.ocultarPWA=function(){var b=document.getElementById('pwa-banner');if(b){b.style.opacity='0';b.style.transition='opacity .3s';setTimeout(function(){b.style.display='none';},300);}};
@@ -434,9 +465,9 @@ footer{background:var(--ink);color:#fff;padding:24px 16px;text-align:center;}
   </div>
   <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:4px;">
     <button class="hero-cta" onclick="document.getElementById('grilla').scrollIntoView({behavior:'smooth'})">🛒 Ver grupos disponibles ↓</button>
-    <a class="hero-cta-apk" href="/grupay/GruPay.apk" download="GruPay.apk">
+    <a class="hero-cta-apk" href="https://ernestopisk2015-arch.github.io/Neopisk/grupay/GruPay.apk" download="GruPay.apk">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 16l-5-5h3V4h4v7h3l-5 5zm-7 2h14v2H5v-2z"/></svg>
-      Descargar App Android
+      ⬇ Descargar App Android
     </a>
   </div>
 </div>
@@ -544,7 +575,7 @@ footer{background:var(--ink);color:#fff;padding:24px 16px;text-align:center;}
 <div class="toast" id="toast"></div>
 
 <!-- PWA Banner flotante -->
-<div id="pwa-banner" style="display:flex;">
+<div id="pwa-banner" style="display:none;">
   <div class="pwa-ic">🛒</div>
   <div class="pwa-info">
     <div class="pwa-t">GruPay App</div>
