@@ -607,7 +607,7 @@ window.agregarAlCarrito=function(gid){
   const tieneDescReal=sectorInfo?(g.has_discount!==false)&&(!sectorInfo.sinDescuento):false;
 
   carrito.push({
-    id:gid, product_name:g.product_name, emoji:g.emoji||"📦",
+    id:gid, product_name:g.product_name, emoji:g.emoji||"📦", image_url:g.image_url||"",
     price_per_unit:g.price_per_unit||0, unit:g.unit||"kg",
     has_discount:tieneDescReal,
     sector_name:sectorInfo?.sectorName||"",
@@ -665,7 +665,7 @@ function renderCarrito(){
       ${carrito.map(i=>{
         const pG=i.has_discount?Math.round(i.price_per_unit*0.9*10)/10:i.price_per_unit;
         return `<div class="cart-item">
-          <div class="cart-item-em">${i.emoji}</div>
+          <div class="cart-item-em">${i.image_url?`<img src="${i.image_url}" style="width:36px;height:36px;object-fit:cover;border-radius:8px;">`:i.emoji}</div>
           <div class="cart-item-info">
             <div class="cart-item-nm">${i.product_name}</div>
             <div class="cart-item-pr">S/${pG}/${i.unit}
@@ -825,7 +825,7 @@ window.confirmarCarrito=async function(){
       });
       const pedidoRef=await addDoc(collection(db,"grupay_pedidos"),{
         nombre,tel,sector:itemSectorName,
-        producto_id:item.id, producto_nombre:item.product_name, producto_emoji:item.emoji,
+        producto_id:item.id, producto_nombre:item.product_name, producto_emoji:item.emoji, producto_imagen_url:item.image_url||"",
         precio_normal:item.price_per_unit, sector_id:sectorId,
         payment_status:"uploaded", payment_screenshot_url:shotUrl,
         monto:totalFinal.toFixed(1),
@@ -1643,6 +1643,7 @@ window.confirmarPedido=async function(){
       producto_id:productoActual.id,
       producto_nombre:productoActual.product_name,
       producto_emoji:productoActual.emoji||"📦",
+      producto_imagen_url:productoActual.image_url||"",
       precio_normal:productoActual.price_per_unit||0,
       sector_id:sectorId,
       payment_status:"uploaded",
@@ -1664,6 +1665,7 @@ window.confirmarPedido=async function(){
       groupId:productoActual.id,
       product_name:productoActual.product_name,
       emoji:productoActual.emoji||"📦",
+      image_url:productoActual.image_url||"",
       sector,
       payment_status:"uploaded",
       payment_screenshot_url:shotUrl,
@@ -1680,7 +1682,7 @@ function renderHist(){
   const el=document.getElementById("hist-body");
   if(!historial.length){ el.innerHTML=`<div class="empty"><span>📭</span>Aún no tienes pedidos</div>`; return; }
   el.innerHTML=historial.map((h,i)=>`<div class="hist-card">
-    <div class="hist-em">${h.emoji}</div>
+    <div class="hist-em">${h.image_url?`<img src="${h.image_url}" style="width:40px;height:40px;object-fit:cover;border-radius:8px;">`:h.emoji}</div>
     <div class="hist-info"><div class="hist-nm">${h.product_name}</div><div class="hist-meta">📍 ${h.sector} · ${h.fecha}</div></div>
     <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;">
       <span class="hist-status hs-${h.payment_status==="verified"?"active":"pending"}">${h.payment_status==="verified"?"✅ Verificado":"⏳ Pendiente"}</span>
