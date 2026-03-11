@@ -1,11 +1,12 @@
-const CACHE_NAME = 'grupay-v1';
+const CACHE_NAME = 'grupay-v2';
 const ASSETS = [
+  '/cliente/',
+  '/cliente/index.html',
   '/grupay/',
   '/grupay/index.html',
   '/grupay/manifest.json',
   '/grupay/icon-192.png',
   '/grupay/icon-512.png',
-  'https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap'
 ];
 
 // Instalar y cachear assets principales
