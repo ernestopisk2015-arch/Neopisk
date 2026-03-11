@@ -6,6 +6,14 @@
 <title>GruPay · Compra Grupal Lima</title>
 <meta name="description" content="Únete a vecinos de Lima, compra en grupo y ahorra hasta 40%. Paga con Yape, recibe mañana.">
 <meta name="theme-color" content="#16a34a">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="GruPay">
+<link rel="manifest" href="/grupay/manifest.json">
+<link rel="apple-touch-icon" href="/grupay/icon-192.png">
+<meta name="mobile-web-app-capable" content="yes">
+<style>html,body{overscroll-behavior:none;}</style>
 <link rel="manifest" href="/grupay/manifest.json">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -214,8 +222,8 @@ function toast(msg){const el=document.getElementById("toast");el.textContent=msg
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
 :root{--green:#16a34a;--red2:#bf2508;--red-lt:#fff5f3;--grn:#16a34a;--grn2:#15803d;--grn-lt:#f0fdf4;--amb:#f59e0b;--amb-lt:#fffbeb;--ink:#111827;--mid:#374151;--muted:#6b7280;--soft:#9ca3af;--bdr:#e5e7eb;--bg:#f9fafb;--wht:#fff;}
-html{scroll-behavior:smooth;}
-body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;overflow-x:hidden;}
+html{scroll-behavior:smooth;overscroll-behavior:none;}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;overflow-x:hidden;overscroll-behavior-y:none;}
 #ticker-wrap{background:var(--green);overflow:hidden;padding:7px 0;display:none;}
 .ticker-track{display:flex;white-space:nowrap;animation:ticker 18s linear infinite;}
 .ticker-track span{color:#fff;font-size:11px;font-weight:700;padding:0 6px;}
@@ -368,7 +376,7 @@ footer{background:var(--ink);color:#fff;padding:24px 16px;text-align:center;}
 .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(14px);background:var(--ink);color:#fff;padding:11px 20px;border-radius:14px;font-size:13px;font-weight:700;z-index:200;opacity:0;pointer-events:none;white-space:nowrap;box-shadow:0 4px 20px rgba(0,0,0,.15);transition:all .24s;}
 .toast.on{opacity:1;transform:translateX(-50%) translateY(0);}
 .wa-float{position:fixed;bottom:24px;right:18px;z-index:50;width:54px;height:54px;background:#25d366;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 24px rgba(37,211,102,.4);text-decoration:none;}
-.hero-cta-apk{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.15);color:#fff;border:2px solid rgba(255,255,255,.4);border-radius:14px;padding:13px 24px;font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:13px;cursor:pointer;text-decoration:none;transition:background .2s;}
+.hero-cta-apk{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.15);color:#fff;border:2px solid rgba(255,255,255,.4);border-radius:14px;padding:13px 24px;font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:13px;cursor:pointer;text-decoration:none;transition:background .2s;font-family:inherit;}
 .hero-cta-apk:hover{background:rgba(255,255,255,.25);}
 </style>
 </head>
@@ -400,10 +408,14 @@ footer{background:var(--ink);color:#fff;padding:24px 16px;text-align:center;}
   </div>
   <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:4px;">
     <button class="hero-cta" onclick="document.getElementById('grilla').scrollIntoView({behavior:'smooth'})">&#x1F6D2; Ver grupos disponibles &#x2193;</button>
-    <!-- ✅ ENLACE APK - Netlify -->
-    <a class="hero-cta-apk" href="https://playful-kheer-deadad.netlify.app/GruPay.apk" download="GruPay.apk">
+    <!-- ✅ BOTÓN PWA INSTALL -->
+    <button class="hero-cta-apk" id="btn-instalar" onclick="instalarPWA()" style="display:none;">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 16l-5-5h3V4h4v7h3l-5 5zm-7 2h14v2H5v-2z"/></svg>
-      &#x2B07; Descargar App Android
+      &#x2B07; Instalar App
+    </button>
+    <a class="hero-cta-apk" href="https://neopisk.lat/cliente/" id="btn-abrir-app">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M4 6h16v2H4zm0 5h16v2H4zm0 5h16v2H4z"/></svg>
+      &#x1F6D2; Abrir App
     </a>
   </div>
 </div>
@@ -509,5 +521,50 @@ footer{background:var(--ink);color:#fff;padding:24px 16px;text-align:center;}
   </div>
 </div>
 <div class="toast" id="toast"></div>
+
+<script>
+// ── PWA: capturar evento install ─────────────────────────────────────────
+let deferredPrompt = null;
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  const btn = document.getElementById('btn-instalar');
+  const btnAbrir = document.getElementById('btn-abrir-app');
+  if (btn) btn.style.display = 'inline-flex';
+  if (btnAbrir) btnAbrir.style.display = 'none';
+});
+
+window.instalarPWA = async function() {
+  if (!deferredPrompt) {
+    // Si ya está instalada o no soporta, redirigir a la app
+    window.open('https://neopisk.lat/cliente/', '_blank');
+    return;
+  }
+  deferredPrompt.prompt();
+  const { outcome } = await deferredPrompt.userChoice;
+  if (outcome === 'accepted') {
+    document.getElementById('btn-instalar').style.display = 'none';
+    document.getElementById('btn-abrir-app').style.display = 'inline-flex';
+  }
+  deferredPrompt = null;
+};
+
+window.addEventListener('appinstalled', () => {
+  const btn = document.getElementById('btn-instalar');
+  const btnAbrir = document.getElementById('btn-abrir-app');
+  if (btn) btn.style.display = 'none';
+  if (btnAbrir) btnAbrir.style.display = 'inline-flex';
+  deferredPrompt = null;
+});
+
+// ── Service Worker ───────────────────────────────────────────────────────
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/grupay/sw.js')
+      .then(reg => console.log('SW registrado:', reg.scope))
+      .catch(err => console.warn('SW error:', err));
+  });
+}
+</script>
 </body>
 </html>
