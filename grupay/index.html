@@ -76,16 +76,14 @@ function renderGrilla() {
     el.innerHTML='<div class="vacio"><div style="font-size:52px;margin-bottom:12px">\ud83d\uded2</div><div style="font-size:18px;font-weight:800;margin-bottom:6px">Cargando grupos...</div></div>';
     return;
   }
-  // Categorías por emoji
   const CATS = [
-    ["🥑 Frutas y Verduras", ["🥑","🍋","🍊","🥭","🍎","🍇","🌽","🍓","🍑","🫐","🍅","🥦","🧄","🧅","🥕","🌿"]],
-    ["🧀 Lácteos y Frescos", ["🧀","🥛","🥚","🧈"]],
-    ["🌾 Granos y Secos",    ["🌾","🫘","🥜","🍚","🌰"]],
-    ["🍫 Otros",             ["🍫","🧃","🧂","🫙","🥫"]],
+    ["\ud83e\udd51 Frutas y Verduras", ["\ud83e\udd51","\ud83c\udf4b","\ud83c\udf4a","\ud83e\udd6d","\ud83c\udf4e","\ud83c\udf47","\ud83c\udf3d","\ud83c\udf53","\ud83c\udf51","\ud83fad","\ud83c\udf45","\ud83e\udd66","\ud83e\uddc4","\ud83e\uddc5","\ud83e\udd55","\ud83c\udf3f"]],
+    ["\ud83e\uddc0 L\u00e1cteos y Frescos", ["\ud83e\uddc0","\ud83e\udd5b","\ud83e\udd5a","\ud83e\udde8"]],
+    ["\ud83c\udf3e Granos y Secos",    ["\ud83c\udf3e","\ud83fad","\ud83e\udd5c","\ud83c\udf5a","\ud83c\udf30"]],
+    ["\ud83c\udf6b Otros",             ["\ud83c\udf6b","\ud83e\uddc3","\ud83e\uddc2","\ud83fad","\ud83e\udd6b"]],
   ];
   const usados = CATS.flatMap(([,e])=>e);
   const extras = lista.filter(g => !usados.includes(g.emoji||""));
-
   let html2 = "";
   for (const [titulo, emojis] of CATS) {
     const items = lista.filter(g => emojis.includes(g.emoji||""));
@@ -93,7 +91,7 @@ function renderGrilla() {
     html2 += '<div class="cat-bloque"><div class="cat-titulo">'+titulo+'</div><div class="grilla">'+items.map(g=>cardHTML(g)).join("")+'</div></div>';
   }
   if (extras.length) {
-    html2 += '<div class="cat-bloque"><div class="cat-titulo">📦 Otros productos</div><div class="grilla">'+extras.map(g=>cardHTML(g)).join("")+'</div></div>';
+    html2 += '<div class="cat-bloque"><div class="cat-titulo">\ud83d\udce6 Otros productos</div><div class="grilla">'+extras.map(g=>cardHTML(g)).join("")+'</div></div>';
   }
   el.innerHTML = html2 || lista.map(g=>cardHTML(g)).join("");
 }
@@ -290,7 +288,6 @@ nav{background:var(--wht);border-bottom:2px solid var(--bdr);position:sticky;top
 .vacio{text-align:center;padding:60px 20px;color:var(--muted);grid-column:1/-1;}
 .cat-bloque{margin-bottom:24px;}
 .cat-titulo{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:.5px;padding:0 2px 10px;color:var(--ink);}
-
 .card{background:var(--wht);border:2px solid var(--bdr);border-radius:16px;overflow:hidden;position:relative;cursor:pointer;transition:transform .18s,border-color .18s,box-shadow .18s;}
 .card:hover{transform:translateY(-3px);border-color:var(--green);box-shadow:0 8px 24px rgba(22,163,74,.12);}
 .card--cart{border-color:var(--grn);box-shadow:0 0 0 3px rgba(22,163,74,.12);}
@@ -371,8 +368,6 @@ footer{background:var(--ink);color:#fff;padding:24px 16px;text-align:center;}
 .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(14px);background:var(--ink);color:#fff;padding:11px 20px;border-radius:14px;font-size:13px;font-weight:700;z-index:200;opacity:0;pointer-events:none;white-space:nowrap;box-shadow:0 4px 20px rgba(0,0,0,.15);transition:all .24s;}
 .toast.on{opacity:1;transform:translateX(-50%) translateY(0);}
 .wa-float{position:fixed;bottom:24px;right:18px;z-index:50;width:54px;height:54px;background:#25d366;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 24px rgba(37,211,102,.4);text-decoration:none;}
-
-
 .hero-cta-apk{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.15);color:#fff;border:2px solid rgba(255,255,255,.4);border-radius:14px;padding:13px 24px;font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:13px;cursor:pointer;text-decoration:none;transition:background .2s;}
 .hero-cta-apk:hover{background:rgba(255,255,255,.25);}
 </style>
@@ -404,10 +399,11 @@ footer{background:var(--ink);color:#fff;padding:24px 16px;text-align:center;}
     <div class="hs"><div class="hs-n">24h</div><div class="hs-l">entrega</div></div>
   </div>
   <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:4px;">
-    <button class="hero-cta" onclick="document.getElementById('grilla').scrollIntoView({behavior:'smooth'})">🛒 Ver grupos disponibles ↓</button>
-    <a class="hero-cta-apk" href="https://ernestopisk2015-arch.github.io/Neopisk/grupay/GruPay.apk" download="GruPay.apk">
+    <button class="hero-cta" onclick="document.getElementById('grilla').scrollIntoView({behavior:'smooth'})">&#x1F6D2; Ver grupos disponibles &#x2193;</button>
+    <!-- ✅ ENLACE APK CORREGIDO - Google Drive -->
+    <a class="hero-cta-apk" href="https://drive.google.com/uc?export=download&id=1A8Lh94U1OUVPjXrq4bjgH-PE8_1nQntO" download="GruPay.apk">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 16l-5-5h3V4h4v7h3l-5 5zm-7 2h14v2H5v-2z"/></svg>
-      ⬇ Descargar App Android
+      &#x2B07; Descargar App Android
     </a>
   </div>
 </div>
@@ -513,7 +509,5 @@ footer{background:var(--ink);color:#fff;padding:24px 16px;text-align:center;}
   </div>
 </div>
 <div class="toast" id="toast"></div>
-
-  </div>
 </body>
 </html>
