@@ -1,14 +1,13 @@
 {
-  "name": "GruPay · Compra Grupal Lima",
+  "name": "GruPay - Compra Grupal Lima",
   "short_name": "GruPay",
-  "description": "Compra en grupo y ahorra hasta 40% en frutas, verduras y más. Entrega en tu puerta.",
+  "description": "Únete a vecinos de Lima, compra en grupo y ahorra hasta 40%.",
   "start_url": "/grupay/",
   "scope": "/grupay/",
   "display": "standalone",
   "orientation": "portrait",
+  "background_color": "#16a34a",
   "theme_color": "#16a34a",
-  "background_color": "#f0fdf4",
-  "lang": "es",
   "icons": [
     {
       "src": "/grupay/icon-192.png",
@@ -23,12 +22,13 @@
       "purpose": "any maskable"
     }
   ],
-  "categories": ["shopping", "food"],
-  "shortcuts": [
+  "screenshots": [
     {
-      "name": "Ver productos del día",
-      "url": "/grupay/",
-      "description": "Ver grupos activos"
+      "src": "/grupay/screenshot.png",
+      "sizes": "1080x1920",
+      "type": "image/png"
     }
-  ]
+  ],
+  "categories": ["shopping", "food"],
+  "lang": "es-PE"
 }
