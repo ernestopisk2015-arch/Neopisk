@@ -1,7 +1,7 @@
 {
-  "name": "GruPay",
+  "name": "GruPay - Compra Grupal Lima",
   "short_name": "GruPay",
-  "description": "Compra grupal directa del productor · Lima",
+  "description": "Compra solo o en grupo y ahorra hasta 40% en frutas, verduras y más.",
   "start_url": "/cliente/",
   "scope": "/cliente/",
   "display": "standalone",
@@ -9,7 +9,19 @@
   "background_color": "#16a34a",
   "theme_color": "#16a34a",
   "icons": [
-    { "src": "/cliente/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
-    { "src": "/cliente/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
-  ]
+    {
+      "src": "/cliente/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/cliente/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["shopping", "food"],
+  "lang": "es-PE"
 }
