@@ -1103,8 +1103,8 @@ window.toggleFaq=function(el){
 
 // ── FIRESTORE ─────────────────────────────────────────────────────────────
 const el_loading = document.getElementById("inicio-body");
-el_loading.innerHTML = `<div style="padding:20px;color:red;font-size:14px;">⚡ JS llegó hasta aquí</div>`
-
+el_loading.innerHTML = `<div style="padding:20px;background:red;color:#fff;font-size:16px;font-weight:900;">⚡ PASO 1 OK</div>`;
+el_loading.innerHTML = `<div style="padding:20px;background:blue;color:#fff;font-size:16px;font-weight:900;">⚡ PASO 2 OK</div>`;
 const unsubscribe = onSnapshot(
   collection(db,"grupay_groups"),
   (snap) => {
@@ -1237,5 +1237,6 @@ function renderPerfil(){
 </script>
 </body>
 </html>
+
 
 
