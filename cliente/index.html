@@ -493,6 +493,8 @@ const db = getFirestore(initializeApp({
 const IMGS = {};
 const CATS = {
   'arandanos':'frutas','kiwi-glaseado':'frutas',
+  'dQumJdjjHcMs0FEOdWRj':'frutas',  // Fresas para Jugo
+  'gfHHwWEt1QoH1zze4u0M':'frutas',  // Aguaymanto
   'q-fresco':'lacteos','q-mantecoso':'lacteos','q-suizo':'lacteos','q-parmesano':'lacteos',
   'pecanas':'postres','mani-salado':'postres','pasas':'postres','nuez':'postres',
   'cancha':'postres','maiz-cusco':'postres','fideo-inflado':'postres',
@@ -1104,7 +1106,7 @@ const el_loading = document.getElementById("inicio-body");
 el_loading.innerHTML = `<div class="loading"><div class="spinner"></div><span>Conectando con Firebase...</span></div>`;
 
 const unsubscribe = onSnapshot(
-  query(collection(db,"grupay_groups"), orderBy("created_at","desc")),
+  collection(db,"grupay_groups"),
   (snap) => {
     snap.docChanges().forEach(ch => {
       if(ch.type==="removed") delete grupos[ch.doc.id];
@@ -1131,6 +1133,8 @@ const unsubscribe = onSnapshot(
 
 function renderInicio(){
   let lista=Object.values(grupos);
+  // Ordenar por nombre alfabéticamente (evita depender de created_at en Firestore)
+  lista.sort((a,b)=>(a.product_name||'').localeCompare(b.product_name||'','es'));
   if(catActual!=="todas") lista=lista.filter(g=>CATS[g.id]===catActual);
   const el=document.getElementById("inicio-body");
   if(!lista.length){ el.innerHTML=`<div class="empty"><span>📭</span>No hay productos en esta categoría</div>`; return; }
