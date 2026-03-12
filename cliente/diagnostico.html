@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Diagnóstico Firebase - GruPay</title>
+<style>
+  body{font-family:monospace;background:#0f172a;color:#e2e8f0;padding:20px;font-size:13px;}
+  h2{color:#86efac;margin-bottom:16px;}
+  .ok{color:#4ade80;} .err{color:#f87171;} .warn{color:#fbbf24;}
+  .box{background:#1e293b;border-radius:8px;padding:14px;margin:10px 0;border-left:4px solid #334155;}
+  .box.ok{border-color:#4ade80;} .box.err{border-color:#f87171;}
+  button{background:#16a34a;color:#fff;border:none;padding:10px 20px;border-radius:8px;cursor:pointer;font-size:14px;margin:4px;}
+  pre{white-space:pre-wrap;word-break:break-all;font-size:11px;margin-top:8px;}
+</style>
+</head>
+<body>
+<h2>🔍 Diagnóstico Firebase — GruPay</h2>
+<div id="log"></div>
+<button onclick="runTest()">▶ Correr diagnóstico</button>
+<button onclick="crearProductoDemo()">➕ Crear producto de prueba</button>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, collection, getDocs, addDoc, serverTimestamp, onSnapshot, query, orderBy }
+  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const config = {
+  apiKey:"AIzaSyBhnAKQfADIdNX4brbG-YdTEr-DKFta7jE",
+  authDomain:"neopisk.firebaseapp.com",
+  projectId:"neopisk",
+  storageBucket:"neopisk.appspot.com",
+  messagingSenderId:"873475816427",
+  appId:"1:873475816427:web:fa8ca59cb85a2c1d00f7ae"
+};
+
+function log(msg, tipo='') {
+  const div = document.createElement('div');
+  div.className = `box ${tipo}`;
+  div.innerHTML = msg;
+  document.getElementById('log').appendChild(div);
+  console.log(msg.replace(/<[^>]*>/g,''));
+}
+
+let app, db;
+try {
+  app = initializeApp(config);
+  db = getFirestore(app);
+  log('✅ Firebase inicializado correctamente', 'ok');
+} catch(e) {
+  log('❌ Error al inicializar Firebase: ' + e.message, 'err');
+}
+
+window.runTest = async function() {
+  document.getElementById('log').innerHTML = '';
+  log('🔄 Iniciando diagnóstico...');
+
+  // Test 1: Leer grupay_groups
+  log('📦 Test 1: Leyendo colección <b>grupay_groups</b>...');
+  try {
+    const snap = await getDocs(collection(db, "grupay_groups"));
+    if(snap.empty) {
+      log(`⚠️ La colección <b>grupay_groups</b> está VACÍA — no hay productos cargados.<br>
+           <span class="warn">→ Necesitas agregar productos desde la consola de Firebase</span>`, 'warn');
+    } else {
+      log(`✅ Se encontraron <b>${snap.size} productos</b> en grupay_groups:`, 'ok');
+      snap.forEach(d => {
+        const data = d.data();
+        log(`&nbsp;&nbsp;→ ID: <b>${d.id}</b> | Nombre: <b>${data.product_name||'(sin nombre)'}</b> | Precio: S/${data.price_per_unit||'?'} | Emoji: ${data.emoji||'?'}`, 'ok');
+      });
+    }
+  } catch(e) {
+    log(`❌ Error leyendo grupay_groups: <b>${e.code}</b><br><pre>${e.message}</pre>`, 'err');
+    if(e.code === 'permission-denied') {
+      log(`🔒 <b>PROBLEMA: Reglas de Firestore bloquean lectura pública</b><br>
+           Ve a Firebase Console → Firestore → Reglas y cambia a:<br>
+           <pre>rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /{document=**} {
+      allow read: if true;
+      allow write: if true;
+    }
+  }
+}</pre>`, 'err');
+    }
+  }
+
+  // Test 2: onSnapshot
+  log('📡 Test 2: Probando onSnapshot (tiempo real)...');
+  try {
+    const unsub = onSnapshot(
+      query(collection(db, "grupay_groups"), orderBy("created_at","desc")),
+      (snap) => {
+        log(`✅ onSnapshot funciona — recibió <b>${snap.size}</b> documentos en tiempo real`, 'ok');
+        unsub();
+      },
+      (err) => {
+        log(`❌ onSnapshot error: <b>${err.code}</b> — ${err.message}`, 'err');
+      }
+    );
+  } catch(e) {
+    log(`❌ onSnapshot crash: ${e.message}`, 'err');
+  }
+
+  // Test 3: Verificar campo created_at (necesario para orderBy)
+  log('🗂 Test 3: Verificando campo <b>created_at</b>...');
+  try {
+    const snap = await getDocs(collection(db, "grupay_groups"));
+    let sinFecha = 0;
+    snap.forEach(d => { if(!d.data().created_at) sinFecha++; });
+    if(sinFecha > 0) {
+      log(`⚠️ <b>${sinFecha} productos</b> no tienen campo <b>created_at</b><br>
+           El orderBy("created_at","desc") puede fallar si algún doc no tiene este campo`, 'warn');
+    } else if(!snap.empty) {
+      log('✅ Todos los productos tienen campo created_at', 'ok');
+    }
+  } catch(e) {}
+};
+
+window.crearProductoDemo = async function() {
+  log('➕ Creando producto de prueba...');
+  try {
+    const ref = await addDoc(collection(db, "grupay_groups"), {
+      product_name: "Arándanos Frescos",
+      emoji: "🫐",
+      price_per_unit: 12,
+      unit: "kg",
+      has_discount: true,
+      categoria: "frutas",
+      created_at: serverTimestamp()
+    });
+    log(`✅ Producto demo creado con ID: <b>${ref.id}</b><br>Recarga la app y debería aparecer.`, 'ok');
+  } catch(e) {
+    log(`❌ No se pudo crear: <b>${e.code}</b> — ${e.message}`, 'err');
+  }
+};
+
+// Auto-run
+window.runTest();
+</script>
+</body>
+</html>
