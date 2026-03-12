@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Debug GruPay</title>
+<style>
+body{font-family:monospace;background:#0f172a;color:#e2e8f0;padding:16px;font-size:13px;}
+.ok{color:#4ade80;background:#14532d;padding:8px 12px;border-radius:8px;margin:6px 0;display:block;}
+.err{color:#fca5a5;background:#7f1d1d;padding:8px 12px;border-radius:8px;margin:6px 0;display:block;}
+.info{color:#93c5fd;background:#1e3a5f;padding:8px 12px;border-radius:8px;margin:6px 0;display:block;}
+h2{color:#86efac;margin-bottom:12px;}
+</style>
+</head>
+<body>
+<h2>🔍 Debug en vivo</h2>
+<div id="log"></div>
+<script>
+function log(msg, tipo='info'){
+  const d=document.createElement('span');
+  d.className=tipo; d.textContent=msg;
+  document.getElementById('log').appendChild(d);
+}
+
+log('1. Página cargada ✓','ok');
+log('2. Cargando Firebase...','info');
+
+// Verificar si hay SW activo
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.getRegistrations().then(regs=>{
+    if(regs.length){
+      log('⚠ Service Worker activo: '+regs.map(r=>r.scope).join(', '),'err');
+      log('→ Desregistrando SW...','info');
+      Promise.all(regs.map(r=>r.unregister())).then(()=>{
+        log('✅ SW eliminado — recarga la página en 2 seg','ok');
+        setTimeout(()=>location.reload(),2000);
+      });
+    } else {
+      log('✓ Sin Service Worker activo','ok');
+    }
+  });
+}
+</script>
+
+<script type="module">
+log('3. Importando Firebase...','info');
+try {
+  const { initializeApp } = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js");
+  const { getFirestore, collection, getDocs } = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js");
+  log('✅ Firebase importado','ok');
+
+  const db = getFirestore(initializeApp({
+    apiKey:"AIzaSyBhnAKQfADIdNX4brbG-YdTEr-DKFta7jE",
+    authDomain:"neopisk.firebaseapp.com", projectId:"neopisk",
+    storageBucket:"neopisk.appspot.com", messagingSenderId:"873475816427",
+    appId:"1:873475816427:web:fa8ca59cb85a2c1d00f7ae"
+  }));
+  log('✅ Firestore conectado','ok');
+
+  log('4. Leyendo grupay_groups...','info');
+  const snap = await getDocs(collection(db,"grupay_groups"));
+  log(`✅ ${snap.size} productos encontrados`,'ok');
+
+  snap.forEach(d=>{
+    const data=d.data();
+    log(`  → ${data.product_name} | img: ${data.image_url?'✅':'❌ sin imagen'}`,'ok');
+  });
+
+} catch(e) {
+  log('❌ ERROR: '+e.message,'err');
+  log('Código: '+(e.code||'desconocido'),'err');
+}
+
+function log(msg, tipo='info'){
+  const d=document.createElement('span');
+  d.className=tipo; d.textContent=msg;
+  document.getElementById('log').appendChild(d);
+}
+</script>
+</body>
+</html>
