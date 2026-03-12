@@ -7,7 +7,7 @@
 <meta name="theme-color" content="#16a34a">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="GruPay">
-<title>GruPay — Compra en grupo, ahorra en grande</title>
+<title>GruPay — Compra en grupo, ahorra en grand
 <link rel="manifest" href="/cliente/manifest.json">
 <link rel="apple-touch-icon" href="" id="apple-icon">
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800;900&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -1103,7 +1103,7 @@ window.toggleFaq=function(el){
 
 // ── FIRESTORE ─────────────────────────────────────────────────────────────
 const el_loading = document.getElementById("inicio-body");
-el_loading.innerHTML = `<div class="loading"><div class="spinner"></div><span>Conectando con Firebase...</span></div>`;
+el_loading.innerHTML = `<div style="padding:20px;color:red;font-size:14px;">⚡ JS llegó hasta aquí</div>`;
 
 const unsubscribe = onSnapshot(
   collection(db,"grupay_groups"),
@@ -1237,3 +1237,4 @@ function renderPerfil(){
 </script>
 </body>
 </html>
+
