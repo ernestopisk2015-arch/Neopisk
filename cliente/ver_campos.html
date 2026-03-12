@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Ver campos Firestore</title>
+<style>
+body{font-family:monospace;background:#0f172a;color:#e2e8f0;padding:20px;font-size:12px;}
+.box{background:#1e293b;border-radius:8px;padding:12px;margin:8px 0;}
+.key{color:#86efac;} .val{color:#fbbf24;}
+img{max-width:120px;border-radius:8px;margin-top:6px;display:block;}
+</style>
+</head>
+<body>
+<h2 style="color:#86efac;">🔍 Campos de productos en Firestore</h2>
+<div id="out"></div>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const db = getFirestore(initializeApp({
+  apiKey:"AIzaSyBhnAKQfADIdNX4brbG-YdTEr-DKFta7jE",
+  authDomain:"neopisk.firebaseapp.com", projectId:"neopisk",
+  storageBucket:"neopisk.appspot.com", messagingSenderId:"873475816427",
+  appId:"1:873475816427:web:fa8ca59cb85a2c1d00f7ae"
+}));
+
+const snap = await getDocs(collection(db, "grupay_groups"));
+const out = document.getElementById('out');
+snap.forEach(d => {
+  const data = d.data();
+  let html = `<div class="box"><b style="color:#f472b6;">ID: ${d.id}</b><br>`;
+  for(const [k,v] of Object.entries(data)){
+    const isImg = typeof v === 'string' && (v.includes('http')||v.includes('cloudinary'));
+    html += `<span class="key">${k}</span>: <span class="val">${v}</span><br>`;
+    if(isImg) html += `<img src="${v}" onerror="this.style.display='none'">`;
+  }
+  html += '</div>';
+  out.innerHTML += html;
+});
+</script>
+</body>
+</html>
