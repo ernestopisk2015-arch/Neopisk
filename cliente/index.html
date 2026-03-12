@@ -1145,8 +1145,10 @@ function cardHTML(g){
   const tieneDesc=g.has_discount!==false;
   const pN=g.price_per_unit||0;
   const pG=tieneDesc?Math.round(pN*0.9*10)/10:pN;
-  const imgSrc=IMGS[g.id];
-  const imgEl=imgSrc?`<img class="pc-img" src="${imgSrc}" alt="${g.product_name}" loading="lazy">`:`<div class="pc-img-em">${g.emoji||"📦"}</div>`;
+  const imgSrc=g.image_url||null;
+  const imgEl=imgSrc
+    ?`<img class="pc-img" src="${imgSrc}" alt="${g.product_name}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="pc-img-em" style="display:none">${g.emoji||"📦"}</div>`
+    :`<div class="pc-img-em">${g.emoji||"📦"}</div>`;
   const yaEnCarrito=carrito.find(i=>i.id===g.id);
 
   return `<div class="pc">
