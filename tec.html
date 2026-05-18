@@ -3,147 +3,145 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Neo Pisk Tech | Web3 & Tokenización</title>
-    <link rel="icon" type="image/jpeg" href="asset/IMG-20260126-WA0020.jpg">
-    <meta property="og:title" content="Neo Pisk - Inversión con Activos Reales Tokenizados">
-    <meta property="og:description" content="Ecosistema de inversión respaldado por flota operativa, tecnología robótica y energía limpia.">
+    <title>KarlaBot — Agente IA para tu WhatsApp Business</title>
+    <meta property="og:title" content="KarlaBot — Tu negocio nunca duerme">
+    <meta property="og:description" content="Agente IA que atiende clientes 24/7 por WhatsApp. Setup en 10 minutos. Desde S/69 al mes.">
     <meta property="og:image" content="https://i.postimg.cc/Js4BXv4X/byd.jpg">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;600;700;800;900&family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;600;700;800&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --gold: #D4AF37; --gold2: #F0C040; --navy: #0B1A30;
-            --slate: #2C3E50; --mint: #00D9A3; --white: #FAFAFA;
-            --cyan: #00f2ff; --pink: #ff007a; --dark: #010204;
+            --dark: #010204;
+            --dark2: #070b0f;
+            --panel: #0a0f15;
             --green: #00E676;
+            --green2: #25d366;
+            --cyan: #00f2ff;
+            --gold: #D4AF37;
+            --white: #f0f4f8;
+            --text2: rgba(255,255,255,0.65);
+            --text3: rgba(255,255,255,0.35);
+            --border: rgba(0,230,118,0.15);
         }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        html { scroll-behavior: smooth; }
-        body { font-family: 'Inter', sans-serif; background: var(--dark); color: #fff; overflow-x: hidden; }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        html { scroll-behavior:smooth; }
+        body { font-family:'Inter',sans-serif; background:var(--dark); color:#fff; overflow-x:hidden; }
 
         /* SCANNER */
-        body::after { content:""; position:fixed; top:-100%; left:0; width:100%; height:10px; background:var(--cyan); opacity:0.08; box-shadow:0 0 20px var(--cyan); animation:scan 8s linear infinite; z-index:999; pointer-events:none; }
+        body::after { content:""; position:fixed; top:-100%; left:0; width:100%; height:8px; background:var(--green); opacity:0.06; box-shadow:0 0 20px var(--green); animation:scan 10s linear infinite; z-index:999; pointer-events:none; }
         @keyframes scan { 0%{top:-10%} 100%{top:110%} }
 
+        /* GRID BG */
+        body::before { content:''; position:fixed; inset:0; background-image:linear-gradient(rgba(0,230,118,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(0,230,118,0.025) 1px,transparent 1px); background-size:50px 50px; pointer-events:none; z-index:0; }
+
         /* NAV */
-        nav { position:fixed; top:0; left:0; right:0; z-index:100; padding:16px 32px; display:flex; align-items:center; justify-content:space-between; background:rgba(1,2,4,0.85); backdrop-filter:blur(20px); border-bottom:1px solid rgba(0,242,255,0.1); }
-        .nav-logo { font-family:'Orbitron',sans-serif; font-size:18px; font-weight:900; color:var(--cyan); letter-spacing:3px; text-decoration:none; }
-        .nav-links { display:flex; gap:24px; align-items:center; }
-        .nav-links a { color:rgba(255,255,255,0.7); text-decoration:none; font-size:13px; font-weight:600; letter-spacing:1px; text-transform:uppercase; transition:color 0.2s; }
-        .nav-links a:hover { color:var(--cyan); }
-        .nav-cta { background:var(--cyan); color:var(--dark) !important; padding:10px 20px; border-radius:50px; font-weight:700 !important; }
+        nav { position:fixed; top:0; left:0; right:0; z-index:100; padding:14px 32px; display:flex; align-items:center; justify-content:space-between; background:rgba(1,2,4,0.9); backdrop-filter:blur(20px); border-bottom:1px solid var(--border); }
+        .nav-logo { font-family:'Orbitron',sans-serif; font-size:16px; font-weight:900; color:var(--green); letter-spacing:3px; text-decoration:none; }
+        .nav-logo span { color:rgba(255,255,255,0.4); font-weight:400; }
+        .nav-cta { background:var(--green2); color:#000; padding:10px 22px; border-radius:50px; font-weight:700; font-size:13px; text-decoration:none; letter-spacing:1px; transition:all 0.2s; }
+        .nav-cta:hover { background:var(--green); transform:translateY(-1px); }
 
         /* HERO */
-        .hero { position:relative; min-height:100vh; display:flex; align-items:center; justify-content:center; overflow:hidden;
-            background:linear-gradient(135deg, var(--navy) 0%, #0d1f3c 50%, #010204 100%); }
-        .hero-bg { position:absolute; inset:0; opacity:0.12; background:url('https://i.postimg.cc/wMvXhZN1/Llama-en-Machu-Picchu-pc-jpg.webp') center/cover; filter:grayscale(60%); }
-        .hero-grid { position:absolute; inset:0; background-image:linear-gradient(var(--gold) 1px,transparent 1px),linear-gradient(90deg,var(--gold) 1px,transparent 1px); background-size:80px 80px; opacity:0.025; }
-        .hero-content { position:relative; z-index:10; text-align:center; padding:120px 20px 60px; max-width:1000px; }
-        .hero-badge { display:inline-block; padding:8px 24px; background:rgba(212,175,55,0.15); border:1px solid var(--gold); border-radius:50px; color:var(--gold); font-size:11px; font-weight:700; letter-spacing:3px; text-transform:uppercase; margin-bottom:28px; }
-        .hero-title { font-family:'Orbitron',sans-serif; font-size:clamp(2.8rem,10vw,6rem); font-weight:900; line-height:1.05; margin-bottom:20px;
-            background:linear-gradient(135deg,#fff 0%,var(--cyan) 50%,var(--gold) 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
-        .hero-sub { font-family:'Orbitron',sans-serif; font-size:clamp(1rem,3vw,1.8rem); color:var(--cyan); letter-spacing:5px; margin-bottom:16px; }
-        .hero-desc { font-size:clamp(1rem,2vw,1.2rem); color:rgba(255,255,255,0.7); max-width:700px; margin:0 auto 40px; line-height:1.8; }
+        .hero { position:relative; min-height:100vh; display:flex; align-items:center; justify-content:center; padding:100px 20px 60px; overflow:hidden; background:radial-gradient(ellipse at 30% 50%, rgba(0,230,118,0.06) 0%, transparent 60%), radial-gradient(ellipse at 80% 20%, rgba(0,242,255,0.04) 0%, transparent 50%), var(--dark); }
+        .hero-inner { position:relative; z-index:1; max-width:1100px; width:100%; display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:center; }
+        .hero-tag { display:inline-block; padding:6px 16px; background:rgba(0,230,118,0.1); border:1px solid rgba(0,230,118,0.3); border-radius:50px; color:var(--green); font-size:10px; font-weight:700; letter-spacing:3px; text-transform:uppercase; margin-bottom:20px; }
+        .hero-title { font-family:'Orbitron',sans-serif; font-size:clamp(2.2rem,5vw,3.8rem); font-weight:900; line-height:1.05; margin-bottom:16px; }
+        .hero-title .line1 { color:#fff; }
+        .hero-title .line2 { background:linear-gradient(135deg, var(--green), var(--cyan)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+        .hero-desc { color:var(--text2); font-size:1.05rem; line-height:1.8; margin-bottom:28px; max-width:480px; }
+        .hero-features { list-style:none; display:flex; flex-direction:column; gap:10px; margin-bottom:32px; }
+        .hero-features li { display:flex; align-items:center; gap:10px; font-size:0.95rem; color:rgba(255,255,255,0.75); }
+        .hero-features li::before { content:'✓'; color:var(--green); font-weight:900; font-size:14px; }
+        .hero-btns { display:flex; gap:12px; flex-wrap:wrap; }
+        .btn-primary { display:inline-block; padding:16px 32px; background:linear-gradient(135deg,var(--green2),#128c7e); color:#fff; font-family:'Orbitron',sans-serif; font-size:13px; font-weight:700; letter-spacing:2px; text-decoration:none; border-radius:50px; box-shadow:0 0 30px rgba(37,211,102,0.3); transition:all 0.3s; }
+        .btn-primary:hover { transform:translateY(-3px); box-shadow:0 0 50px rgba(37,211,102,0.5); }
+        .btn-secondary { display:inline-block; padding:16px 28px; border:1px solid rgba(255,255,255,0.2); color:rgba(255,255,255,0.7); font-size:13px; font-weight:600; text-decoration:none; border-radius:50px; transition:all 0.3s; }
+        .btn-secondary:hover { border-color:var(--green); color:var(--green); }
 
-        /* BOTÓN PRINCIPAL GRANDE */
-        .hero-cta { display:inline-block; padding:22px 56px; background:linear-gradient(135deg,var(--cyan),#0088cc); color:#000; font-family:'Orbitron',sans-serif; font-size:clamp(1rem,2.5vw,1.3rem); font-weight:900; letter-spacing:3px; text-decoration:none; border-radius:60px; box-shadow:0 0 40px rgba(0,242,255,0.4),0 0 80px rgba(0,242,255,0.15); transition:all 0.3s; margin-bottom:16px; }
-        .hero-cta:hover { transform:translateY(-4px) scale(1.03); box-shadow:0 0 60px rgba(0,242,255,0.6); }
-        .hero-cta-secondary { display:inline-block; margin-left:16px; padding:22px 40px; border:2px solid rgba(255,255,255,0.3); color:#fff; font-family:'Orbitron',sans-serif; font-size:clamp(0.85rem,2vw,1rem); font-weight:700; letter-spacing:2px; text-decoration:none; border-radius:60px; transition:all 0.3s; }
-        .hero-cta-secondary:hover { border-color:var(--gold); color:var(--gold); }
+        /* CHAT DEMO */
+        .chat-demo { background:rgba(255,255,255,0.03); border:1px solid rgba(0,230,118,0.2); border-radius:24px; overflow:hidden; box-shadow:0 0 60px rgba(0,230,118,0.08); }
+        .chat-header { background:rgba(0,230,118,0.07); border-bottom:1px solid rgba(0,230,118,0.15); padding:16px 20px; display:flex; align-items:center; gap:12px; }
+        .chat-avatar { width:40px; height:40px; background:linear-gradient(135deg,var(--green2),#128c7e); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:20px; flex-shrink:0; }
+        .chat-name { font-weight:700; font-size:15px; }
+        .chat-status { font-size:11px; color:var(--green); }
+        .chat-dot { width:8px; height:8px; background:var(--green); border-radius:50%; margin-left:auto; animation:pulse-g 2s infinite; }
+        @keyframes pulse-g { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.4;transform:scale(0.7)} }
+        .chat-body { padding:20px; display:flex; flex-direction:column; gap:12px; min-height:300px; }
+        .bubble { max-width:82%; padding:10px 14px; border-radius:14px; font-size:13px; line-height:1.55; opacity:0; transform:translateY(8px); transition:all 0.4s ease; }
+        .bubble.show { opacity:1; transform:translateY(0); }
+        .bubble.bot { background:rgba(37,211,102,0.08); border:1px solid rgba(37,211,102,0.2); color:rgba(255,255,255,0.85); align-self:flex-start; border-bottom-left-radius:4px; }
+        .bubble.user { background:rgba(0,242,255,0.08); border:1px solid rgba(0,242,255,0.2); color:rgba(255,255,255,0.85); align-self:flex-end; border-bottom-right-radius:4px; text-align:right; }
 
         /* STATS */
-        .hero-stats { display:grid; grid-template-columns:repeat(auto-fit,minmax(130px,1fr)); gap:16px; margin-top:56px; padding:28px; background:rgba(255,255,255,0.04); border-radius:20px; border:1px solid rgba(255,255,255,0.08); backdrop-filter:blur(20px); }
-        .stat-value { display:block; font-family:'IBM Plex Mono',monospace; font-size:clamp(1.3rem,3vw,2.2rem); font-weight:700; color:var(--gold); margin-bottom:6px; }
-        .stat-label { font-size:clamp(0.65rem,1.5vw,0.8rem); color:rgba(255,255,255,0.6); text-transform:uppercase; letter-spacing:1px; line-height:1.3; }
+        .stats-bar { display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--border); border:1px solid var(--border); border-radius:16px; overflow:hidden; margin:60px auto; max-width:800px; }
+        .stat { background:var(--panel); padding:24px 16px; text-align:center; }
+        .stat-val { font-family:'IBM Plex Mono',monospace; font-size:clamp(1.4rem,3vw,2rem); font-weight:700; color:var(--green); margin-bottom:6px; }
+        .stat-label { font-size:11px; color:var(--text3); letter-spacing:1px; text-transform:uppercase; }
 
-        /* SECTION BASE */
-        .section { padding:80px 20px; max-width:1200px; margin:0 auto; }
-        .section-dark { background:rgba(255,255,255,0.02); border-top:1px solid rgba(0,242,255,0.06); border-bottom:1px solid rgba(0,242,255,0.06); }
-        .section-header { text-align:center; margin-bottom:48px; }
-        .section-badge { display:inline-block; padding:6px 16px; background:rgba(212,175,55,0.12); color:var(--gold); border-radius:50px; font-size:10px; font-weight:700; letter-spacing:3px; text-transform:uppercase; margin-bottom:12px; border:1px solid rgba(212,175,55,0.3); }
-        .section-title { font-family:'Orbitron',sans-serif; font-size:clamp(1.8rem,5vw,3rem); font-weight:700; margin-bottom:12px; background:linear-gradient(135deg,#fff,var(--cyan)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
-        .section-desc { color:rgba(255,255,255,0.6); max-width:650px; margin:0 auto; font-size:1.05rem; line-height:1.8; }
+        /* SECCIONES */
+        .section { padding:80px 20px; max-width:1100px; margin:0 auto; position:relative; z-index:1; }
+        .section-center { text-align:center; margin-bottom:48px; }
+        .s-badge { display:inline-block; padding:5px 14px; background:rgba(0,230,118,0.08); border:1px solid rgba(0,230,118,0.25); border-radius:50px; color:var(--green); font-size:10px; font-weight:700; letter-spacing:3px; text-transform:uppercase; margin-bottom:12px; }
+        .s-title { font-family:'Orbitron',sans-serif; font-size:clamp(1.6rem,4vw,2.4rem); font-weight:700; color:#fff; margin-bottom:10px; }
+        .s-desc { color:var(--text2); max-width:580px; margin:0 auto; font-size:1rem; line-height:1.8; }
 
-        /* CARDS */
-        .cards-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:24px; }
-        .card { background:rgba(255,255,255,0.03); border:1px solid rgba(0,242,255,0.12); border-radius:20px; padding:36px 28px; transition:all 0.3s; }
-        .card:hover { transform:translateY(-8px); border-color:var(--cyan); box-shadow:0 0 30px rgba(0,242,255,0.15); }
-        .card-icon { width:56px; height:56px; background:linear-gradient(135deg,rgba(0,242,255,0.2),rgba(212,175,55,0.2)); border-radius:14px; display:flex; align-items:center; justify-content:center; font-size:1.6rem; margin-bottom:20px; border:1px solid rgba(0,242,255,0.2); }
-        .card-title { font-family:'Space Grotesk',sans-serif; font-size:1.3rem; font-weight:700; color:#fff; margin-bottom:12px; }
-        .card-desc { color:rgba(255,255,255,0.6); line-height:1.7; font-size:0.95rem; }
-        .card-list { list-style:none; margin-top:14px; }
-        .card-list li { color:var(--cyan); font-size:0.9rem; padding:4px 0; }
-        .card-list li::before { content:"→ "; opacity:0.6; }
+        /* PASOS */
+        .steps-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+        .step-card { background:var(--panel); border:1px solid rgba(255,255,255,0.06); border-radius:16px; padding:24px 18px; text-align:center; position:relative; transition:border-color 0.3s; }
+        .step-card:hover { border-color:rgba(0,230,118,0.3); }
+        .step-num { font-family:'Orbitron',sans-serif; font-size:2rem; font-weight:900; color:var(--green); opacity:0.25; margin-bottom:8px; }
+        .step-icon { font-size:2rem; margin-bottom:10px; }
+        .step-title { font-size:13px; font-weight:700; color:#fff; margin-bottom:6px; }
+        .step-desc { font-size:12px; color:var(--text3); line-height:1.6; }
 
-        /* PROOF / GALLERY */
-        .proof-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:20px; }
-        .proof-card { position:relative; border-radius:16px; overflow:hidden; aspect-ratio:16/10; cursor:pointer; border:1px solid rgba(0,242,255,0.1); transition:transform 0.3s; }
-        .proof-card:hover { transform:scale(1.02); box-shadow:0 0 30px rgba(0,242,255,0.2); }
-        .proof-card img { width:100%; height:100%; object-fit:cover; }
-        .proof-overlay { position:absolute; bottom:0; left:0; right:0; padding:20px; background:linear-gradient(to top,rgba(0,0,0,0.95),transparent); }
-        .proof-title { font-weight:700; font-size:1rem; margin-bottom:4px; }
-        .proof-meta { font-size:0.8rem; color:var(--cyan); }
+        /* PLANES */
+        .planes-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
+        .plan { background:var(--panel); border:1px solid rgba(255,255,255,0.07); border-radius:20px; padding:32px 24px; position:relative; transition:all 0.3s; }
+        .plan::before { content:''; position:absolute; top:0;left:0;right:0; height:2px; background:rgba(255,255,255,0.1); border-radius:20px 20px 0 0; }
+        .plan.popular { border-color:rgba(0,230,118,0.35); }
+        .plan.popular::before { background:linear-gradient(90deg,var(--green2),var(--green)); }
+        .plan:hover { transform:translateY(-6px); }
+        .plan.popular:hover { box-shadow:0 20px 60px rgba(0,230,118,0.15); }
+        .plan-badge { position:absolute; top:-12px; left:50%; transform:translateX(-50%); background:var(--green); color:#000; font-size:9px; font-weight:800; padding:4px 14px; border-radius:50px; letter-spacing:2px; white-space:nowrap; }
+        .plan-name { font-family:'Orbitron',sans-serif; font-size:12px; font-weight:700; letter-spacing:3px; color:var(--text3); margin-bottom:14px; }
+        .plan-price { font-family:'IBM Plex Mono',monospace; font-size:2.6rem; font-weight:700; color:#fff; line-height:1; }
+        .plan-price sub { font-size:1rem; color:var(--text3); font-family:'Inter',sans-serif; }
+        .plan-mo { font-size:12px; color:var(--text3); margin-bottom:24px; margin-top:4px; }
+        .plan-list { list-style:none; display:flex; flex-direction:column; gap:9px; margin-bottom:28px; }
+        .plan-list li { font-size:13px; color:var(--text2); display:flex; align-items:flex-start; gap:8px; line-height:1.4; }
+        .plan-list li::before { content:'✓'; color:var(--green); font-weight:900; flex-shrink:0; margin-top:1px; }
+        .plan-btn { display:block; text-align:center; padding:13px; border:1px solid rgba(255,255,255,0.15); color:rgba(255,255,255,0.7); font-size:12px; font-weight:700; letter-spacing:2px; text-decoration:none; border-radius:50px; transition:all 0.3s; font-family:'Orbitron',sans-serif; }
+        .plan-btn:hover { border-color:var(--green); color:var(--green); }
+        .plan.popular .plan-btn { background:linear-gradient(135deg,var(--green2),#128c7e); border-color:transparent; color:#fff; }
+        .plan.popular .plan-btn:hover { box-shadow:0 0 24px rgba(37,211,102,0.4); }
 
-        /* CALCULATOR */
-        .calc-box { background:linear-gradient(135deg,rgba(11,26,48,0.9),rgba(13,31,60,0.9)); border:1px solid rgba(212,175,55,0.3); border-radius:24px; padding:40px; }
-        .calc-input { width:100%; padding:20px; font-size:2rem; font-weight:700; border:2px solid var(--gold); border-radius:14px; background:rgba(255,255,255,0.06); color:#fff; text-align:center; margin-bottom:20px; outline:none; font-family:'IBM Plex Mono',monospace; }
-        .calc-input::placeholder { color:rgba(255,255,255,0.4); font-size:1.2rem; }
-        .calc-result { background:linear-gradient(135deg,var(--gold),#f4d03f); padding:24px; border-radius:14px; text-align:center; }
-        .calc-val { font-family:'IBM Plex Mono',monospace; font-size:clamp(2rem,5vw,3.5rem); font-weight:900; color:var(--navy); }
-        .calc-lbl { font-size:0.8rem; color:var(--navy); opacity:0.7; text-transform:uppercase; letter-spacing:2px; margin-bottom:6px; }
+        /* NEGOCIOS */
+        .negocios-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:12px; }
+        .negocio { background:var(--panel); border:1px solid rgba(255,255,255,0.06); border-radius:14px; padding:20px 14px; text-align:center; transition:border-color 0.3s; }
+        .negocio:hover { border-color:rgba(0,230,118,0.3); }
+        .negocio-icon { font-size:2rem; margin-bottom:8px; }
+        .negocio-name { font-size:12px; color:var(--text2); font-weight:600; }
 
-        /* STEPS */
-        .steps-list { list-style:none; }
-        .step-item { display:flex; gap:20px; padding:20px 0; border-bottom:1px solid rgba(0,242,255,0.07); }
-        .step-item:last-child { border:none; }
-        .step-num { font-family:'Orbitron',sans-serif; font-size:2rem; font-weight:900; color:var(--pink); opacity:0.6; flex-shrink:0; width:32px; }
-        .step-text h3 { color:var(--cyan); font-size:1.1rem; margin-bottom:4px; }
-        .step-text p { color:rgba(255,255,255,0.6); font-size:0.9rem; line-height:1.6; }
-
-        /* TEAM */
-        .team-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:24px; }
-        .team-card { background:rgba(255,255,255,0.03); border:1px solid rgba(212,175,55,0.15); border-radius:20px; overflow:hidden; transition:all 0.3s; }
-        .team-card:hover { transform:translateY(-8px); border-color:var(--gold); box-shadow:0 0 30px rgba(212,175,55,0.15); }
-        .team-img { width:100%; height:280px; object-fit:cover; }
-        .team-info { padding:24px; text-align:center; }
-        .team-name { font-family:'Space Grotesk',sans-serif; font-size:1.3rem; font-weight:700; color:#fff; margin-bottom:4px; }
-        .team-role { color:var(--gold); font-size:0.8rem; font-weight:700; text-transform:uppercase; letter-spacing:2px; margin-bottom:12px; }
-        .team-bio { color:rgba(255,255,255,0.6); font-size:0.9rem; line-height:1.6; margin-bottom:16px; }
-        .team-social { display:inline-flex; align-items:center; gap:8px; padding:10px 20px; background:#1877F2; color:#fff; border-radius:50px; text-decoration:none; font-size:0.85rem; font-weight:600; transition:transform 0.2s; }
-        .team-social:hover { transform:scale(1.05); }
-
-        /* ROADMAP */
-        .roadmap { position:relative; max-width:800px; margin:0 auto; }
-        .roadmap::before { content:''; position:absolute; left:20px; top:0; bottom:0; width:2px; background:linear-gradient(to bottom,var(--gold),transparent); }
-        .rm-item { display:flex; gap:28px; margin-bottom:36px; padding-left:52px; position:relative; }
-        .rm-dot { position:absolute; left:12px; top:8px; width:18px; height:18px; background:var(--gold); border-radius:50%; border:3px solid var(--dark); box-shadow:0 0 0 3px var(--gold); }
-        .rm-content { background:rgba(255,255,255,0.03); border:1px solid rgba(212,175,55,0.15); border-radius:14px; padding:20px 24px; flex:1; }
-        .rm-quarter { font-family:'Orbitron',sans-serif; font-size:1.3rem; font-weight:700; color:var(--gold); margin-bottom:4px; }
-        .rm-title { font-size:1.1rem; font-weight:700; color:#fff; margin-bottom:8px; }
-        .rm-desc { color:rgba(255,255,255,0.6); font-size:0.9rem; line-height:1.6; }
-
-        /* BIG CTA SECTION */
-        .cta-section { text-align:center; padding:80px 20px; background:linear-gradient(135deg,rgba(0,242,255,0.05),rgba(212,175,55,0.05)); border-top:1px solid rgba(0,242,255,0.1); border-bottom:1px solid rgba(0,242,255,0.1); }
-        .cta-title { font-family:'Orbitron',sans-serif; font-size:clamp(2rem,5vw,3.5rem); font-weight:900; margin-bottom:16px; background:linear-gradient(135deg,var(--cyan),var(--gold)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
-        .cta-desc { color:rgba(255,255,255,0.7); font-size:1.1rem; margin-bottom:40px; max-width:600px; margin-left:auto; margin-right:auto; line-height:1.7; }
-        .cta-btn-big { display:inline-block; padding:24px 64px; background:linear-gradient(135deg,var(--gold),#f4d03f); color:var(--navy); font-family:'Orbitron',sans-serif; font-size:clamp(1rem,2.5vw,1.4rem); font-weight:900; letter-spacing:3px; text-decoration:none; border-radius:60px; box-shadow:0 0 40px rgba(212,175,55,0.5); transition:all 0.3s; }
-        .cta-btn-big:hover { transform:translateY(-4px) scale(1.04); box-shadow:0 0 70px rgba(212,175,55,0.7); }
-
-        /* FAB */
-        .fab-container { position:fixed; bottom:28px; right:20px; display:flex; flex-direction:column; gap:12px; z-index:1000; }
-        .fab { width:58px; height:58px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:1.6rem; box-shadow:0 4px 20px rgba(0,0,0,0.4); transition:transform 0.3s; text-decoration:none; color:#fff; }
-        .fab:hover { transform:scale(1.12); }
-        .fab-wa { background:#25d366; }
-        .fab-tg { background:#0088cc; }
+        /* BANNER GRATIS */
+        .free-banner { background:linear-gradient(135deg,rgba(37,211,102,0.07),rgba(0,230,118,0.03)); border:1px solid rgba(37,211,102,0.22); border-radius:20px; padding:36px 40px; display:flex; align-items:center; justify-content:space-between; gap:24px; flex-wrap:wrap; }
+        .free-banner h3 { font-family:'Orbitron',sans-serif; font-size:1.3rem; font-weight:900; color:#fff; margin-bottom:6px; }
+        .free-banner p { color:var(--text2); font-size:0.95rem; line-height:1.6; }
+        .free-banner strong { color:var(--green); }
 
         /* FOOTER */
-        footer { text-align:center; padding:40px 20px; background:rgba(0,0,0,0.8); border-top:1px solid rgba(0,242,255,0.08); color:rgba(255,255,255,0.4); font-size:0.85rem; letter-spacing:1px; }
-        footer a { color:var(--gold); text-decoration:none; }
+        footer { text-align:center; padding:32px 20px; background:rgba(0,0,0,0.6); border-top:1px solid rgba(0,230,118,0.08); color:var(--text3); font-size:12px; letter-spacing:1px; position:relative; z-index:1; }
+        footer a { color:var(--green); text-decoration:none; }
 
-        @media(max-width:600px){
-            .nav-links { display:none; }
-            .hero-cta-secondary { display:none; }
-            .hero-stats { grid-template-columns:repeat(2,1fr); }
+        /* FAB */
+        .fab { position:fixed; bottom:28px; right:24px; width:56px; height:56px; background:var(--green2); border-radius:50%; display:flex; align-items:center; justify-content:center; box-shadow:0 4px 20px rgba(37,211,102,0.4); text-decoration:none; z-index:1000; transition:transform 0.3s; }
+        .fab:hover { transform:scale(1.1); }
+
+        @media(max-width:768px){
+            .hero-inner { grid-template-columns:1fr; gap:40px; }
+            .steps-grid { grid-template-columns:repeat(2,1fr); }
+            .planes-grid { grid-template-columns:1fr; }
+            .stats-bar { grid-template-columns:repeat(2,1fr); }
+            .free-banner { flex-direction:column; text-align:center; }
+            nav .nav-cta { display:none; }
         }
     </style>
 </head>
@@ -151,265 +149,226 @@
 
 <!-- NAV -->
 <nav>
-    <a class="nav-logo" href="#">NEO PISK</a>
-    <div class="nav-links">
-        <a href="#ecosistema">Ecosistema</a>
-        <a href="#pruebas">Pruebas</a>
-        <a href="#equipo">Equipo</a>
-        <a href="#roadmap">Roadmap</a>
-        <a href="https://neopisk.lat/" class="nav-cta">🚀 APP AIRDROP</a>
+    <a class="nav-logo" href="#">KARLA<span>BOT</span></a>
+    <div style="display:flex;align-items:center;gap:20px;">
+        <a href="#planes" style="color:rgba(255,255,255,0.6);text-decoration:none;font-size:13px;font-weight:600;">Planes</a>
+        <a href="#como-funciona" style="color:rgba(255,255,255,0.6);text-decoration:none;font-size:13px;font-weight:600;">Cómo funciona</a>
+        <a class="nav-cta" href="https://wa.me/51948115030?text=Quiero%20probar%20KarlaBot%20gratis" target="_blank">💬 PRUEBA GRATIS</a>
     </div>
 </nav>
 
 <!-- HERO -->
 <div class="hero">
-    <div class="hero-bg"></div>
-    <div class="hero-grid"></div>
-    <div class="hero-content">
-        <div class="hero-badge">🇵🇪 Hecho en Perú · Blockchain Polygon</div>
-        <div class="hero-sub">WEB3 & TOKENIZACIÓN</div>
-        <h1 class="hero-title">NEO PISK TECH</h1>
-        <p class="hero-desc">Inversión respaldada por flota eléctrica, robótica e infraestructura real en Lima. Token $PISK con retornos verificables en blockchain.</p>
-
-        <div style="display:flex;flex-wrap:wrap;gap:16px;justify-content:center;margin-bottom:12px;">
-            <a class="hero-cta" href="https://neopisk.lat/" target="_blank">🚀 ENTRAR AL AIRDROP APP</a>
-            <a class="hero-cta-secondary" href="#ecosistema">VER ECOSISTEMA</a>
+    <div class="hero-inner">
+        <div>
+            <div class="hero-tag">🤖 IA para negocios peruanos</div>
+            <h1 class="hero-title">
+                <div class="line1">Tu negocio</div>
+                <div class="line2">nunca duerme</div>
+            </h1>
+            <p class="hero-desc">KarlaBot atiende a tus clientes 24/7 por WhatsApp Business. Responde preguntas, toma pedidos y menciona Yape automáticamente. Sin que estés presente.</p>
+            <ul class="hero-features">
+                <li>Setup en 10 minutos con formulario simple</li>
+                <li>Sin código, sin técnicos, sin complicaciones</li>
+                <li>15 días gratis sin compromiso</li>
+                <li>Desde S/ 69 al mes</li>
+            </ul>
+            <div class="hero-btns">
+                <a class="btn-primary" href="https://wa.me/51948115030?text=Quiero%20probar%20KarlaBot%20gratis%2015%20dias" target="_blank">💬 PROBAR GRATIS 15 DÍAS</a>
+                <a class="btn-secondary" href="#planes">Ver planes →</a>
+            </div>
         </div>
-        <div style="font-size:11px;color:rgba(255,255,255,0.4);letter-spacing:2px;">AIRDROP ACTIVO · PREVENTA FASE 2 · $0.10 USD</div>
 
-        <div class="hero-stats">
-            <div class="stat-item"><span class="stat-value">$0.10</span><span class="stat-label">Precio Preventa</span></div>
-            <div class="stat-item"><span class="stat-value">100M</span><span class="stat-label">Tokens Totales</span></div>
-            <div class="stat-item"><span class="stat-value">10%</span><span class="stat-label">Comisión Nivel 1</span></div>
-            <div class="stat-item"><span class="stat-value">3 NIV</span><span class="stat-label">Red de Referidos</span></div>
-            <div class="stat-item"><span class="stat-value">POLY</span><span class="stat-label">Red Blockchain</span></div>
-        </div>
-    </div>
-</div>
-
-<!-- ECOSISTEMA -->
-<div id="ecosistema" style="padding:80px 20px;background:rgba(0,0,0,0.4);">
-    <div style="max-width:1200px;margin:0 auto;">
-        <div class="section-header">
-            <div class="section-badge">Ecosistema</div>
-            <div class="section-title">¿EN QUÉ INVERTIMOS?</div>
-            <p class="section-desc">Activos reales que respaldan el valor del token $PISK</p>
-        </div>
-        <div class="cards-grid">
-            <div class="card">
-                <div class="card-icon">🚗</div>
-                <div class="card-title">Flota Eléctrica</div>
-                <p class="card-desc">Vehículos eléctricos BYD y Changan operando en plataformas ride-sharing como Yango e InDriver en Lima.</p>
-                <ul class="card-list"><li>Changan Alsvin EV</li><li>BYD vehicular</li><li>Torito eléctrico</li></ul>
+        <!-- CHAT ANIMADO -->
+        <div class="chat-demo">
+            <div class="chat-header">
+                <div class="chat-avatar">🤖</div>
+                <div>
+                    <div class="chat-name">KarlaBot — Tu negocio</div>
+                    <div class="chat-status">● en línea siempre</div>
+                </div>
+                <div class="chat-dot"></div>
             </div>
-            <div class="card">
-                <div class="card-icon">🤖</div>
-                <div class="card-title">Robótica & IA</div>
-                <p class="card-desc">Integración de robótica industrial e inteligencia artificial para automatización de procesos y logística.</p>
-                <ul class="card-list"><li>Humanoides Noetix N2</li><li>Automatización logística</li><li>IA de gestión</li></ul>
-            </div>
-            <div class="card">
-                <div class="card-icon">🌱</div>
-                <div class="card-title">Eco Pisk Park</div>
-                <p class="card-desc">Tokenización de cacao premium y proyectos agrícolas sostenibles en la selva peruana.</p>
-                <ul class="card-list"><li>Cacao tokenizado</li><li>Agricultura sostenible</li><li>Impacto social</li></ul>
-            </div>
-            <div class="card">
-                <div class="card-icon">💰</div>
-                <div class="card-title">Tokenización Empresarial</div>
-                <p class="card-desc">Convertimos inventarios y servicios futuros de negocios en activos digitales para obtener capital sin préstamos bancarios.</p>
-                <ul class="card-list"><li>Barberías y salones VIP</li><li>Clínicas estéticas</li><li>Restaurantes y retail</li></ul>
-            </div>
-            <div class="card">
-                <div class="card-icon">🎪</div>
-                <div class="card-title">Eventos & Instituciones</div>
-                <p class="card-desc">Elimina el efectivo en eventos masivos con tickets digitales inteligentes. Seguridad total y cero robos.</p>
-                <ul class="card-list"><li>Conciertos y festivales</li><li>Rifas escolares (APAFAS)</li><li>Kermeses y eventos</li></ul>
-            </div>
-            <div class="card">
-                <div class="card-icon">🤝</div>
-                <div class="card-title">Red de Referidos</div>
-                <p class="card-desc">Gana comisiones en USDT y $PISK por cada compra en tu red de 3 niveles.</p>
-                <ul class="card-list"><li>Nivel 1: 10% USDT</li><li>Nivel 2: 3% USDT</li><li>Nivel 3: 1% USDT</li></ul>
+            <div class="chat-body">
+                <div class="bubble bot" id="b1">¡Hola! Soy Karla 🤖 ¿En qué te puedo ayudar hoy?</div>
+                <div class="bubble user" id="b2">¿Tienen delivery disponible?</div>
+                <div class="bubble bot" id="b3">¡Claro! 🛵 Delivery de lunes a sábado de 9am a 8pm. Costo S/5 dentro de SJL. ¿Te animas a pedir?</div>
+                <div class="bubble user" id="b4">¿Cuánto cuesta la valeriana?</div>
+                <div class="bubble bot" id="b5">La valeriana está a S/12 la bolsa 100g 🌿 Puedes pagar por Yape al 948-115-030. ¿Te preparo el pedido?</div>
+                <div class="bubble user" id="b6">Sí, quiero una bolsa</div>
+                <div class="bubble bot" id="b7">¡Perfecto! 🎉 Tu pedido está registrado. Escríbeme tu dirección y en 30 min lo tienes en casa 🛵</div>
             </div>
         </div>
     </div>
 </div>
 
-<!-- CALCULADORA -->
-<div style="padding:80px 20px;background:rgba(11,26,48,0.6);">
-    <div style="max-width:700px;margin:0 auto;">
-        <div class="section-header">
-            <div class="section-badge">Calculadora</div>
-            <div class="section-title">¿CUÁNTO RECIBES?</div>
-            <p class="section-desc">10 $PISK por cada $1 USDT invertido</p>
-        </div>
-        <div class="calc-box">
-            <div style="font-size:11px;letter-spacing:3px;color:rgba(255,255,255,0.5);margin-bottom:10px;">¿CUÁNTO USDT QUIERES INVERTIR?</div>
-            <input class="calc-input" type="number" id="calcInput" placeholder="Ej: 100" oninput="calcular()">
-            <div class="calc-result">
-                <div class="calc-lbl">RECIBIRÁS</div>
-                <div class="calc-val" id="calcVal">0 $PISK</div>
-                <div style="font-size:0.85rem;color:var(--navy);opacity:0.7;margin-top:4px;" id="calcUsd">≈ $0.00 USD al precio actual</div>
-            </div>
-        </div>
+<!-- STATS -->
+<div style="padding:0 20px;position:relative;z-index:1;">
+    <div class="stats-bar">
+        <div class="stat"><div class="stat-val">24/7</div><div class="stat-label">Siempre activo</div></div>
+        <div class="stat"><div class="stat-val">10min</div><div class="stat-label">Setup rápido</div></div>
+        <div class="stat"><div class="stat-val">15días</div><div class="stat-label">Prueba gratis</div></div>
+        <div class="stat"><div class="stat-val">S/69</div><div class="stat-label">Desde al mes</div></div>
     </div>
 </div>
 
-<!-- PRUEBAS REALES -->
-<div id="pruebas" style="padding:80px 20px;">
-    <div style="max-width:1200px;margin:0 auto;">
-        <div class="section-header">
-            <div class="section-badge">Evidencia</div>
-            <div class="section-title">ACTIVOS REALES</div>
-            <p class="section-desc">Infraestructura operativa que respalda el valor de $PISK</p>
-        </div>
-        <div class="proof-grid">
-            <div class="proof-card">
-                <img src="https://res.cloudinary.com/dfmqybaac/image/upload/v1772308696/alsvin-web-1700x830-exterior-5_dz0dkv.jpg" alt="Changan">
-                <div class="proof-overlay"><div class="proof-title">Changan Alsvin EV</div><div class="proof-meta">Flota operativa · Lima, Perú</div></div>
-            </div>
-            <div class="proof-card">
-                <img src="https://i.postimg.cc/Js4BXv4X/byd.jpg" alt="BYD">
-                <div class="proof-overlay"><div class="proof-title">BYD Flota Eléctrica</div><div class="proof-meta">Yango & InDriver · Lima</div></div>
-            </div>
-            <div class="proof-card">
-                <img src="https://i.postimg.cc/Pq3j58dn/the-noetix-robotics-n2-humanoid-robot-displayed-at-the-companys-offices-in-beijing-china-on.jpg" alt="Robot">
-                <div class="proof-overlay"><div class="proof-title">Noetix Robotics N2</div><div class="proof-meta">Integración robótica · 2026</div></div>
-            </div>
-            <div class="proof-card">
-                <img src="https://raw.githubusercontent.com/ernestopisk2015-arch/Eco-Pisk-Park/main/Tokenizacioncacao.jpg" alt="Cacao">
-                <div class="proof-overlay"><div class="proof-title">Cacao Tokenizado</div><div class="proof-meta">Eco Pisk Park · Selva Peruana</div></div>
-            </div>
-            <div class="proof-card">
-                <img src="https://i.postimg.cc/mtcrG4DY/torito.jpg" alt="Torito">
-                <div class="proof-overlay"><div class="proof-title">Torito Eléctrico</div><div class="proof-meta">Movilidad urbana · Lima</div></div>
-            </div>
-            <div class="proof-card">
-                <img src="https://raw.githubusercontent.com/ernestopisk2015-arch/Neopisk/main/asset/Eco%20Pisk.jpg" alt="Eco Pisk">
-                <div class="proof-overlay"><div class="proof-title">Eco Pisk Ecosystem</div><div class="proof-meta">Energía limpia & sostenibilidad</div></div>
-            </div>
-        </div>
+<!-- PARA QUIÉN ES -->
+<div class="section">
+    <div class="section-center">
+        <div class="s-badge">Ideal para</div>
+        <div class="s-title">¿Tienes un negocio con WhatsApp?</div>
+        <div class="s-desc">KarlaBot funciona para cualquier negocio que atienda clientes por WhatsApp Business</div>
+    </div>
+    <div class="negocios-grid">
+        <div class="negocio"><div class="negocio-icon">🏪</div><div class="negocio-name">Bodegas</div></div>
+        <div class="negocio"><div class="negocio-icon">🍕</div><div class="negocio-name">Restaurantes</div></div>
+        <div class="negocio"><div class="negocio-icon">🛵</div><div class="negocio-name">Delivery</div></div>
+        <div class="negocio"><div class="negocio-icon">💆</div><div class="negocio-name">Salones</div></div>
+        <div class="negocio"><div class="negocio-icon">🔧</div><div class="negocio-name">Talleres</div></div>
+        <div class="negocio"><div class="negocio-icon">👗</div><div class="negocio-name">Ropa y moda</div></div>
+        <div class="negocio"><div class="negocio-icon">🌿</div><div class="negocio-name">Naturistas</div></div>
+        <div class="negocio"><div class="negocio-icon">📦</div><div class="negocio-name">Emprendedores</div></div>
     </div>
 </div>
 
 <!-- CÓMO FUNCIONA -->
-<div style="padding:80px 20px;background:rgba(0,0,0,0.4);">
-    <div style="max-width:900px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start;" class="how-grid">
-        <div>
-            <div class="section-badge">Proceso</div>
-            <div class="section-title" style="text-align:left;margin-bottom:24px;">¿CÓMO<br>FUNCIONA?</div>
-            <ul class="steps-list">
-                <li class="step-item"><div class="step-num">01</div><div class="step-text"><h3>Diagnóstico Digital</h3><p>Analizamos tu negocio para crear la estrategia de tokens adecuada.</p></div></li>
-                <li class="step-item"><div class="step-num">02</div><div class="step-text"><h3>Emisión de Tokens</h3><p>Lanzamos tu moneda digital bajo el respaldo del ecosistema Neo Pisk.</p></div></li>
-                <li class="step-item"><div class="step-num">03</div><div class="step-text"><h3>Capitalización</h3><p>Tus clientes compran tokens por adelantado. Tú recibes capital y aseguras lealtad.</p></div></li>
-                <li class="step-item"><div class="step-num">04</div><div class="step-text"><h3>Comisiones Automáticas</h3><p>El sistema paga automáticamente las comisiones de tu red de referidos en USDT.</p></div></li>
+<div style="padding:80px 20px;background:rgba(0,0,0,0.3);position:relative;z-index:1;" id="como-funciona">
+    <div style="max-width:1100px;margin:0 auto;">
+        <div class="section-center">
+            <div class="s-badge">Proceso</div>
+            <div class="s-title">¿Cómo funciona?</div>
+            <div class="s-desc">En menos de 24 horas tienes tu bot listo y atendiendo clientes</div>
+        </div>
+        <div class="steps-grid">
+            <div class="step-card">
+                <div class="step-num">01</div>
+                <div class="step-icon">📋</div>
+                <div class="step-title">Llenas el formulario</div>
+                <div class="step-desc">Tu nombre, tipo de negocio, productos y horarios. Solo 10 minutos.</div>
+            </div>
+            <div class="step-card">
+                <div class="step-num">02</div>
+                <div class="step-icon">⚙️</div>
+                <div class="step-title">Configuramos Karla</div>
+                <div class="step-desc">Nuestro equipo personaliza tu bot en menos de 24 horas.</div>
+            </div>
+            <div class="step-card">
+                <div class="step-num">03</div>
+                <div class="step-icon">📱</div>
+                <div class="step-title">Conectas tu WhatsApp</div>
+                <div class="step-desc">Escaneas un QR y KarlaBot empieza a atender tus clientes.</div>
+            </div>
+            <div class="step-card">
+                <div class="step-num">04</div>
+                <div class="step-icon">💰</div>
+                <div class="step-title">Recibes pedidos 24/7</div>
+                <div class="step-desc">Tú descansas, Karla trabaja. Cobras por Yape o transferencia.</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- PLANES -->
+<div class="section" id="planes">
+    <div class="section-center">
+        <div class="s-badge">Precios</div>
+        <div class="s-title">Planes y precios</div>
+        <div class="s-desc">Sin contratos anuales. Cancela cuando quieras. Paga por Yape o transferencia BCP.</div>
+    </div>
+    <div class="planes-grid">
+
+        <div class="plan">
+            <div class="plan-name">BÁSICO</div>
+            <div class="plan-price">S/ 69<sub>/mes</sub></div>
+            <div class="plan-mo">Facturación mensual</div>
+            <ul class="plan-list">
+                <li>Responde preguntas del negocio</li>
+                <li>Catálogo de hasta 20 productos</li>
+                <li>Menciona Yape/Plin para cobros</li>
+                <li>Horarios y ubicación automáticos</li>
+                <li>1 número de WhatsApp</li>
             </ul>
+            <a class="plan-btn" href="https://wa.me/51948115030?text=Quiero%20el%20plan%20Basico%20S%2F69%20de%20KarlaBot" target="_blank">CONTRATAR →</a>
         </div>
-        <div>
-            <div class="section-badge">Tokenomics</div>
-            <div class="section-title" style="text-align:left;margin-bottom:24px;">$PISK<br>TOKEN</div>
-            <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(212,175,55,0.2);border-radius:16px;overflow:hidden;">
-                <div style="padding:16px 20px;border-bottom:1px solid rgba(255,255,255,0.05);display:flex;justify-content:space-between;"><span style="color:rgba(255,255,255,0.5);font-size:11px;letter-spacing:1px;">EMISIÓN TOTAL</span><span style="font-family:'IBM Plex Mono',monospace;color:var(--green);font-weight:700;">100,000,000</span></div>
-                <div style="padding:16px 20px;border-bottom:1px solid rgba(255,255,255,0.05);display:flex;justify-content:space-between;"><span style="color:rgba(255,255,255,0.5);font-size:11px;letter-spacing:1px;">POLÍTICA</span><span style="font-family:'IBM Plex Mono',monospace;color:var(--green);font-weight:700;">BUYBACK & BURN</span></div>
-                <div style="padding:16px 20px;border-bottom:1px solid rgba(255,255,255,0.05);display:flex;justify-content:space-between;"><span style="color:rgba(255,255,255,0.5);font-size:11px;letter-spacing:1px;">FASE 1</span><span style="background:rgba(0,230,118,0.15);color:var(--green);padding:4px 12px;font-size:12px;font-weight:700;">SOLD OUT ✓</span></div>
-                <div style="padding:16px 20px;border-bottom:1px solid rgba(255,255,255,0.05);display:flex;justify-content:space-between;"><span style="color:rgba(255,255,255,0.5);font-size:11px;letter-spacing:1px;">FASE 2 PRECIO</span><span style="font-family:'IBM Plex Mono',monospace;color:var(--gold);font-weight:700;">$0.10 USD</span></div>
-                <div style="padding:16px 20px;display:flex;justify-content:space-between;"><span style="color:rgba(255,255,255,0.5);font-size:11px;letter-spacing:1px;">RED</span><span style="font-family:'IBM Plex Mono',monospace;color:var(--cyan);font-weight:700;">POLYGON</span></div>
-            </div>
+
+        <div class="plan popular">
+            <div class="plan-badge">⭐ MÁS POPULAR</div>
+            <div class="plan-name">PRO</div>
+            <div class="plan-price">S/ 119<sub>/mes</sub></div>
+            <div class="plan-mo">Facturación mensual</div>
+            <ul class="plan-list">
+                <li>Todo lo del plan Básico</li>
+                <li>Toma pedidos completos</li>
+                <li>Catálogo ilimitado</li>
+                <li>Historial de conversaciones</li>
+                <li>Soporte prioritario por WhatsApp</li>
+                <li>Reporte semanal de leads</li>
+            </ul>
+            <a class="plan-btn" href="https://wa.me/51948115030?text=Quiero%20el%20plan%20Pro%20S%2F119%20de%20KarlaBot" target="_blank">CONTRATAR →</a>
         </div>
+
+        <div class="plan">
+            <div class="plan-name">AGENCIA</div>
+            <div class="plan-price">S/ 249<sub>/mes</sub></div>
+            <div class="plan-mo">Facturación mensual</div>
+            <ul class="plan-list">
+                <li>Todo lo del plan Pro</li>
+                <li>Hasta 3 números de WhatsApp</li>
+                <li>Dashboard de métricas</li>
+                <li>Personalización de tono y voz</li>
+                <li>Onboarding incluido</li>
+                <li>Integración con Google Sheets</li>
+            </ul>
+            <a class="plan-btn" href="https://wa.me/51948115030?text=Quiero%20el%20plan%20Agencia%20S%2F249%20de%20KarlaBot" target="_blank">CONTRATAR →</a>
+        </div>
+
     </div>
 </div>
 
-<!-- EQUIPO -->
-<div id="equipo" style="padding:80px 20px;" id="seccion-lideres">
-    <div style="max-width:1200px;margin:0 auto;">
-        <div class="section-header">
-            <div class="section-badge">Líderes</div>
-            <div class="section-title">NUESTRO EQUIPO</div>
-            <p class="section-desc">Emprendedores con trayectoria real en Lima</p>
-        </div>
-        <div class="team-grid">
-            <div class="team-card">
-                <img class="team-img" src="asset/IMG-20260126-WA0020.jpg" alt="Ernesto Piskulich" onerror="this.src='https://via.placeholder.com/400x280/0B1A30/D4AF37?text=EP'">
-                <div class="team-info">
-                    <div class="team-name">Ernesto Piskulich</div>
-                    <div class="team-role">Fundador & CEO</div>
-                    <p class="team-bio">Emprendedor en tecnología de movilidad eléctrica y Web3. Lidera la expansión de flota en Lima con visión blockchain.</p>
-                    <a href="https://facebook.com" class="team-social" target="_blank"><i class="fab fa-facebook"></i> Facebook</a>
-                </div>
+<!-- BANNER PRUEBA GRATIS -->
+<div style="padding:0 20px 80px;position:relative;z-index:1;">
+    <div style="max-width:1100px;margin:0 auto;">
+        <div class="free-banner">
+            <div>
+                <h3>🎁 15 días gratis, sin compromiso</h3>
+                <p>Prueba KarlaBot en tu negocio sin pagar nada. Solo necesitas tu <strong>número de WhatsApp Business</strong>. Sin tarjeta. Sin letra chica. Si no te convence, no pierdes nada.</p>
             </div>
-            <div class="team-card">
-                <img class="team-img" src="asset/Eco Pisk.jpg" alt="Eco Pisk" onerror="this.src='https://via.placeholder.com/400x280/0B1A30/00D9A3?text=EP'">
-                <div class="team-info">
-                    <div class="team-name">Eco Pisk Park</div>
-                    <div class="team-role">División Sostenible</div>
-                    <p class="team-bio">Tokenización de cacao premium y proyectos de agricultura sostenible en la selva peruana.</p>
-                    <a href="https://t.me/Neo_Pisk_Airdrop_bot" class="team-social" target="_blank" style="background:#0088cc;"><i class="fab fa-telegram"></i> Telegram</a>
-                </div>
-            </div>
+            <a class="btn-primary" href="https://wa.me/51948115030?text=Quiero%20mi%20prueba%20gratis%20de%2015%20dias%20de%20KarlaBot" target="_blank" style="white-space:nowrap;flex-shrink:0;">
+                💬 EMPEZAR GRATIS
+            </a>
         </div>
-    </div>
-</div>
-
-<!-- ROADMAP -->
-<div id="roadmap" style="padding:80px 20px;background:rgba(0,0,0,0.4);">
-    <div style="max-width:800px;margin:0 auto;">
-        <div class="section-header">
-            <div class="section-badge">Hoja de Ruta</div>
-            <div class="section-title">ROADMAP 2026</div>
-        </div>
-        <div class="roadmap">
-            <div class="rm-item"><div class="rm-dot"></div><div class="rm-content"><div class="rm-quarter">Q1 2026</div><div class="rm-title">Airdrop & Preventa Fase 2</div><div class="rm-desc">Lanzamiento del programa de referidos multinivel. Preventa activa a $0.10 USD por token.</div></div></div>
-            <div class="rm-item"><div class="rm-dot"></div><div class="rm-content"><div class="rm-quarter">Q2 2026</div><div class="rm-title">Expansión de Flota</div><div class="rm-desc">Incorporación de 20 vehículos eléctricos adicionales. Integración con 3 nuevas plataformas de ride-sharing.</div></div></div>
-            <div class="rm-item"><div class="rm-dot"></div><div class="rm-content"><div class="rm-quarter">Q3 2026</div><div class="rm-title">Robótica & IA</div><div class="rm-desc">Primer piloto de robótica Noetix N2 en Lima. Plataforma de tokenización empresarial abierta al público.</div></div></div>
-            <div class="rm-item"><div class="rm-dot"></div><div class="rm-content"><div class="rm-quarter">Q4 2026</div><div class="rm-title">Exchange & Liquidez</div><div class="rm-desc">Listado en exchanges descentralizados. Mecanismo buyback & burn activado. Eco Pisk Park en producción.</div></div></div>
-        </div>
-    </div>
-</div>
-
-<!-- GRAN CTA FINAL -->
-<div class="cta-section">
-    <div class="section-badge" style="margin-bottom:20px;">🚀 Únete ahora</div>
-    <div class="cta-title">¿LISTO PARA INVERTIR<br>EN EL FUTURO?</div>
-    <p class="cta-desc">Únete al Airdrop de $PISK, gana tokens y comisiones en USDT por referidos. Preventa activa a $0.10 USD.</p>
-    <a class="cta-btn-big" href="https://neopisk.lat/" target="_blank">🚀 ENTRAR AL AIRDROP APP</a>
-    <div style="margin-top:20px;display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
-        <a href="https://t.me/Neo_Pisk_Airdrop_bot" target="_blank" style="color:var(--cyan);text-decoration:none;font-size:14px;font-weight:600;">✈️ Bot de Telegram</a>
-        <span style="color:rgba(255,255,255,0.3);">·</span>
-        <a href="https://neopisk.lat/comprar.html" target="_blank" style="color:var(--gold);text-decoration:none;font-size:14px;font-weight:600;">💰 Comprar $PISK</a>
-        <span style="color:rgba(255,255,255,0.3);">·</span>
-        <a href="https://www.tiktok.com/@ernestopiskulich" target="_blank" style="color:rgba(255,255,255,0.6);text-decoration:none;font-size:14px;">🎵 TikTok</a>
     </div>
 </div>
 
 <!-- FOOTER -->
 <footer>
-    <p style="margin-bottom:8px;">© 2026 <a href="https://neopisk.lat/">Neo Pisk Tech SAC</a> · San Juan de Lurigancho, Lima, Perú</p>
-    <p>Contrato: <span style="font-family:'IBM Plex Mono',monospace;color:var(--cyan);font-size:0.8rem;">0x07Fc7AC9D681Cdd3D100c68f6f5646970CC7fF60</span> · Red Polygon</p>
+    <p style="margin-bottom:6px;">KarlaBot — Servicio de <a href="https://neopisk.lat">Neo Pisk Tech</a> · San Juan de Lurigancho, Lima, Perú</p>
+    <p>WhatsApp: <a href="https://wa.me/51948115030">+51 948 115 030</a> · Pago por Yape o transferencia BCP</p>
 </footer>
 
-<!-- FAB -->
-<div class="fab-container">
-    <a class="fab fab-tg" href="https://t.me/Neo_Pisk_Airdrop_bot" target="_blank" title="Telegram Bot">
-        <svg viewBox="0 0 24 24" fill="white" width="28" height="28"><path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z"/></svg>
-    </a>
-    <a class="fab fab-wa" href="https://wa.me/51948115030" target="_blank" title="WhatsApp">
-        <svg viewBox="0 0 24 24" fill="white" width="28" height="28"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-    </a>
-</div>
+<!-- FAB WhatsApp -->
+<a class="fab" href="https://wa.me/51948115030?text=Hola%20quiero%20info%20sobre%20KarlaBot" target="_blank">
+    <svg viewBox="0 0 24 24" fill="white" width="28" height="28"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
 
 <script>
-function calcular() {
-    const usdt = parseFloat(document.getElementById('calcInput').value) || 0;
-    const pisk = usdt * 10;
-    document.getElementById('calcVal').textContent = pisk.toLocaleString() + ' $PISK';
-    document.getElementById('calcUsd').textContent = '≈ $' + (pisk * 0.10).toFixed(2) + ' USD al precio actual de $0.10';
+// Chat animado
+const bubbles = ['b1','b2','b3','b4','b5','b6','b7'];
+let i = 0;
+function showNext() {
+    if (i < bubbles.length) {
+        document.getElementById(bubbles[i]).classList.add('show');
+        i++;
+        setTimeout(showNext, 1100);
+    } else {
+        setTimeout(() => {
+            bubbles.forEach(b => document.getElementById(b).classList.remove('show'));
+            i = 0;
+            setTimeout(showNext, 1000);
+        }, 3500);
+    }
 }
-
-// Responsive how-grid
-const hw = document.querySelector('.how-grid');
-if(hw && window.innerWidth < 700) { hw.style.gridTemplateColumns = '1fr'; }
-window.addEventListener('resize', () => { if(hw) hw.style.gridTemplateColumns = window.innerWidth < 700 ? '1fr' : '1fr 1fr'; });
+setTimeout(showNext, 600);
 </script>
 </body>
 </html>
